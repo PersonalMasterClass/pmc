@@ -3,8 +3,8 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable#, #validatable
          
-  enum user_type: [:user, :presenter, :admin]
+  enum user_type: [:customer, :presenter, :admin]
   enum status: [:pending, :approved, :suspended]
 end
