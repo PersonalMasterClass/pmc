@@ -1,11 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :presenters,
-              controllers: {
-                registrations: 'presenters/registrations',
-                sessions: 'presenters/sessions',
-                passwords: 'presenters/passwords',
-                confirmations: 'presenters/confirmations'
-              }
+
   devise_for :users,
               controllers: {
                 registrations: 'users/registrations',
