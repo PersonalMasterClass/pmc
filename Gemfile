@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 
+gem 'pry'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 # add Devise

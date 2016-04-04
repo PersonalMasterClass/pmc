@@ -1,2 +1,4 @@
-class Users::UsersController < ApplicationController::Base
+class Users::UsersController < ApplicationController
+  def customer_registation
+  end
 end
