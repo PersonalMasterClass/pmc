@@ -18,10 +18,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource.user_type = :admin
     resource.status = :pending
     resource.save
+    UserMailer.registration_mail(resource).deliver_now
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
-         UserMailer.registration_mail.deliver_now
+
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
         respond_with resource, location: after_sign_up_path_for(resource)
