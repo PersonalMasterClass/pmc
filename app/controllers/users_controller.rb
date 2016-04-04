@@ -1,6 +1,5 @@
-class Users::UsersController < ApplicationController::Base
-
-  def new
+class UsersController < ApplicationController
+  def management_console
 
   end
 

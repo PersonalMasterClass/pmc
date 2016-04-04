@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+root 'home#index'
   devise_for :users,
               controllers: {
                 registrations: 'users/registrations',
@@ -7,6 +8,8 @@ Rails.application.routes.draw do
                 passwords: 'users/passwords',
                 confirmations: 'users/confirmations'
               }
+
+    get 'admin/index' => 'users#management_console'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
