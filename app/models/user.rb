@@ -9,4 +9,12 @@ class User < ActiveRecord::Base
          
   enum user_type: [:customer, :presenter, :admin]
   enum status: [:pending, :approved, :suspended]
+
+  def self.unapproved_customers
+    User.where('user_type= ? AND status= ?', 0, 0)
+  end
+
+  def self.unapproved_presenters
+    User.where('user_type= ? AND status= ?', 1, 0)
+  end
 end

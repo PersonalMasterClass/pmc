@@ -8,6 +8,8 @@ root 'home#index'
                 passwords: 'users/passwords',
                 confirmations: 'users/confirmations'
               }
+
+    get 'admin/approve_user/:id' => 'users#approve_user', as: "admin_approve_user"
     get 'admin/index' => 'users#management_console'
     get 'admin/registrations' => 'users#registrations'
   # resources :presenters
