@@ -9,7 +9,7 @@ root 'home#index'
                 confirmations: 'users/confirmations'
               }
     get 'admin/index' => 'users#management_console'
-              
+    get 'admin/registrations' => 'users#registrations'
   # resources :presenters
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
