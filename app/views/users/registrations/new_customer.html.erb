@@ -1,0 +1,66 @@
+<h2>Customer Registration</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_customers_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  </div>
+
+
+  <%= fields_for :customer do |customer_fields| %>
+    <div class="field">
+      <%= customer_fields.label :first_name %><br />
+      <%= customer_fields.text_field :first_name, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= customer_fields.label :last_name %><br />
+      <%= customer_fields.text_field :last_name, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= customer_fields.label :phone_number %><br />
+      <%= customer_fields.text_field :phone_number, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= customer_fields.label :vit_number %><br />
+      <%= customer_fields.text_field :vit_number, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= customer_fields.label :abn_number %><br />
+      <%= customer_fields.text_field :abn_number, autofocus: true %>
+    </div>  
+
+    <div class="field">
+      <%= customer_fields.label :department %><br />
+      <%= customer_fields.text_field :department, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= customer_fields.label :contact_title %><br />
+      <%= customer_fields.text_field :contact_title, autofocus: true %>
+    </div>  
+  <% end %>
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>
+
+<%= render "users/shared/links" %>
