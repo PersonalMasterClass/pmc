@@ -11,3 +11,9 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore irritating files created by operating systems.
+desktop.ini
+Thumbs.db
+.DS_Store
+
