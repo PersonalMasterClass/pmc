@@ -1,5 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-# before_filter :configure_sign_up_params, only: [:create]
+before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
 
@@ -8,6 +8,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # Code from Devise 
     build_resource({})
     set_minimum_password_length
+    # resource.build_presenter
     yield resource if block_given?
     respond_with self.resource
 
@@ -17,6 +18,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     resource.user_type = :admin
     resource.status = :pending
+    # Populate presenter obj
+    presenter = Presenter.create(phone_number: params["presenter"]["phone_number"], 
+                                 first_name: params["presenter"]["first_name"],
+                                 last_name: params["presenter"]["last_name"], 
+                                 vit_number: params["presenter"]["vit_number"], 
+                                 abn_number: params["presenter"]["abn_number"])
+    resource.presenter = presenter
     resource.save
     UserMailer.registration_mail(resource).deliver_now
 
@@ -84,9 +92,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # protected
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_up_params
-  #   devise_parameter_sanitizer.for(:sign_up) << :attribute
-  # end
+  def configure_sign_up_params
+    devise_parameter_sanitizer.for(:sign_up, presenter: [:user_id, :phone_number, :first_name, 
+                                                         :last_name, :vit_number, :abn_number]) 
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
