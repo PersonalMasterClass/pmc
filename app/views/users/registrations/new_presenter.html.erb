@@ -2,10 +2,44 @@
 
 <%= form_for(resource, as: resource_name, url: presenters_registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
+    t.string   "email"
+    t.string   "phone_number"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "vit_number"
+    t.string   "abn_number"
+    t.integer  "school_id"
+
+
+
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name, autofocus: true %>
+  </div>
 
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phone_number %><br />
+    <%= f.text_field :phone_number, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :vit_number %><br />
+    <%= f.text_field :vit_number, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :abn_name %><br />
+    <%= f.text_field :abn_name, autofocus: true %>
   </div>
 
   <div class="field">
