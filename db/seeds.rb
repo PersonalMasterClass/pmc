@@ -11,7 +11,7 @@ Customer.delete_all
 User.create!(
              user_type: :admin,
              status: :approved,
-             email: "andrewnamt@gmail.com",
+             email: "rosemary@gmail.com",
              password:              "password",
              password_confirmation: "password")
 
