@@ -1,0 +1,27 @@
+
+<h1> Pending User Registrations </h1>
+<h2> There are <%= @presenters.count + @customers.count %> pending users.</h2>
+<table class = "table table-bordered">
+  <tr>
+    <th>Name</th>
+    <th>email</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+<% @presenters.each do |usr| %>
+  <tr> 
+    <td> <%= "#{usr.presenter.first_name} #{usr.presenter.last_name}" %></td>
+    <td> <%= usr.email %></td>
+    <td> <%= usr.status %></td>
+    <td> <%= link_to "Approve", admin_approve_user_path(usr) %> </td>
+  </tr>  
+<% end %>
+<% @customers.each do |usr| %>
+  <tr> 
+    <td> <%= "#{usr.customer.first_name} #{usr.customer.last_name}" %></td>
+    <td> <%= usr.email %></td>
+    <td> <%= usr.status %></td>
+    <td> <%= link_to "Approve", admin_approve_user_path(usr) %></td>
+  </tr>  
+<% end %>
+</table>

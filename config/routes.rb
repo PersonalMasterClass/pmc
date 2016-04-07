@@ -8,12 +8,16 @@ root 'home#index'
                 passwords: 'users/passwords',
                 confirmations: 'users/confirmations'
               }
+
+    get 'admin/approve_user/:id' => 'users#approve_user', as: "admin_approve_user"
     get 'admin/index' => 'users#management_console'
-              
+    get 'admin/registrations' => 'users#registrations'
   # resources :presenters
   devise_scope :user do
-    get 'presenters/registration' => 'users/registrations#new_presenter'
-    post 'presenters/registration' => 'users/registrations#create_presenter'
+    get 'registration/presenters' => 'users/registrations#new_presenter'
+    post 'registration/presenters' => 'users/registrations#create_presenter'
+    get 'registration/customers' => 'users/registrations#new_customer'
+    post 'registration/customers' => 'users/registrations#create_customer'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

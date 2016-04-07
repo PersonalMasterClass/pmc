@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 
-gem 'pry'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 # add Devise
@@ -41,6 +40,8 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "letter_opener"
   gem 'byebug'
+  gem 'pry'
+  gem "faker"
 end
 
 group :development do

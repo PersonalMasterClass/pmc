@@ -11,6 +11,29 @@
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>"><%= value %></div>
 <% end %>
+<ul class="nav nav-pills">
+  <% if current_user %>
+  <li role="presentation">
+ 		<%= link_to 'Log Out', destroy_user_session_path, method: :delete %>
+  </li>
+  <% else %>
+  <li role="presentation">
+  	<%= link_to 'Customer Registration', registration_customers_path %>
+  </li>
+  <li role="presentation">
+  	<%= link_to 'Presenter Registration', registration_presenters_path %>
+  </li>
+  <li role="presentation">
+      <%= link_to 'Log In', new_user_session_path %>
+  </li>
+  <% end %>
+</ul>
+
+
+
+ 
+
+
 <%= yield %>
 
 </body>
