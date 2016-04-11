@@ -74,7 +74,6 @@ before_filter :configure_sign_up_params, only: [:create]
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
     resource.customer = customer
-    binding.pry
     resource.save
     UserMailer.registration_mail(resource).deliver_now
 

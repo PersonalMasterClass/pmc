@@ -42,6 +42,7 @@ group :development, :test do
   gem 'byebug'
   gem 'pry'
   gem "faker"
+  gem 'rspec-rails', '~> 3.0'
 end
 
 group :production do
