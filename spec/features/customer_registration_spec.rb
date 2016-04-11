@@ -1,6 +1,6 @@
 require "rails_helper"
 
-feature "Submit Customer Registration Form" do
+feature "Submit Customer Registration Form", :type => :feature  do
   scenario "User registers as a customer" do
     visit "/registration/customers"
 
@@ -15,6 +15,8 @@ feature "Submit Customer Registration Form" do
     fill_in "Contact title", :with => Faker::Name.title 
 
     click_button "Sign up"
+    user = User.first
+    user.confirm!
 
     expect(page).to have_text("Confirm my account")
   end
