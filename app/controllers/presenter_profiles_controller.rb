@@ -88,7 +88,7 @@ class PresenterProfilesController < ApplicationController
 
     #checks current user if profile owner
     def correct_user
-      unless Presenter.find_by(user_id: current_user) == findPresenter
+      unless Presenter.find(current_user) == findPresenter
         flash[:danger] = "Unauthorized Access"
         redirect_to root_url 
       end
@@ -97,7 +97,7 @@ class PresenterProfilesController < ApplicationController
     #ensures only admin and profile owner can edit profile
     def admin_or_presenter_logged_in
 
-      if current_user.nil? || (current_user.user_type != "admin" && Presenter.find_by(user_id: current_user) != findPresenter)
+      if current_user.nil? || (current_user.user_type != "admin" && Presenter.find(current_user) != findPresenter)
         flash[:danger] = "Unauthorized Access"
         redirect_to root_url        
       end
