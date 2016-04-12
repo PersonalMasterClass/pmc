@@ -74,7 +74,6 @@ before_filter :configure_sign_up_params, only: [:create]
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
     resource.customer = customer
-    binding.pry
     resource.save
     UserMailer.registration_mail(resource).deliver_now
 
@@ -91,7 +90,8 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # TODO: Change this to redirect to Presenter Profile Controller
-        respond_with resource, location: after_inactive_sign_up_path_for(resource)
+        # respond_with resource, location: after_inactive_sign_up_path_for(resource)
+         redirect_to confirm_account_path
       end
     else
       clean_up_passwords resource

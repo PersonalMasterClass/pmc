@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  
 root 'home#index'
   devise_for :users,
               controllers: {
@@ -12,12 +13,18 @@ root 'home#index'
     get 'admin/approve_user/:id' => 'users#approve_user', as: "admin_approve_user"
     get 'admin/index' => 'users#management_console'
     get 'admin/registrations' => 'users#registrations'
+    get 'confirm_account' => 'users#success'
   # resources :presenters
+  resources :customers, only: [:index]
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
     get 'registration/customers' => 'users/registrations#new_customer'
     post 'registration/customers' => 'users/registrations#create_customer'
+  end
+
+  resources :presenters do
+    resource :presenter_profile
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -5,6 +5,9 @@ before_filter :admin_only, only: [:management_console, :registrations, :approve_
 
   end
 
+  def success
+  end
+
   def registrations
     @presenters = User.unapproved_presenters
     @customers = User.unapproved_customers
