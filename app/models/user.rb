@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  validates :email, presence: true
+  validates :email, uniqueness: true
+  validates :email, length: { minimum: 8 }
+  
   has_one :presenter
   has_one :customer
   accepts_nested_attributes_for :presenter

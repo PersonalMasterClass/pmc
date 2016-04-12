@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-
+# page scraper
+gem 'nokogiri'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 # add Devise
@@ -42,6 +43,9 @@ group :development, :test do
   gem 'byebug'
   gem 'pry'
   gem "faker"
+  gem "capybara"
+  gem 'rspec-rails', '~> 3.0'
+  gem 'factory_girl_rails'
 end
 
 group :production do
