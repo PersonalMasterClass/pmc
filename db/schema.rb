@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411052648) do
+ActiveRecord::Schema.define(version: 20160412050133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,10 +24,11 @@ ActiveRecord::Schema.define(version: 20160411052648) do
     t.string   "vit_number"
     t.integer  "user_id"
     t.string   "abn_number"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "department"
     t.string   "contact_title"
+    t.integer  "school_info_id"
   end
 
   create_table "presenters", force: :cascade do |t|
@@ -38,9 +39,10 @@ ActiveRecord::Schema.define(version: 20160411052648) do
     t.string   "vit_number"
     t.string   "abn_number"
     t.integer  "school_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.integer  "user_id"
+    t.integer  "school_info_id"
   end
 
   add_index "presenters", ["user_id"], name: "index_presenters_on_user_id", using: :btree
