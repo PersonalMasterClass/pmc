@@ -22,7 +22,6 @@ before_filter :admin_only, only: [:management_console, :registrations, :approve_
   private
   def admin_only
     if current_user.nil? || current_user.user_type != "admin" && current_user.status != "approved"
-      binding.pry
       flash[:danger] = "Unauthorised access."
       redirect_to '/'
     end
