@@ -11,14 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20160412050133) do
-=======
-ActiveRecord::Schema.define(version: 20160410024925) do
->>>>>>> 5f8ec6946573291813ab6f17ca2f812191956073
+ActiveRecord::Schema.define(version: 20160412052905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "days"
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "presenter_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "customers", force: :cascade do |t|
     t.string   "email"
