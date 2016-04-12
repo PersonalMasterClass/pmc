@@ -6,16 +6,18 @@ namespace :import do
 	task school_info: :environment do 
 		dat = "http://data.gov.au/storage/f/2013-05-12T190731/tmpo4Hjs2all-schools-list.csv"
 		
-		😱 = SchoolInfo.all
+		@📚 = SchoolInfo.all
 
 		CSV.foreach(open(dat), :headers => :first_row) do |row|
+
+			# Disregard primary schools - they don't teach VCE.
 			if row['School Type'] == "Primary"
 				next
 			end
 			
 
 
-			😄 = SchoolInfo.new(
+			🏫 = SchoolInfo.new(
 				school_name: row['School Name'],
 				sector: row['Education Sector'],
 				school_type: row['School Type'],
@@ -34,11 +36,47 @@ namespace :import do
 				lga_name: row['LGA Name']
 
 				)
+			
+			# skip if already in there
+			if @📚.include? 🏫 
+				 next
+			end
 
-			😄.save
+			if check_school_name(🏫)
+				next
+			end
+
+			🏫.save
 
 		end
 	end 
+end
+
+# Check if the school record requires updating - based on school name as a key. 
+def check_school_name(school)
+	@📚.each do |🍆|
+		if 🍆.school_name == school.school_name
+			🍆.update(
+				sector: school.sector,
+				school_type: school.school_type,
+				principal: school.principal,
+				address: school.address,
+				town: school.town,
+				state: school.state,
+				postcode: school.postcode,
+				postal_address: school.postal_address,
+				postal_town: school.postal_town,
+				postal_state: school.postal_state,
+				postal_postcode: school.postal_postcode,
+				phone_number: school.phone_number,
+				fax_number: school.fax_number,
+				region_name: school.region_name,
+				lga_name: school.lga_name
+				)
+			return true
+		end
+	end
+	return false
 end
 
 # Convert two address lines into one.
