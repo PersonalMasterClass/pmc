@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160410024925) do
+ActiveRecord::Schema.define(version: 20160412052905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "days"
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "presenter_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "customers", force: :cascade do |t|
     t.string   "email"
@@ -24,10 +33,11 @@ ActiveRecord::Schema.define(version: 20160410024925) do
     t.string   "vit_number"
     t.integer  "user_id"
     t.string   "abn_number"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "department"
     t.string   "contact_title"
+    t.integer  "school_info_id"
   end
 
   create_table "presenter_profiles", force: :cascade do |t|
@@ -51,12 +61,34 @@ ActiveRecord::Schema.define(version: 20160410024925) do
     t.string   "vit_number"
     t.string   "abn_number"
     t.integer  "school_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.integer  "user_id"
+    t.integer  "school_info_id"
   end
 
   add_index "presenters", ["user_id"], name: "index_presenters_on_user_id", using: :btree
+
+  create_table "school_infos", force: :cascade do |t|
+    t.string   "sector"
+    t.string   "school_name"
+    t.string   "school_type"
+    t.string   "principal"
+    t.string   "address"
+    t.string   "town"
+    t.string   "state"
+    t.string   "postcode"
+    t.string   "postal_address"
+    t.string   "postal_town"
+    t.string   "postal_state"
+    t.string   "postal_postcode"
+    t.string   "phone_number"
+    t.string   "fax_number"
+    t.string   "region_name"
+    t.string   "lga_name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at",                          null: false
