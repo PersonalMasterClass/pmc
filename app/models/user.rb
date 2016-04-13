@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  after_create :send_call_to_action_email
+  after_create :send_biannual_update_notification
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   validates :email, presence: true
@@ -24,5 +26,15 @@ class User < ActiveRecord::Base
 
   def self.unapproved_presenters
     User.where('user_type= ? AND status= ?', 1, 0)
+  end
+
+  private
+
+  def send_call_to_action_notification
+    Resque.enqueue_in 1.day, ReminderNotification, self.id
+  end
+
+  def send_biannual_update_notification
+    Resque.enqueue_in 6.months, BiannualUpdate, self.id
   end
 end
