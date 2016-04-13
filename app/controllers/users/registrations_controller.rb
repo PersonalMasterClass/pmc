@@ -27,7 +27,7 @@ before_filter :configure_sign_up_params, only: [:create]
     resource.presenter = presenter
     resource.save
     UserMailer.registration_mail(resource).deliver_now
-
+    Notification.new_registration
     #Code from devise
     yield resource if block_given?
     if resource.persisted?

@@ -31,13 +31,26 @@ ActiveRecord::Schema.define(version: 20160412042109) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.boolean  "is_read"
+    t.boolean  "is_read",    default: false
     t.string   "reference"
     t.string   "message"
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
+
+  create_table "presenter_profiles", force: :cascade do |t|
+    t.text     "bio"
+    t.text     "bio_edit"
+    t.integer  "status"
+    t.string   "picture"
+    t.string   "picture_edit"
+    t.integer  "presenter_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "presenter_profiles", ["presenter_id"], name: "index_presenter_profiles_on_presenter_id", using: :btree
 
   create_table "presenters", force: :cascade do |t|
     t.string   "email"
@@ -80,4 +93,5 @@ ActiveRecord::Schema.define(version: 20160412042109) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "presenter_profiles", "presenters"
 end

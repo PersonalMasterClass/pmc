@@ -17,6 +17,8 @@ before_filter :admin_only, only: [:management_console, :registrations, :approve_
     user = User.find(params["id"])
     user.status = "approved"
     user.save
+    Notification.approve_registration(user)
+    
     redirect_to admin_registrations_path
   end
   private

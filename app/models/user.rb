@@ -7,7 +7,11 @@ class User < ActiveRecord::Base
   
   has_one :presenter
   has_one :customer
+  has_many :notifications
+
   accepts_nested_attributes_for :presenter
+  accepts_nested_attributes_for :customer
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
          

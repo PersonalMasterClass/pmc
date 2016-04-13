@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bio: MyText
+  bio_edit: MyText
+  approved: 
+  picture: MyString
+  picture_edit: MyString
+  presenter_id_id: 
+
+two:
+  bio: MyText
+  bio_edit: MyText
+  approved: 
+  picture: MyString
+  picture_edit: MyString
+  presenter_id_id: 
