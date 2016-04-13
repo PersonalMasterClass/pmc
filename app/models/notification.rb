@@ -1,0 +1,22 @@
+class Notification < ActiveRecord::Base
+	# User notified and emailed upon account creation
+	def self.approve_registration(user)
+		reference = nil
+		message = "You're account has been approved! Welcome."
+		notification = Notification.create(message: message, reference: reference)
+		user.notifications << notification
+    UserMailer.registration_mail(user).deliver_now
+	end
+
+  # Admin(s) are notified when a new account has been created
+	def self.new_registration
+		reference = "/admin/registrations"
+		message = "A new registration has been submitted for approval."
+		notification = Notification.create(message: message, reference: reference)
+		# Add notification to all admins
+		admin_users = User.where(user_type: 2)
+		admin_users.each do |admin|
+			admin.notifications << notification
+		end
+	end
+end

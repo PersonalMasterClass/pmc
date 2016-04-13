@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412052905) do
+ActiveRecord::Schema.define(version: 20160413040027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,7 +26,6 @@ ActiveRecord::Schema.define(version: 20160412052905) do
   end
 
   create_table "customers", force: :cascade do |t|
-    t.string   "email"
     t.string   "phone_number"
     t.string   "first_name"
     t.string   "last_name"
@@ -38,6 +37,15 @@ ActiveRecord::Schema.define(version: 20160412052905) do
     t.string   "department"
     t.string   "contact_title"
     t.integer  "school_info_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.boolean  "is_read",    default: false
+    t.string   "reference"
+    t.string   "message"
+    t.integer  "user_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "presenter_profiles", force: :cascade do |t|
@@ -54,7 +62,6 @@ ActiveRecord::Schema.define(version: 20160412052905) do
   add_index "presenter_profiles", ["presenter_id"], name: "index_presenter_profiles_on_presenter_id", using: :btree
 
   create_table "presenters", force: :cascade do |t|
-    t.string   "email"
     t.string   "phone_number"
     t.string   "first_name"
     t.string   "last_name"

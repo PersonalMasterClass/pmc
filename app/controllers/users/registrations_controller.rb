@@ -26,9 +26,10 @@ before_filter :configure_sign_up_params, only: [:create]
                                  abn_number: params["presenter"]["abn_number"])
     resource.presenter = presenter
     resource.save
-    UserMailer.registration_mail(resource).deliver_now
 
-    #Code from devise
+    # Send notification to admin
+    Notification.new_registration
+    # Code from devise
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
