@@ -3,7 +3,7 @@ class PresenterProfilesController < ApplicationController
     before_filter :admin_or_presenter_logged_in, :only => [:edit, :update]
 
   def new
-    @presenter = findPresenter
+    @presenter = find_presenter
     if @presenter.presenter_profile.nil?
       @presenter_profile = @presenter.build_presenter_profile(status: :new_profile)
     else
@@ -12,7 +12,7 @@ class PresenterProfilesController < ApplicationController
   end
 
   def create
-    @presenter = findPresenter
+    @presenter = find_presenter
     if @presenter.presenter_profile.nil?
       @presenter_profile = @presenter.build_presenter_profile(profile_params)
       @presenter_profile.status = :pending_admin
@@ -28,7 +28,7 @@ class PresenterProfilesController < ApplicationController
   end
 
   def edit
-    @presenter = findPresenter
+    @presenter = find_presenter
     @presenter_profile = @presenter.presenter_profile
     if @presenter_profile.nil?
       redirect_to new_presenter_presenter_profile_path(@presenter)
@@ -41,7 +41,7 @@ class PresenterProfilesController < ApplicationController
   end
 
   def update
-    @presenter = findPresenter
+    @presenter = find_presenter
     @presenter_profile = @presenter.presenter_profile
     
     if @presenter_profile.nil?
@@ -80,7 +80,7 @@ class PresenterProfilesController < ApplicationController
       params.require(:presenter_profile).permit(:bio_edit, :picture_edit)
     end
 
-    def findPresenter
+    def find_presenter
       Presenter.find(params[:presenter_id])
     end
 
@@ -88,8 +88,7 @@ class PresenterProfilesController < ApplicationController
 
     #checks current user if profile owner
     def correct_user
-      binding.pry
-      unless Presenter.find(current_user) == findPresenter
+      unless current_user.presenter == find_presenter
         flash[:danger] = "Unauthorized Access"
         redirect_to root_url 
       end
@@ -98,7 +97,7 @@ class PresenterProfilesController < ApplicationController
     #ensures only admin and profile owner can edit profile
     def admin_or_presenter_logged_in
 
-      if current_user.nil? || (current_user.user_type != "admin" && Presenter.find(current_user) != findPresenter)
+      if current_user.nil? || (current_user.user_type != "admin" && Presenter.find(current_user) != find_presenter)
         flash[:danger] = "Unauthorized Access"
         redirect_to root_url        
       end
