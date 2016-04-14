@@ -88,6 +88,7 @@ class PresenterProfilesController < ApplicationController
 
     #checks current user if profile owner
     def correct_user
+      binding.pry
       unless Presenter.find(current_user) == findPresenter
         flash[:danger] = "Unauthorized Access"
         redirect_to root_url 

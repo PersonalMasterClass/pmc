@@ -12,8 +12,7 @@ root 'home#index'
 
     get 'admin/approve_user/:id' => 'users#approve_user', as: "admin_approve_user"
     get 'admin/index' => 'users#management_console'
-    get 'admin/registrations' => 'users#registrations'
-    get 'confirm_account' => 'users#success'
+    get 'admin/pending_registrations' => 'users#registrations'
   # resources :presenters
   resources :customers, only: [:index]
   devise_scope :user do
