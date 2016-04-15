@@ -11,5 +11,4 @@ class PresenterProfile < ActiveRecord::Base
   def self.unapproved_profiles
     PresenterProfile.where('status= ?', 1)
   end
-
 end

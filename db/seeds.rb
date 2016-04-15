@@ -28,7 +28,7 @@ User.create!(
                                vit_number: Faker::Code.ean, 
                                abn_number: Faker::Code.ean )
   a.presenter = presenter
-  a.save
+  a.save(:validate => false)
 end
 5.times do |f|
   a = User.new(
@@ -43,6 +43,6 @@ end
                                vit_number: Faker::Code.ean, 
                                abn_number: Faker::Code.ean )
   a.customer = customer
-  a.save
+  a.save(:validate => false)
 end
 
