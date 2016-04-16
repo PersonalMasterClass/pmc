@@ -249,7 +249,6 @@ DEPENDENCIES
   pry
   rails (= 4.2.5)
   rails_12factor
-  redis
   resque
   resque-delayed
   rspec-rails (~> 3.0)

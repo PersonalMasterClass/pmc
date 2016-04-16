@@ -18,7 +18,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def after_sign_in_path_for(resource)
     if current_user.user_type == "admin"
-      admin_index_path
+      admin_path
     elsif current_user.user_type == "customer"
       customers_path
     else

@@ -13,7 +13,7 @@ class Notification < ActiveRecord::Base
 		message = "A new registration has been submitted for approval."
 		notification = Notification.create(message: message, reference: reference)
 		# Add notification to all admins
-		admin_users = User.where(user_type: "admin")
+		admin_users = User.where(user_type: 2)
 		admin_users.each do |admin|
 			admin.notifications << notification
 	    UserMailer.registration_mail(admin).deliver_now
