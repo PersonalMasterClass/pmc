@@ -41,6 +41,9 @@ GEM
     autoprefixer-rails (6.3.3.1)
       execjs
     bcrypt (3.1.11)
+    best_in_place (3.1.0)
+      actionpack (>= 3.2)
+      railties (>= 3.2)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bootstrap-sass (3.3.6)
@@ -237,6 +240,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  best_in_place
   bootstrap-sass (~> 3.3.6)
   byebug
   capybara

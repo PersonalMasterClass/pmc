@@ -19,3 +19,6 @@
 //= require jquery_ujs
 //= require jquery-ui/autocomplete
 //= require autocomplete-rails
+//= require best_in_place
+//= require jquery-ui
+//= require best_in_place.jquery-ui

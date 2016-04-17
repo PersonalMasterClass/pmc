@@ -23,14 +23,26 @@ class SubjectsController < ApplicationController
 		@subject = Subject.new
 	end
 
-	# def edit 
-	# 	@subject = Subject.find(params[:id])
+	def edit
+		@subject = Subject.find(params[:id])
+	end
 
-	# 	if @subject.update(subject_params)
-	# 		redirect_to @subject
-	# 	else
-	# 		render 'edit'
-	# end
+	def update 
+		@subject = Subject.find(params[:id])
+
+		respond_to do |format|
+			params = ActiveSupport::HashWithIndifferentAccess.new(params)
+    	if @subject.update_attributes(params)
+      	format.html { redirect_to(@subject, :notice => 'Subject was successfully updated.') }
+      	format.json { respond_with_bip(@subject) }
+    	else
+      	format.html { render :action => "edit" }
+      	format.json { respond_with_bip(@subject) }
+    	end
+  	end
+	end
+
+	
 
 	private
 		def subject_params
