@@ -22,6 +22,10 @@ root 'home#index'
     post 'registration/customers' => 'users/registrations#create_customer'
   end
 
+  resources :users do
+    get :autocomplete_school_info_school_name, :on => :collection
+  end
+  
   resources :presenters do
     resource :presenter_profile
     # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'

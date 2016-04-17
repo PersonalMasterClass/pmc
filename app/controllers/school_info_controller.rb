@@ -1,0 +1,3 @@
+class SchoolInfoController < ApplicationController
+	
+end

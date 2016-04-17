@@ -17,6 +17,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :school %><br />
+    <%= f.autocomplete_field :school_name, autocomplete_school_info_school_name_users_path %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
   </div>
