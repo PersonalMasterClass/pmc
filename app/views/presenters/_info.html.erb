@@ -1,0 +1,9 @@
+	<% if @presenter.present? %>
+		<h3><%= fullname(@presenter)%>'s Profile </h3>
+	  <p>First Name: <%= @presenter.first_name %></p>
+	  <p>Last Name: <%= @presenter.last_name %></p>
+	  <p>Vit Number: <%= @presenter.vit_number%></p>
+	  <p>ABN number: <%= @presenter.abn_number%></p>
+	  <p>Phone Number: <%= @presenter.phone_number%></p>
+	  <p>Vit Number: <%= @presenter.vit_number%></p>
+  <% end %>

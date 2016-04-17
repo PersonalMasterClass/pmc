@@ -5,7 +5,6 @@ class Notification < ActiveRecord::Base
 		message = "You're account has been approved! Welcome."
 		notification = Notification.create(message: message, reference: reference)
 		user.notifications << notification
-    UserMailer.registration_mail(user).deliver_now
 	end
 
   # Admin(s) are notified when a new account has been created
@@ -17,6 +16,8 @@ class Notification < ActiveRecord::Base
 		admin_users = User.where(user_type: 2)
 		admin_users.each do |admin|
 			admin.notifications << notification
+	    UserMailer.registration_mail(admin).deliver_now
 		end
+
 	end
 end

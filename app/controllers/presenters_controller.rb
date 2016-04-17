@@ -1,15 +1,12 @@
 class PresentersController < ApplicationController
 
+	def index
+	end
+	
   def new
   end
 
   def create
-  end
-
-  private
-
-  def presenter_params
-    # params.permit(:presenter).
   end
 
 end

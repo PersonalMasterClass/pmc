@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   before_filter :admin_only, only: [:management_console, :registrations, :approve_user]
 
-  def management_console
-
+  def index
+    @pending_user_count = User.where(status: "pending").count
   end
 
   def success
@@ -18,8 +18,14 @@ class UsersController < ApplicationController
     user.status = "approved"
     user.save
     Notification.approve_registration(user)
-    
-    redirect_to admin_registrations_path
+    if user.presenter.present?
+      flash[:success] = "#{user.presenter.first_name} #{user.presenter.last_name}'s
+                        account has been approved."
+    elsif user.customer.present?
+      flash[:success] = "#{user.customer.first_name} #{user.customer.last_name}'s 
+                        account has been approved."
+    end
+    redirect_to admin_pending_registrations_path
   end
   private
   def admin_only

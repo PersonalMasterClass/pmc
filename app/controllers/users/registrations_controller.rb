@@ -3,7 +3,6 @@ before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
 
-# Create Presenter
   def new_presenter
     # Code from Devise 
     build_resource({})
@@ -27,31 +26,33 @@ before_filter :configure_sign_up_params, only: [:create]
     resource.presenter = presenter
     resource.save
 
-    # Send notification to admin
-    Notification.new_registration
+
     # Code from devise
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
-
+        # This loop should never run 
+        # User is never immediately authenticated, admin manually authenticates user.
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
-        # TODO: Change this to redirect to Presenter Profile Controller
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
-        # TODO: Change this to redirect to Presenter Profile Controller
-        respond_with resource, location: after_inactive_sign_up_path_for(resource)
+        # Send notification to admin
+        Notification.new_registration
+        # redirect_to new_presenter_presenter_profile_path(presenter), notice: "Whilst your account is pending approval, you can continue to complete your profile."
+        flash[:warning] = "Your application has been submitted for approval. 
+                           Please check your email to confirm your email."
+        redirect_to root_url
       end
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      render :new_presenter
     end
   end
 
-# Create Presenter
   def new_customer
     # Code from Devise 
     build_resource({})
@@ -76,28 +77,30 @@ before_filter :configure_sign_up_params, only: [:create]
                                  contact_title: params["customer"]["contact_title"])
     resource.customer = customer
     resource.save
-    UserMailer.registration_mail(resource).deliver_now
+
 
     #Code from devise
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
-
+        # This loop should never run 
+        # User is never immediately authenticated, admin manually authenticates user.
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
-        # TODO: Change this to redirect to Presenter Profile Controller
         respond_with resource, location: after_sign_up_path_for(resource)
       else
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
-        # TODO: Change this to redirect to Presenter Profile Controller
-        # respond_with resource, location: after_inactive_sign_up_path_for(resource)
-         redirect_to confirm_account_path
+        # Send notification to admin
+        Notification.new_registration
+        flash[:warning] = "Your application has been submitted for approval. 
+                           Please check your email to confirm your email."
+        redirect_to root_url
       end
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      render :new_customer
     end
   end
 

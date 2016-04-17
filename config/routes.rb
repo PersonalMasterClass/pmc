@@ -11,11 +11,10 @@ root 'home#index'
               }
 
     get 'admin/approve_user/:id' => 'users#approve_user', as: "admin_approve_user"
-    get 'admin/index' => 'users#management_console'
-    get 'admin/registrations' => 'users#registrations'
-    get 'confirm_account' => 'users#success'
+    get 'admin/' => 'users#index'
+    get 'admin/pending_registrations' => 'users#registrations'
   # resources :presenters
-  resources :customers, only: [:index]
+  resources :customers, only: [:index, :show]
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
@@ -25,6 +24,7 @@ root 'home#index'
 
   resources :presenters do
     resource :presenter_profile
+    # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'
   end
 
   resource :availabilitys

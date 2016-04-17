@@ -1,0 +1,14 @@
+<div>
+	<%= render "presenters/info", object: @presenter %>
+</div>
+
+<div>
+	<% if @presenter.presenter_profile.present? %>
+	  <p>Bio: <%= @presenter.presenter_profile.bio %></p>
+	  <p>Picture: <%= @presenter.presenter_profile.picture %></p>
+  <% else %>
+	  <p> <%= fullname(@presenter) %> has not filled out profile. </p>
+  <% end %>
+
+	<%= render 'partials/admin_actions', object: @user %>
+</div>

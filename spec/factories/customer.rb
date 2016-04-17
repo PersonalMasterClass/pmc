@@ -7,6 +7,5 @@ FactoryGirl.define do
   	abn_number Faker::Code.ean
   	department  Faker::Company.name
   	contact_title Faker::Name.title
-    email { Faker::Internet.email }
   end
 end
