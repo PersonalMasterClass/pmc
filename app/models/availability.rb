@@ -10,6 +10,7 @@ class Availability < ActiveRecord::Base
 		return x
 	end
 
+	# TODO error checking
 	def set_days(days)
 		this.days = Integer(days, 2)
 		this.save
