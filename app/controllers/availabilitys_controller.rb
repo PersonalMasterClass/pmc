@@ -3,7 +3,7 @@ class AvailabilitysController < ApplicationController
 		🍍 = current_user.availabilitys
 	end
 	# form
-	def new
+	def new 
 	end
 
 	# submit form

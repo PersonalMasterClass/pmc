@@ -25,6 +25,8 @@ root 'home#index'
   resources :users do
     get :autocomplete_school_info_school_name, :on => :collection
   end
+
+  resources :subjects
   
   resources :presenters do
     resource :presenter_profile

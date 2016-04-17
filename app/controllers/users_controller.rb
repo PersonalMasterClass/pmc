@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_filter :admin_only, only: [:management_console, :registrations, :approve_user]
   
-  autocomplete :school_info, :school_name, :full => true
+
   
 
   def index
