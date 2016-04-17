@@ -1,6 +1,13 @@
 Rails.application.routes.draw do
 
   
+  get 'subjects/new'
+
+  post 'subjects/create'
+
+  
+
+
 root 'home#index'
   devise_for :users,
               controllers: {
