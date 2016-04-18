@@ -11,6 +11,7 @@ $(document).ready(function() {
 		<tr>
 			<th class="col-md-4">Name</th>
 			<th class="col-md-4">Note</th>
+			<th class="col-md-2">Presenters</th>
 			<th class="col-md-2"></th>
 		</th>
 <% @subject.each do |s| %>
@@ -21,6 +22,7 @@ $(document).ready(function() {
 		<td class="col-md-4">
 			<%= best_in_place s, :note, :as => :input %>
 		</td>
+		<th class="col-md-2"><%= s.presenters.count %></th>
 		<td class="col-md-2" >
 			<%= link_to 'Delete', subject_path(s),
 			method: :delete, data:{confirm: 'Are you sure?'}, :class=>"btn btn-danger" %>

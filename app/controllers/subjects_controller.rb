@@ -1,5 +1,7 @@
 class SubjectsController < ApplicationController
 before_filter :find_subjects, :only => [:edit, :update, :destroy]
+before_filter :admin_logged_in, :only=> [:update, :destroy, :edit, :index]
+
 	def index
 		@subject = Subject.all
 
@@ -52,6 +54,14 @@ before_filter :find_subjects, :only => [:edit, :update, :destroy]
 		def find_subjects
 			@subject = Subject.find(params[:id])
 		end
+
+		def admin_logged_in
+
+      if current_user.nil? || (current_user.user_type != "admin")
+        flash[:danger] = "Admin can only edit subjects."
+        redirect_to root_url
+      end
+    end
 	
 end
 

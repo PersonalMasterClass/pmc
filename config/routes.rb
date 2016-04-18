@@ -33,7 +33,9 @@ root 'home#index'
     get :autocomplete_school_info_school_name, :on => :collection
   end
 
-  resources :subjects
+  resources :subjects do
+    get "/presenters" => 'subjects#view_presenters'
+  end
   
   resources :presenters do
     resource :presenter_profile
