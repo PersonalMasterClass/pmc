@@ -28,8 +28,6 @@ before_filter :find_subjects, :only => [:edit, :update, :destroy]
 	end
 
 	def update 
-		
-
 		respond_to do |format|
 			
     	if @subject.update(subject_params)
@@ -48,7 +46,7 @@ before_filter :find_subjects, :only => [:edit, :update, :destroy]
 
 	private
 		def subject_params
-			params.require(:subject).permit(:name, :category)
+			params.require(:subject).permit(:name, :note)
 		end
 
 		def find_subjects
