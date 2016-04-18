@@ -31,12 +31,14 @@ class SubjectsController < ApplicationController
 		@subject = Subject.find(params[:id])
 
 		respond_to do |format|
+			
 			# params = ActiveSupport::HashWithIndifferentAccess.new(params)
-    	if @subject.update_attributes(params)
+    	# if @subject.update_attributes(params)
+    	if @subject.update(subject_params)
     		flash[:success] ="it worked"
       	format.html { redirect_to(@subject, :notice => 'Subject was successfully updated.') }
       	format.json { respond_with_bip(@subject) }
-      	binding.pry
+      	
     	else
       	format.html { render :action => "edit" }
       	format.json { respond_with_bip(@subject) }
