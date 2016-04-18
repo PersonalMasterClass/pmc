@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160418032849) do
+=======
+ActiveRecord::Schema.define(version: 20160415161904) do
+>>>>>>> a9ea974b577e0b8087b74cf123a49b5d99ca855f
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +27,29 @@ ActiveRecord::Schema.define(version: 20160418032849) do
     t.integer  "presenter_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "booked_customers", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.integer  "booking_id"
+    t.integer  "number_students"
+    t.boolean  "paid",            default: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.integer  "presenter_id"
+    t.datetime "booking_date"
+    t.integer  "duration_minutes"
+    t.string   "cancellation_message"
+    t.boolean  "shared",               default: false
+    t.integer  "approval"
+    t.integer  "subject_id"
+    t.boolean  "presenter_paid",       default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "customers", force: :cascade do |t|

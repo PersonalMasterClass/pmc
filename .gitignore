@@ -11,7 +11,7 @@ db/schema.rb
 /log/*
 !/log/.keep
 /tmp
-
+dump.rdb
 # Ignore irritating files created by operating systems.
 desktop.ini
 Thumbs.db
