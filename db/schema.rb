@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160417062041) do
+ActiveRecord::Schema.define(version: 20160418032849) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,14 @@ ActiveRecord::Schema.define(version: 20160417062041) do
   end
 
   add_index "presenters", ["user_id"], name: "index_presenters_on_user_id", using: :btree
+
+  create_table "presenters_subjects", id: false, force: :cascade do |t|
+    t.integer "presenter_id"
+    t.integer "subject_id"
+  end
+
+  add_index "presenters_subjects", ["presenter_id"], name: "index_presenters_subjects_on_presenter_id", using: :btree
+  add_index "presenters_subjects", ["subject_id"], name: "index_presenters_subjects_on_subject_id", using: :btree
 
   create_table "school_infos", force: :cascade do |t|
     t.string   "sector"
