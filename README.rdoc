@@ -2,15 +2,15 @@
 
 Personal Masterclass is a two-sided marketplace. On one side are the country-based schools and their VCE teachers who book and pay for VCE revision sessions; on the other side of the marketplace are freelance presenters who are typically highly credentialed VCE teachers in Melbourne.
 
---User
---Notification
---Customer (School)
---Booked_Customers
---Booking
---Presenter_Bids
---Presenter_Profile
---Presenter
---Presenter_Availability
---School_Info
---Subject
---Subscription
+===User
+===Notification
+===Customer (School)
+===Booked_Customers
+===Booking
+===Presenter_Bids
+===Presenter_Profile
+===Presenter
+===Presenter_Availability
+===School_Info
+===Subject
+===Subscription
