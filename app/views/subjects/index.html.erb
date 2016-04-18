@@ -7,7 +7,7 @@ $(document).ready(function() {
 <h1> Subjects </h1>
 <div class="container">
 	<%= link_to 'New Subject', new_subject_path %>
-	<table class = "table-striped table-hover">
+	<table class = "table table-hover">
 		<tr>
 			<th class="col-md-4">Name</th>
 			<th class="col-md-4">Category</th>
@@ -21,9 +21,9 @@ $(document).ready(function() {
 		<td class="col-md-4">
 			<%= best_in_place s, :category, :as => :input %>
 		</td>
-		<td class="col-md-2">
+		<td class="col-md-2" >
 			<%= link_to 'Delete', subject_path(s),
-			method: :delete, data:{confirm: 'Are you sure?'} %>
+			method: :delete, data:{confirm: 'Are you sure?'}, :class=>"btn btn-danger" %>
 		</td>
 	</tr>
 <% end %>

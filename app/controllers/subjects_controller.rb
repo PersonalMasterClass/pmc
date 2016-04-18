@@ -1,4 +1,5 @@
 class SubjectsController < ApplicationController
+before_filter :find_subjects, :only => [:edit, :update, :destroy]
 	def index
 		@subject = Subject.all
 
@@ -14,7 +15,6 @@ class SubjectsController < ApplicationController
 	end
 
 	def destroy
-		@subject = Subject.find(params[:id])
 		@subject.destroy
 		redirect_to action: 'index'
 	end
@@ -24,19 +24,17 @@ class SubjectsController < ApplicationController
 	end
 
 	def edit
-		@subject = Subject.find(params[:id])
+		
 	end
 
 	def update 
-		@subject = Subject.find(params[:id])
+		
 
 		respond_to do |format|
 			
-			# params = ActiveSupport::HashWithIndifferentAccess.new(params)
-    	# if @subject.update_attributes(params)
     	if @subject.update(subject_params)
-    		flash[:success] ="it worked"
-      	format.html { redirect_to(@subject, :notice => 'Subject was successfully updated.') }
+    		flash[:success] ="Subject was successfully updated."
+      	# format.html { redirect_to(@subject, :notice => '') }
       	format.json { respond_with_bip(@subject) }
       	
     	else
@@ -51,6 +49,10 @@ class SubjectsController < ApplicationController
 	private
 		def subject_params
 			params.require(:subject).permit(:name, :category)
+		end
+
+		def find_subjects
+			@subject = Subject.find(params[:id])
 		end
 	
 end
