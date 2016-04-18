@@ -1,0 +1,6 @@
+<h1>Bookings</h1>
+<% @booking.id.each do |booking| %>  
+  <% if @booking.shared == "true" || @booking.customer_id != %> 
+  <%= booking.id %>
+  <% end %>  
+<% end %>

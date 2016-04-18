@@ -1,6 +1,9 @@
 class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :show]
   def index
+
+    if @booking.id == current_user.id
+
   end
 
   def show
@@ -15,7 +18,7 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
    # TODO: Refactor for admin booking creation
     @booking.save
-    
+
     current_user.customer.bookings << @booking
     redirect_to @booking
 
