@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+  class UsersController < ApplicationController
   before_filter :admin_only, only: [:management_console, :registrations, :approve_user]
 
   def management_console
