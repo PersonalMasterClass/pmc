@@ -1,0 +1,31 @@
+<%= form_for @booking, url:  bookings_path do |b| %>
+  <p>
+    <%= b.label :booking_date %><br>
+    <%= b.text_field :booking_date %>
+  </p>
+ 
+  <p>
+    <%= b.label :duration_minutes %><br>
+    <%= b.text_area :duration_minutes %>
+  </p>
+
+  <p>
+    <%= b.label :cancellation_message %><br>
+    <%= b.text_area :cancellation_message %>
+  </p>
+ 
+  <p>
+    <%= b.label :shared %><br>
+	<%= b.select :shared, ['false', 'true'] %>
+  </p>
+
+  <p>
+    <%= b.label :presenter_paid %><br>
+	<%= b.select :presenter_paid, ['false', 'true'] %>
+  </p>
+
+
+  <p>
+    <%= b.submit %>
+  </p>
+<% end %>
