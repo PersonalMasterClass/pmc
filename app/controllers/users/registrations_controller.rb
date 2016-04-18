@@ -24,9 +24,14 @@ before_filter :configure_sign_up_params, only: [:create]
                                  vit_number: params["presenter"]["vit_number"], 
                                  abn_number: params["presenter"]["abn_number"])
     # presenter.school_info:= SchoolInfo.find(params["s"])
-    resource.presenter = 
+    
+    presenter.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
+    resource.presenter = presenter
     resource.save
 
+#     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school'])
+    # resource.customer = customer
+    # resource.save
 
     # Code from devise
     yield resource if block_given?
@@ -76,7 +81,7 @@ before_filter :configure_sign_up_params, only: [:create]
                                  abn_number: params["customer"]["abn_number"],
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
-    
+    binding.pry
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
     resource.save

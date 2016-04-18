@@ -22,6 +22,12 @@
     <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
   </div>
 
+ <%= fields_for :school_info do |school_info_fields| %>
+    <div class="form-group">
+    <%= f.label "School" %>
+    <%= school_info_fields.text_field :school_name, class: "form-control", :id=>"school_search" %>
+  </div>
+<% end %>
 
   <%= fields_for :presenter do |presenter_fields| %>
     <div class="form-group">

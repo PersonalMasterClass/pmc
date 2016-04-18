@@ -33,7 +33,7 @@ before_filter :admin_logged_in, :only=> [:update, :destroy, :edit, :index]
 		respond_to do |format|
 			
     	if @subject.update(subject_params)
-    		flash[:success] ="Subject was successfully updated."
+    		# flash[:success] ="Subject was successfully updated."
       	# format.html { redirect_to(@subject, :notice => '') }
       	format.json { respond_with_bip(@subject) }
       	

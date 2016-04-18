@@ -1,4 +1,6 @@
-$(function() {
+
+// $(function() {
+$(document).on('ready page:load', function(){
 			$("#school_search").autocomplete({
 				delay: 500,
 				minLength: 3,
