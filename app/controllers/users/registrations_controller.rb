@@ -22,7 +22,8 @@ before_filter :configure_sign_up_params, only: [:create]
                                  first_name: params["presenter"]["first_name"],
                                  last_name: params["presenter"]["last_name"], 
                                  vit_number: params["presenter"]["vit_number"], 
-                                 abn_number: params["presenter"]["abn_number"])
+                                 # abn_number: params["presenter"]["abn_number"]
+                                 )
     # presenter.school_info:= SchoolInfo.find(params["s"])
     
     presenter.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
@@ -78,7 +79,7 @@ before_filter :configure_sign_up_params, only: [:create]
                                  first_name: params["customer"]["first_name"],
                                  last_name: params["customer"]["last_name"], 
                                  vit_number: params["customer"]["vit_number"], 
-                                 abn_number: params["customer"]["abn_number"],
+                                 # abn_number: params["customer"]["abn_number"],
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
     binding.pry
