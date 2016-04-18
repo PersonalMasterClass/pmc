@@ -1,7 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-  autocomplete :school_info, :school_name, :full => true
+  autocomplete :school_info, :school_name
 
   def new_presenter
     # Code from Devise 
@@ -23,7 +23,8 @@ before_filter :configure_sign_up_params, only: [:create]
                                  last_name: params["presenter"]["last_name"], 
                                  vit_number: params["presenter"]["vit_number"], 
                                  abn_number: params["presenter"]["abn_number"])
-    resource.presenter = presenter
+    # presenter.school_info:= SchoolInfo.find(params["s"])
+    resource.presenter = 
     resource.save
 
 
@@ -75,6 +76,8 @@ before_filter :configure_sign_up_params, only: [:create]
                                  abn_number: params["customer"]["abn_number"],
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
+    
+    customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
     resource.save
 
@@ -151,7 +154,8 @@ before_filter :configure_sign_up_params, only: [:create]
                                                          :last_name, :vit_number, :abn_number],
                                              customer: [:user_id, :phone_number, :first_name, 
                                                         :last_name, :vit_number, :abn_number,
-                                                        :department, :contact_title]) 
+                                                        :department, :contact_title],
+                                          school_info:  [:school_name])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

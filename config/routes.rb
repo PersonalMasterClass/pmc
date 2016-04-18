@@ -1,13 +1,5 @@
 Rails.application.routes.draw do
 
-  
-  get 'subjects/new'
-
-  post 'subjects/create'
-
-  
-
-
 root 'home#index'
   devise_for :users,
               controllers: {
@@ -29,9 +21,7 @@ root 'home#index'
     post 'registration/customers' => 'users/registrations#create_customer'
   end
 
-  resources :users do
-    get :autocomplete_school_info_school_name, :on => :collection
-  end
+  get "/school_info/find" => 'school_info#find'
 
   resources :subjects do
     get "/presenters" => 'subjects#view_presenters'
