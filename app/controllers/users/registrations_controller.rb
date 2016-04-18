@@ -10,7 +10,7 @@ before_filter :configure_sign_up_params, only: [:create]
     # resource.build_presenter
     yield resource if block_given?
     respond_with self.resource
-
+    
   end
 
   def create_presenter
