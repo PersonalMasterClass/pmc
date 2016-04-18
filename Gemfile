@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 # page scraper
 gem 'nokogiri'
 
-
 # background jobs
 gem 'resque', :require => "resque/server"
 # schedule jobs

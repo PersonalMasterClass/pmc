@@ -1,0 +1,15 @@
+<table class = "table table-bordered">
+  <tr>
+    <th>Name</th>
+    <th>email</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+<% users.each do |usr| %>
+  <tr> 
+    <td> <%= "#{usr.user_type.first_name} #{usr.user_type.last_name}" %></td>
+    <td> <%= usr.email %></td>
+    <td> <%= usr.status %></td>
+    <td> <%= link_to "Approve", admin_approve_user_path(usr) %> </td>
+  </tr>  
+<% end %>

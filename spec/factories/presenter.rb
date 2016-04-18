@@ -5,6 +5,5 @@ FactoryGirl.define do
   	phone_number { Faker::PhoneNumber.phone_number }
   	vit_number Faker::Code.ean
   	abn_number Faker::Code.ean
-    email { Faker::Internet.email }
   end
 end

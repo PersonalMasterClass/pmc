@@ -2,6 +2,10 @@ class PresenterProfilesController < ApplicationController
     before_filter :correct_user, :only => [:new, :create]
     before_filter :admin_or_presenter_logged_in, :only => [:edit, :update]
 
+  def show
+    @presenter = find_presenter
+    @user = @presenter.get_user
+  end
   def new
     @presenter = find_presenter
     if @presenter.presenter_profile.nil?
