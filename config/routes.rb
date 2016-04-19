@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  
 root 'home#index'
   devise_for :users,
               controllers: {
@@ -20,6 +19,12 @@ root 'home#index'
     post 'registration/presenters' => 'users/registrations#create_presenter'
     get 'registration/customers' => 'users/registrations#new_customer'
     post 'registration/customers' => 'users/registrations#create_customer'
+  end
+
+  get "/school_info/find" => 'school_info#find'
+
+  resources :subjects do
+    get "/presenters" => 'subjects#view_presenters'
   end
 
   get 'bookings/open' => 'bookings#open'

@@ -16,6 +16,7 @@ User.create!(
              password:              "password",
              password_confirmation: "password")
 
+
 # 5.times do |f|
 #   a = User.new(
 #              user_type: :presenter,
@@ -58,6 +59,7 @@ User.create!(
                                last_name: Faker::Name.last_name, 
                                vit_number: Faker::Code.ean, 
                                abn_number: Faker::Code.ean )
+
   a.customer = customer
   a.customer.bookings << Booking.create(shared: true, booking_date: DateTime.now)
   a.save(:validate => false)

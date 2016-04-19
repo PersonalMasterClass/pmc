@@ -15,11 +15,19 @@
     <% end %><br />
     <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
   </div>
-
   <div class="form-group">
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
   </div>
+  
+   <%= fields_for :school_info do |school_info_fields| %>
+  <div class="form-group">
+    <%= f.label "School" %>
+    <%= school_info_fields.text_field :school_name, class: "form-control", :id=>"school_search" %>
+
+  </div>
+  <% end %>
+
 
 
   <%= fields_for :customer do |customer_fields| %>
@@ -27,6 +35,7 @@
       <%= customer_fields.label :first_name %><br />
       <%= customer_fields.text_field :first_name, autofocus: true, class: "form-control" %>
     </div>
+  
 
     <div class="form-group">
       <%= customer_fields.label :last_name %><br />
@@ -42,11 +51,7 @@
       <%= customer_fields.label :vit_number %><br />
       <%= customer_fields.text_field :vit_number, autofocus: true, class: "form-control" %>
     </div>
-
-    <div class="form-group">
-      <%= customer_fields.label :abn_number %><br />
-      <%= customer_fields.text_field :abn_number, autofocus: true, class: "form-control" %>
-    </div>  
+ 
 
     <div class="form-group">
       <%= customer_fields.label :department %><br />

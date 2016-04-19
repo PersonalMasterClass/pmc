@@ -1,7 +1,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-
+  autocomplete :school_info, :school_name
 
   def new_presenter
     # Code from Devise 
@@ -21,10 +21,17 @@ before_filter :configure_sign_up_params, only: [:create]
                                  first_name: params["presenter"]["first_name"],
                                  last_name: params["presenter"]["last_name"], 
                                  vit_number: params["presenter"]["vit_number"], 
-                                 abn_number: params["presenter"]["abn_number"])
+                                 # abn_number: params["presenter"]["abn_number"]
+                                 )
+    # presenter.school_info:= SchoolInfo.find(params["s"])
+    
+    presenter.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.presenter = presenter
     resource.save
 
+#     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school'])
+    # resource.customer = customer
+    # resource.save
 
     # Code from devise
     yield resource if block_given?
@@ -71,9 +78,11 @@ before_filter :configure_sign_up_params, only: [:create]
                                  first_name: params["customer"]["first_name"],
                                  last_name: params["customer"]["last_name"], 
                                  vit_number: params["customer"]["vit_number"], 
-                                 abn_number: params["customer"]["abn_number"],
+                                 # abn_number: params["customer"]["abn_number"],
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
+    binding.pry
+    customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
     resource.save
 
@@ -150,7 +159,8 @@ before_filter :configure_sign_up_params, only: [:create]
                                                          :last_name, :vit_number, :abn_number],
                                              customer: [:user_id, :phone_number, :first_name, 
                                                         :last_name, :vit_number, :abn_number,
-                                                        :department, :contact_title]) 
+                                                        :department, :contact_title],
+                                          school_info:  [:school_name])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
