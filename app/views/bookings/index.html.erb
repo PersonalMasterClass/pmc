@@ -1,6 +1,26 @@
 <h1>Bookings</h1>
-<% @booking.id.each do |booking| %>  
-  <% if @booking.shared == "true" || @booking.customer_id != %> 
-  <%= booking.id %>
-  <% end %>  
+<% if @upcoming.present? %>
+  <h3> Upcoming Bookings <span class="badge"><%= @upcoming.count%></span></h3>
+  <table class = "table table-bordered">
+    <tr>
+      <th>id</th>
+  <% @upcoming.each do |booking| %>
+    <tr> 
+      <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
+    </tr>  
+  <% end %>
+  </table>
+<% end %>
+
+<% if @completed.present? %>
+  <h3> Completed Bookings <span class="badge"><%=@completed.count%></span></h3>
+  <table class = "table table-bordered">
+    <tr>
+      <th>id</th>
+  <% @completed.each do |booking| %>
+    <tr> 
+      <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
+    </tr>  
+  <% end %>
+  </table>
 <% end %>
