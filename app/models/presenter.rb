@@ -2,6 +2,8 @@ class Presenter < ActiveRecord::Base
 	belongs_to :school_info
   has_one :presenter_profile, dependent: :destroy
   has_many :availabilitys
+  has_many :bids
+  has_many :bookings, through: :bids
 
 	validates :first_name, :last_name, :phone_number,
 						:vit_number, presence: true
