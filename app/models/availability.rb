@@ -5,6 +5,7 @@ class Availability < ActiveRecord::Base
 	def get_days
 		# parse int (base 10) to char array of base 2 value
 		# todo big comment
+		self[:days] = 0 if !self[:days]
 		x = self[:days].to_s(2).rjust(7, '0').split(//)
 		boolArry = []
 		#convert to boolean array
@@ -39,9 +40,13 @@ class Availability < ActiveRecord::Base
 	end
 
 		def to_string(time)
-		return (time/60).floor.to_s.rjust(2,'0') + ":" + 
-			(time % 60).floor.to_s.rjust(2,'0')
-	end
+			begin
+				x= (time/60).floor.to_s.rjust(2,'0') + ":" + (time % 60).floor.to_s.rjust(2,'0')	
+			rescue
+				x = time
+			end
+			return x;
+		end
 
 	# TODO error checking
 	def set_days(days)

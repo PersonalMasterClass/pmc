@@ -1,0 +1,60 @@
+<div class="container">
+
+<h1>New Availability</h1>
+<%= form_for(@availability, url: new_presenter_availability_path) do |f| %>
+	<div class = "btn-group " data-toggle="buttons">
+  	
+  	<label class="btn btn-default active keyContactToggle" for = "Monday_check"> 
+  		<input type = "checkbox" name = "day_val" value="Monday" id="Monday_check">
+  		Mondays
+  	</label>
+
+  	
+  	<label class="btn btn-default active keyContactToggle" for = "Tuesday_check"> 
+  		<input type = "checkbox" name = "day_val" value="Monday" id="Tuesday_check">
+  		Tuesdays
+  	</label>
+
+  	
+  	<label class="btn btn-default active keyContactToggle" for = "Wednesday_check"> 
+  		<input type = "checkbox" name = "day_val" value="Monday" id="Wednesday_check">
+  		Wednesdays
+  	</label>
+  	
+  	<label class="btn btn-default active keyContactToggle" for = "Thursday_check">
+  		<input type = "checkbox" name = "day_val" value="Monday" id="Thursday_check"> 
+  		Thursdays
+  	</label>
+  	
+  	<label class="btn btn-default active keyContactToggle" for = "Friday_check">
+  		<input type = "checkbox" name = "day_val" value="Monday" id="Friday_check"> 
+  		Fridays
+  	</label>
+  	
+  	<label class="btn btn-default active keyContactToggle" for = "Saturday_check"> 
+  		<input type = "checkbox" name = "day_val" value="Saturday" id="Saturday_check">
+  		Saturdays
+  	</label>
+
+  	<label class="btn btn-default active keyContactToggle" for = "Sunday_check"> 
+  		<input type = "checkbox" name = "day_val" value="Saturday" id="Sunday_check">
+  		Sundays
+  	</label>
+  </div>
+
+  <div class="input-group">
+  <span class="input-group-addon " id="start_time">start</span>
+  <input type="time" class="form-control glyphicon glyphicon-time">
+	</div>
+	<div class="input-group">
+  <span class="input-group-addon " id="end_time">end</span>
+  <input type="time" class="form-control glyphicon glyphicon-time">
+</div>
+
+  <div class="actions">
+    <%= f.submit "Save", :class => "btn-success" %>
+  </div>
+
+<% end %>
+
+</div>
