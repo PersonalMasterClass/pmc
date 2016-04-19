@@ -2,7 +2,7 @@ class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :show]
   def index
 
-    if @booking.id == current_user.id
+    @booking = Booking.all
 
   end
 

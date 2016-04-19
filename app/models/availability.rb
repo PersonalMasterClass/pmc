@@ -1,4 +1,5 @@
 class Availability < ActiveRecord::Base
+	belongs_to :presenter
 
 	def get_days
 		# parse int (base 10) to char array of base 2 value
