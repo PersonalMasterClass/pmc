@@ -1,0 +1,19 @@
+<%= link_to "<- Back to dashboard", admin_path %>
+<h1> Pending Profile Changes </h1>
+<h3>There are <%= @profiles.count %> pending profile changes.</h3>
+
+<% if @profiles.present? %>
+  <table class = "table table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+    <% @profiles.each do |profile| %>
+      <% presenter = Presenter.find(profile.presenter_id) %>
+      <tr> 
+        <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>
+        <td> <%= link_to "View", presenter_profile_path(presenter) %> </td>
+      </tr>  
+    <% end %>
+  </table>
+<% end %>

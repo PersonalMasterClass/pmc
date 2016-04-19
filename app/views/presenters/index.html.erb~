@@ -1,6 +1,8 @@
 <h1> Presenter Dashboard </h1>
-
+<<<<<<< HEAD
 <%= link_to "Edit Profile",  new_presenter_profile_path(current_user.presenter) %>
+=======
+<%= link_to "Edit Profile",  new_presenter_presenter_profile_path(current_user.presenter) %>
 <%= link_to "Open Bookings",  bookings_open_path %>
 <%= link_to "Bookings", bookings_path %>
-
+>>>>>>> 759296f60117cedb5e266b34893a6da2c81fc571
