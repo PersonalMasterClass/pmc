@@ -1,0 +1,5 @@
+<% if current_user.user_type == "presenter" %>
+ 		<%= link_to_unless @booking.presenters.include?(current_user.presenter), "Express interest", bookings_bid_path(@booking), class: "btn btn-success" do |name|%>
+		<% end %>
+		<%= link_to "Back to open bookings",  bookings_open_path, class: "btn btn-default" %>
+<% end %>

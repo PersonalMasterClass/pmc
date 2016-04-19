@@ -23,6 +23,7 @@ root 'home#index'
   end
 
   get 'bookings/open' => 'bookings#open'
+  get 'bookings/bid/:id' => 'bookings#bid', as: "bookings_bid"
   resources :bookings
   resources :presenters do
     resource :presenter_profile
