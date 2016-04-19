@@ -1,8 +1,6 @@
 class BookingsController < ApplicationController
-  before_filter :admin_or_customer_logged_in, :except => [:index, :show]
+  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open]
   def index
-
-    if @booking.id == current_user.id
 
   end
 
@@ -31,6 +29,10 @@ class BookingsController < ApplicationController
   end
 
   def destroy
+  end
+
+  def open
+    @bookings = Booking.where(shared: true)
   end
 
   private
