@@ -21,15 +21,15 @@ root 'home#index'
     post 'registration/customers' => 'users/registrations#create_customer'
   end
 
-
   get "/school_info/find" => 'school_info#find'
 
   resources :subjects do
     get "/presenters" => 'subjects#view_presenters'
   end
-  
-  resources :bookings
 
+  get 'bookings/open' => 'bookings#open'
+  get 'bookings/bid/:id' => 'bookings#bid', as: "bookings_bid"
+  resources :bookings
   resources :presenters do
     resource :presenter_profile
     # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'

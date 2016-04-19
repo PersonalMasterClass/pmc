@@ -3,6 +3,8 @@ class Presenter < ActiveRecord::Base
   has_one :presenter_profile, dependent: :destroy
   has_many :availabilitys
   has_and_belongs_to_many :subjects
+  has_many :bids
+  has_many :bookings, through: :bids
 
 	validates :first_name, :last_name, :phone_number,
 						:vit_number, presence: true

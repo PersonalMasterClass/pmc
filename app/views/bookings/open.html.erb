@@ -1,0 +1,18 @@
+<h1> Open bookings </h1>
+
+<% if @bookings.present? %>
+  <table class = "table table-bordered">
+    <tr>
+      <th>Id</th>
+      <th>Shared?</th>
+      <th> Action </th>
+    </tr>
+  <% @bookings.each do |booking| %>
+    <tr> 
+      <td> <%= booking.id %></td>
+      <td> <%= booking.shared %></td>
+      <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
+    </tr>  
+  <% end %>
+  </table>
+<% end %>

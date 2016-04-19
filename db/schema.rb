@@ -12,10 +12,14 @@
 # It's strongly recommended that you check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160418032849) do
 =======
 ActiveRecord::Schema.define(version: 20160415161904) do
 >>>>>>> a9ea974b577e0b8087b74cf123a49b5d99ca855f
+=======
+ActiveRecord::Schema.define(version: 20160419015240) do
+>>>>>>> 759296f60117cedb5e266b34893a6da2c81fc571
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +31,12 @@ ActiveRecord::Schema.define(version: 20160415161904) do
     t.integer  "presenter_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "bids", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "presenter_id"
+    t.datetime "bid_date"
   end
 
   create_table "booked_customers", force: :cascade do |t|

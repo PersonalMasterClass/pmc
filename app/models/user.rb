@@ -28,6 +28,19 @@ class User < ActiveRecord::Base
     User.where('user_type= ? AND status= ?', 1, 0)
   end
 
+  # return a presenter or customer
+  # returns nil of user is an admin
+  def self.check_user(user)
+    if user.user_type == "presenter"
+      return user.presenter
+    elsif user.user_type == "customer"
+      return user.customer
+    else
+      return nil
+    end
+    return false
+  end
+
   private
 
   def send_call_to_action_notification

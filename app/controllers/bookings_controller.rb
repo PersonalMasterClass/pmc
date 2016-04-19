@@ -1,9 +1,9 @@
 class BookingsController < ApplicationController
-  before_filter :admin_or_customer_logged_in, :except => [:index, :show]
+  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
+
   def index
-
-    @booking = Booking.all
-
+    @upcoming = Booking.upcoming(current_user) 
+    @completed = Booking.completed(current_user)
   end
 
   def show
@@ -31,6 +31,20 @@ class BookingsController < ApplicationController
   end
 
   def destroy
+  end
+
+  def open
+    @bookings = Booking.where(shared: true)
+  end
+
+  def bid
+    @booking = Booking.find(params[:id])
+    @presenter = current_user.presenter
+    # This will create a bi directional association, @booking will contain @presenter as well.
+    @presenter.bookings << @booking
+    @presenter.bids.last.bid_date = DateTime.now
+    flash[:success] = "You have successfully placed a bid on this booking."
+    redirect_to booking_path(@booking)
   end
 
   private
