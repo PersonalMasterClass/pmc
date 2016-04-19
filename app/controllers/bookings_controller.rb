@@ -1,7 +1,9 @@
 class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
-  def index
 
+  def index
+    @upcoming = Booking.upcoming(current_user) 
+    @completed = Booking.completed(current_user)
   end
 
   def show
