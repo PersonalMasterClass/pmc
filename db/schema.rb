@@ -11,33 +11,134 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160404061850) do
+ActiveRecord::Schema.define(version: 20160419015240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "availabilities", force: :cascade do |t|
+    t.integer  "days"
+    t.integer  "start_time"
+    t.integer  "end_time"
+    t.integer  "presenter_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "bids", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "presenter_id"
+    t.datetime "bid_date"
+  end
+
+  create_table "booked_customers", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.integer  "booking_id"
+    t.integer  "number_students"
+    t.boolean  "paid",            default: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.integer  "presenter_id"
+    t.datetime "booking_date"
+    t.integer  "duration_minutes"
+    t.string   "cancellation_message"
+    t.boolean  "shared",               default: false
+    t.integer  "approval"
+    t.integer  "subject_id"
+    t.boolean  "presenter_paid",       default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
   create_table "customers", force: :cascade do |t|
-    t.string   "email"
     t.string   "phone_number"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "vit_number"
     t.integer  "user_id"
     t.string   "abn_number"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "department"
+    t.string   "contact_title"
+    t.integer  "school_info_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.boolean  "is_read",    default: false
+    t.string   "reference"
+    t.string   "message"
+    t.integer  "user_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "presenter_profiles", force: :cascade do |t|
+    t.text     "bio"
+    t.text     "bio_edit"
+    t.integer  "status"
+    t.string   "picture"
+    t.string   "picture_edit"
+    t.integer  "presenter_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
 
+  add_index "presenter_profiles", ["presenter_id"], name: "index_presenter_profiles_on_presenter_id", using: :btree
+
   create_table "presenters", force: :cascade do |t|
-    t.string   "email"
     t.string   "phone_number"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "vit_number"
     t.string   "abn_number"
     t.integer  "school_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "user_id"
+    t.integer  "school_info_id"
+  end
+
+  add_index "presenters", ["user_id"], name: "index_presenters_on_user_id", using: :btree
+
+  create_table "presenters_subjects", id: false, force: :cascade do |t|
+    t.integer "presenter_id"
+    t.integer "subject_id"
+  end
+
+  add_index "presenters_subjects", ["presenter_id"], name: "index_presenters_subjects_on_presenter_id", using: :btree
+  add_index "presenters_subjects", ["subject_id"], name: "index_presenters_subjects_on_subject_id", using: :btree
+
+  create_table "school_infos", force: :cascade do |t|
+    t.string   "sector"
+    t.string   "school_name"
+    t.string   "school_type"
+    t.string   "principal"
+    t.string   "address"
+    t.string   "town"
+    t.string   "state"
+    t.string   "postcode"
+    t.string   "postal_address"
+    t.string   "postal_town"
+    t.string   "postal_state"
+    t.string   "postal_postcode"
+    t.string   "phone_number"
+    t.string   "fax_number"
+    t.string   "region_name"
+    t.string   "lga_name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string   "name"
+    t.string   "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,12 +159,13 @@ ActiveRecord::Schema.define(version: 20160404061850) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.string   "username"
-    t.string   "user_type"
-    t.string   "status"
+    t.integer  "user_type"
+    t.integer  "status"
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "presenter_profiles", "presenters"
 end

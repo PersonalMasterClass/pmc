@@ -1,0 +1,54 @@
+<%= form_for @booking, url:  bookings_path do |b| %>
+  <p class="field">
+    <%= b.label "date" %><br>
+    <input type= "input" name = "date_part" id="date_part" value = "" /><br>
+    <%= b.label "time" %><br>
+
+    <input type = "time" name = "time_part" id="time_part" value = "" step = "300" />
+  </p>
+  <p class = "field">
+  </p>
+ 
+  <p class="field">
+    <%= b.label :duration_minutes %><br>
+    <%= b.number_field :duration_minutes, step: 5 %>
+  </p>
+
+  <p class="field">
+    <%= b.label :cancellation_message %><br>
+    <%= b.text_area :cancellation_message %>
+  </p>
+ 
+  <p>
+    <%= b.label :shared %>
+    <%= check_box_tag(:shared, "true", "true") %>    
+  </p>
+
+  <p class="field">
+    <%= b.label :subject_id %><br>
+    <%= b.text_field :subject_id %>
+  </p>
+
+  <p>
+    <%= b.label :presenter_paid %>
+    <%= check_box_tag(:presenter_paid, "true", "true") %>
+    
+  </p>
+
+
+  <p>
+    <%= b.submit %>
+  </p>
+<% end %>
+<!-- 
+    t.integer  "customer_id"
+    t.integer  "presenter_id"
+    t.datetime "booking_date"
+    t.integer  "duration_minutes"
+    t.string   "cancellation_message"
+    t.boolean  "shared",               default: false
+    t.integer  "approval"
+    t.integer  "subject_id"
+    t.boolean  "presenter_paid",       default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at", -->

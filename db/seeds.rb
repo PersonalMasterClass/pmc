@@ -5,3 +5,80 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+User.delete_all
+Presenter.delete_all
+Customer.delete_all
+Booking.delete_all
+User.create!(
+             user_type: :presenter,
+             status: :approved,
+             email: "rosemary@gmail.com",
+             password:              "password",
+             password_confirmation: "password")
+
+
+# 5.times do |f|
+#   a = User.new(
+#              user_type: :presenter,
+#              status: :pending,
+#              email: "example#{f+1}@gmail.com",
+#              password:              "password",
+#              password_confirmation: "password")
+#   presenter = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
+#                                first_name: Faker::Name.first_name,
+#                                last_name: Faker::Name.last_name, 
+#                                vit_number: Faker::Code.ean, 
+#                                abn_number: Faker::Code.ean )
+#   a.presenter = presenter
+#   a.save(:validate => false)
+# end
+# 5.times do |f|
+#   a = User.new(
+#              user_type: :customer,
+#              status: :pending,
+#              email: "example#{f+10}@gmail.com",
+#              password:              "password",
+#              password_confirmation: "password")
+#   customer = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
+#                                first_name: Faker::Name.first_name,
+#                                last_name: Faker::Name.last_name, 
+#                                vit_number: Faker::Code.ean, 
+#                                abn_number: Faker::Code.ean )
+#   a.customer = customer
+#   a.save(:validate => false)
+# end
+5.times do |f|
+  a = User.new(
+             user_type: :customer,
+             status: :pending,
+             email: "example#{f+10}@gmail.com",
+             password:              "password",
+             password_confirmation: "password")
+  customer = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
+                               first_name: Faker::Name.first_name,
+                               last_name: Faker::Name.last_name, 
+                               vit_number: Faker::Code.ean, 
+                               abn_number: Faker::Code.ean )
+
+  a.customer = customer
+  a.customer.bookings << Booking.create(shared: true, booking_date: DateTime.now)
+  a.save(:validate => false)
+end
+
+5.times do |f|
+  a = User.new(
+             user_type: :customer,
+             status: :pending,
+             email: "example#{f+110}@gmail.com",
+             password:              "password",
+             password_confirmation: "password")
+  customer = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
+                               first_name: Faker::Name.first_name,
+                               last_name: Faker::Name.last_name, 
+                               vit_number: Faker::Code.ean, 
+                               abn_number: Faker::Code.ean )
+  a.customer = customer
+  a.customer.bookings << Booking.create(booking_date: DateTime.now)
+  a.save(:validate => false)
+end
+

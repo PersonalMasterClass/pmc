@@ -1,0 +1,9 @@
+<%= @booking.inspect %>
+<div>
+	<% if @booking.present? %>
+		<h3>Booking for <%= "<insert subject>"%> </h3>
+	  <p>Duration: <%= @booking.duration_minutes %></p>
+	  <p>Subject: <%= "insert subject" %></p>
+  <% end %>
+  <%= render 'partials/presenter_actions', object: @booking %>
+<div>
