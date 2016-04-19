@@ -3,6 +3,7 @@ class Availability < ActiveRecord::Base
 
 	def get_days
 		# parse int (base 10) to char array of base 2 value
+		# todo big comment
 		x = this.days.to_s(2).rjust(7, '0').split(//)
 		#convert to boolean array
 		for i in 0..x.length
