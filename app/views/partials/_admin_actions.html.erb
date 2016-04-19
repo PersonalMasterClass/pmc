@@ -1,4 +1,4 @@
-<% if current_user.user_type == "admin" %>
+<% if current_user.user_type == "admin" && @user != false%>
  		<%= link_to "Approve", admin_approve_user_path(@user), class: "btn btn-success" %>
 		<%= link_to "Back to pending registrations",  admin_pending_registrations_path, class: "btn btn-default" %>
 <% end %>

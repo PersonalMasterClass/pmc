@@ -12,7 +12,7 @@
   <% @presenters.each do |usr| %>
     <tr> 
       <td> <%= "#{usr.presenter.first_name} #{usr.presenter.last_name}" %></td>
-      <td> <%= link_to "View", presenter_presenter_profile_path(usr.presenter) %> </td>
+      <td> <%= link_to "View", presenter_profile_path(usr.presenter) %> </td>
     </tr>  
   <% end %>
   </table>
