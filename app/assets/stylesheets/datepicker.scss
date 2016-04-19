@@ -1,7 +1,3 @@
-body {
-	background: url('../img/darkdenim3.png') repeat 0 0 #555;
-	font-size: 10pt;
-}
 header {
 	background: #111;
 	color: #fff;
@@ -63,7 +59,7 @@ header a {
 }
 /* Date Picker Header */
 .ui-datepicker-header {
-	background: url('../img/dark_leather.png') repeat 0 0 #000;
+	background: url('../images/dark_leather.png') repeat 0 0 #000;
 	color: #e0e0e0;
 	font-weight: bold;
 	-webkit-box-shadow: inset 0px 1px 1px 0px rgba(250, 250, 250, 2);
@@ -92,7 +88,7 @@ header a {
 	height: 30px;
 	text-align: center;
 	cursor: pointer;
-	background-image: url('../img/arrow.png');
+	background-image: url('../images/arrow.png');
 	background-repeat: no-repeat;
 	line-height: 550%;
 	overflow: hidden;

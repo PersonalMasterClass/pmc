@@ -1,11 +1,13 @@
 <%= form_for @booking, url:  bookings_path do |b| %>
-  <p class="field">
+
+    <p class="field">
     <%= b.label "date" %><br>
     <input type= "input" name = "date_part" id="date_part" value = "" /><br>
+    </p>
+    </p>
     <%= b.label "time" %><br>
-
     <input type = "time" name = "time_part" id="time_part" value = "" step = "300" />
-  </p>
+    </p>
   <p class = "field">
   </p>
  

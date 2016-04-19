@@ -1,5 +1,4 @@
 class BookingsController < ApplicationController
-<<<<<<< HEAD
   before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
 
   def index
