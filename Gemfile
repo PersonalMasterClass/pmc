@@ -27,11 +27,8 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Jquery UI required for autocomplete
 gem 'jquery-ui-rails' 
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-#  nice comment about jquery ui
-gem 'jquery-ui-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 
