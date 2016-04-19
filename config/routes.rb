@@ -32,13 +32,14 @@ root 'home#index'
   resources :bookings
   resources :presenters do
     resource :presenter_profile, as: 'profile'
+    resources :availabilitys
     # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'
   end
 
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
   get 'admin/pending_profiles' => 'presenter_profiles#pending', as: 'admin_pending_profiles'
 
-  resource :availabilitys
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

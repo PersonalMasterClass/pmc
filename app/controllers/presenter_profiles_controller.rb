@@ -63,7 +63,7 @@ class PresenterProfilesController < ApplicationController
         if @presenter_profile.update_attributes(profile_params)
           @presenter_profile.update_attribute(:status, :pending_presenter)
           flash[:info] = "Profile changes submitted to presenter for approval"
-          redirect_to presenters_path
+          redirect_to admin_pending_profiles_path
         else
           render 'edit'
         end

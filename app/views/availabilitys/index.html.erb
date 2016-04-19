@@ -1,3 +1,31 @@
-<% @availabilitys.each do |ava|%>
-   
+<% require 'time_tools.rb' %> 
+
+<h1> Avaliabilities </h1>
+<div class="container">
+ <%= link_to "New", new_presenter_availability_path, class: "btn btn-info" %>
+	
+	<table class = "table table-hover">
+		<tr>
+			<th class="col-md-4">Days</th>
+			<th class="col-md-1">From</th>
+			<th class="col-md-1">To</th>
+			<th class="col-md-2"></th>
+		</th>
+<% @availabilitys.each do |s| %>
+	<tr>
+		<td class="col-md-4">
+			<%= s.list_days %>
+		</td>
+		<td class="col-md-1">
+			<%= s.start_time_string %>
+		</td>
+		<td class="col-md-1"><%= s.end_time_string %></td>
+		<td class="col-md-4" >
+			<%= link_to 'Delete', subject_path(s),
+			method: :delete, data:{confirm: 'Are you sure?'}, :class=>"btn btn-danger" %>
+		</td>
+	</tr>
+</table>
 <% end %>
+
+</div>

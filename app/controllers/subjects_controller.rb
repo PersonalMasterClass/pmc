@@ -58,6 +58,7 @@ before_filter :admin_logged_in, :only=> [:update, :destroy, :edit, :index]
 		def admin_logged_in
 
       if current_user.nil? || (current_user.user_type != "admin")
+        # TODO remove this for production
         flash[:danger] = "Admin can only edit subjects."
         redirect_to root_url
       end

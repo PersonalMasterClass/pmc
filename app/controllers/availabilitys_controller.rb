@@ -1,9 +1,13 @@
 class AvailabilitysController < ApplicationController
+	
 	def index
-		@availabilitys = Availability.find_by presenter: current_user.presenter
+		@availabilitys = Availability.where(presenter: current_user.presenter).find_each
 	end
 	# form
 	def new 
+	end
+
+	def show
 	end
 
 	# submit form
