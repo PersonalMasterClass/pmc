@@ -22,6 +22,8 @@ root 'home#index'
     post 'registration/customers' => 'users/registrations#create_customer'
   end
 
+  get 'bookings/open' => 'bookings#open'
+  resources :bookings
   resources :presenters do
     resource :presenter_profile
     # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'
