@@ -1,7 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-  autocomplete :school_info, :school_name
 
   def new_presenter
     # Code from Devise 
@@ -81,7 +80,6 @@ before_filter :configure_sign_up_params, only: [:create]
                                  # abn_number: params["customer"]["abn_number"],
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
-    binding.pry
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
     resource.save

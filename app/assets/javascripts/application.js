@@ -13,8 +13,8 @@
 //= require jquery
 //= require bootstrap-sprockets
 //= require turbolinks
-//= require jquery-ui
 //= require jquery
+//= require jquery-ui
 //= require jquery_ujs
 //= require jquery-ui/autocomplete
 //= require best_in_place

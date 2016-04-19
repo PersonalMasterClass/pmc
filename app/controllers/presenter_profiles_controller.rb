@@ -29,7 +29,7 @@ class PresenterProfilesController < ApplicationController
       @presenter_profile.status = :pending_admin
       if @presenter_profile.save
         flash[:info] = "Profile submitted to admin for approval"
-        redirect_to root_url
+        redirect_to presenters_path
       else
         render 'new'
       end
@@ -63,7 +63,7 @@ class PresenterProfilesController < ApplicationController
         if @presenter_profile.update_attributes(profile_params)
           @presenter_profile.update_attribute(:status, :pending_presenter)
           flash[:info] = "Profile changes submitted to presenter for approval"
-          redirect_to presenter_profile_path(@presenter)
+          redirect_to presenters_path
         else
           render 'edit'
         end
@@ -72,7 +72,7 @@ class PresenterProfilesController < ApplicationController
         if @presenter_profile.update_attributes(profile_params)
           @presenter_profile.update_attribute(:status, :pending_admin)
           flash[:info] = "Profile changes submitted to admin for approval"
-          redirect_to presenter_profile_path(@presenter)
+          redirect_to presenters_path
         else
           render 'edit'
         end

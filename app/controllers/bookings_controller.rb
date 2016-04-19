@@ -19,7 +19,6 @@ class BookingsController < ApplicationController
   def create
     @booking = Booking.new(booking_params)
     # TODO date and time validation
-    binding.pry
     date = (params['date_part'] + " " + params['time_part']).to_datetime
     @booking.booking_date = date
    # TODO: Refactor for admin booking creation
