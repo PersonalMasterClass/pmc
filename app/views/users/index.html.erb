@@ -2,3 +2,5 @@
 <%= link_to "pending registrations(#{@pending_user_count})", admin_pending_registrations_path %>
 <br>
 <%= link_to "subjects", subjects_path %>
+<br/>
+<%= link_to "pending profile updates(#{PresenterProfile.unapproved_profiles.count})", admin_pending_profiles_path %>

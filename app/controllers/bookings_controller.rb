@@ -1,4 +1,5 @@
 class BookingsController < ApplicationController
+<<<<<<< HEAD
   before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
 
   def index
@@ -7,15 +8,20 @@ class BookingsController < ApplicationController
   end
 
   def show
-    @booking = Booking.find(params["id"])
+    # @booking = Booking.find(params["id"])
   end
 
   def new
     @booking = Booking.new
+    @date_part
+    @time_part
   end
 
   def create
     @booking = Booking.new(booking_params)
+    # TODO date and time validation
+    date = (date = params['date_part'] + " " + time= params['time_part']).to_datetime
+    @booking.booking_date = date
    # TODO: Refactor for admin booking creation
     @booking.save
 

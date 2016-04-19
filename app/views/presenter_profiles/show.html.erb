@@ -6,6 +6,7 @@
 	<% if @presenter.presenter_profile.present? %>
 	  <p>Bio: <%= @presenter.presenter_profile.bio %></p>
 	  <p>Picture: <%= @presenter.presenter_profile.picture %></p>
+    <%= render 'presenter_profiles/pending_profile_changes' %>
   <% else %>
 	  <p> <%= fullname(@presenter) %> has not filled out profile. </p>
   <% end %>
