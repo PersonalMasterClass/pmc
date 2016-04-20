@@ -1,16 +1,15 @@
+<%= render partial: "users/partials/admin_nav" %>
 <h1>New Subject</h1>
 <%= form_for @subject do |f| %>
-
-<p>
-	<%= f.label :name %> </br>
-	<%= f.text_field :name %>
-</p>
-
-<p>
-	<%= f.label :note %> </br>
-	<%= f.text_field :note %>
-</p>
-<p>
-	<%=f.submit %>
-</p>
+	<div class = "form-group">
+			<%= f.label :name %> </br>
+			<%= f.text_field :name, class: "form-control" %>
+	</div>
+	<div class = "form-group">
+			<%= f.label :note %> </br>
+			<%= f.text_field :note, class: "form-control" %>
+	</div>
+	<div class = "form-group">		
+			<%=f.submit "Create Subject",class: "btn btn-default" %>
+	</div>
 <% end %>

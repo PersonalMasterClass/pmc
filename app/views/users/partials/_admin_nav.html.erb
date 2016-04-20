@@ -1,0 +1,20 @@
+<ul class="nav nav-tabs">
+  <li role="presentation" class="<%= dashboard_active?%>">
+  	<%= link_to "Dashboard", admin_path %>
+	</li>
+  <li role="presentation" class="<%= p_rego_active?%>">
+  	<%= link_to admin_pending_registrations_path do %>
+      Pending registrations <span class="badge"><%= @pending_user_count%> </span> 
+    <% end %>
+	</li>
+  <li role="presentation" class="<%=p_profile_active?%>">
+    <%= link_to admin_pending_profiles_path do %>
+      Pending profile updates<span class="badge"> <%= @profile_count%> </span>
+    <%end%>
+  </li>
+  <li role="presentation" class="<%= subject_active?%>">
+  	<%= link_to "Subjects", subjects_path %>
+  </li>
+
+</ul>
+
