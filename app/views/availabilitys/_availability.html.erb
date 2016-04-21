@@ -1,0 +1,17 @@
+
+	<tr>
+		<td class="col-md-4">
+			<%= availability.list_days %>
+		</td>
+		<td class="col-md-1">
+			<%= availability.start_time_string %>
+		</td>
+		<td class="col-md-1"><%= availability.end_time_string %></td>
+		<td class="col-md-4" >
+			<% if current_user.presenter == availability.presenter %>
+				<%= link_to 'Delete', subject_path(availability),
+					method: :delete, data:{confirm: 'Are you sure?'}, :class=>"btn btn-danger" %>
+			<% end %>
+		</td>
+	</tr>
+

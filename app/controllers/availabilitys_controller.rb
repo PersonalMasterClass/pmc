@@ -1,6 +1,7 @@
-class AvailabilitysController < ApplicationController
+class AvailabilitysController < ApplicationController 
 	def index
-		@availabilitys = Availability.where(presenter: current_user.presenter).find_each
+		@availabilitys = Availability.where(presenter: current_user.presenter)
+		# .find_each
 	end
 	# form
 	def new 
@@ -12,11 +13,18 @@ class AvailabilitysController < ApplicationController
 
 	# submit form
 	def create
-		params
+		# redirect_to action: 'index'
+		render json: params
 	end
-	private
-	def availability_params
-      params.require(:availability).permit(:day_val, :start_time, :end_time)
-    end
 
+
+	# private
+	# def availability_params
+ #      params.require(:availability).permit(:day_val, :start_time, :end_time)
+ #    end
+
+  def set_day(daysArray)
+  	dat = 0	
+
+	end
 end

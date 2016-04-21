@@ -1,7 +1,7 @@
 <div class="container">
 
 <h1>New Availability</h1>
-<%= form_for(@availability, url: new_presenter_availability_path) do |f| %>
+<%= form_for(@availability, url: presenter_availabilitys_path) do |f| %>
 	<div class = "btn-group " data-toggle="buttons">
   	
   	<label class="btn btn-default active keyContactToggle" for = "Monday_check"> 
@@ -11,23 +11,23 @@
 
   	
   	<label class="btn btn-default active keyContactToggle" for = "Tuesday_check"> 
-  		<input type = "checkbox" name = "day_val" value="Monday" id="Tuesday_check">
+  		<input type = "checkbox" name = "day_val" value="Tuesday" id="Tuesday_check">
   		Tuesdays
   	</label>
 
   	
   	<label class="btn btn-default active keyContactToggle" for = "Wednesday_check"> 
-  		<input type = "checkbox" name = "day_val" value="Monday" id="Wednesday_check">
+  		<input type = "checkbox" name = "day_val" value="Wednesday" id="Wednesday_check">
   		Wednesdays
   	</label>
   	
   	<label class="btn btn-default active keyContactToggle" for = "Thursday_check">
-  		<input type = "checkbox" name = "day_val" value="Monday" id="Thursday_check"> 
+  		<input type = "checkbox" name = "day_val" value="Thursday" id="Thursday_check"> 
   		Thursdays
   	</label>
   	
   	<label class="btn btn-default active keyContactToggle" for = "Friday_check">
-  		<input type = "checkbox" name = "day_val" value="Monday" id="Friday_check"> 
+  		<input type = "checkbox" name = "day_val" value="Friday" id="Friday_check"> 
   		Fridays
   	</label>
   	
@@ -43,12 +43,12 @@
   </div>
 
   <div class="input-group">
-  <span class="input-group-addon " id="start_time">start</span>
-  <input type="time" class="form-control glyphicon glyphicon-time">
+  <span class="input-group-addon " id="start_time" >start</span>
+  <input type="time" name="start_time" class="form-control glyphicon glyphicon-time">
 	</div>
 	<div class="input-group">
-  <span class="input-group-addon " id="end_time">end</span>
-  <input type="time" class="form-control glyphicon glyphicon-time">
+  <span class="input-group-addon " id="end_time" >end</span>
+  <input type="time" name= "end_time" class="form-control glyphicon glyphicon-time">
 </div>
 
   <div class="actions">
