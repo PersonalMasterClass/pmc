@@ -15,18 +15,23 @@ class AvailabilitysController < ApplicationController
 	def create
 		# redirect_to action: 'index'
 
-		availability = Availability.new
+		availability = Availability.new(availability_params)
 		availability.start_time = set_time(params['start_time'])
 		availability.end_time = set_time(params['end_time'])
+		availability.presenter = current_user.presenter
+		if availability.save
+			redirect_to presenter_availabilitys_path
+		else
+			render :new
+		end
 
-		render json: params['aval_days']
 	end
 
 
 	private
-	# def availability_params
- #      params.require(:availability).permit(:day_val, :start_time, :end_time)
- #    end
+	def availability_params
+      params.require(:availability).permit(:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :start_time, :end_time)
+    end
  	def set_time(time_str)
  		x = time_str.split(':')
  		return x[0].to_i * 60 + x[1].to_i

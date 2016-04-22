@@ -2,17 +2,19 @@ require 'time_tools.rb'
 class Availability < ActiveRecord::Base
 	belongs_to :presenter
 
+	# convert each day attribute to a single bool array
 	def get_days
-		# parse int (base 10) to char array of base 2 value
-		# todo big comment
-		self[:days] = 0 if !self[:days]
-		x = self[:days].to_s(2).rjust(7, '0').split(//)
-		boolArry = []
-		#convert to boolean array
-		for i in 0..x.length
-			boolArry[i] = (x[i] == "1")
-		end
-		return boolArry
+		bool_array = []
+
+		bool_array << self[:monday]
+		bool_array << self[:tuesday]
+		bool_array << self[:wednesday]
+		bool_array << self[:thursday]
+		bool_array << self[:friday]
+		bool_array << self[:saturday]
+		bool_array << self[:sunday]
+
+		return bool_array
 	end
 
 	# convert the days to a readable string of day names. 

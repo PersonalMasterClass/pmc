@@ -3,20 +3,30 @@
 <h1>New Availability</h1>
 <%= form_for(@availability, url: presenter_availabilitys_path) do |f| %>
 	<div class = "btn-group " data-toggle="buttons">
-  	
-    
-       
+  	<!-- <label class="btn btn-default active keyContactToggle" for = "availability_monday">  -->
+  
+   
+    <%= f.check_box :monday %>
+    <%= f.label :monday, "Mondays" %> <br>
+      
+    <%= f.check_box :tuesday %>
+    <%= f.label :tuesday, "Tuesdays" %> <br>
 
-      <%= check_box("aval_days", "day", {:multiple => true}, "Monday", nil) %>
-      <%= check_box("aval_days", "day", {:multiple => true}, "Tuesday", nil) %>
-      <%= check_box("aval_days", "day", {:multiple => true}, "Wednesday", nil) %>
-      <%= check_box("aval_days", "day", {:multiple => true}, "Thursday", nil) %>
-      <%= check_box("aval_days", "day", {:multiple => true}, "Friday", nil) %>
-      <%= check_box("aval_days", "day", {:multiple => true}, "Saturday", nil) %>
-      <%= check_box("aval_days", "day", {:multiple => true}, "Sunday", nil) %>
+    <%= f.check_box :wednesday %>
+    <%= f.label :wednesday, "Wednesdays" %> <br>
 
+    <%= f.check_box :thursday %>
+    <%= f.label :thursday, "Thursdays" %> <br>
 
-    
+    <%= f.check_box :friday %>
+    <%= f.label :friday, "Fridays" %> <br>
+
+    <%= f.check_box :saturday %>
+    <%= f.label :saturday, "Saturndays" %><br>
+
+    <%= f.check_box :sunday %>
+    <%= f.label :sunday, "Sundays" %><br>
+
 
 <!--
   	<label class="btn btn-default active keyContactToggle" for = "Monday_check"> 
