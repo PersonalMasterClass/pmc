@@ -17,10 +17,29 @@ class AvailabilitysController < ApplicationController
 		availability.start_time = set_time(params['start_time'])
 		availability.end_time = set_time(params['end_time'])
 		availability.presenter = current_user.presenter
+		
+		# TODO check for existing values.
+
 		if availability.save
 			redirect_to presenter_availabilitys_path
 		else
 			render :new
+		end
+	end
+
+
+	def update 
+		respond_to do |format|
+			
+    	if @availability.update(subject_params)
+    		flash[:success] ="Subject was successfully updated."
+      	format.html { redirect_to(@subject, :notice => '') }
+      	format.json { respond_with_bip(@availability) }
+      	
+    	else
+      	format.html { render :action => "edit" }
+      	format.json { respond_with_bip(@availability) }
+    	end
 		end
 	end
 
