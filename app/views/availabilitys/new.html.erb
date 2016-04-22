@@ -4,6 +4,21 @@
 <%= form_for(@availability, url: presenter_availabilitys_path) do |f| %>
 	<div class = "btn-group " data-toggle="buttons">
   	
+    
+       
+
+      <%= check_box("aval_days", "day", {:multiple => true}, "Monday", nil) %>
+      <%= check_box("aval_days", "day", {:multiple => true}, "Tuesday", nil) %>
+      <%= check_box("aval_days", "day", {:multiple => true}, "Wednesday", nil) %>
+      <%= check_box("aval_days", "day", {:multiple => true}, "Thursday", nil) %>
+      <%= check_box("aval_days", "day", {:multiple => true}, "Friday", nil) %>
+      <%= check_box("aval_days", "day", {:multiple => true}, "Saturday", nil) %>
+      <%= check_box("aval_days", "day", {:multiple => true}, "Sunday", nil) %>
+
+
+    
+
+<!--
   	<label class="btn btn-default active keyContactToggle" for = "Monday_check"> 
   		<input type = "checkbox" name = "day_val" value="Monday" id="Monday_check">
   		Mondays
@@ -39,7 +54,7 @@
   	<label class="btn btn-default active keyContactToggle" for = "Sunday_check"> 
   		<input type = "checkbox" name = "day_val" value="Saturday" id="Sunday_check">
   		Sundays
-  	</label>
+  	</label>-->
   </div>
 
   <div class="input-group">
