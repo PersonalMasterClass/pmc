@@ -8,9 +8,9 @@
 		</td>
 		<td class="col-md-1"><%= availability.end_time_string %></td>
 		<td class="col-md-4" >
-			<% if current_user.presenter == availability.presenter %>
-				<%= link_to 'Delete', subject_path(availability),
-					method: :delete, data:{confirm: 'Are you sure?'}, :class=>"btn btn-danger" %>
+			<% if current_user.presenter == availability.presenter %> 
+				<%= link_to 'Remove', presenter_availability_path(availability.presenter, availability),
+					data:{confirm: 'Are you sure?'}, method: :delete, :class=>"btn btn-danger" %>
 			<% end %>
 		</td>
 	</tr>
