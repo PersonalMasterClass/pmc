@@ -33,7 +33,7 @@ root 'home#index'
   resources :presenters do
     resource :presenter_profile, as: 'profile'
     resources :availabilities
-    # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'
+    resources :subjects
   end
   
   resource :availability
