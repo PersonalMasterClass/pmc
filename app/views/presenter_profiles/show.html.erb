@@ -9,24 +9,7 @@
 	  <p>Bio: <%= @presenter.presenter_profile.bio %></p>
     <%= render 'presenter_profiles/pending_profile_changes' %>
 
-    <div class="container">
-	
-	<table class = "table table-hover">
-		<tr>
-			
-			<th class="col-md-1">Mon</th>
-			<th class="col-md-1">Tue</th>
-			<th class="col-md-1">Wed</th>
-			<th class="col-md-1">Thu</th>
-			<th class="col-md-1">Fri</th>
-			<th class="col-md-1">Sat</th>
-			<th class="col-md-1">Sun</th>			
-			<th class="col-md-2"></th>
-		</tr>
-
-    <%= render partial: 'availabilities/availability', collection: @availability %>
-  </table>
-</div>
+    <%= render 'presenter_profiles/availabilities' %>
   <% else %>
 	  <p> <%= fullname(@presenter) %> has not filled out profile. </p>
   <% end %>
