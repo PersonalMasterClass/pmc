@@ -23,6 +23,7 @@ root 'home#index'
 
   get "/school_info/find" => 'school_info#find'
 
+  get "/subjects/find" => 'subjects#find'
   resources :subjects do
     get "/presenters" => 'subjects#view_presenters'
   end
@@ -34,6 +35,9 @@ root 'home#index'
     resource :presenter_profile, as: 'profile'
     resources :availabilities
     resources :subjects
+    get 'edit_subjects' => 'presenters#edit_subjects'
+    post 'add_subject' => 'presenters#add_subject'
+    post 'remove_subject' => 'presenters#remove_subject'
   end
   
   resource :availability

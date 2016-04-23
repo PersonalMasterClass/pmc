@@ -7,6 +7,12 @@
 	  <%= #@presenter.presenter_profile.picture 
 	  image_tag('http://lorempixel.com/300/400/business/', alt: 'picture') %>
 	  <p>Bio: <%= @presenter.presenter_profile.bio %></p>
+    Subjects: <br>
+    <ul>
+    	<% @presenter.subjects.each do |s| %>
+    		<li> <%= s.name %> </li>
+    	<% end%>
+    </ul>
     <%= render 'presenter_profiles/pending_profile_changes' %>
 
     <%= render 'presenter_profiles/availabilities' %>

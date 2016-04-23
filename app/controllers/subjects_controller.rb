@@ -19,10 +19,8 @@ before_filter :admin_logged_in, :only=> [:update, :destroy, :edit]
 		end
 	end
 
-	def add_presenter
-		@presenter 
-		@subject
-		@subject.presenter << @presenter
+	def find
+		render json: Subject.where("name LIKE ?","%#{params[:term].titlecase}%")
 	end
 
 	def destroy
