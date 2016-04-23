@@ -1,10 +1,10 @@
 <div class="container">
 
 <h1>Edit Availability</h1>
-<%= form_for @availabilitys, method: :put do |f| %>
+<%= form_for @availability, method: :put do |f| %>
+    <%= f.hidden_field :id, :value => params[:id] %>
   <div class = "btn-group " data-toggle="buttons">
     <!-- <label class="btn btn-default active keyContactToggle" for = "availability_monday">  -->
-  
    
     <%= f.check_box :monday %>
     <%= f.label :monday, "Mondays" %> <br>
