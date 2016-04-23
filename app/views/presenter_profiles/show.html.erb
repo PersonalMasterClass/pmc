@@ -4,9 +4,29 @@
 
 <div>
 	<% if @presenter.presenter_profile.present? %>
+	  <%= #@presenter.presenter_profile.picture 
+	  image_tag('http://lorempixel.com/300/400/business/', alt: 'picture') %>
 	  <p>Bio: <%= @presenter.presenter_profile.bio %></p>
-	  <p>Picture: <%= @presenter.presenter_profile.picture %></p>
     <%= render 'presenter_profiles/pending_profile_changes' %>
+
+    <div class="container">
+	
+	<table class = "table table-hover">
+		<tr>
+			
+			<th class="col-md-1">Mon</th>
+			<th class="col-md-1">Tue</th>
+			<th class="col-md-1">Wed</th>
+			<th class="col-md-1">Thu</th>
+			<th class="col-md-1">Fri</th>
+			<th class="col-md-1">Sat</th>
+			<th class="col-md-1">Sun</th>			
+			<th class="col-md-2"></th>
+		</tr>
+
+    <%= render partial: 'availabilitys/availability', collection: @availability %>
+  </table>
+</div>
   <% else %>
 	  <p> <%= fullname(@presenter) %> has not filled out profile. </p>
   <% end %>

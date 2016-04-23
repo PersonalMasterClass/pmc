@@ -35,7 +35,7 @@ root 'home#index'
     resources :availabilitys
     # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'
   end
-
+  
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
   get 'admin/pending_profiles' => 'presenter_profiles#pending', as: 'admin_pending_profiles'
 

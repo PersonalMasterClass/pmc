@@ -32,13 +32,19 @@ class Availability < ActiveRecord::Base
 		x.insert(x.length - 1, "and")
 		return (x*" ").chop
 	end
-
+	def times_string
+		return start_time_string + " - " + end_time_string
+	end
 	def start_time_string
 		return to_string(self[:start_time])
 	end
 
 	def end_time_string
-		return to_string(self[:end_time])
+		plus = ""
+		if end_time < start_time
+			plus = "+"
+		end
+		return to_string(self[:end_time]) + plus
 	end
 
 		def to_string(time)

@@ -9,6 +9,7 @@ class AvailabilitysController < ApplicationController
 	end
 
 	def show
+		@availabilitys = Availability.find(params[:id])
 	end
 
 	# submit form
@@ -27,20 +28,13 @@ class AvailabilitysController < ApplicationController
 		end
 	end
 
+	def edit
+		@availability = Availability.find(params[:id])
+	end
 
 	def update 
-		respond_to do |format|
-			
-    	if @availability.update(subject_params)
-    		flash[:success] ="Subject was successfully updated."
-      	format.html { redirect_to(@subject, :notice => '') }
-      	format.json { respond_with_bip(@availability) }
-      	
-    	else
-      	format.html { render :action => "edit" }
-      	format.json { respond_with_bip(@availability) }
-    	end
-		end
+		flash[:success] ="TODO get edit to work."
+    redirect_to presenter_availabilitys_path
 	end
 
 	def destroy

@@ -1,8 +1,7 @@
 <div class="container">
 
-<h1>New Availability</h1>
-
-<%= form_for(@availability, url: presenter_availabilitys_path) do |f| %>
+<h1>Edit Availability</h1>
+<%= form_for @availabilitys, method: :put do |f| %>
   <div class = "btn-group " data-toggle="buttons">
     <!-- <label class="btn btn-default active keyContactToggle" for = "availability_monday">  -->
   
@@ -83,4 +82,5 @@
   </div>
 
 <% end %>
+
 </div>

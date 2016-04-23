@@ -1,54 +1,46 @@
 
 	<tr>
-		<td class="col-md-1">
-			<%= best_in_place [availability.presenter, availability], :start_time_string, :as => :input %>
-		</td>
-		<td class="col-md-1"><%= availability.end_time_string %>
-			<%= "+" if availability.end_time < availability.start_time %>
-			</td>
+		
 		<td class="col-md-1">
 			<%= if availability.monday
-				 "YES" else "NO" end %>
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
 		</td>
 
 		<td class="col-md-1">
 			<%= if availability.tuesday
-				 "YES" else "NO" end %>
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
 		</td>
 
 		<td class="col-md-1">
 			<%= if availability.wednesday
-				 "YES" else "NO" end %>
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
 		</td>
 
 		<td class="col-md-1">
 			<%= if availability.thursday
-				 "YES" else "NO" end %>
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
 		</td>
 
 		<td class="col-md-1">
 			<%= if availability.friday
-				 "YES" else "NO" end %>
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
 		</td>
 
 		<td class="col-md-1">
 			<%= if availability.saturday
-				 "YES" else "NO" end %>
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
 		</td>
 
 		<td class="col-md-1">
 			<%= if availability.sunday
-				 "YES" else "NO" end %>
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
 		</td>
 
 		<td class="col-md-4" >
 			<% if current_user.presenter == availability.presenter %> 
 				<%= link_to 'Remove', presenter_availability_path(availability.presenter, availability),
 					data:{confirm: 'Are you sure?'}, method: :delete, :class=>"btn btn-danger" %>
-				
-				<%= link_to 'Edit', edit_presenter_availability_path(availability.presenter, availability), method: :update, :class=>"btn btn-warning" %>
-			<% else %>
-				<%= "NEW BOOKING" %>
+				<%= link_to 'Edit', edit_presenter_availability_path(availability.presenter, availability), :class=>"btn btn-warning" %>				
 			<% end %>
 		</td>
 	</tr>
