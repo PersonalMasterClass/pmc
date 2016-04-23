@@ -6,6 +6,7 @@ class PresenterProfilesController < ApplicationController
 
   def show
     @presenter = find_presenter
+    @profile = @presenter.presenter_profile
     @user = @presenter.get_user
   end
 
@@ -59,24 +60,17 @@ class PresenterProfilesController < ApplicationController
     if @presenter_profile.nil?
       redirect_to new_presenter_profile_path(@presenter)
     else
-      #logic for admin's editing a users profile
-      if current_user.user_type == "admin"
-        if @presenter_profile.update_attributes(profile_params)
+      if @presenter_profile.update_attributes(profile_params)
+        if current_user.user_type == "admin"
           @presenter_profile.update_attribute(:status, :pending_presenter)
           flash[:info] = "Profile changes submitted to presenter for approval"
-          redirect_to presenters_path
-        else
-          render 'edit'
-        end
-
-      else #current_user is profile owner
-        if @presenter_profile.update_attributes(profile_params)
+        else #current user is profile owner
           @presenter_profile.update_attribute(:status, :pending_admin)
           flash[:info] = "Profile changes submitted to admin for approval"
-          redirect_to presenters_path
-        else
-          render 'edit'
         end
+        redirect_to presenters_path
+      else
+        render 'edit'
       end
     end
   end

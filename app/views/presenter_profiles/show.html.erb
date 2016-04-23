@@ -1,15 +1,14 @@
 <div>
-	<%= render "presenters/info", object: @presenter %>
+  <%= render "presenters/info", object: @presenter %>
 </div>
 
 <div>
-	<% if @presenter.presenter_profile.present? %>
-	  <p>Bio: <%= @presenter.presenter_profile.bio %></p>
-	  <p>Picture: <%= @presenter.presenter_profile.picture %></p>
-    <%= render 'presenter_profiles/pending_profile_changes' %>
+	<% if !@profile.nil? && !@profile.bio.nil? %>
+	  <p>Bio: <%= @profile.bio %></p>
   <% else %>
-	  <p> <%= fullname(@presenter) %> has not filled out profile. </p>
+	  <p> <%= fullname(@presenter) %> has not filled out bio. </p>
   <% end %>
+  <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
 
 	<%= render 'partials/admin_actions', object: @user %>
 </div>

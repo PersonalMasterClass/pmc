@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Pmc</title>
+  <head>
+    <title>Pmc</title>
 
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<div class="container">
-  <% flash.each do |key, value| %>
-    <div class="alert alert-<%= key %>"><%= value %></div>
-<% end %>
-<%= render partial: 'layouts/nav' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class="container">
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+    <% end %>
+    <%= render partial: 'layouts/nav' %>
 
-<% if current_user.present? %>
-	<% if current_user.user_type == "presenter" %>
-		<%= render "presenters/partials/presenter_nav"%>
-	<% elsif current_user.user_type == "customer" %>
-		<%= render "customers/partials/customer_nav" %>
-	<% else %>
-		<%= render "users/partials/admin_nav" %>
-	<% end %>
-<% end %>
+    <% if current_user.present? %>
+    	<% if current_user.user_type == "presenter" %>
+    		<%= render "presenters/partials/presenter_nav"%>
+    	<% elsif current_user.user_type == "customer" %>
+    		<%= render "customers/partials/customer_nav" %>
+    	<% else %>
+    		<%= render "users/partials/admin_nav" %>
+    	<% end %>
+    <% end %>
 
-<%= yield %>
+    <%= yield %>
 
-</body>
+    <%= debug(params) if Rails.env.development? %>
+
+  </body>
 </html>

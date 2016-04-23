@@ -1,11 +1,16 @@
-<%= form_for(@presenter_profile, url: presenter_profile_path) do |f| %>
+<%= form_for(@presenter_profile, url: presenter_profile_path, :html => {:multipart => true}) do |f| %>
   <div class="form-group">
     <%= f.label :bio_edit, "Bio" %>
     <%= f.text_area :bio_edit, class: "form-control" %>
   </div>
+  <div>
+  <% if !@presenter_profile.picture_edit.nil? %>
+    Current Picture: <%= image_tag @presenter_profile.picture.thumb('100x100#').url %>
+  <% end %>
+  </div>
   <div class="form-group">
     <%= f.label :picture_edit, "Profile Picture" %>
-    <%= f.text_field :picture_edit, class: "form-control" %>
+    <%= f.file_field :picture_edit, class: "form-control" %>
   </div>
   <div class="actions">
     <%= f.submit "Submit", class: "btn btn-default"  %>

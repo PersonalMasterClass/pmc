@@ -19,4 +19,16 @@ class Presenter < ActiveRecord::Base
   	end
   	return false
   end
+
+  def profile_picture_path
+    if self.presenter_profile.nil?
+      return 'default-user-display.png'
+    else
+      if Rails.env.development? || Rails.env.test?
+        return self.presenter_profile.picture.url
+      else
+        return self.presenter_profile.picture.remote_url
+      end
+    end
+  end
 end

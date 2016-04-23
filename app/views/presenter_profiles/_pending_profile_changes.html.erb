@@ -1,20 +1,20 @@
-<% if @presenter == Presenter.find_by(user_id: current_user)  && @presenter.presenter_profile.status != "approved" %>
+<% if @presenter == Presenter.find_by(user_id: current_user)  && @profile.status != "approved" %>
   <div class="alert alert-info" role="alert">
     <h3>Pending Profile Changes</h3>
-    <p>Bio: <%= @presenter.presenter_profile.bio_edit %> </p>
-    <p>Picture: <%= @presenter.presenter_profile.picture_edit %> </p>
+    <p>Bio: <%= @profile.bio_edit %> </p>
+    <p>Picture: <%= image_tag @profile.picture_edit.thumb('200x200#').url if @profile.picture_edit_stored? %> </p>
     <%= link_to "Edit", edit_presenter_profile_path(@presenter), class: 'btn btn-default' %>
-    <% if @presenter.presenter_profile.status == "pending_presenter" %>
+    <% if @profile.status == "pending_presenter" %>
       <%= link_to "Approve", approve_presenter_profile_path(@presenter), class: 'btn btn-default' %>
     <% end %>
   </div>
-<% elsif @current_user.user_type == 'admin' && @presenter.presenter_profile.status != "approved" %>
+<% elsif @current_user.user_type == 'admin' && @profile.status != "approved" %>
   <div class="alert alert-info" role="alert">
     <h3>Pending Profile Changes</h3>
-    <p>Bio: <%= @presenter.presenter_profile.bio_edit %> </p>
-    <p>Picture: <%= @presenter.presenter_profile.picture_edit %> </p>
+    <p>Bio: <%= @profile.bio_edit %> </p>
+    <p>Picture: <%= image_tag @profile.picture_edit.thumb('200x200#').url if @profile.picture_edit_stored? %> </p>
     <%= link_to "Edit", edit_presenter_profile_path(@presenter), class: 'btn btn-default' %>
-    <% if @presenter.presenter_profile.status == "pending_admin" %>
+    <% if @profile.status == "pending_admin" %>
       <%= link_to "Approve", approve_presenter_profile_path(@presenter), class: 'btn btn-default' %>
     <% end %>
   </div>

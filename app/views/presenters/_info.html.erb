@@ -1,5 +1,6 @@
 	<% if @presenter.present? %>
 		<h3><%= fullname(@presenter)%>'s Profile </h3>
+    <p>Picture:<%= image_tag @presenter.profile_picture_path, class: "img-responsive" %></p>
 	  <p>First Name: <%= @presenter.first_name %></p>
 	  <p>Last Name: <%= @presenter.last_name %></p>
 	  <p>Vit Number: <%= @presenter.vit_number%></p>
