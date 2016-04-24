@@ -12,19 +12,24 @@ class SearchController < ApplicationController
 	        @search_params[:subject_name] = subj.name
 	        subjectArr = by_subject(subj)
 	      rescue ActiveRecord::RecordNotFound
+	      	@search_params[:subject_id] = nil
 	      end
 	    end
-	    # unless subject.empty?
-	    	@presenter =  subjectArr & by_date
-	  
-	  end
-	  
-	  
+	    	@presenter = [subjectArr, by_time, by_day].reject
+	    	
+
+
+
+
+	    	binding.pry
+
+	    	
+	  end	  
   end
 
   private
 
-  # Check anything has been entered
+  # Check if anything has been entered
 	  def any_present
 	    return !(params[:subject_id].blank? && params[:date_part].blank? && 
 	    	params[:time_part].blank? && params[:first_name].blank?)
@@ -36,19 +41,32 @@ class SearchController < ApplicationController
 	  end
 
 	  # Find users based on availability
-	  def by_date()
+	  def by_time
+  		presenters = []
 	  	unless !@search_params[:time_part] || @search_params[:time_part].empty?
 	  		x = @search_params[:time_part].split(':')
  				time = x[0].to_i * 60 + x[1].to_i
-	  		presenters = []
 
 	  		# Query logic: time needs to between start and end time unless end time is < 
 	  		# start time which indicates the availability extends past midnight. 
-	  		Availability.where("(end_time > start_time AND start_time <= #{time} and end_time >= #{time}) OR (#{time} >= end_time AND #{time} >= start_time)").each do |a|
-	  			presenters << a.presenter
+	  		Availability.where("(end_time > start_time AND start_time <= #{time} AND 
+	  				end_time >= #{time}) OR (#{time} >= end_time AND #{time} >= start_time)").each do |a|
+  				presenters << a.presenter
 	  		end
 	  		return presenters
 	  	end
+	  end
+
+	  def by_day
+			presenters = []
+	  	unless !@search_params[:date_part] || @search_params[:date_part].empty?
+	  		x = @search_params[:date_part].to_datetime.wday
+  			d = ["sunday","monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+  			Availability.where("#{d[x]} = true").each do |a|
+  				presenters << a.presenter
+  			end
+	  	end
+	  	return presenters
 	  end
 	  	
 end
