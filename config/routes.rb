@@ -40,7 +40,7 @@ root 'home#index'
     post 'remove_subject' => 'presenters#remove_subject'
   end
   
-  get 'profiles/search' => 'presenter_profiles#search'
+  get 'profiles/search' => 'search#index'
   resource :availability
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
   get 'admin/pending_profiles' => 'presenter_profiles#pending', as: 'admin_pending_profiles'
