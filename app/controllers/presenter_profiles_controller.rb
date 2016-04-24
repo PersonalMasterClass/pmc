@@ -132,6 +132,14 @@ class PresenterProfilesController < ApplicationController
   end
 
   def search 
+    @search_params = params
+    unless !@search_params[:subject_id] || @search_params[:subject_id].empty?
+      begin
+        @search_params[:subject_name] = Subject.find(@search_params[:subject_id]).name
+      rescue ActiveRecord::RecordNotFound
+      end
+    end
+    # @search_params[:subject_id] = params[:subject_id].to_i
   end
 
   private
