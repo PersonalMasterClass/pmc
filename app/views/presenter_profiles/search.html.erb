@@ -1,0 +1,27 @@
+<div class="container">
+	<div class="row bg-info">
+<%= form_tag "/profiles/search", method: "get" do %>
+	<%= hidden_field_tag :subject_id %>
+	<div class="col-sm-3">
+		<input id="subject_select" type="input" placeholder = "subject">
+	</div>
+	<!-- subject, date, time, name, term -->
+	<div class = "col-sm-3">
+	  <input type= "input" name = "date_part" id="date_part" value = "" placeholder="date" />
+  </div>	
+
+  <div class = "col-sm-3">
+	  <input type = "time" name = "time_part" id="time_part" value = "" step = "300" 
+	  placeholder = "time"/>
+	</div>
+	<div class="col-sm-2">
+		<input type="input" name="first_name" id="first_name" placeholder="First Name" />
+	  
+ 	</div>
+ 	<div class = "col-sm-1">
+ 		<%= submit_tag "Search", :class => "btn btn-success"%>
+ 	</div>
+
+<% end %>
+</div>
+</div>

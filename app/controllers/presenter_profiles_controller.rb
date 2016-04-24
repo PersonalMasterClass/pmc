@@ -131,6 +131,9 @@ class PresenterProfilesController < ApplicationController
 
   end
 
+  def search 
+  end
+
   private
     def profile_params
       params.require(:presenter_profile).permit(:bio_edit, :picture_edit)
