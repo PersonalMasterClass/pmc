@@ -1,8 +1,6 @@
 class Notification < ActiveRecord::Base
 	# User notified and emailed upon account creation
-	def self.approve_registration(user)
-		reference = nil
-		message = "You're account has been approved! Welcome."
+	def self.send_message(user, message, reference)
 		notification = Notification.create(message: message, reference: reference)
 		user.notifications << notification
 	end
@@ -18,6 +16,15 @@ class Notification < ActiveRecord::Base
 			admin.notifications << notification
 	    UserMailer.registration_mail(admin).deliver_now
 		end
+	end
 
+  def self.notify_applicable_presenters(subject)
+  	users = User.where(user_type: "presenter")
+		message = "A new #{subject} booking has been created that you may be interested in."
+		reference = nil
+  	users.each do |user|
+  		notification = Notification.create(message: message, reference: reference)
+  		user.presenter.notifications << notification
+  	end
 	end
 end

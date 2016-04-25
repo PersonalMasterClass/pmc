@@ -18,14 +18,20 @@ class BookingsController < ApplicationController
 
   def create
     @booking = Booking.new(booking_params)
+    @subject = Subject.find(params[:subject_id])
     # TODO date and time validation
     date = (params['date_part'] + " " + params['time_part']).to_datetime
     @booking.booking_date = date
-   # TODO: Refactor for admin booking creation
+    # TODO: Refactor for admin booking creation
     
+    @booking.subject = @subject
     # Add this customer as owner. 
-    @booking.customer = current_user.customer
+    @booking.creator = current_user.customer
+
+
     @booking.save
+
+    Notification.notify_applicable_presenters(@booking.subject)
 
     # Add booking to booked customers
     current_user.customer.bookings << @booking
