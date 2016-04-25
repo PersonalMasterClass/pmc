@@ -23,6 +23,7 @@ root 'home#index'
 
   get "/school_info/find" => 'school_info#find'
 
+  get "/subjects/find" => 'subjects#find'
   resources :subjects do
     get "/presenters" => 'subjects#view_presenters'
   end
@@ -32,13 +33,19 @@ root 'home#index'
   resources :bookings
   resources :presenters do
     resource :presenter_profile, as: 'profile'
-    # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'
+    resources :availabilities
+    resources :subjects
+    get 'edit_subjects' => 'presenters#edit_subjects'
+    post 'add_subject' => 'presenters#add_subject'
+    post 'remove_subject' => 'presenters#remove_subject'
   end
-
+  
+  get 'profiles/search' => 'search#index'
+  resource :availability
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
   get 'admin/pending_profiles' => 'presenter_profiles#pending', as: 'admin_pending_profiles'
 
-  resource :availabilitys
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

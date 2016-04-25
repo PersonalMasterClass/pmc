@@ -6,8 +6,9 @@ class Presenter < ActiveRecord::Base
   has_many :bids
   has_many :bookings, through: :bids
 
-	validates :first_name, :last_name, :phone_number,
-						:vit_number, presence: true
+	validates :first_name, :last_name, presence: true
+  validates :vit_number, format: /\A^\d{6}$\Z/
+  validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/
 
   # Retrieve user from presenter
   def get_user

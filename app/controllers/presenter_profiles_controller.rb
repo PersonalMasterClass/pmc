@@ -7,6 +7,7 @@ class PresenterProfilesController < ApplicationController
   def show
     @presenter = find_presenter
     @user = @presenter.get_user
+    @availability = @presenter.availabilitys
   end
 
   def pending
@@ -64,7 +65,7 @@ class PresenterProfilesController < ApplicationController
         if @presenter_profile.update_attributes(profile_params)
           @presenter_profile.update_attribute(:status, :pending_presenter)
           flash[:info] = "Profile changes submitted to presenter for approval"
-          redirect_to presenters_path
+          redirect_to admin_pending_profiles_path
         else
           render 'edit'
         end
@@ -130,6 +131,8 @@ class PresenterProfilesController < ApplicationController
     end
 
   end
+
+ 
 
   private
     def profile_params

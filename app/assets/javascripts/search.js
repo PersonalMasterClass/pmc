@@ -1,14 +1,5 @@
 $(document).on('ready page:load', function(){
-// 	$( "#date_part").datepicker().setDefaults(
-// 		$.extend(
-// 		{'dateFormat': 'dd-mm-yyyy'},
-// 		$.datepicker.regional['au']
-// 		)
-// 		);
-  // $(function() {
-    $("#date_part").datepicker({dateFormat: "dd/mm/yy"});
-
-  
+	var id_val
 			$("#subject_select").autocomplete({
 				delay: 500,
 				minLength: 1,
@@ -39,5 +30,5 @@ $(document).on('ready page:load', function(){
 				if(!$(this).val()) {
 					$("#subject_id").val("");
 				}
-			});
-});
+			})
+		});
