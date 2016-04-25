@@ -29,12 +29,14 @@ class SearchController < ApplicationController
 
 	  # Add found presenters to array
   	def add_presenters(x)
-  		if !@@first_loaded
-  			@presenter = x
-  			@@first_loaded = true
-  		else
-  			@presenter &= x
-			end		    		
+  		unless !x || x.empty?
+	  		if !@@first_loaded
+	  			@presenter = x
+	  			@@first_loaded = true
+	  		else
+	  			@presenter &= x
+				end		    		
+			end
   	end
 
 	  # Find presenters based on subject
