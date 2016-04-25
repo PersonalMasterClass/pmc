@@ -20,11 +20,11 @@ class Notification < ActiveRecord::Base
 
   def self.notify_applicable_presenters(subject)
   	users = User.where(user_type: "presenter")
-		message = "A new #{subject} booking has been created that you may be interested in."
+		message = "A new #{subject.name} booking has been created that you may be interested in."
 		reference = nil
   	users.each do |user|
   		notification = Notification.create(message: message, reference: reference)
-  		user.presenter.notifications << notification
+  		user.notifications << notification
   	end
 	end
 end
