@@ -21,8 +21,13 @@
 
   <div class = "form-group">
     <%= b.label :subject_id %><br>
-    <%= b.text_field :subject_id, class: "form-control" %>
+    <input type = "input" id="subject_select" :placeholder "Subject" class = "form-control" />
   </div>
+
+  <%= hidden_field_tag :subject_id%>
+  <div class="col-sm-3">
+    
+
 
   <div class = "form-group">
     <%= b.submit "Create Booking", class: "btn btn-default"%>
