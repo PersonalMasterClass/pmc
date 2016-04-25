@@ -7,7 +7,7 @@ class PresenterProfilesController < ApplicationController
   def show
     @presenter = find_presenter
     @user = @presenter.get_user
-    @availability = @presenter.availabilitys.all 
+    @availability = @presenter.availabilitys
   end
 
   def pending
