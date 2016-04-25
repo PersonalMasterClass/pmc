@@ -1,72 +1,95 @@
 class SearchController < ApplicationController
+	@first_loaded = false
 
 	 def index 
   	@search_params = params
+  	session[:search_params] = @search_params
+  	binding.pry
 
-	 	@presenter, subjectArr, dateArr, name = [],[], [], []
+	 	@presenter= []
 	 	
-    if any_present
-	    unless !@search_params[:subject_id] || @search_params[:subject_id].empty?
-	      begin
-	        subj = Subject.find(@search_params[:subject_id])
-	        @search_params[:subject_name] = subj.name
-	        subjectArr = by_subject(subj)
-	      rescue ActiveRecord::RecordNotFound
-	      	@search_params[:subject_id] = nil
-	      end
-	    end
-	    	@presenter = [subjectArr, by_time, by_day].reject
-	    	
-
-
-
-
-	    	binding.pry
-
-	    	
+    if any_present?
+	    # Search:
+	    	by_subject
+	    	by_name
+	    	by_availability
 	  end	  
   end
 
   private
 
+
   # Check if anything has been entered
-	  def any_present
+	  def any_present?
 	    return !(params[:subject_id].blank? && params[:date_part].blank? && 
 	    	params[:time_part].blank? && params[:first_name].blank?)
 	  end
 
 	  # Find presenters based on subject
-	  def by_subject(subject)
-	  	return subject.presenters
+	  def by_subject
+	  	unless !@search_params[:subject_id] || @search_params[:subject_id].empty?
+	      begin
+	        subj = Subject.find(@search_params[:subject_id])
+	        @search_params[:subject_name] = subj.name
+	        add_presenters(subj.presenters)
+	      rescue ActiveRecord::RecordNotFound
+	      	@search_params[:subject_id] = nil
+	      end
+	    end
 	  end
+
+  	def by_name
+  		unless !@search_params[:first_name] || @search_params[:first_name].empty?
+  			x = @search_params[:first_name].upcase
+  			add_presenters(Presenter.where("upper(first_name) like '%#{x}%'"))
+  			
+  		end
+  	end
+  	
+  	def add_presenters(x)
+  		if !@first_loaded
+  			@presenter = x
+  			@first_loaded = true
+  		else
+  			@presenter &= x
+			end		    		
+  	end
 
 	  # Find users based on availability
 	  def by_time
-  		presenters = []
+  		str = ""
 	  	unless !@search_params[:time_part] || @search_params[:time_part].empty?
 	  		x = @search_params[:time_part].split(':')
  				time = x[0].to_i * 60 + x[1].to_i
 
 	  		# Query logic: time needs to between start and end time unless end time is < 
-	  		# start time which indicates the availability extends past midnight. 
-	  		Availability.where("(end_time > start_time AND start_time <= #{time} AND 
-	  				end_time >= #{time}) OR (#{time} >= end_time AND #{time} >= start_time)").each do |a|
-  				presenters << a.presenter
-	  		end
-	  		return presenters
+	  		# start time which indicates the availability extends past midnight.   			
+	  		str = "(end_time > start_time AND start_time <= #{time} AND end_time >= #{time})"
 	  	end
+  		return str
 	  end
 
+	  def by_availability
+  	 	presenters = []
+	  	if !(query = [by_day, by_time].reject {|d| d.empty?}).empty?
+	  		Availability.where("#{query*' AND '}").each do |a|
+  				if a.presenter
+  					presenters << a.presenter if !presenters.include? a.presenter
+  				end
+  			end
+  		end
+			add_presenters(presenters)
+	  end
+
+
 	  def by_day
-			presenters = []
+			str = ""
 	  	unless !@search_params[:date_part] || @search_params[:date_part].empty?
 	  		x = @search_params[:date_part].to_datetime.wday
   			d = ["sunday","monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
-  			Availability.where("#{d[x]} = true").each do |a|
-  				presenters << a.presenter
-  			end
+  			str = "(#{d[x]} = true)"
 	  	end
-	  	return presenters
+	  	return str
 	  end
 	  	
 end
