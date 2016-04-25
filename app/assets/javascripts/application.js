@@ -12,7 +12,11 @@
 //
 //= require jquery
 //= require bootstrap-sprockets
-//= require jquery_ujs
 //= require turbolinks
 //= require jquery-ui
+//= require jquery
+//= require jquery_ujs
+//= require jquery-ui/autocomplete
+//= require best_in_place
+//= require best_in_place.jquery-ui
 //= require_tree .

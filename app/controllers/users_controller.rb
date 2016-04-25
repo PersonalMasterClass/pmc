@@ -1,5 +1,8 @@
   class UsersController < ApplicationController
   before_filter :admin_only, only: [:management_console, :registrations, :approve_user]
+  
+
+  
 
   def index
     @pending_user_count = User.where(status: "pending").count

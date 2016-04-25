@@ -8,8 +8,6 @@
     <%= b.label "time" %><br>
     <input type = "time" name = "time_part" id="time_part" value = "" step = "300" />
     </p>
-  <p class = "field">
-  </p>
  
   <p class="field">
     <%= b.label :duration_minutes %><br>
@@ -23,7 +21,7 @@
  
   <p>
     <%= b.label :shared %>
-    <%= check_box_tag(:shared, "true", "true") %>    
+    <%= check_box_tag(:shared, "true") %>    
   </p>
 
   <p class="field">
@@ -33,10 +31,8 @@
 
   <p>
     <%= b.label :presenter_paid %>
-    <%= check_box_tag(:presenter_paid, "true", "true") %>
-    
+    <%= check_box_tag(:presenter_paid, "true", "true") %> 
   </p>
-
 
   <p>
     <%= b.submit %>
