@@ -1,4 +1,3 @@
-<%= link_to "<- Back to dashboard", admin_path %>
 <h1> Pending User Registrations </h1>
 <h3><%= pending_count(@presenters, @customers) %></h3>
 
@@ -12,7 +11,7 @@
   <% @presenters.each do |usr| %>
     <tr> 
       <td> <%= "#{usr.presenter.first_name} #{usr.presenter.last_name}" %></td>
-      <td> <%= link_to "View", presenter_profile_path(usr.presenter) %> </td>
+      <td> <%= link_to "View", presenter_profile_path(usr.presenter), class: "btn btn-info" %> </td>
     </tr>  
   <% end %>
   </table>
@@ -28,7 +27,7 @@
   <% @customers.each do |usr| %>
     <tr> 
       <td> <%= "#{usr.customer.first_name} #{usr.customer.last_name}" %></td>
-      <td> <%= link_to "View", customer_path(usr.customer) %> </td>
+      <td> <%= link_to "View", customer_path(usr.customer), class: "btn btn-info" %> </td>
     </tr>  
   <% end %>
   </table>

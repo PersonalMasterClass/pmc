@@ -12,6 +12,7 @@ class PresenterProfilesController < ApplicationController
 
   def pending
     @profiles = PresenterProfile.unapproved_profiles
+    @profile_count = PresenterProfile.unapproved_profiles.count
   end
 
   def new
