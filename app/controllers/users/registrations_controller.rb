@@ -1,11 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-<<<<<<< HEAD
-
-=======
->>>>>>> 0d2b364859bf436b8e3bbf8ea5f49e7415af3d42
-
   def new_presenter
     # Code from Devise 
     build_resource({})

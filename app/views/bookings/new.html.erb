@@ -11,16 +11,11 @@
     <%= b.label :duration_minutes %><br>
     <%= b.number_field :duration_minutes, step: 5, class: "form-control"  %>
   </div>
-
-  <div class = "form-group">
-    <%= b.label :cancellation_message %><br>
-    <%= b.text_area :cancellation_message, class: "form-control" %>
-  </div>
  
   <div class = "form-group">
     <%= b.label :shared %>
 
-    <%= check_box_tag(:shared, "true", "false") %>    
+    <%= check_box_tag :shared, false, false  %>    
   </div>
 
 
@@ -30,22 +25,7 @@
   </div>
 
   <div class = "form-group">
-    <%= b.label :presenter_paid %>
-
-  <div class = "form-group">
     <%= b.submit "Create Booking", class: "btn btn-default"%>
   </div>
 
 <% end %>
-<!-- 
-    t.integer  "customer_id"
-    t.integer  "presenter_id"
-    t.datetime "booking_date"
-    t.integer  "duration_minutes"
-    t.string   "cancellation_message"
-    t.boolean  "shared",               default: false
-    t.integer  "approval"
-    t.integer  "subject_id"
-    t.boolean  "presenter_paid",       default: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at", -->

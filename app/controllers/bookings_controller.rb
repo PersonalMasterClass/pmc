@@ -22,9 +22,14 @@ class BookingsController < ApplicationController
     date = (params['date_part'] + " " + params['time_part']).to_datetime
     @booking.booking_date = date
    # TODO: Refactor for admin booking creation
+    
+    # Add this customer as owner. 
+    @booking.customer = current_user.customer
     @booking.save
 
+    # Add booking to booked customers
     current_user.customer.bookings << @booking
+
     redirect_to @booking
 
   end

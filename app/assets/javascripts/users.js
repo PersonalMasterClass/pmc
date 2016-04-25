@@ -30,4 +30,17 @@ $(document).on('ready page:load', function(){
 					// window.open(ui.item.url);
 				}
 			});
+
+			$("#customer[first_name]").change(function(){
+			    $.ajax({
+			      url: '../services/vit_validation.rb',
+			      success: function(data){
+			          $("#floors_select").html(data);
+			      }
+			    });
+
+			});
+
+			//frank func
+
 		});
