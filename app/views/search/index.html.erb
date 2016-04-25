@@ -1,0 +1,32 @@
+
+<%= render "search/form" %>
+<div class = "container">
+
+	<div class="container-fluid">
+		<% @presenter.each do |p| %>
+	<div class="row bg-warning">
+		<div class="col-md-3">
+			<%= image_tag('http://lorempixel.com/150/200/business/', alt: 'picture') %>
+		</div>
+		<div class="col-md-6">
+			<h3>
+				<%= p.first_name %>
+			</h3>
+			<p>
+			<%= p.presenter_profile.bio %>
+			</p>
+		</div>
+			<%= link_to "View Profile", presenter_profile_path(p), :class => "btn btn-info pull-right" %>
+		<div class = "col-md-3">
+			<h4>Subjects</h4>
+			<ul>
+				<% p.subjects.each do |s| %>
+					<li> <%= s.name %> </li>
+
+					<% end %>
+			</ul>
+		</div>
+	</div>
+<% end %>
+</div>
+</div>

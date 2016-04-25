@@ -1,6 +1,7 @@
 class PresenterProfile < ActiveRecord::Base
   belongs_to :presenter
   
+
   #TODO: add validation 
   
   # table columns
