@@ -1,7 +1,10 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0d2b364859bf436b8e3bbf8ea5f49e7415af3d42
 
   def new_presenter
     # Code from Devise 
@@ -81,7 +84,6 @@ before_filter :configure_sign_up_params, only: [:create]
                                  # abn_number: params["customer"]["abn_number"],
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
-    binding.pry
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
     resource.save

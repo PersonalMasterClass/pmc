@@ -1,42 +1,41 @@
 <%= form_for @booking, url:  bookings_path do |b| %>
 
-    <p class="field">
+  <div class = "form-group">
     <%= b.label "date" %><br>
-    <input type= "input" name = "date_part" id="date_part" value = "" /><br>
-    </p>
-    </p>
+    <input type= "input" name = "date_part" id="date_part" value = "" class="form-control" /><br>
     <%= b.label "time" %><br>
-    <input type = "time" name = "time_part" id="time_part" value = "" step = "300" />
-    </p>
- 
-  <p class="field">
+
+    <input type = "time" name = "time_part" id="time_part" value = "" step = "300" class="form-control" />
+  </div>
+  <div class = "form-group">
     <%= b.label :duration_minutes %><br>
-    <%= b.number_field :duration_minutes, step: 5 %>
-  </p>
+    <%= b.number_field :duration_minutes, step: 5, class: "form-control"  %>
+  </div>
 
-  <p class="field">
+  <div class = "form-group">
     <%= b.label :cancellation_message %><br>
-    <%= b.text_area :cancellation_message %>
-  </p>
+    <%= b.text_area :cancellation_message, class: "form-control" %>
+  </div>
  
-  <p>
+  <div class = "form-group">
     <%= b.label :shared %>
-    <%= check_box_tag(:shared, "true") %>    
-  </p>
 
-  <p class="field">
+    <%= check_box_tag(:shared, "true", "false") %>    
+  </div>
+
+
+  <div class = "form-group">
     <%= b.label :subject_id %><br>
-    <%= b.text_field :subject_id %>
-  </p>
+    <%= b.text_field :subject_id, class: "form-control" %>
+  </div>
 
-  <p>
+  <div class = "form-group">
     <%= b.label :presenter_paid %>
-    <%= check_box_tag(:presenter_paid, "true", "true") %> 
-  </p>
 
-  <p>
-    <%= b.submit %>
-  </p>
+  <div class = "form-group">
+    <%= b.submit "Create Booking", class: "btn btn-default"%>
+  </div>
+
 <% end %>
 <!-- 
     t.integer  "customer_id"

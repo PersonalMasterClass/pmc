@@ -12,7 +12,7 @@
   <div class="form-group">
     <%= f.label :password %>
     <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
+       <em>(<%= @minimum_password_length %> characters minimum)</em>
     <% end %><br />
     <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
   </div>
@@ -22,12 +22,12 @@
     <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
   </div>
 
- <%= fields_for :school_info do |school_info_fields| %>
+  <%= fields_for :school_info do |school_info_fields| %>
     <div class="form-group">
     <%= f.label "School" %>
     <%= school_info_fields.text_field :school_name, class: "form-control", :id=>"school_search" %>
   </div>
-<% end %>
+  <% end %>
 
   <%= fields_for :presenter do |presenter_fields| %>
     <div class="form-group">
@@ -49,7 +49,7 @@
       <%= presenter_fields.label :vit_number %><br />
       <%= presenter_fields.text_field :vit_number, autofocus: true, class: "form-control" %>
     </div>
-
+    <% end %>
     <!-- maybe add abn later -->
   <div class="actions">
     <%= f.submit "Sign up", class: "btn btn-default" %>
