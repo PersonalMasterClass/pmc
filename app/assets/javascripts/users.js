@@ -31,16 +31,22 @@ $(document).on('ready page:load', function(){
 				}
 			});
 
-			$("#customer[first_name]").change(function(){
+			$("#customer_vit_number").change(function(){
 			    $.ajax({
-			      url: '../services/vit_validation.rb',
-			      success: function(data){
-			          $("#floors_select").html(data);
-			      }
-			    });
-
+						type: "GET",
+						url: "/registration/vit_validation",
+						async: false,
+						data: { 'first_name':$( "#customer_first_name" ).val(), 'last_name':$( "#customer_last_name" ).val(), 'vit_number':$( "#customer_vit_number" ).val() },
+						success: function(data) {	
+							if (data == true){
+								$("#customer_vit_number").css("background-color", "#55ff55");
+							}
+							else{
+								$("#customer_vit_number").css("background-color", "pink");
+							}
+					    // for debug purposes
+						// console.log(data);
+						}
+					});
 			});
-
-			//frank func
-
 		});

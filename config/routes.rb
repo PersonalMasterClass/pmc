@@ -19,7 +19,9 @@ root 'home#index'
     post 'registration/presenters' => 'users/registrations#create_presenter'
     get 'registration/customers' => 'users/registrations#new_customer'
     post 'registration/customers' => 'users/registrations#create_customer'
+    get 'registration/vit_validation' => 'users/registrations#vit_validation'
   end
+
 
   get "/school_info/find" => 'school_info#find'
 
