@@ -5,6 +5,7 @@ class Booking < ActiveRecord::Base
   belongs_to :creator, class_name: "Customer"
   has_many :bids
   has_many :presenters, through: :bids
+  belongs_to :subject, inverse_of: :bookings
 
   # Return upcoming booking for a customer or presenter
 	# Return all upcoming bookings for an admin
