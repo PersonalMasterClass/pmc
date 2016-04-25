@@ -1,10 +1,11 @@
 class SearchController < ApplicationController
-	@first_loaded = false
+	@@first_loaded = false
 
 	 def index 
   	@search_params = params
+
+  	# for use in booking
   	session[:search_params] = @search_params
-  	binding.pry
 
 	 	@presenter= []
 	 	
@@ -13,7 +14,8 @@ class SearchController < ApplicationController
 	    	by_subject
 	    	by_name
 	    	by_availability
-	  end	  
+	  end	
+	    
   end
 
   private
@@ -24,6 +26,16 @@ class SearchController < ApplicationController
 	    return !(params[:subject_id].blank? && params[:date_part].blank? && 
 	    	params[:time_part].blank? && params[:first_name].blank?)
 	  end
+
+	  # Add found presenters to array
+  	def add_presenters(x)
+  		if !@@first_loaded
+  			@presenter = x
+  			@@first_loaded = true
+  		else
+  			@presenter &= x
+			end		    		
+  	end
 
 	  # Find presenters based on subject
 	  def by_subject
@@ -46,16 +58,21 @@ class SearchController < ApplicationController
   		end
   	end
   	
-  	def add_presenters(x)
-  		if !@first_loaded
-  			@presenter = x
-  			@first_loaded = true
-  		else
-  			@presenter &= x
-			end		    		
-  	end
 
-	  # Find users based on availability
+	  # Search for presenter by availability day and times. 
+	  def by_availability
+  	 	presenters = []
+	  	if !(query = [by_day, by_time].reject {|d| d.empty?}).empty?
+	  		Availability.where("#{query*' AND '}").each do |a|
+  				if a.presenter
+  					presenters << a.presenter if !presenters.include? a.presenter
+  				end
+  			end
+				add_presenters(presenters)
+  		end
+	  end
+
+	  # Generate query string for time portion of availability search.
 	  def by_time
   		str = ""
 	  	unless !@search_params[:time_part] || @search_params[:time_part].empty?
@@ -69,19 +86,7 @@ class SearchController < ApplicationController
   		return str
 	  end
 
-	  def by_availability
-  	 	presenters = []
-	  	if !(query = [by_day, by_time].reject {|d| d.empty?}).empty?
-	  		Availability.where("#{query*' AND '}").each do |a|
-  				if a.presenter
-  					presenters << a.presenter if !presenters.include? a.presenter
-  				end
-  			end
-  		end
-			add_presenters(presenters)
-	  end
-
-
+	  # Generate query string for day portion of availibility search.
 	  def by_day
 			str = ""
 	  	unless !@search_params[:date_part] || @search_params[:date_part].empty?
