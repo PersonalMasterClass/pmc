@@ -12,7 +12,7 @@ class Presenter < ActiveRecord::Base
 
   # Retrieve user from presenter
   def get_user
-  	users = User.unapproved_presenters
+  	users = User.all
   	users.each do |user|
   		if self == user.presenter
   			return user
