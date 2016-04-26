@@ -3,6 +3,14 @@ source 'https://rubygems.org'
 # page scraper
 gem 'nokogiri'
 
+# enviroment variables
+gem "figaro"
+
+#image upload
+gem 'dragonfly', '~> 1.0.12'
+gem 'dragonfly-s3_data_store'
+#gem "mini_magick"
+
 # background jobs
 gem 'resque', :require => "resque/server"
 # schedule jobs
