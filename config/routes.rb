@@ -30,6 +30,7 @@ root 'home#index'
 
   get 'bookings/open' => 'bookings#open'
   get 'bookings/bid/:id' => 'bookings#bid', as: "bookings_bid"
+  get 'bookings/chose_presenter' => 'booking#choose_presenter'
   resources :bookings
   resources :presenters do
     resource :presenter_profile, as: 'profile'
