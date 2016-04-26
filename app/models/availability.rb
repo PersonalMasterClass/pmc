@@ -17,6 +17,10 @@ class Availability < ActiveRecord::Base
 		return bool_array
 	end
 
+	# get bookings for current user
+	def self.for_presenter(presenter)
+		return Availability.where(presenter: presenter).order('availabilities.start_time ASC')
+	end
 	# convert the days to a readable string of day names. 
 	def list_days
 		d = ["Mondays,", "Tuesdays,", "Wednesdays,", "Thursdays,", "Fridays,", "Saturdays,", "Sundays,"]

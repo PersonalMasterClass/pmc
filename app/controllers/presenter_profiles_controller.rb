@@ -7,7 +7,7 @@ class PresenterProfilesController < ApplicationController
   def show
     @presenter = find_presenter
     @user = @presenter.get_user
-    @availability = @presenter.availabilitys
+    @availability = @presenter.availabilitys.order('availabilities.start_time ASC')
   end
 
   def pending
