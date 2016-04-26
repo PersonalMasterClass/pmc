@@ -24,9 +24,9 @@ class SearchController < ApplicationController
   private
 
   def remove_non_profiles
-  	@presenter.reject{|d| !d}
-  	@presenter.reject{|p| p.presenter_profile}
-  	@presenter.reject{|p| p.presenter_profile.bio.empty?}
+  	@presenter.reject!{|d| d.nil?}
+  	@presenter.reject!{|p| p.presenter_profile.nil?}
+  	@presenter.reject!{|p| p.presenter_profile.bio.empty?}
   end
   # Check if anything has been entered
 	  def any_present?
