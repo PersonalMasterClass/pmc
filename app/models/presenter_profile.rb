@@ -5,7 +5,7 @@ class PresenterProfile < ActiveRecord::Base
     default 'public/images/default-user-display.png'
   end
   dragonfly_accessor :picture_edit
-  
+
   #TODO: add validation 
   
   # table columns

@@ -5,10 +5,18 @@
 <div>
 	<% if !@profile.nil? && !@profile.bio.nil? %>
 	  <p>Bio: <%= @profile.bio %></p>
+    Subjects: <br>
+    <ul>
+    	<% @presenter.subjects.each do |s| %>
+    		<li> <%= s.name %> </li>
+    	<% end%>
+    </ul>
   <% else %>
-	  <p> <%= fullname(@presenter) %> has not filled out bio. </p>
+	  <p> <%= @presenter.first_name %> has not filled out bio. </p>
   <% end %>
   <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
 
 	<%= render 'partials/admin_actions', object: @user %>
+
+  <%= render 'presenter_profiles/availabilities' %>
 </div>

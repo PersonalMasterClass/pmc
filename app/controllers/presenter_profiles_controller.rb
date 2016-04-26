@@ -8,6 +8,7 @@ class PresenterProfilesController < ApplicationController
     @presenter = find_presenter
     @profile = @presenter.presenter_profile
     @user = @presenter.get_user
+    @availability = @presenter.availabilitys
   end
 
   def pending
@@ -124,6 +125,8 @@ class PresenterProfilesController < ApplicationController
     end
 
   end
+
+ 
 
   private
     def profile_params

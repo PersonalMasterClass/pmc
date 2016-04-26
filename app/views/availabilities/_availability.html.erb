@@ -1,0 +1,47 @@
+
+	<tr>
+		
+		<td class="col-md-1">
+			<%= if availability.monday
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
+		</td>
+
+		<td class="col-md-1">
+			<%= if availability.tuesday
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
+		</td>
+
+		<td class="col-md-1">
+			<%= if availability.wednesday
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
+		</td>
+
+		<td class="col-md-1">
+			<%= if availability.thursday
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
+		</td>
+
+		<td class="col-md-1">
+			<%= if availability.friday
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
+		</td>
+
+		<td class="col-md-1">
+			<%= if availability.saturday
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
+		</td>
+
+		<td class="col-md-1">
+			<%= if availability.sunday
+				 link_to availability.times_string, new_booking_path, method: :get, :class=>"btn btn-xs btn-success" else "-" end %>
+		</td>
+
+		<td class="col-md-4" >
+			<% if current_user.presenter == availability.presenter %> 
+				<%= link_to 'Remove', presenter_availability_path(availability.presenter, availability),
+					data:{confirm: 'Are you sure?'}, method: :delete, :class=>"btn btn-danger" %>
+				<%= link_to 'Edit', edit_presenter_availability_path(availability.presenter, availability), :class=>"btn btn-warning" %>				
+			<% end %>
+		</td>
+	</tr>
+

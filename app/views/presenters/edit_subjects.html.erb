@@ -1,0 +1,21 @@
+<div class = "container">
+<%= form_tag "add_subject", method: "post", id: "add_subject_form"  do %>
+	<%= fields_for :subjects do |subject_fields| %>
+    <div class="form-group">
+    <label for="subject_search">Add subject</label>
+    <%= subject_fields.text_field :name, class: "form-control", :id=>"subject_search" %>
+<% end %>
+  </div>
+  <% end %>
+	<table class = "table table-hover">
+	<% @presenter.subjects.each do |s| %>
+		<tr>
+			<td class = 'col-md-4'> <%= s.name %> </td>
+			<td class = 'col-md-4'> <%= s.note %> </td>
+			<td class = 'col-md-4'> 
+				<%= link_to 'Remove', presenter_remove_subject_path(subject: s.id),
+			method: :post, :class=>"btn btn-danger btn-xs" %> </td>
+		</tr>
+	<% end %>
+	</table>
+</div>

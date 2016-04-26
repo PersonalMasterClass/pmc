@@ -17,12 +17,18 @@ ActiveRecord::Schema.define(version: 20160422051634) do
   enable_extension "plpgsql"
 
   create_table "availabilities", force: :cascade do |t|
-    t.integer  "days"
-    t.integer  "start_time"
-    t.integer  "end_time"
     t.integer  "presenter_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "start_time",   default: 0
+    t.integer  "end_time",     default: 0
+    t.boolean  "monday",       default: false
+    t.boolean  "tuesday",      default: false
+    t.boolean  "wednesday",    default: false
+    t.boolean  "thursday",     default: false
+    t.boolean  "friday",       default: false
+    t.boolean  "saturday",     default: false
+    t.boolean  "sunday",       default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "bids", force: :cascade do |t|
