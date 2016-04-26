@@ -24,9 +24,12 @@ class SearchController < ApplicationController
   private
 
   def remove_non_profiles
-  	@presenter.reject!{|d| d.nil?}
-  	@presenter.reject!{|p| p.presenter_profile.nil?}
-  	@presenter.reject!{|p| p.presenter_profile.bio.empty?}
+  	if !@presenter
+  		return
+  	end
+  	@presenter.reject{|d| d.nil?}
+  	@presenter.reject{|p| p.presenter_profile.nil?}
+  	@presenter.reject{|p| p.presenter_profile.bio.empty?}
   end
   # Check if anything has been entered
 	  def any_present?
@@ -62,9 +65,11 @@ class SearchController < ApplicationController
 	  end
 
   	def by_name
+  		presenters = []
   		unless !@search_params[:first_name] || @search_params[:first_name].empty?
   			x = @search_params[:first_name].upcase
-  			return Presenter.where("upper(first_name) like '%#{x}%'")
+  			presenters += Presenter.where("upper(first_name) like '%#{x}%'")
+  			return presenters
   			
   		end
   	end

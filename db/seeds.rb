@@ -92,9 +92,14 @@ c.save(:validate => false)
 
   presenter.school_info = SchoolInfo.all.sample
 
-  
+  require 'open-uri'  
   presenter.presenter_profile = PresenterProfile.create(bio: Faker::Hacker.say_something_smart,
-                                                        status: "approved")
+                                                        status: "approved",
+                                                        picture: 
+                                                          open('../profilePic.png', 'wb') do |file|
+                                                             open('http://lorempixel.com/300/400/cats/').read
+                                                          end
+                                                        )
   a.presenter = presenter
   rand(1..3).times do  
     subject = Subject.all.sample
