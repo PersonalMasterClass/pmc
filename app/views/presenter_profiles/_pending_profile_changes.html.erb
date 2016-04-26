@@ -1,13 +1,13 @@
 <% if (@presenter == Presenter.find_by(user_id: current_user)  && !@profile.approved?) ||  (@current_user.user_type == 'admin' && !@profile.approved?)%>
   <div class="alert alert-info" role="alert">
     <h3>Pending Profile Changes</h3>
-    
+
     <% if @profile.bio != @profile.bio_edit %>
       <p>Bio:<%= @profile.bio_edit %></p> 
     <% end %>
 
     <% if @profile.picture_edit_stored? %>
-      <p>Picture: <%= image_tag @profile.picture_edit.thumb('200x200#').url %></p>   
+      <p>Picture: <%= image_tag @profile.picture_edit.thumb('100x100#').url %></p>   
     <% end %>
     
     <%= link_to "Edit", edit_presenter_profile_path(@presenter), class: 'btn btn-default' %>
