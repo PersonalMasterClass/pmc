@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-	@@first_loaded = false
+	
 
 	 def index 
   	@search_params = params
@@ -10,17 +10,24 @@ class SearchController < ApplicationController
 	 	@presenter= []
 	 	
     if any_present?
+    	results_added = false
+
 	    # Search:
-	    	by_subject
-	    	by_name
-	    	by_availability
+	    	results_added = add_presenters(by_name, results_added)
+	    	results_added = add_presenters(by_subject, results_added)
+	    	results_added = add_presenters(by_availability, results_added)
+	    	remove_non_profiles
 	  end	
 	    
   end
 
   private
 
-
+  def remove_non_profiles
+  	@presenter.reject{|d| !d}
+  	@presenter.reject{|p| p.presenter_profile}
+  	@presenter.reject{|p| p.presenter_profile.bio.empty?}
+  end
   # Check if anything has been entered
 	  def any_present?
 	    return !(params[:subject_id].blank? && params[:date_part].blank? && 
@@ -28,15 +35,17 @@ class SearchController < ApplicationController
 	  end
 
 	  # Add found presenters to array
-  	def add_presenters(x)
-  		unless !x || x.empty?
-	  		if !@@first_loaded
+  	def add_presenters(x, loaded)
+  		unless !x 
+	  		if !loaded
 	  			@presenter = x
-	  			@@first_loaded = true
+	  			return true
 	  		else
 	  			@presenter &= x
+	  			return true
 				end		    		
 			end
+			return false || loaded
   	end
 
 	  # Find presenters based on subject
@@ -45,7 +54,7 @@ class SearchController < ApplicationController
 	      begin
 	        subj = Subject.find(@search_params[:subject_id])
 	        @search_params[:subject_name] = subj.name
-	        add_presenters(subj.presenters)
+	        return subj.presenters
 	      rescue ActiveRecord::RecordNotFound
 	      	@search_params[:subject_id] = nil
 	      end
@@ -55,7 +64,7 @@ class SearchController < ApplicationController
   	def by_name
   		unless !@search_params[:first_name] || @search_params[:first_name].empty?
   			x = @search_params[:first_name].upcase
-  			add_presenters(Presenter.where("upper(first_name) like '%#{x}%'"))
+  			return Presenter.where("upper(first_name) like '%#{x}%'")
   			
   		end
   	end
@@ -70,7 +79,7 @@ class SearchController < ApplicationController
   					presenters << a.presenter if !presenters.include? a.presenter
   				end
   			end
-				add_presenters(presenters)
+				return presenters
   		end
 	  end
 
