@@ -16,20 +16,22 @@ class SearchController < ApplicationController
 	    	results_added = add_presenters(by_name, results_added)
 	    	results_added = add_presenters(by_subject, results_added)
 	    	results_added = add_presenters(by_availability, results_added)
-	    	remove_non_profiles
+	    	@presenter = remove_non_profiles(@presenter)
+	    	
 	  end	
 	    
   end
 
   private
 
-  def remove_non_profiles
-  	if !@presenter
-  		return
-  	end
-  	@presenter.reject!{|d| d.nil?}
-  	@presenter.reject!{|p| p.presenter_profile.nil?}
-  	@presenter.reject!{|p| p.presenter_profile.bio.empty?}
+  def remove_non_profiles(x)
+  	unless x == nil
+	  	x = x.reject{|d| d.nil?}
+	  	x = x.reject{|p| p.presenter_profile.nil?}
+	  	x = x.reject{|p| p.presenter_profile.status != "approved"}
+	  	return x
+	  end
+	  	return []
   end
   # Check if anything has been entered
 	  def any_present?
