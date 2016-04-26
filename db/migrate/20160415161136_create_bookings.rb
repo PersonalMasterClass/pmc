@@ -10,6 +10,8 @@ class CreateBookings < ActiveRecord::Migration
       t.integer :approval
       t.integer :subject_id
       t.boolean :presenter_paid, :default => false
+      t.references :chosen_presenter, index: true
+      t.references :creator, index: true
 
       t.timestamps null: false
     end

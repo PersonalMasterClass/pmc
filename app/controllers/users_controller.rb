@@ -20,7 +20,7 @@
     user = User.find(params["id"])
     user.status = "approved"
     user.save
-    Notification.approve_registration(user)
+    Notification.send_message(user, "You're account has been approved! Welcome.", "")
     if user.presenter.present?
       flash[:success] = "#{user.presenter.first_name} #{user.presenter.last_name}'s
                         account has been approved."

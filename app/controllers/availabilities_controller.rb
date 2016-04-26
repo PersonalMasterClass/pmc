@@ -5,7 +5,7 @@ class AvailabilitiesController < ApplicationController
 	end
 	# form
 	def new 
-		@availability = Availability.new(presenter: current_user.presenter) 
+		@availability = Availability.new 
 	end
 
 	def show

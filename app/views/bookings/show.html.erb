@@ -4,5 +4,10 @@
 	  <p>Duration: <%= @booking.duration_minutes %></p>
 	  <p>Subject: <%= "insert subject" %></p>
   <% end %>
+
+  <% if current_user.customer == @booking.creator && @booking.presenters.present? %>
+  	<ul><%= render 'bookings/partials/bids', object: @booking %></ul>
+  <% end %>
+
   <%= render 'partials/presenter_actions', object: @booking %>
 <div>
