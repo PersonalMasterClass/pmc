@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 # page scraper
 gem 'nokogiri'
 
+# enviroment variables
+gem "figaro"
 
 #image upload
 gem 'dragonfly', '~> 1.0.12'

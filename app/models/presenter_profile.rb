@@ -23,8 +23,10 @@ class PresenterProfile < ActiveRecord::Base
       
       #move edit columns to permanent columns
       self.bio = self.bio_edit
-      self.picture = self.picture_edit
-      
+      if self.picture_edit_stored?
+        self.picture = self.picture_edit
+      end
+
       #clear edit columns
       self.bio_edit = ''
       self.picture_edit = nil
@@ -35,6 +37,10 @@ class PresenterProfile < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def approved?
+    self.status == "approved"
   end
 
 end

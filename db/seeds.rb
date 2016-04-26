@@ -32,20 +32,20 @@ b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number,
 a.presenter = b
 a.save(:validate => false)
 
-a = User.new(
+c = User.new(
              user_type: :customer,
              status: :approved,
              email: "customer@gmail.com",
              password:              "password",
              password_confirmation: "password",
              confirmed_at: Time.now)
-b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
+d = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
                      first_name: 'Customer',
                      last_name: 'Customer', 
                      vit_number: Faker::Code.ean, 
                      abn_number: Faker::Code.ean )
-a.presenter = b
-a.save(:validate => false)
+c.customer = d
+c.save(:validate => false)
 
 
 5.times do |f|

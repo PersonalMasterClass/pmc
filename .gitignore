@@ -21,3 +21,6 @@ Thumbs.db
 
 # Ignore photo uploads
 /public/system/dragonfly/*
+
+# Ignore application configuration
+/config/application.yml

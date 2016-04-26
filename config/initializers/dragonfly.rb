@@ -5,7 +5,7 @@ require 'dragonfly/s3_data_store'
 Dragonfly.app.configure do
   plugin :imagemagick
 
-  secret "f18b005c5fdd7494d707a6c661e245d4265e132d2d72e178fefb65ab0a8cb7ff"
+  secret 'FCGAPAdIigA5qcDvP955fGdJVW4a5kFy27Qr62NCe2Hl34Bfa89NI13eDYND3FrL'
 
   url_format "/media/:job/:name"
 
@@ -18,8 +18,8 @@ Dragonfly.app.configure do
     datastore :s3,
       region: 'ap-southeast-2',
       bucket_name: 'personalmasterclass-dev',
-      access_key_id: '',
-      secret_access_key: '',
+      access_key_id: Figaro.env.s3_key,
+      secret_access_key: Figaro.env.s3_secret,
       url_scheme: 'https'
   end
 
