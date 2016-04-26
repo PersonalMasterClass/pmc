@@ -1,23 +1,21 @@
 <div>
-	<%= render "presenters/info", object: @presenter %>
+  <%= render "presenters/info", object: @presenter %>
 </div>
 
 <div>
-	<% if @presenter.presenter_profile.present? %>
-	  <%= #@presenter.presenter_profile.picture 
-	  image_tag('http://lorempixel.com/300/400/cats/', alt: 'picture') %>
-	  <p>Bio: <%= @presenter.presenter_profile.bio %></p>
+	<% if !@profile.nil? && !@profile.bio.nil? %>
+	  <p>Bio: <%= @profile.bio %></p>
     Subjects: <br>
     <ul>
     	<% @presenter.subjects.each do |s| %>
     		<li> <%= s.name %> </li>
     	<% end%>
     </ul>
-    <%= render 'presenter_profiles/pending_profile_changes' %>
-
-    <%= render 'presenter_profiles/availabilities' %>
   <% else %>
-	  <p> <%= fullname(@presenter) %> has not filled out profile. </p>
+	  <p> <%= @presenter.first_name %> has not filled out bio. </p>
   <% end %>
+  <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
 	<%= render 'partials/admin_actions', object: @user %>
+
+  <%= render 'presenter_profiles/availabilities' %>
 </div>

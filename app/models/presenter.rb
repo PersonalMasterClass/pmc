@@ -20,4 +20,16 @@ class Presenter < ActiveRecord::Base
   	end
   	return false
   end
+
+  def profile_picture_path(size = '100x100#')
+    if self.presenter_profile.nil?
+      return Dragonfly.app.fetch_file('public/images/default-user-display.png').thumb(size).url
+    else
+      if Rails.env.development? || Rails.env.test?
+        return self.presenter_profile.picture.thumb(size).url
+      else
+        return self.presenter_profile.picture.thumb(size).remote_url
+      end
+    end
+  end
 end

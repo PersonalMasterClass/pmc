@@ -14,7 +14,38 @@ User.create!(
              status: :approved,
              email: "rosemary@gmail.com",
              password:              "password",
-             password_confirmation: "password")
+             password_confirmation: "password",
+             confirmed_at: Time.now)
+
+a = User.new(
+             user_type: :presenter,
+             status: :approved,
+             email: "presenter@gmail.com",
+             password:              "password",
+             password_confirmation: "password",
+             confirmed_at: Time.now)
+b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
+                     first_name: 'Presenter',
+                     last_name: 'Presenter', 
+                     vit_number: Faker::Code.ean, 
+                     abn_number: Faker::Code.ean )
+a.presenter = b
+a.save(:validate => false)
+
+c = User.new(
+             user_type: :customer,
+             status: :approved,
+             email: "customer@gmail.com",
+             password:              "password",
+             password_confirmation: "password",
+             confirmed_at: Time.now)
+d = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
+                     first_name: 'Customer',
+                     last_name: 'Customer', 
+                     vit_number: Faker::Code.ean, 
+                     abn_number: Faker::Code.ean )
+c.customer = d
+c.save(:validate => false)
 
 
 5.times do |f|

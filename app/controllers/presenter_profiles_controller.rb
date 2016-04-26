@@ -6,6 +6,7 @@ class PresenterProfilesController < ApplicationController
 
   def show
     @presenter = find_presenter
+    @profile = @presenter.presenter_profile
     @user = @presenter.get_user
     @availability = @presenter.availabilitys
   end
@@ -49,7 +50,7 @@ class PresenterProfilesController < ApplicationController
     #displays current profile information for editiong 
     if @presenter_profile.status == "approved"
       @presenter_profile.bio_edit = @presenter_profile.bio
-      @presenter_profile.picture_edit = @presenter_profile.picture
+      #@presenter_profile.picture_edit = @presenter_profile.picture
     end
   end
 
@@ -60,24 +61,30 @@ class PresenterProfilesController < ApplicationController
     if @presenter_profile.nil?
       redirect_to new_presenter_profile_path(@presenter)
     else
-      #logic for admin's editing a users profile
-      if current_user.user_type == "admin"
-        if @presenter_profile.update_attributes(profile_params)
-          @presenter_profile.update_attribute(:status, :pending_presenter)
-          flash[:info] = "Profile changes submitted to presenter for approval"
-          redirect_to admin_pending_profiles_path
-        else
-          render 'edit'
-        end
+      new_profile = profile_params
+      if !new_profile.has_key?(:picture_edit)
+        new_profile[:picture_edit] = nil
+      end
 
-      else #current_user is profile owner
-        if @presenter_profile.update_attributes(profile_params)
-          @presenter_profile.update_attribute(:status, :pending_admin)
-          flash[:info] = "Profile changes submitted to admin for approval"
+      if @presenter_profile.update_attributes(new_profile)
+        #checks profile has been changed
+        if @presenter_profile.bio != @presenter_profile.bio_edit || @presenter_profile.picture_edit_stored?
+          if current_user.user_type == "admin"
+            @presenter_profile.update_attribute(:status, :pending_presenter)
+            flash[:info] = "Profile changes submitted to presenter for approval"
+          else #current user is profile owner
+            @presenter_profile.update_attribute(:status, :pending_admin)
+            flash[:info] = "Profile changes submitted to admin for approval"
+          end
           redirect_to presenters_path
         else
-          render 'edit'
+          @presenter_profile.bio_edit = ''
+          @presenter_profile.picture_edit = nil
+          flash[:warning] = 'No changes were made, please make changes before pressing submit'
+          redirect_to edit_presenter_profile_path(@presenter)
         end
+      else
+        render 'edit'
       end
     end
   end
