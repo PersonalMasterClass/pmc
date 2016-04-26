@@ -14,6 +14,13 @@
   <li role="presentation" class="<%=my_bookings_active?%>">
     <%= link_to "My Bookings", bookings_path %>
   </li>
+  <li role="presentation" class="<%=my_bookings_active?%>">
+    <%= link_to "Subjects", presenter_edit_subjects_path(current_user.presenter) %>
+  </li>
+  <li role="presentation" class="<%=my_bookings_active?%>">
+    <%= link_to "Availabilities", presenter_availabilities_path(current_user.presenter) %>
+  </li>
+
 </ul>
 
 

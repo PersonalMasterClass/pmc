@@ -6,9 +6,21 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.delete_all
+PresenterProfile.delete_all
 Presenter.delete_all
 Customer.delete_all
 Booking.delete_all
+Subject.delete_all
+
+40.times do |f|
+  word = (Faker::Hipster.words(2)* ' ').titleize
+  while Subject.where(name: word).present?
+    word = (Faker::Hipster.words(2)* ' ').titleize
+  end
+    Subject.create(name: word)
+end
+
+# Test admin
 User.create!(
              user_type: :admin,
              status: :approved,
@@ -17,6 +29,7 @@ User.create!(
              password_confirmation: "password",
              confirmed_at: Time.now)
 
+# Test presenter
 a = User.new(
              user_type: :presenter,
              status: :approved,
@@ -29,9 +42,16 @@ b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number,
                      last_name: 'Presenter', 
                      vit_number: Faker::Code.ean, 
                      abn_number: Faker::Code.ean )
+b.school_info = SchoolInfo.all.sample
 a.presenter = b
 a.save(:validate => false)
 
+
+# Some bookings
+
+
+
+# Test customer
 c = User.new(
              user_type: :customer,
              status: :approved,
@@ -44,15 +64,17 @@ d = Customer.create(phone_number:Faker::PhoneNumber.phone_number,
                      last_name: 'Customer', 
                      vit_number: Faker::Code.ean, 
                      abn_number: Faker::Code.ean )
+d.school_info = SchoolInfo.all.sample
 c.customer = d
 c.save(:validate => false)
 
 
-5.times do |f|
+# Create test presenters
+10.times do |f|
   a = User.new(
              user_type: :presenter,
              status: :pending,
-             email: "example#{f+1}@gmail.com",
+             email: "example#{f+111}@gmail.com",
              password:              "password",
              password_confirmation: "password",
              confirmed_at: Time.now)
@@ -61,7 +83,19 @@ c.save(:validate => false)
                                last_name: Faker::Name.last_name, 
                                vit_number: Faker::Code.ean, 
                                abn_number: Faker::Code.ean )
+
+  presenter.school_info = SchoolInfo.all.sample
+
+
+  presenter.presenter_profile = PresenterProfile.create(bio: Faker::Hipster.paragraph,
+                                                        status: "approved")
   a.presenter = presenter
+  3.times do  
+    subject = Subject.all.sample
+    a.presenter.subjects << subject if !a.presenter.subjects.include? subject
+  end
+
+
   a.save(:validate => false)
 end
 5.times do |f|
@@ -79,6 +113,12 @@ end
   a.customer = customer
   a.save(:validate => false)
 end
+
+4.times do
+  Booking.create(booking_date: Time.now+rand(170).days, creator: c.customer, duration_minutes: 60)  
+end
+
+
 # 5.times do |f|
 #   a = User.new(
 #              user_type: :customer,
