@@ -27,9 +27,9 @@ class SearchController < ApplicationController
   	if !@presenter
   		return
   	end
-  	@presenter.reject{|d| d.nil?}
-  	@presenter.reject{|p| p.presenter_profile.nil?}
-  	@presenter.reject{|p| p.presenter_profile.bio.empty?}
+  	@presenter.reject!{|d| d.nil?}
+  	@presenter.reject!{|p| p.presenter_profile.nil?}
+  	@presenter.reject!{|p| p.presenter_profile.bio.empty?}
   end
   # Check if anything has been entered
 	  def any_present?

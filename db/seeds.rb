@@ -97,7 +97,7 @@ c.save(:validate => false)
                                                         status: "approved",
                                                         picture: 
                                                           open('../profilePic.png', 'wb') do |file|
-                                                             open('http://lorempixel.com/300/400/cats/').read
+                                                             open('http://lorempixel.com/300/400/animals/').read
                                                           end
                                                         )
   a.presenter = presenter
