@@ -12,6 +12,11 @@ Customer.delete_all
 Booking.delete_all
 Subject.delete_all
 
+Rake::Task['import:school_info'].invoke
+
+# Need this for the phone numbers and stuff.
+Faker::Config.locale = 'en-AU'
+
 40.times do |f|
   word = (Faker::Hipster.words(2)* ' ').titleize
   while Subject.where(name: word).present?
@@ -40,8 +45,8 @@ a = User.new(
 b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
                      first_name: 'Presenter',
                      last_name: 'Presenter', 
-                     vit_number: Faker::Code.ean, 
-                     abn_number: Faker::Code.ean )
+                     vit_number: Faker::Number.number(6), 
+                     abn_number: Faker::Number.number(11) )
 b.school_info = SchoolInfo.all.sample
 a.presenter = b
 a.save(:validate => false)
@@ -62,8 +67,8 @@ c = User.new(
 d = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
                      first_name: 'Customer',
                      last_name: 'Customer', 
-                     vit_number: Faker::Code.ean, 
-                     abn_number: Faker::Code.ean )
+                     vit_number: Faker::Number.number(6),  
+                     abn_number: Faker::Number.number(11)) 
 d.school_info = SchoolInfo.all.sample
 c.customer = d
 c.save(:validate => false)
@@ -81,13 +86,13 @@ c.save(:validate => false)
   presenter = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
                                first_name: Faker::Name.first_name,
                                last_name: Faker::Name.last_name, 
-                               vit_number: Faker::Code.ean, 
-                               abn_number: Faker::Code.ean )
+                               vit_number: Faker::Number.number(6), 
+                               abn_number: Faker::Number.number(11) )
 
   presenter.school_info = SchoolInfo.all.sample
 
 
-  presenter.presenter_profile = PresenterProfile.create(bio: Faker::Hipster.paragraph,
+  presenter.presenter_profile = PresenterProfile.create(bio: Faker::Hacker.say_something_smart,
                                                         status: "approved")
   a.presenter = presenter
   3.times do  
@@ -110,6 +115,7 @@ end
                                last_name: Faker::Name.last_name, 
                                vit_number: Faker::Code.ean, 
                                abn_number: Faker::Code.ean )
+  customer.school_info = SchoolInfo.all.sample
   a.customer = customer
   a.save(:validate => false)
 end
