@@ -3,6 +3,7 @@ class PresenterProfilesController < ApplicationController
     before_filter :admin_or_presenter_logged_in, :only => [:edit, :update]
     before_filter :logged_in_user, :only => [:show]
     before_filter :is_admin, :only => [:pending]
+    after_filter :display_creator_actions, :only => [:show]
 
   def show
     @presenter = find_presenter
@@ -178,5 +179,9 @@ class PresenterProfilesController < ApplicationController
 
     def is_admin
       redirect_to root_url unless current_user.user_type == 'admin'
+    end
+
+    def display_creator_actions
+      @display_creator_actions = Booking.check_creator(@presenter, current_user.customer)
     end
 end

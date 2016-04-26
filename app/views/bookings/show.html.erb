@@ -5,7 +5,7 @@
 	  <p>Subject: <%= "insert subject" %></p>
   <% end %>
 
-  <% if current_user.customer == @booking.creator && @booking.presenters.present? %>
+  <% if current_user.customer == @booking.creator && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
   	<ul><%= render 'bookings/partials/bids', object: @booking %></ul>
   <% end %>
 

@@ -1,9 +1,12 @@
 class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
 
-  def index
+  def index  
     @upcoming = Booking.upcoming(current_user) 
     @completed = Booking.completed(current_user)
+    if current_user.user_type == "customer"
+      @upcoming += Booking.where(creator: current_user.customer)
+    end
   end
 
   def show
@@ -76,6 +79,14 @@ class BookingsController < ApplicationController
   end
 
   def choose_presenter
+    @presenter = Presenter.find(params[:presenter_id])
+    @presenter.bookings.each do |booking|
+      if booking.creator == current_user.customer
+        booking.chosen_presenter = @presenter
+        booking.save
+      end
+    end
+    redirect_to bookings_path
   end
 
   private

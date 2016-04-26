@@ -1,4 +1,2 @@
-<% if current_user.customer == @booking.creator %>
- 		<%= link_to "Select for booking",  bookings_chose_presenter_path(@presenter), class: "btn btn-success" %>
-		<%= link_to "Back to booking information",  :back, class: "btn btn-default" %>
-<% end %>
+<%= link_to "Select for booking",  bookings_choose_path(@presenter), class: "btn btn-success" %>
+<%= link_to "Back to booking information",  :back, class: "btn btn-default" %>

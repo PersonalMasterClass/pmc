@@ -16,6 +16,12 @@
   <% end %>
   <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
 	<%= render 'partials/admin_actions', object: @user %>
-
   <%= render 'presenter_profiles/availabilities' %>
+
+  <% if current_user.customer? %>
+    <% unless @display_creator_actions %>
+      <%= render 'partials/customer_actions' %>
+    <% end %>
+  <% end %>
+
 </div>

@@ -31,4 +31,15 @@ class Booking < ActiveRecord::Base
   		return @user.bookings.select{ |booking| booking.booking_date < date_today}
   	end
   end
+
+  def self.check_creator(presenter, creator)
+    if presenter.bookings.present?
+      presenter.bookings.each do |booking|
+        if booking.creator == creator
+          return true
+        end
+      end
+    end
+    return false
+  end
 end
