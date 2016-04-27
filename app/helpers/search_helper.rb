@@ -1,6 +1,6 @@
 module SearchHelper
 	def is_empty?(value)
-		unless value.empty?
+		unless value.nil?
 			return value
 		end
 		return ""
