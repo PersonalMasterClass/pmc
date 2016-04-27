@@ -1,6 +1,6 @@
 class AvailabilitiesController < ApplicationController
 	def index
-		@availabilities = Availability.where(presenter: current_user.presenter).order('availabilities.start_time ASC')
+		@availabilities = Availability.for_presenter(current_user.presenter)
 		# .find_each
 	end
 	# form

@@ -26,7 +26,7 @@
     </tr>
   <% @customers.each do |usr| %>
     <tr> 
-      <td> <%= "#{usr.customer.first_name} #{usr.customer.last_name}" %></td>
+      <td> <%= "#{usr.customer.school_info.school_name} #{usr.customer.department}" %></td>
       <td> <%= link_to "View", customer_path(usr.customer), class: "btn btn-info" %> </td>
     </tr>  
   <% end %>

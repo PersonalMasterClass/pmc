@@ -9,7 +9,7 @@ class PresenterProfilesController < ApplicationController
     @presenter = find_presenter
     @profile = @presenter.presenter_profile
     @user = @presenter.get_user
-    @availability = @presenter.availabilitys
+    @availability = @presenter.availabilitys.order('availabilities.start_time ASC')
     if current_user.customer? && session[:search_params].any?
       session[:presenter_id] = params["presenter_id"]
     end
