@@ -2,9 +2,10 @@ class Booking < ActiveRecord::Base
   has_many :booked_customers
   has_many :customers, through: :booked_customers
   belongs_to :chosen_presenter, class_name: "Presenter"
-  belongs_to :customer, class_name: "Customer"
+  belongs_to :creator, class_name: "Customer"
   has_many :bids
   has_many :presenters, through: :bids
+  belongs_to :subject, inverse_of: :bookings
 
   # Return upcoming booking for a customer or presenter
 	# Return all upcoming bookings for an admin
@@ -29,5 +30,16 @@ class Booking < ActiveRecord::Base
   	else
   		return @user.bookings.select{ |booking| booking.booking_date < date_today}
   	end
+  end
+
+  def self.check_creator(presenter, creator)
+    if presenter.bookings.present?
+      presenter.bookings.each do |booking|
+        if booking.creator == creator
+          return true
+        end
+      end
+    end
+    return false
   end
 end

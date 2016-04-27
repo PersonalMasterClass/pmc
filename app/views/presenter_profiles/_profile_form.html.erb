@@ -1,13 +1,28 @@
-<%= form_for(@presenter_profile, url: presenter_profile_path) do |f| %>
+<%= form_for(@presenter_profile, url: presenter_profile_path, :html => {:multipart => true}) do |f| %>
   <div class="form-group">
     <%= f.label :bio_edit, "Bio" %>
     <%= f.text_area :bio_edit, class: "form-control" %>
   </div>
-  <div class="form-group">
-    <%= f.label :picture_edit, "Profile Picture" %>
-    <%= f.text_field :picture_edit, class: "form-control" %>
+  <div>
+  <% if !@presenter_profile.picture_edit.nil? %>
+    Current Picture: <%= image_tag @presenter_profile.picture.thumb('100x100#').url %>
+  <% end %>
   </div>
+  <div class="form-group">
+    <%= f.label :picture_edit, "Profile Picture" %><br/><small>Leave blank to keep current image </small>
+    <%= f.file_field :picture_edit, class: "form-control", accept: "image/jpeg, image/png" %>
+    <p><small>Note: Pictures must be jpeg or png </small></p>
+  </div>  
   <div class="actions">
     <%= f.submit "Submit", class: "btn btn-default"  %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $('#presenter_profile_picture_edit').bind('change', function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 5) {
+      alert('Maximum file size is 5MB. Please choose a smaller file.');
+    }
+  });
+</script>

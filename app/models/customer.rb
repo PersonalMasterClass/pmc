@@ -10,7 +10,7 @@ class Customer < ActiveRecord::Base
   validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
   # Retrieve user from presenter
   def get_user
-  	users = User.unapproved_customers
+  	users = User.all
   	users.each do |user|
   		if self == user.customer
   			return user

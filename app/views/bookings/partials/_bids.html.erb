@@ -1,0 +1,6 @@
+<h3> Current bids </h3>
+<li> 
+<% @booking.presenters.each do |presenter| %>
+  <%= link_to "#{presenter.first_name} #{presenter.last_name}", presenter_profile_path(presenter) %>
+<% end %>
+</li>
