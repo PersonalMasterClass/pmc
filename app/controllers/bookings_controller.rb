@@ -86,6 +86,8 @@ class BookingsController < ApplicationController
         booking.save
       end
     end
+    flash[:success] = "#{@presenter.first_name} #{@presenter.last_name} has been assigned to this booking."
+    Notification.send(@presenter.get_user, "Awesome! You've been locked in for a booking!", nil)
     redirect_to bookings_path
   end
 
