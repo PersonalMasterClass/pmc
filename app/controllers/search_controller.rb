@@ -28,7 +28,9 @@ class SearchController < ApplicationController
   	unless x == nil
 	  	x = x.reject{|d| d.nil?}
 	  	x = x.reject{|p| p.presenter_profile.nil?}
-	  	x = x.reject{|p| p.presenter_profile.status != "approved"}
+	  	x = x.reject{|p| !p.presenter_profile.bio}
+
+	  	x = x.reject{|p| !p.get_user.approved?}
 	  	return x
 	  end
 	  	return []
