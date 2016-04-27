@@ -1,6 +1,5 @@
-require 'open-uri'
-
 class VitValidation
+require 'open-uri'
 
 # function to check if a given VIT number is valid, given a presenter First Name, Last Name and VIT
 	def check_vit(presenterFirstName, presenterLastName, presenterVIT)
