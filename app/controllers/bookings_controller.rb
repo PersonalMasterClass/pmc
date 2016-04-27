@@ -20,6 +20,7 @@ class BookingsController < ApplicationController
       @subject_id = session[:search_params]["subject_id"]
       @date_part = session[:search_params]["date_part"]
       @time_part = session[:search_params]["time_part"]
+      @presenter_id = params[:presenter_id]
       @booking = Booking.new(subject_id: @subject_id) 
     else
       @booking = Booking.new
@@ -29,7 +30,7 @@ class BookingsController < ApplicationController
   def create
     @booking = Booking.new(booking_params)
     if session[:search_params].present?
-      @booking.chosen_presenter = Presenter.find(session["presenter_id"])
+      @booking.chosen_presenter = Presenter.find(params[:presenter_id])
       @booking.creator = current_user.customer
     end
 
@@ -58,8 +59,6 @@ class BookingsController < ApplicationController
 
     #clear search session 
     session[:search_params] = nil
-    session["presenter_id"] = nil
-    binding.pry
     redirect_to @booking
 
   end
