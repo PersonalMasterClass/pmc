@@ -10,6 +10,9 @@ class PresenterProfilesController < ApplicationController
     @profile = @presenter.presenter_profile
     @user = @presenter.get_user
     @availability = @presenter.availabilitys
+    if current_user.customer? && session[:search_params].any?
+      session[:presenter_id] = params["presenter_id"]
+    end
   end
 
   def pending

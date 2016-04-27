@@ -2,10 +2,10 @@
 
   <div class = "form-group">
     <%= b.label "date" %><br>
-    <input type= "input" name = "date_part" id="date_part" value = "" class="form-control" /><br>
+    <input type= "input" name = "date_part" id="date_part" class="form-control" value = <%= is_empty?(@date_part) %> /><br>
     <%= b.label "time" %><br>
 
-    <input type = "time" name = "time_part" id="time_part" value = "" step = "300" class="form-control" />
+    <input type = "time" name = "time_part" id="time_part" value = <%= is_empty?(@time_part) %> step = "300" class="form-control" />
   </div>
   <div class = "form-group">
     <%= b.label :duration_minutes %><br>
@@ -21,10 +21,10 @@
 
   <div class = "form-group">
     <%= b.label :subject_id %><br>
-    <input type = "input" id="subject_select" :placeholder "Subject" class = "form-control" />
+    <input type = "input" id="subject_select"  class = "form-control" value = "<%= is_empty?(@subject_select) %>"/>
   </div>
 
-  <%= hidden_field_tag :subject_id%>
+  <%= hidden_field_tag :subject_id, is_empty?(@subject_id) %>
   <div class="col-sm-3">
     
 

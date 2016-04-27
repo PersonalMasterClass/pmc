@@ -38,8 +38,8 @@ a = User.new(
              password_confirmation: "password",
              confirmed_at: Time.now)
 b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
-                     first_name: 'Presenter',
-                     last_name: 'Presenter', 
+                     first_name: "Jon",
+                     last_name: 'Doe', 
                      vit_number: Faker::Code.ean, 
                      abn_number: Faker::Code.ean )
 b.school_info = SchoolInfo.all.sample
@@ -60,8 +60,8 @@ c = User.new(
              password_confirmation: "password",
              confirmed_at: Time.now)
 d = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
-                     first_name: 'Customer',
-                     last_name: 'Customer', 
+                     first_name: 'Foo',
+                     last_name: 'Bar', 
                      vit_number: Faker::Code.ean, 
                      abn_number: Faker::Code.ean )
 d.school_info = SchoolInfo.all.sample
@@ -115,7 +115,9 @@ end
 end
 
 4.times do
-  Booking.create(booking_date: Time.now+rand(170).days, creator: c.customer, duration_minutes: 60)  
+  booking = Booking.create(booking_date: Time.now+rand(170).days, creator: c.customer, duration_minutes: 60)  
+  booking.subject = Subject.all.sample
+  booking.save
 end
 
 

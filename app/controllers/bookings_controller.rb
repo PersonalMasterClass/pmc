@@ -14,13 +14,25 @@ class BookingsController < ApplicationController
   end
 
   def new
-    @booking = Booking.new
-    @date_part
-    @time_part
+    # Booking form is populated if visited via search form.
+    @subject_select = session[:search_params]["subject_name"]
+    @subject_id = session[:search_params]["subject_id"]
+    @date_part = session[:search_params]["date_part"]
+    @time_part = session[:search_params]["time_part"]
+    if session[:search_params].any?
+      @booking = Booking.new(subject_id: @subject_id) 
+    else
+      @booking = Booking.new
+    end
   end
 
   def create
     @booking = Booking.new(booking_params)
+    if session[:search_params].any?
+      @booking.chosen_presenter = Presenter.find(session["presenter_id"])
+      @booking.creator = current_user.customer
+    end
+
     @subject = Subject.find(params[:subject_id])
     # TODO date and time validation
     date = (params['date_part'] + " " + params['time_part']).to_datetime
@@ -87,7 +99,7 @@ class BookingsController < ApplicationController
       end
     end
     flash[:success] = "#{@presenter.first_name} #{@presenter.last_name} has been assigned to this booking."
-    Notification.send(@presenter.get_user, "Awesome! You've been locked in for a booking!", nil)
+    Notification.send_message(@presenter.get_user, "Awesome! You've been locked in for a booking!", nil)
     redirect_to bookings_path
   end
 

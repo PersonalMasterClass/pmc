@@ -3,12 +3,13 @@ class SearchController < ApplicationController
 
 	 def index 
   	@search_params = params
-
   	# for use in booking
   	session[:search_params] = @search_params
-
+  	if current_user.customer?
+  		session[:search_params].merge!({:creator_id => current_user.customer.id})
+  	end
 	 	@presenter= []
-	 	
+		 	
     if any_present?
 	    # Search:
 	    	by_subject

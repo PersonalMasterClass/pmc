@@ -9,18 +9,17 @@ class Notification < ActiveRecord::Base
 	def self.notify_admin(message, reference)
 		notification = Notification.create(message: message, reference: reference)
 		# Add notification to all admins
-		admin_users = User.where(user_type: "admin")
+		admin_users = User.where(user_type: 2)
 		admin_users.each do |admin|
 			admin.notifications << notification
-	    UserMailer.registration_mail(admin).deliver_now
 		end
 	end
 
   def self.notify_applicable_users(subject, type)
   	if type == "presenter"
-  		users = User.where(user_type: "presenter")
+  		users = User.where(user_type: 1)
   	elsif type == "customer"
-  		users = User.where(user_type: "customer")
+  		users = User.where(user_type: 0)
   	end
   			
 		message = "A new #{subject.name} booking has been created that you may be interested in."
