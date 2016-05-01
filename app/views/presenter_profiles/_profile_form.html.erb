@@ -1,20 +1,20 @@
 <%= form_for(@presenter_profile, url: presenter_profile_path, :html => {:multipart => true}) do |f| %>
-  <div class="form-group">
-    <%= f.label :bio_edit, "Bio" %>
-    <%= f.text_area :bio_edit, class: "form-control" %>
-  </div>
-  <div>
-  <% if !@presenter_profile.picture_edit.nil? %>
-    Current Picture: <%= image_tag @presenter_profile.picture.thumb('100x100#').url %>
-  <% end %>
-  </div>
+  
   <div class="form-group">
     <%= f.label :picture_edit, "Profile Picture" %><br/><small>Leave blank to keep current image </small>
     <%= f.file_field :picture_edit, class: "form-control", accept: "image/jpeg, image/png" %>
     <p><small>Note: Pictures must be jpeg or png </small></p>
   </div>  
+
+  <div class="form-group">
+    <%= f.label :bio_edit, "Bio" %>
+    <%= f.text_area :bio_edit, class: "tinymce", rows: 20, columns: 120 %>
+    <%= tinymce %>
+  </div>
+   
   <div class="actions">
-    <%= f.submit "Submit", class: "btn btn-default"  %>
+    <%= f.submit "Save Draft", name: 'save', class: "btn btn-default"  unless current_user.admin? || !@presenter_profile.approved? %>
+    <%= f.submit "Submit", name: 'submit', class: "btn btn-default"  %>
   </div>
 <% end %>
 
@@ -26,3 +26,6 @@
     }
   });
 </script>
+
+<%= tinymce_assets %>
+<script type="text/javascript" src="/assets/tinymce.js">

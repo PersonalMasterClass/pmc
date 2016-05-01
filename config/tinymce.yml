@@ -1,0 +1,35 @@
+toolbar:
+  - styleselect | bold italic underline | bullist numlist | undo redo
+style_formats:
+  - title: Headers
+    items:
+      - title: Heading 1
+        format: h3
+
+      - title: Heading 2
+        format: h4
+
+  - title: Inline
+    items:
+      - title: Bold
+        icon: bold
+        format: bold
+
+      - title: Italic 
+        icon: italic
+        format: italic
+
+      - title: Underline
+        icon: underline
+        format: underline
+
+      - title: Superscript
+        icon: superscript
+        format: superscript
+      
+      - title: Subscript
+        icon: subscript
+        format: subscript
+
+menubar: false
+statusbar: false

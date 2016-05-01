@@ -39,8 +39,8 @@ class PresenterProfile < ActiveRecord::Base
     end
   end
 
-  def approved?
-    self.status == "approved"
-  end
+  # def approved?
+  #   self.status == "approved"
+  # end
 
 end
