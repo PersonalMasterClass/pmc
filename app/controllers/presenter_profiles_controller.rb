@@ -1,3 +1,5 @@
+include ActionView::Helpers::SanitizeHelper
+
 class PresenterProfilesController < ApplicationController
     before_filter :correct_user, :only => [:new, :create]
     before_filter :admin_or_presenter_logged_in, :only => [:edit, :update]
@@ -10,8 +12,11 @@ class PresenterProfilesController < ApplicationController
     @profile = @presenter.presenter_profile
     @user = @presenter.get_user
     @availability = @presenter.availabilitys.order('availabilities.start_time ASC')
-    if current_user.customer? && session[:search_params].any?
-      session[:presenter_id] = params["presenter_id"]
+    
+    if !session[:search_params].nil?
+      if current_user.customer? && session[:search_params].any?
+        session[:presenter_id] = params["presenter_id"]
+      end
     end
   end
 
@@ -32,13 +37,27 @@ class PresenterProfilesController < ApplicationController
   def create
     @presenter = find_presenter
     if @presenter.presenter_profile.nil?
-      @presenter_profile = @presenter.build_presenter_profile(profile_params)
-      @presenter_profile.status = :pending_admin
-      if @presenter_profile.save
-        flash[:info] = "Profile submitted to admin for approval"
-        redirect_to presenters_path
+      new_profile = profile_params
+      new_profile[:bio_edit] = sanitize_bio(new_profile[:bio_edit])
+      @presenter_profile = @presenter.build_presenter_profile(new_profile)
+      #submit to admin for approval
+      if params[:submit]
+        @presenter_profile.status = :pending_admin
+        if @presenter_profile.save
+          flash[:info] = "Profile submitted to admin for approval"
+          redirect_to presenters_path
+        else
+          render 'new'
+        end
+      #save draft
       else
-        render 'new'
+        @presenter_profile.status = :new_profile
+        if @presenter_profile.save
+          flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
+          redirect_to presenters_path
+        else
+          render 'new'
+        end
       end
     else
       redirect_to edit_presenter_profile_path(@presenter)
@@ -51,8 +70,8 @@ class PresenterProfilesController < ApplicationController
     if @presenter_profile.nil?
       redirect_to new_presenter_profile_path(@presenter)
     end
-    #displays current profile information for editiong 
-    if @presenter_profile.status == "approved"
+    #displays current profile information for editing 
+    if @presenter_profile.approved? && @presenter_profile.bio_edit.empty?
       @presenter_profile.bio_edit = @presenter_profile.bio
       #@presenter_profile.picture_edit = @presenter_profile.picture
     end
@@ -65,30 +84,42 @@ class PresenterProfilesController < ApplicationController
     if @presenter_profile.nil?
       redirect_to new_presenter_profile_path(@presenter)
     else
+
       new_profile = profile_params
+      new_profile[:bio_edit] = sanitize_bio(new_profile[:bio_edit])
       if !new_profile.has_key?(:picture_edit)
         new_profile[:picture_edit] = nil
       end
-
-      if @presenter_profile.update_attributes(new_profile)
-        #checks profile has been changed
-        if @presenter_profile.bio != @presenter_profile.bio_edit || @presenter_profile.picture_edit_stored?
-          if current_user.user_type == "admin"
-            @presenter_profile.update_attribute(:status, :pending_presenter)
-            flash[:info] = "Profile changes submitted to presenter for approval"
-          else #current user is profile owner
-            @presenter_profile.update_attribute(:status, :pending_admin)
-            flash[:info] = "Profile changes submitted to admin for approval"
+      #submit for approval
+      if params[:submit]
+        if @presenter_profile.update(new_profile)
+          #checks profile has been changed
+          if @presenter_profile.bio != @presenter_profile.bio_edit || @presenter_profile.picture_edit_stored?
+            if current_user.user_type == "admin"
+              @presenter_profile.update_attribute(:status, :pending_presenter)
+              flash[:info] = "Profile changes submitted to presenter for approval"
+            else #current user is profile owner
+              @presenter_profile.update_attribute(:status, :pending_admin)
+              flash[:info] = "Profile changes submitted to admin for approval"
+            end
+            redirect_to presenters_path
+          else
+            @presenter_profile.bio_edit = ''
+            @presenter_profile.picture_edit = nil
+            flash[:warning] = 'No changes were made, please make changes before pressing submit'
+            redirect_to edit_presenter_profile_path(@presenter)
           end
+        else
+          render 'edit'
+        end
+      #save draft
+      elsif params[:save]
+        if @presenter_profile.update(new_profile)
+          flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
           redirect_to presenters_path
         else
-          @presenter_profile.bio_edit = ''
-          @presenter_profile.picture_edit = nil
-          flash[:warning] = 'No changes were made, please make changes before pressing submit'
-          redirect_to edit_presenter_profile_path(@presenter)
+          render 'edit'
         end
-      else
-        render 'edit'
       end
     end
   end
@@ -146,6 +177,14 @@ class PresenterProfilesController < ApplicationController
  
 
   private
+
+    #sanitizes bio input from users to ensure it is safe
+    def sanitize_bio(bio)
+      permit_scrubber = Rails::Html::PermitScrubber.new
+      permit_scrubber.tags = %w(h3 h4 p ul li ol strong em span sup sub)
+      sanitize bio, tags:  %w(h3 h4 p ul li ol strong em span sup sub), scrubber: permit_scrubber
+    end
+
     def profile_params
       params.require(:presenter_profile).permit(:bio_edit, :picture_edit)
     end

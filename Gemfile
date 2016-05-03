@@ -11,6 +11,9 @@ gem 'dragonfly', '~> 1.0.12'
 gem 'dragonfly-s3_data_store'
 #gem "mini_magick"
 
+#bio editor
+gem 'tinymce-rails'
+
 # background jobs
 gem 'resque', :require => "resque/server"
 # schedule jobs
