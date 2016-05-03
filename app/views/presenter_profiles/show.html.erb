@@ -4,7 +4,12 @@
 
 <div>
 	<% if !@profile.nil? && !@profile.bio.nil? %>
-	  <p>Bio: <%= @profile.bio %></p>
+	  <h2>Bio</h2>
+    <div class = "panel panel-default">
+      <div class = "panel-body">
+        <%= sanitize @profile.bio %>
+      </div>
+    </div>
     Subjects: <br>
     <ul>
     	<% @presenter.subjects.each do |s| %>

@@ -1,5 +1,11 @@
 class PresenterProfile < ActiveRecord::Base
   belongs_to :presenter
+
+  validates :bio_edit, length: { maximum: 5000 }
+
+  validates_size_of :picture_edit, maximum: 5.megabytes
+  validates_property :format, of: :picture_edit, in: ['jpeg', 'png',]
+  validates_property :ext, of: :picture_edit, in: ['jpeg', 'png', 'JPEG', 'jpg', 'JPG', 'PNG']
   
   dragonfly_accessor :picture do
     default 'public/images/default-user-display.png'
@@ -39,8 +45,8 @@ class PresenterProfile < ActiveRecord::Base
     end
   end
 
-  def approved?
-    self.status == "approved"
-  end
+  # def approved?
+  #   self.status == "approved"
+  # end
 
 end
