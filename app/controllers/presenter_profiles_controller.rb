@@ -71,9 +71,14 @@ class PresenterProfilesController < ApplicationController
       redirect_to new_presenter_profile_path(@presenter)
     end
     #displays current profile information for editing 
-    if @presenter_profile.approved? && @presenter_profile.bio_edit.empty?
-      @presenter_profile.bio_edit = @presenter_profile.bio
-      #@presenter_profile.picture_edit = @presenter_profile.picture
+    if !@presenter_profile.bio_edit.nil?
+      if @presenter_profile.approved? && @presenter_profile.bio_edit.empty?
+        @presenter_profile.bio_edit = @presenter_profile.bio
+      end
+    else
+      if @presenter_profile.approved?
+        @presenter_profile.bio_edit = @presenter_profile.bio
+      end
     end
   end
 
@@ -198,8 +203,12 @@ class PresenterProfilesController < ApplicationController
     #checks current user if profile owner
     def correct_user
       unless Presenter.find_by(user_id: current_user) == find_presenter
-        flash[:danger] = "Unauthorized Access"
-        redirect_to root_url 
+        if current_user.admin?
+          redirect_to edit_presenter_profile_path
+        else
+          flash[:danger] = "Unauthorized Access"
+          redirect_to root_url
+        end 
       end
     end
 
