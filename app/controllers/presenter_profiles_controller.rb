@@ -52,9 +52,12 @@ class PresenterProfilesController < ApplicationController
       #save draft
       else
         @presenter_profile.status = :new_profile
-        @presenter_profile.save
-        flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
-        redirect_to presenters_path
+        if @presenter_profile.save
+          flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
+          redirect_to presenters_path
+        else
+          render 'new'
+        end
       end
     else
       redirect_to edit_presenter_profile_path(@presenter)
@@ -89,7 +92,7 @@ class PresenterProfilesController < ApplicationController
       end
       #submit for approval
       if params[:submit]
-        if @presenter_profile.update_attributes(new_profile)
+        if @presenter_profile.update(new_profile)
           #checks profile has been changed
           if @presenter_profile.bio != @presenter_profile.bio_edit || @presenter_profile.picture_edit_stored?
             if current_user.user_type == "admin"
@@ -111,9 +114,12 @@ class PresenterProfilesController < ApplicationController
         end
       #save draft
       elsif params[:save]
-        @presenter_profile.update_attributes(new_profile)
-        flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
-        redirect_to presenters_path
+        if @presenter_profile.update(new_profile)
+          flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
+          redirect_to presenters_path
+        else
+          render 'edit'
+        end
       end
     end
   end
