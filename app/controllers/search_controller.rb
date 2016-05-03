@@ -53,7 +53,7 @@ class SearchController < ApplicationController
 	  			return true
 				end		    		
 			end
-			return false || loaded
+			return loaded
   	end
 
 	  # Find presenters based on subject
