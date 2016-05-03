@@ -3,7 +3,12 @@
     <h3>Pending Profile Changes</h3>
 
     <% if @profile.bio != @profile.bio_edit %>
-      <p>Bio:<%= @profile.bio_edit %></p> 
+      <h3>Bio</h3>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= sanitize @profile.bio_edit %>
+        </div>
+      </div> 
     <% end %>
 
     <% if @profile.picture_edit_stored? %>
