@@ -40,4 +40,14 @@ $(document).on('ready page:load', function(){
 					$("#subject_id").val("");
 				}
 			});
+
+			$("#booking_duration_minutes").change(function(){
+			// if the booking duration is 
+								if ($("#booking_duration_minutes").val() < 60)
+								{
+									$("#booking_duration_minutes").val(60);
+								}
+			});
 });
+
+			

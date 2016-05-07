@@ -24,11 +24,8 @@
   <div class="form-group">
     <%= f.label "School" %>
     <%= school_info_fields.text_field :school_name, class: "form-control", :id=>"school_search" %>
-
   </div>
   <% end %>
-
-
 
   <%= fields_for :customer do |customer_fields| %>
     <div class="form-group">
@@ -69,4 +66,4 @@
   </div>
 <% end %>
 
-<%= render "users/shared/links" %>
+<%= render "users/shared/links" %> 
