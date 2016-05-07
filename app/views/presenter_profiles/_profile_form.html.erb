@@ -1,13 +1,45 @@
-<%= form_for(@presenter_profile, url: presenter_profile_path) do |f| %>
+<%= form_for(@presenter_profile, url: presenter_profile_path, :html => {:multipart => true}) do |f| %>
+  
+  <% if @presenter_profile.errors.any? %>
+    <div id="error_explanation">
+      <div class="alert alert-danger">
+        This form has <%= pluralize(@presenter_profile.errors.count, "error") %>.
+      </div>
+      <ul>
+      <% @presenter_profile.errors.full_messages.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <div class="form-group">
+    <%= f.label :picture_edit, "Profile Picture" %><br/><small>Leave blank to keep current image </small>
+    <%= f.file_field :picture_edit, class: "form-control", accept: "image/jpeg, image/png" %>
+    <%= f.hidden_field :retained_picture_edit %>
+    <p><small>Note: Pictures must be jpeg or png </small></p>
+  </div>  
+
   <div class="form-group">
     <%= f.label :bio_edit, "Bio" %>
-    <%= f.text_area :bio_edit, class: "form-control" %>
+    <%= f.text_area :bio_edit, class: "tinymce", rows: 20 %>
+    <%= tinymce %>
   </div>
-  <div class="form-group">
-    <%= f.label :picture_edit, "Profile Picture" %>
-    <%= f.text_field :picture_edit, class: "form-control" %>
-  </div>
+   
   <div class="actions">
-    <%= f.submit "Submit", class: "btn btn-default"  %>
+    <%= f.submit "Save Draft", name: 'save', class: "btn btn-default"  unless current_user.admin? || !@presenter_profile.approved? %>
+    <%= f.submit "Submit", name: 'submit', class: "btn btn-default"  %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $('#presenter_profile_picture_edit').bind('change', function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 5) {
+      alert('Maximum file size is 5MB. Please choose a smaller file.');
+    }
+  });
+</script>
+
+<%= tinymce_assets %>
+<script type="text/javascript" src="/assets/tinymce.js">

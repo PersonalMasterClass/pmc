@@ -10,35 +10,50 @@ root 'home#index'
               }
 
     get 'admin/approve_user/:id' => 'users#approve_user', as: "admin_approve_user"
+    get 'admin/suspend_user/:id' => 'users#suspend_user', as: "admin_suspend_user"
     get 'admin/' => 'users#index'
     get 'admin/pending_registrations' => 'users#registrations'
-  # resources :presenters
+    get 'users/:id' => 'users#show', as: "user"
+  
   resources :customers, only: [:index, :show]
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
     get 'registration/customers' => 'users/registrations#new_customer'
     post 'registration/customers' => 'users/registrations#create_customer'
+    get 'registration/vit_validation' => 'users/registrations#vit_validation'
   end
+
 
   get "/school_info/find" => 'school_info#find'
 
+  get "/subjects/find" => 'subjects#find'
   resources :subjects do
     get "/presenters" => 'subjects#view_presenters'
   end
 
   get 'bookings/open' => 'bookings#open'
   get 'bookings/bid/:id' => 'bookings#bid', as: "bookings_bid"
+  get 'bookings/choose_presenter/:presenter_id' => 'bookings#choose_presenter', as: "bookings_choose"
   resources :bookings
+  
   resources :presenters do
     resource :presenter_profile, as: 'profile'
-    # get 'presenter/:id/presenter_profile' => 'presenter_profile#show'
+    resources :availabilities
+    resources :subjects
+    get 'edit_subjects' => 'presenters#edit_subjects'
+    post 'add_subject' => 'presenters#add_subject'
+    post 'remove_subject' => 'presenters#remove_subject'
   end
-
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
+  
+  get 'profiles/search' => 'search#index'
+
+  resource :availability
+  
   get 'admin/pending_profiles' => 'presenter_profiles#pending', as: 'admin_pending_profiles'
 
-  resource :availabilitys
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

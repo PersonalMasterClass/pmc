@@ -1,7 +1,11 @@
+
 class Users::RegistrationsController < Devise::RegistrationsController
+  require 'rubygems'
+  require 'nokogiri'  
+  require 'open-uri'
+
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-
   def new_presenter
     # Code from Devise 
     build_resource({})
@@ -45,7 +49,7 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # Send notification to admin
-        Notification.new_registration
+        Notification.notify_admin("A new registration has been submitted for approval.", nil)
         # redirect_to new_presenter_presenter_profile_path(presenter), notice: "Whilst your account is pending approval, you can continue to complete your profile."
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."
@@ -58,6 +62,16 @@ before_filter :configure_sign_up_params, only: [:create]
     end
   end
 
+  def vit_validation
+    # first check to see if the three parameters we use are populated
+    if params[:first_name] != "" && params[:last_name] != "" && params[:vit_number] != ""
+      page_url = "http://www.vit.vic.edu.au/search-the-register/_nocache?first_name=" + params[:first_name] + "&last_name=" + params[:last_name] + "&reg_number=" + params[:vit_number]
+      page = Nokogiri::HTML(open(page_url))   
+      # if this div does exist which indicates no result
+      render json: page.at_css('div#content_container_1727 p').nil?
+    end
+  end
+
   def new_customer
     # Code from Devise 
     build_resource({})
@@ -65,7 +79,6 @@ before_filter :configure_sign_up_params, only: [:create]
     # resource.build_presenter
     yield resource if block_given?
     respond_with self.resource
-
   end
 
   def create_customer
@@ -83,9 +96,14 @@ before_filter :configure_sign_up_params, only: [:create]
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
     resource.save
+    
+      # Code here doesn't work with Devise    
+      # if resource.save
+      # else
+      #     render :new_customer
+      # end
 
-
-    #Code from devise
+      # #Code from devise
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -98,7 +116,7 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # Send notification to admin
-        Notification.new_registration
+        Notification.notify_admin("A new registration has been submitted for approval.", nil)
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."
         redirect_to root_url

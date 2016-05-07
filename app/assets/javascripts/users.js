@@ -30,4 +30,23 @@ $(document).on('ready page:load', function(){
 					// window.open(ui.item.url);
 				}
 			});
-		});
+
+			$("#customer_vit_number,#presenter_vit_number").change(function(){
+			    $.ajax({
+						type: "GET",
+						url: "/registration/vit_validation",
+						async: true,
+						data: { 'first_name':$( "#customer_first_name, #presenter_first_name" ).val(), 'last_name':$( "#customer_last_name, #presenter_last_name" ).val(), 'vit_number':$( "#customer_vit_number, #presenter_vit_number" ).val() },
+						success: function(data) {	
+								if (data == true){
+									$("#customer_vit_number, #presenter_vit_number").css("background-color", "#55ff55");
+								}
+								else{
+									$("#customer_vit_number, #presenter_vit_number").css("background-color", "pink");
+								}
+					    // for debug purposes
+						// console.log(data);
+						}
+					});
+			});
+});
