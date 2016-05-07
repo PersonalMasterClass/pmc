@@ -8,7 +8,7 @@ $(document).on('ready page:load', function(){
   // $(function() {
     $("#date_part").datepicker({dateFormat: "dd/mm/yy"});
 
-  
+	  
 			$("#subject_select").autocomplete({
 				delay: 500,
 				minLength: 1,
@@ -42,7 +42,7 @@ $(document).on('ready page:load', function(){
 			});
 
 			$("#booking_duration_minutes").change(function(){
-			// if the booking duration is 
+			// if the booking duration is less than 60, change it to 60
 								if ($("#booking_duration_minutes").val() < 60)
 								{
 									$("#booking_duration_minutes").val(60);

@@ -46,7 +46,8 @@
 
     <div class="form-group">
       <%= customer_fields.label :vit_number %><br />
-      <%= customer_fields.text_field :vit_number, autofocus: true, class: "form-control control-label" %>
+      <%= customer_fields.text_field :vit_number, autofocus: true, :size =>"10", :maxlength=>"10", class: "form-control control-label" %>
+      <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
     </div>
  
 
