@@ -9,18 +9,17 @@
   </head>
   <body>
     <%= render partial: 'layouts/nav' %>
-
-    <% if current_user.present? %>
-      <% if current_user.user_type == "presenter" %>
-        <%= render "presenters/partials/presenter_nav"%>
-      <% elsif current_user.user_type == "customer" %>
-        <%= render "customers/partials/customer_nav" %>
-      <% else %>
-        <%= render "users/partials/admin_nav" %>
-      <% end %>
-    <% end %></div>
     <div class="main">
       <div class="container">
+        <% if current_user.present? %>
+          <% if current_user.user_type == "presenter" %>
+            <%= render "presenters/partials/presenter_nav"%>
+          <% elsif current_user.user_type == "customer" %>
+            <%= render "customers/partials/customer_nav" %>
+          <% else %>
+            <%= render "users/partials/admin_nav" %>
+          <% end %>
+        <% end %>
 
         <% flash.each do |key, value| %>
           <div class="alert alert-<%= key %>"><%= value %></div>
