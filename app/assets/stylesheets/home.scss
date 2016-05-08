@@ -33,7 +33,6 @@ div.landing-page-sections {
       background: #CCC;
       padding: 8px 0;
       .container {
-        width: 100%;
         .section-content {
           > h1 {
             text-align: center;
@@ -52,6 +51,7 @@ div.landing-page-sections {
                 vertical-align: middle;
                 height: 160px;
                 background: #BBB;
+                padding: 16px;
                 width: 33%;
                 font-size: 32px;
                 font-weight: 700;
