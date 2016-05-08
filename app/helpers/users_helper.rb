@@ -32,4 +32,10 @@ module UsersHelper
 		end
 		return 'active'
 	end
+	def presenter_search_active?
+		unless params[:controller] == 'search' && params[:action] == 'index'
+			return ''
+		end
+		return 'active'
+	end
 end
