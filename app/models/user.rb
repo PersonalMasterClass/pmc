@@ -28,6 +28,14 @@ class User < ActiveRecord::Base
     User.where('user_type= ? AND status= ?', 1, 0)
   end
 
+  def self.suspended_customers
+    User.where('user_type= ? AND status= ?', 0, 2)
+  end
+
+  def self.suspended_presenters
+    User.where('user_type= ? AND status= ?', 1, 2)
+  end
+
   # return a presenter or customer
   # returns nil of user is an admin
   def self.check_user(user)

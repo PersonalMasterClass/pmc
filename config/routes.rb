@@ -53,6 +53,12 @@ root 'home#index'
   
   get 'admin/pending_profiles' => 'presenter_profiles#pending', as: 'admin_pending_profiles'
 
+  get 'admin/suspended_users' => 'users#suspended_users', as: 'admin_suspended_users'
+
+  get 'admin/schools' => 'users#customers', as: 'admin_customers'
+
+  get 'admin/presenters' => 'users#presenters', as: 'admin_presenters'
+
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
