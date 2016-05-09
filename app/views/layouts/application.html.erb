@@ -7,7 +7,11 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
-  <body>
+  <body
+    <% if content_for?(:body_attributes) %>
+      <%= yield(:body_attributes) %>
+      <% end %>
+    >
     <%= render partial: 'layouts/nav' %>
     <div class="main">
       <div class="container">
@@ -20,7 +24,6 @@
             <%= render "users/partials/admin_nav" %>
           <% end %>
         <% end %>
-
         <% flash.each do |key, value| %>
           <div class="alert alert-<%= key %>"><%= value %></div>
         <% end %>
