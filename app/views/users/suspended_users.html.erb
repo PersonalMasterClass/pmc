@@ -23,13 +23,15 @@
   <h3>Schools</h3>
   <table class = "table table-bordered">
     <tr>
-      <th>Name</th>
+      <th>School</th>
+      <th>Contact Name</th>
       <th>Action</th>
     </tr>
     <% @customers.each do |user| %>
       <% customer = user.customer %>
-      <tr> <!-- TODO: Get school name -->
-        <td> <%= "#{customer.first_name} #{customer.last_name} - School Name" %></td>
+      <tr>
+        <td> <%= customer.school_info.school_name %></td>
+        <td> <%= "#{customer.first_name} #{customer.last_name}" %></td>
         <td> <%= link_to "View", customer_path(customer), class: "btn btn-primary" %> </td>
       </tr>  
     <% end %>

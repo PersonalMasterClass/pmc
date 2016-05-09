@@ -3,15 +3,16 @@
 <% if @customers.present? %>
   <table class = "table table-bordered">
     <tr>
-      <th>Name</th>
+      <th>School</th>
+      <th>Contact Name</th>
       <th>Status</th>
       <th>Action</th>
     </tr>
     <% @customers.each do |customer| %>
       <% user = customer.get_user %>
       <tr> 
-        <!-- TODO: add school name -->
-        <td> <%= "#{customer.first_name} #{customer.last_name} - SCHOOL" %></td>
+        <td> <%= customer.school_info.school_name %></td>
+        <td> <%= "#{customer.first_name} #{customer.last_name}" %></td>
         <td> <%= user.status %>
         <td> <%= link_to "View", customer_path(customer), class: "btn btn-primary" %> </td>
       </tr>  
