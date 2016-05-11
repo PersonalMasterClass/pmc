@@ -8,3 +8,24 @@ table.pending-user-registrations {
   */
   tr:first-child th:first-child { width:99%; }
 }
+div.login-dialog {
+  $vPadding: 36px;
+  padding-top: $vPadding;
+  padding-bottom: $vPadding;
+  .container {
+    .dialog-wrap {
+      > h2 { margin: 0 0 24px 0; }
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 24px;
+      background: #EEE;
+      form.new_user {
+        margin-bottom: 16px;
+        .remember-wrap {
+          margin-bottom: 0;
+          line-height: 32px;
+        }
+      }
+    }
+  }
+}

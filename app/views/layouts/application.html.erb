@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Personal Masterclass</title>
     <% if !Rails.env.production? %><meta name="robots" content="noindex,nofollow"><% end %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
@@ -60,7 +61,7 @@
       </div>
       <div class="afterfooter">
         <div class="container">
-          <div class="left">&copy; Personal Masterclass 2016</div>
+          <div class="left">&copy; Personal Masterclass <%= Date.today.year %></div>
           <div class="right">
             <div class="social-icons">
               <div class="icon facebook"></div>
