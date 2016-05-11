@@ -94,6 +94,7 @@ c.save(:validate => false)
 
   require 'open-uri'  
   presenter.presenter_profile = PresenterProfile.create(bio: Faker::Hacker.say_something_smart,
+                                                        bio_edit: '',
                                                         status: "approved",
                                                         picture: 
                                                           open('../profilePic.png', 'wb') do |file|

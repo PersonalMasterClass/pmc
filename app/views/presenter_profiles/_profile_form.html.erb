@@ -21,9 +21,9 @@
   </div>  
 
   <div class="form-group">
+    <%= tinymce %>
     <%= f.label :bio_edit, "Bio" %>
     <%= f.text_area :bio_edit, class: "tinymce", rows: 20 %>
-    <%= tinymce %>
   </div>
    
   <div class="actions">
@@ -42,4 +42,3 @@
 </script>
 
 <%= tinymce_assets %>
-<script type="text/javascript" src="/assets/tinymce.js">
