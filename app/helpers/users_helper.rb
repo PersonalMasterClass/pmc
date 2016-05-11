@@ -57,7 +57,6 @@ module UsersHelper
 		end
 		return 'active'
 	end
-=======
 
 
 	def if_params_school_info?(field, params)
