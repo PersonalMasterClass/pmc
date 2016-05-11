@@ -9,7 +9,7 @@
       <th>Action</th>
     </tr>
     <% @presenters.each do |presenter| %>
-      <%  user = presenter.get_user %>
+      <%  user = presenter.user %>
       <tr> 
         <td> <%= image_tag presenter.profile_picture_path('50x50#'), class: "img-responsive" %></td>
         <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>

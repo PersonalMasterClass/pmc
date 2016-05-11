@@ -9,7 +9,7 @@
       <th>Action</th>
     </tr>
     <% @customers.each do |customer| %>
-      <% user = customer.get_user %>
+      <% user = customer.user %>
       <tr> 
         <td> <%= customer.school_info.school_name %></td>
         <td> <%= "#{customer.first_name} #{customer.last_name}" %></td>
