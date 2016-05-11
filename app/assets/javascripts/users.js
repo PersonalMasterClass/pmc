@@ -31,18 +31,23 @@ $(document).on('ready page:load', function(){
 				}
 			});
 
-			$("#customer_vit_number,#presenter_vit_number").change(function(){
+			$("#vit_load_pic").hide();
+
+			$("#customer_vit_number,#presenter_vit_number").change(function(){				
+				$("#vit_load_pic").show();
 			    $.ajax({
 						type: "GET",
 						url: "/registration/vit_validation",
 						async: true,
 						data: { 'first_name':$( "#customer_first_name, #presenter_first_name" ).val(), 'last_name':$( "#customer_last_name, #presenter_last_name" ).val(), 'vit_number':$( "#customer_vit_number, #presenter_vit_number" ).val() },
-						success: function(data) {	
+						success: function(data) {
 								if (data == true){
 									$("#customer_vit_number, #presenter_vit_number").css("background-color", "#55ff55");
+									$("#vit_load_pic").hide();
 								}
 								else{
 									$("#customer_vit_number, #presenter_vit_number").css("background-color", "pink");
+									$("#vit_load_pic").hide();
 								}
 					    // for debug purposes
 						// console.log(data);
