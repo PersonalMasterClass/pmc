@@ -1,13 +1,31 @@
 <h1> Pending Profile Changes </h1>
-<h3>There are <%= @profiles.count %> pending profile changes.</h3>
+<h3>There are <%= @profile_count %> pending profile changes.</h3>
 
-<% if @profiles.present? %>
+<% if @draft_profiles.present? %>
+  <h3>Drafts</h3>
   <table class = "table table-bordered">
     <tr>
       <th>Name</th>
       <th>Action</th>
     </tr>
-    <% @profiles.each do |profile| %>
+    <% @draft_profiles.each do |profile| %>
+      <% presenter = Presenter.find(profile.presenter_id) %>
+      <tr> 
+        <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>
+        <td> <%= edit_presenter_profile_link(presenter, "btn btn-info") %> </td>
+      </tr>  
+    <% end %>
+  </table>
+<% end %>
+
+<% if @unapproved_profiles.present? %>
+  <h3>Awaiting approval</h3>
+  <table class = "table table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+    <% @unapproved_profiles.each do |profile| %>
       <% presenter = Presenter.find(profile.presenter_id) %>
       <tr> 
         <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>

@@ -32,7 +32,7 @@ class Presenter < ActiveRecord::Base
   end
 
   def get_private_full_name(user)
-    if user.admin? || user == self.get_user
+    if user.admin? || user == self.user
       return "#{self.first_name} #{self.last_name}"
     else
       return "#{self.first_name} #{self.last_name.at(0)}"
