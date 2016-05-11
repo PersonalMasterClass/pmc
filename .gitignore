@@ -24,3 +24,6 @@ Thumbs.db
 
 # Ignore application configuration
 /config/application.yml
+
+# Ignore SASS/SCSS caches
+.sass-cache

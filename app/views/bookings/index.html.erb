@@ -3,33 +3,22 @@
   <h3> Upcoming Bookings <span class="badge"><%= @upcoming.count%></span></h3>
   <table class = "table table-bordered">
     <tr>
-      <th>Subject</th>
-      <th> Date </th>
+      <th>id</th>
   <% @upcoming.each do |booking| %>
     <tr> 
-      <td> <%= booking.subject.name if booking.subject.present? %>
-           <%= is_booked(booking,current_user) %> 
-      </td>
-      <td><%= booking.booking_date.strftime("%d/%m/%Y") %></td>
       <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
     </tr>  
   <% end %>
   </table>
 <% end %>
 
-<% if @completed.present? %>
+<% if @completed.present? %>  
   <h3> Completed Bookings <span class="badge"><%=@completed.count%></span></h3>
   <table class = "table table-bordered">
     <tr>
-      <th>Subject</th>
-      <th> Date </th>
-    </tr>
+      <th>id</th>
   <% @completed.each do |booking| %>
     <tr> 
-      <td> <%= booking.subject.name if booking.subject.present? %>
-           <%= is_booked(booking,current_user) %> 
-      </td>
-      <td><%= booking.booking_date.strftime("%d/%m/%Y") %></td>
       <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
     </tr>  
   <% end %>

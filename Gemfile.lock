@@ -110,6 +110,8 @@ GEM
     fog-xml (0.1.2)
       fog-core
       nokogiri (~> 1.5, >= 1.5.11)
+    font-awesome-rails (4.4.0.0)
+      railties (>= 3.2, < 5.0)
     formatador (0.2.5)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
@@ -281,6 +283,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   figaro
+  font-awesome-rails
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks

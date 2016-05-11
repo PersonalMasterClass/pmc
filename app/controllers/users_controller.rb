@@ -1,5 +1,11 @@
   class UsersController < ApplicationController
-  before_filter :admin_only, only: [:management_console, :registrations, :approve_user, :suspend]
+  before_filter :admin_only, only: [:management_console,
+                                    :registrations, 
+                                    :approve_user, 
+                                    :suspend,
+                                    :suspended_users,
+                                    :customers,
+                                    :presenters]
   
   # given a user, will redirect to the relevant profile
   # either presenter profile, or customer profile
@@ -62,7 +68,21 @@
     redirect_to user_path(user)
   end
 
+  def suspended_users
+    @customers = User.suspended_customers
+    @presenters = User.suspended_presenters
+  end
+
+  def customers
+    @customers = Customer.all
+  end
+
+  def presenters
+    @presenters = Presenter.all
+  end
+
   private
+
   def admin_only
     if current_user.nil? || current_user.user_type != "admin" && current_user.status != "approved"
       flash[:danger] = "Unauthorised access."

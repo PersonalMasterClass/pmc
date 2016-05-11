@@ -7,8 +7,8 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   validates :email, length: { minimum: 8 }
   
-  has_one :presenter
-  has_one :customer
+  has_one :presenter, inverse_of: :user
+  has_one :customer, inverse_of: :user
   has_many :notifications
 
   accepts_nested_attributes_for :presenter
@@ -28,6 +28,14 @@ class User < ActiveRecord::Base
     User.where('user_type= ? AND status= ?', 1, 0)
   end
 
+  def self.suspended_customers
+    User.where('user_type= ? AND status= ?', 0, 2)
+  end
+
+  def self.suspended_presenters
+    User.where('user_type= ? AND status= ?', 1, 2)
+  end
+
   # return a presenter or customer
   # returns nil of user is an admin
   def self.check_user(user)
@@ -41,6 +49,10 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def display_notifications
+    return self.notifications.where(is_read: :false).limit(5).order(created_at: :desc)
+  end
+  
   private
 
   def send_call_to_action_notification

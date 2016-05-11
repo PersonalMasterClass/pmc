@@ -9,7 +9,7 @@
   </div>
   <div class = "form-group">
     <%= b.label :duration_minutes %><br>
-    <%= b.number_field :duration_minutes, step: 5, class: "form-control"  %>
+    <%= b.number_field :duration_minutes, step: 15, min: 60, value: 60, class: "form-control" %>
   </div>
  
   <div class = "form-group">
