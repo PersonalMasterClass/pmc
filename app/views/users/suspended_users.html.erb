@@ -1,0 +1,41 @@
+<h1>Suspended Users </h1>
+
+<% if @presenters.present? %>
+  <h3>Presenters</h3>
+  <table class = "table table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Action</th>
+    </tr>
+    <% @presenters.each do |user| %>
+      <% presenter = user.presenter %>
+      <tr> 
+        <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>
+        <td> <%= link_to "View", presenter_profile_path(presenter), class: "btn btn-primary" %> </td>
+      </tr>  
+    <% end %>
+  </table>
+<% else %>
+  <div>There are no suspended presenters </div>
+<% end %>
+
+<% if @customers.present? %>
+  <h3>Schools</h3>
+  <table class = "table table-bordered">
+    <tr>
+      <th>School</th>
+      <th>Contact Name</th>
+      <th>Action</th>
+    </tr>
+    <% @customers.each do |user| %>
+      <% customer = user.customer %>
+      <tr>
+        <td> <%= customer.school_info.school_name %></td>
+        <td> <%= "#{customer.first_name} #{customer.last_name}" %></td>
+        <td> <%= link_to "View", customer_path(customer), class: "btn btn-primary" %> </td>
+      </tr>  
+    <% end %>
+  </table>
+<% else %>
+  <div>There are no suspended schools </div>
+<% end %>

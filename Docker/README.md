@@ -1,0 +1,2 @@
+# Docker Scripts for PMC
+This directory contains some useful scripts for Docker - Note, however, that running the script by calling it (e.g. `./build_pmc.sh`) may have unintended side effects in some cases.

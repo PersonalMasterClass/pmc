@@ -1,3 +1,75 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+div.landing-page-sections {
+  section {
+    width: 100%;
+    float: none;
+    .container {
+      display: table;
+      margin: 0 auto;
+      .section-content {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        > *:first-child { margin-top:0; }
+      }
+    }
+    &#leader {
+      background: #EEE;
+      padding: 128px 0;
+      .container {
+        .section-content {
+          h1 { font-size: 32px; }
+          p { font-size: 16px; }
+          a.button {
+            font-size: 18px;
+            padding: 16px 32px;
+          }
+        }
+      }
+    }
+    &#subject-tiles {
+      background: #CCC;
+      padding: 8px 0;
+      .container {
+        .section-content {
+          > h1 {
+            text-align: center;
+            margin: 16px 0;
+            font-weight: 400;
+          }
+          .tile-wrap {
+            display: table;
+            width: 100%;
+            border-spacing: 12px;
+            .tile-row {
+              display: table-row;
+              width: 100%;
+              .tile {
+                display: table-cell;
+                vertical-align: middle;
+                height: 200px;
+                background: #BBB;
+                padding: 16px;
+                width: 33%;
+                font-size: 32px;
+                font-weight: 700;
+                cursor: pointer;
+              }
+            }
+          }
+          a.button {
+            font-size: 18px;
+            padding: 16px 24px;
+          }
+          .underbutton {
+            display: inline-block;
+            margin-top: 8px;
+          }
+          .after-tile-callout { margin: 36px 0; }
+        }
+      }
+    }
+  }
+}
