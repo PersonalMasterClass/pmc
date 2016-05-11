@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
     return false
   end
 
+  def display_notifications
+    return self.notifications.where(is_read: :false).limit(5).order(created_at: :desc)
+  end
+  
   private
 
   def send_call_to_action_notification

@@ -15,18 +15,20 @@ class Notification < ActiveRecord::Base
 		end
 	end
 
-  def self.notify_applicable_users(subject, type)
+  def self.notify_applicable_users(creator, booking, type, reference)
   	if type == "presenter"
   		users = User.where(user_type: 1)
   	elsif type == "customer"
   		users = User.where(user_type: 0)
   	end
   			
-		message = "A new #{subject.name} booking has been created that you may be interested in."
-		reference = nil
+		message = "A new #{booking.subject.name} booking has been created that you may be interested in."
+		reference = reference
   	users.each do |user|
-  		notification = Notification.create(message: message, reference: reference)
-  		user.notifications << notification
+  		unless user == creator
+  			notification = Notification.create(message: message, reference: reference)
+  			user.notifications << notification
+  		end
   	end
 	end
 end

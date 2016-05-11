@@ -49,7 +49,7 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # Send notification to admin
-        Notification.notify_admin("A new registration has been submitted for approval.", nil)
+        Notification.notify_admin("A new registration has been submitted for approval.", "/admin/pending_registrations")
         # redirect_to new_presenter_presenter_profile_path(presenter), notice: "Whilst your account is pending approval, you can continue to complete your profile."
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."
@@ -116,7 +116,7 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # Send notification to admin
-        Notification.notify_admin("A new registration has been submitted for approval.", nil)
+        Notification.notify_admin("A new registration has been submitted for approval.", "/admin/pending_registrations")
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."
         redirect_to root_url
