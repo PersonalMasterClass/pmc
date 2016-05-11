@@ -23,44 +23,42 @@
    <%= fields_for :school_info do |school_info_fields| %>
   <div class="form-group">
     <%= f.label "School" %>
-    <%= school_info_fields.text_field :school_name, class: "form-control", :id=>"school_search" %>
-
+    <%= school_info_fields.text_field :school_name,  value: if_params_school_info?(:school_name,params),class: "form-control", :id=>"school_search" %>
   </div>
   <% end %>
-
-
 
   <%= fields_for :customer do |customer_fields| %>
     <div class="form-group">
       <%= customer_fields.label :first_name %><br />
-      <%= customer_fields.text_field :first_name, autofocus: true, class: "form-control" %>
+      <%= customer_fields.text_field :first_name,  value: if_params_customer?(:first_name,params), autofocus: true, class: "form-control" %>
     </div>
   
 
     <div class="form-group">
       <%= customer_fields.label :last_name %><br />
-      <%= customer_fields.text_field :last_name, autofocus: true, class: "form-control" %>
+      <%= customer_fields.text_field :last_name, value: if_params_customer?(:last_name,params), autofocus: true, class: "form-control" %>
     </div>
 
     <div class="form-group">
       <%= customer_fields.label :phone_number %><br />
-      <%= customer_fields.text_field :phone_number, autofocus: true, class: "form-control" %>
+      <%= customer_fields.text_field :phone_number, value: if_params_customer?(:phone_number,params), autofocus: true, class: "form-control" %>
     </div>
 
     <div class="form-group">
       <%= customer_fields.label :vit_number %><br />
-      <%= customer_fields.text_field :vit_number, autofocus: true, class: "form-control control-label" %>
+      <%= customer_fields.text_field :vit_number,  value: if_params_customer?(:vit_number,params), autofocus: true, :size =>"10", :maxlength=>"10", class: "form-control control-label" %>
+      <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
     </div>
  
 
     <div class="form-group">
       <%= customer_fields.label :department %><br />
-      <%= customer_fields.text_field :department, autofocus: true, class: "form-control" %>
+      <%= customer_fields.text_field :department,  value: if_params_customer?(:department,params), autofocus: true, class: "form-control" %>
     </div>
 
     <div class="form-group">
       <%= customer_fields.label :contact_title %><br />
-      <%= customer_fields.text_field :contact_title, autofocus: true, class: "form-control" %>
+      <%= customer_fields.text_field :contact_title, value: if_params_customer?(:contact_title,params), autofocus: true, class: "form-control" %>
     </div>  
   <% end %>
   <div class="actions">
@@ -69,4 +67,4 @@
   </div>
 <% end %>
 
-<%= render "users/shared/links" %>
+<%= render "users/shared/links" %> 

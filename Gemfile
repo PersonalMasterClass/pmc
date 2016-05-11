@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 # page scraper
 gem 'nokogiri'
-
 # enviroment variables
 gem "figaro"
 
@@ -11,6 +10,8 @@ gem 'dragonfly', '~> 1.0.12'
 gem 'dragonfly-s3_data_store'
 #gem "mini_magick"
 
+
+gem "font-awesome-rails"
 #bio editor
 gem 'tinymce-rails'
 
@@ -51,6 +52,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # in-line editor
 gem 'best_in_place'
 
+gem 'jquery-turbolinks'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

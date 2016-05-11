@@ -10,7 +10,7 @@ class PresenterProfilesController < ApplicationController
   def show
     @presenter = find_presenter
     @profile = @presenter.presenter_profile
-    @user = @presenter.get_user
+    @user = @presenter.user
     @availability = @presenter.availabilitys.order('availabilities.start_time ASC')
     
     if !session[:search_params].nil?
@@ -21,8 +21,9 @@ class PresenterProfilesController < ApplicationController
   end
 
   def pending
-    @profiles = PresenterProfile.unapproved_profiles
-    @profile_count = PresenterProfile.unapproved_profiles.count
+    @unapproved_profiles = PresenterProfile.unapproved_profiles
+    @draft_profiles = PresenterProfile.admin_drafts
+    @profile_count = PresenterProfile.unapproved_profiles.count + PresenterProfile.admin_drafts.count
   end
 
   def new
@@ -71,9 +72,14 @@ class PresenterProfilesController < ApplicationController
       redirect_to new_presenter_profile_path(@presenter)
     end
     #displays current profile information for editing 
-    if @presenter_profile.approved? && @presenter_profile.bio_edit.empty?
-      @presenter_profile.bio_edit = @presenter_profile.bio
-      #@presenter_profile.picture_edit = @presenter_profile.picture
+    if !@presenter_profile.bio_edit.nil?
+      if @presenter_profile.approved? && @presenter_profile.bio_edit.empty?
+        @presenter_profile.bio_edit = @presenter_profile.bio
+      end
+    else
+      if @presenter_profile.approved?
+        @presenter_profile.bio_edit = @presenter_profile.bio
+      end
     end
   end
 
@@ -115,8 +121,15 @@ class PresenterProfilesController < ApplicationController
       #save draft
       elsif params[:save]
         if @presenter_profile.update(new_profile)
-          flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
-          redirect_to presenters_path
+          if current_user.presenter?
+            @presenter_profile.update_attribute(:status, :draft_presenter)
+            flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
+            redirect_to presenters_path
+          else #current_user.admin?
+            @presenter_profile.update_attribute(:status, :draft_admin)
+            flash[:info] = "Profile draft saved for #{@presenter.first_name}'s profile. Go to pending profile changes to continue editing."
+            redirect_to admin_pending_profiles_path
+          end
         else
           render 'edit'
         end
@@ -198,17 +211,32 @@ class PresenterProfilesController < ApplicationController
     #checks current user if profile owner
     def correct_user
       unless Presenter.find_by(user_id: current_user) == find_presenter
-        flash[:danger] = "Unauthorized Access"
-        redirect_to root_url 
+        if current_user.admin?
+          redirect_to edit_presenter_profile_path
+        else
+          flash[:danger] = "Unauthorized Access"
+          redirect_to root_url
+        end 
       end
     end
 
     #ensures only admin and profile owner can edit profile
+    #and that a presenter/admin can only edit at the correct time
     def admin_or_presenter_logged_in
-      #Cant refactor to Presenter.find(current_user), it searches for Presenter that matches the user id, not the presenter id. 
-      if current_user.nil? || (current_user.user_type != "admin" && Presenter.find_by(user_id: current_user) != find_presenter)
-        flash[:danger] = "Unauthorized Access"
-        redirect_to root_url        
+      presenter = find_presenter
+      profile = presenter.presenter_profile
+
+      if current_user.nil? || (!current_user.admin? && Presenter.find_by(user_id: current_user) != presenter)
+        flash[:danger] = "Unauthorized Access HERE"
+        redirect_to root_url
+      #presenter has already submitted to admin for approval
+      elsif Presenter.find_by(user_id: current_user) == presenter && profile.pending_admin?
+        flash[:info] = "Cannot modify profile at this time. You already have changes waiting on admin actions."
+        redirect_to presenter_profile_path(presenter)
+      #admin has already submitted to presenter for approval
+      elsif current_user.admin? && profile.pending_presenter?
+        flash[:info] = "Cannot modify profile at this time. This profile is waiting on presenter actions."
+        redirect_to presenter_profile_path(presenter)
       end
     end
 

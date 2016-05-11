@@ -6,7 +6,7 @@ class CustomersController < ApplicationController
 
 	def show
 		@customer = Customer.find(params[:id])
-		@user = @customer.get_user
+		@user = @customer.user
 	end
 
   private
