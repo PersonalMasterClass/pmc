@@ -18,13 +18,18 @@ Rake::Task['import:school_info'].invoke
 # Need this for the phone numbers and stuff.
 Faker::Config.locale = 'en-AU'
 
-20.times do |f|
-  word = (Faker::Hipster.words(2)* ' ').titleize
-  while Subject.where(name: word).present?
-    word = (Faker::Hipster.words(2)* ' ').titleize
-  end
-    Subject.create(name: word)
+subs = ["English", "History", "Physical Education", "Japanese", "Geography", "Art", "Economics", "Albanian", "Biology", "Mathematics"]
+subs.each do |s|
+  Subject.create(name: s)
 end
+
+# 20.times do |f|
+#   word = (Faker::Hipster.words(2)* ' ').titleize
+#   while Subject.where(name: word).present?
+#     word = (Faker::Hipster.words(2)* ' ').titleize
+#   end
+#     Subject.create(name: word)
+# end
 
 # Test admin
 User.create!(
