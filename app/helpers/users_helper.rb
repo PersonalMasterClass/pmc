@@ -32,4 +32,28 @@ module UsersHelper
 		end
 		return 'active'
 	end
+	def suspended_users_active? 
+		unless params[:controller] == 'users' && params[:action] == 'suspended_users'
+			return ''
+		end
+		return 'active'
+	end
+	def search_active?
+		unless current_page?(profiles_search_path)
+			return ''
+		end
+		return 'active'
+	end
+	def schools_active?
+		unless current_page?(admin_customers_path)
+			return ''
+		end
+		return 'active'
+	end
+	def presenters_active?
+		unless current_page?(admin_presenters_path)
+			return ''
+		end
+		return 'active'
+	end
 end
