@@ -7,20 +7,12 @@
 		<%= text_field_tag nil, @search_params[:subject_name], id: "subject_select", :placeholder => "Subject" %>
 
 	</div>
-	<!-- subject, date, time, name, term -->
+	<!-- subject, date, name,-->
 	<div class = "col-sm-3">
-	 
-
 	  <%= text_field_tag :date_part, @search_params[:date_part], :placeholder => "date" %>
-
-
-
   </div>	
 
-  <div class = "col-sm-3">
-	  <input type = "time" name = "time_part" id="time_part"  step = "300" 
-	  placeholder = "time" value = <%= @search_params[:time_part] %> />
-	</div>
+  
 	<div class="col-sm-2">
 		<%= text_field_tag :first_name, @search_params[:first_name], :placeholder => "First Name" %>
  	</div>

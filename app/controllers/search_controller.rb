@@ -93,6 +93,7 @@ class SearchController < ApplicationController
   		end
 	  end
 
+	  # This is here just in case we decide to searh by time later on. 
 	  # Generate query string for time portion of availability search.
 	  def by_time
   		str = ""
