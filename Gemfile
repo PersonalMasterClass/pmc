@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # page scraper
 gem 'nokogiri'
-
+gem 'open-uri'
 # enviroment variables
 gem "figaro"
 

@@ -1,9 +1,4 @@
-
 class Users::RegistrationsController < Devise::RegistrationsController
-  require 'rubygems'
-  require 'nokogiri'  
-  require 'open-uri'
-
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
   def new_presenter
@@ -32,7 +27,7 @@ before_filter :configure_sign_up_params, only: [:create]
     resource.presenter = presenter
     resource.save
 
-#     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school'])
+    # customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school'])
     # resource.customer = customer
     # resource.save
 
@@ -65,10 +60,8 @@ before_filter :configure_sign_up_params, only: [:create]
   def vit_validation
     # first check to see if the three parameters we use are populated
     if params[:first_name] != "" && params[:last_name] != "" && params[:vit_number] != ""
-      page_url = "http://www.vit.vic.edu.au/search-the-register/_nocache?first_name=" + params[:first_name] + "&last_name=" + params[:last_name] + "&reg_number=" + params[:vit_number]
-      page = Nokogiri::HTML(open(page_url))   
-      # if this div does exist which indicates no result
-      render json: page.at_css('div#content_container_1727 p').nil?
+      vit = VitValidation.check_vit(params[:first_name], params[:last_name], params[:vit_number])
+      render json: vit
     end
   end
 
