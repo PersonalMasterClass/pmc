@@ -10,7 +10,7 @@ class Customer < ActiveRecord::Base
   validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
 
   def vit_number_must_be_valid
-    unless VitValidation.new.check_vit(first_name, last_name, vit_number)
+    unless VitValidation.check_vit(first_name, last_name, vit_number)
       errors.add(:vit_number, "could not be found on the vit register.")
     end
   end

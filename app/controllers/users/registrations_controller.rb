@@ -67,11 +67,12 @@ before_filter :configure_sign_up_params, only: [:create]
 
   def new_customer
     # Code from Devise 
-    build_resource({})
+    build_resource(params)
     set_minimum_password_length
     # resource.build_presenter
     yield resource if block_given?
     respond_with self.resource
+    # resource = User.new
   end
 
   def create_customer
@@ -88,11 +89,8 @@ before_filter :configure_sign_up_params, only: [:create]
                                  contact_title: params["customer"]["contact_title"])
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
-    
-    if resource.save
-    else
-        render action: "new_customer"
-    end
+    resource.save
+
    # #Code from devise
     yield resource if block_given?
     if resource.persisted?
@@ -114,6 +112,7 @@ before_filter :configure_sign_up_params, only: [:create]
     else
       clean_up_passwords resource
       set_minimum_password_length
+      render :new_customer
     end
   end
 
