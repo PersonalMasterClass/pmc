@@ -49,7 +49,7 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # Send notification to admin
-        Notification.notify_admin("A new registration has been submitted for approval.", nil)
+        Notification.notify_admin("A new registration has been submitted for approval.", "/admin/pending_registrations")
         # redirect_to new_presenter_presenter_profile_path(presenter), notice: "Whilst your account is pending approval, you can continue to complete your profile."
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."
@@ -95,15 +95,12 @@ before_filter :configure_sign_up_params, only: [:create]
                                  contact_title: params["customer"]["contact_title"])
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
-    resource.save
     
-      # Code here doesn't work with Devise    
-      # if resource.save
-      # else
-      #     render :new_customer
-      # end
-
-      # #Code from devise
+    if resource.save
+    else
+        render action: "new_customer"
+    end
+   # #Code from devise
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -116,7 +113,7 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # Send notification to admin
-        Notification.notify_admin("A new registration has been submitted for approval.", nil)
+        Notification.notify_admin("A new registration has been submitted for approval.", "/admin/pending_registrations")
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."
         redirect_to root_url
@@ -124,7 +121,6 @@ before_filter :configure_sign_up_params, only: [:create]
     else
       clean_up_passwords resource
       set_minimum_password_length
-      render :new_customer
     end
   end
 
