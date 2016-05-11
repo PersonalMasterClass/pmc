@@ -22,6 +22,8 @@ root 'home#index'
     get 'registration/customers' => 'users/registrations#new_customer'
     post 'registration/customers' => 'users/registrations#create_customer'
     get 'registration/vit_validation' => 'users/registrations#vit_validation'
+    get 'registration/contact_form' => 'users/registrations#contact_form'  
+    get 'registration/submit_form' => 'users/registrations#submit_form' 
   end
 
 

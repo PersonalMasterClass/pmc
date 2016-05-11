@@ -98,6 +98,7 @@ before_filter :configure_sign_up_params, only: [:create]
     
     if resource.save
     else
+
         render action: "new_customer"
     end
    # #Code from devise
@@ -122,6 +123,10 @@ before_filter :configure_sign_up_params, only: [:create]
       clean_up_passwords resource
       set_minimum_password_length
     end
+  end
+
+  def contact_form
+      render action: "contact_form"
   end
 
   def approve_registration
