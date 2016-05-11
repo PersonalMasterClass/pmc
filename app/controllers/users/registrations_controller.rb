@@ -67,7 +67,13 @@ before_filter :configure_sign_up_params, only: [:create]
 
   def new_customer
     # Code from Devise 
-    build_resource(params)
+    # Params by default have two hashes; controller and action
+    # If validation fails, params will have more hash values
+    # if params.count > 2
+    #   build_resource(params)
+    # else
+      build_resource({})
+    # end
     set_minimum_password_length
     # resource.build_presenter
     yield resource if block_given?

@@ -32,4 +32,22 @@ module UsersHelper
 		end
 		return 'active'
 	end
+
+
+	def if_params_school_info?(params)
+			if params[:school_info].nil?
+				''
+			else 
+				params[:school_info][:school_name]
+			end
+	end
+
+	def if_params_customer?(field, params)
+		if params[:customer].nil?
+			''
+		else
+			params[:customer][field]
+		end
+	end
+
 end
