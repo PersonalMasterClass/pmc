@@ -49,10 +49,10 @@ class BookingsController < ApplicationController
 
     # Send messages to customers if applicable && @booking is open
     if @booking.chosen_presenter.nil?
-      Notification.notify_applicable_users(current_user, @booking, "customer", "/bookings/#{@booking.id}")
+      Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking))
     end
-    Notification.notify_applicable_users(current_user, @booking, "presenter", "/bookings/#{@booking.id}")
-    Notification.notify_admin("A new booking has been created", "/bookings/#{@booking.id}")
+    Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking))
+    Notification.notify_admin("A new booking has been created", booking_path(@booking))
 
     # Add booking to booked customers
     current_user.customer.bookings << @booking
@@ -88,7 +88,7 @@ class BookingsController < ApplicationController
       @presenter.bids.last.bid_date = DateTime.now
     end
 
-    Notification.send_message(@booking.creator.user, "#{@presenter.first_name} has expressed an interest in this booking.", "/bookings/#{@booking.id}")
+    Notification.send_message(@booking.creator.user, "#{@presenter.first_name} has expressed an interest in this booking.", booking_path(@booking))
     flash[:success] = "You have successfully placed a bid on this booking."
     redirect_to bookings_open_path
   end
@@ -99,7 +99,7 @@ class BookingsController < ApplicationController
       if booking.creator == current_user.customer
         booking.chosen_presenter = @presenter
         booking.save
-        Notification.send_message(@presenter.user, "You've been locked in for a booking!", "/bookings/#{booking.id}")
+        Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(@booking))
       end
     end
     flash[:success] = "#{@presenter.first_name} #{@presenter.last_name} has been assigned to this booking."
