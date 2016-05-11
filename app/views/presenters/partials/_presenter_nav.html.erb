@@ -6,7 +6,7 @@
   	<%= link_to "View Profile", presenter_profile_path(current_user.presenter) %>
 	</li>
   <li role="presentation" class="<%= edit_profile_active?%>">
-    <%= link_to "Edit Profile",  new_presenter_profile_path(current_user.presenter) %>
+    <%= edit_presenter_profile_link(current_user.presenter) %>
   </li>
   <li role="presentation" class="<%=open_bookings_active?%>">
     <%= link_to "Open Bookings",  bookings_open_path %>
