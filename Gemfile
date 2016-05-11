@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 # page scraper
 gem 'nokogiri'
-
+gem 'open-uri'
 # enviroment variables
 gem "figaro"
 
@@ -11,6 +11,8 @@ gem 'dragonfly', '~> 1.0.12'
 gem 'dragonfly-s3_data_store'
 #gem "mini_magick"
 
+
+gem "font-awesome-rails"
 #bio editor
 gem 'tinymce-rails'
 

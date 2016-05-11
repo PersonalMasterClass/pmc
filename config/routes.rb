@@ -54,7 +54,7 @@ root 'home#index'
   resource :availability
   
   get 'admin/pending_profiles' => 'presenter_profiles#pending', as: 'admin_pending_profiles'
-
+  get '/notif_read' => 'application#notif_read'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
