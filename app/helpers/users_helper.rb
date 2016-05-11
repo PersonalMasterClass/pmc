@@ -49,5 +49,12 @@ module UsersHelper
 			params[:customer][field]
 		end
 	end
+	def if_params_presenter?(field, params)
+		if params[:presenter].nil?
+			''
+		else
+			params[:presenter][field]
+		end
+	end
 
 end
