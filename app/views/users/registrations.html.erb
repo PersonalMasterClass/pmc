@@ -1,34 +1,36 @@
-<h1> Pending User Registrations </h1>
-<h3><%= pending_count(@presenters, @customers) %></h3>
+<div class="container">
+  <h1> Pending User Registrations </h1>
+  <h3><%= pending_count(@presenters, @customers) %></h3>
 
-<% if @presenters.present? %>
-  <h3> Presenters </h3>
-  <table class = "table table-bordered">
-    <tr>
-      <th>Name</th>
-      <th>Action</th>
-    </tr>
-  <% @presenters.each do |usr| %>
-    <tr> 
-      <td> <%= "#{usr.presenter.first_name} #{usr.presenter.last_name}" %></td>
-      <td> <%= link_to "View", presenter_profile_path(usr.presenter), class: "btn btn-info" %> </td>
-    </tr>  
+  <% if @presenters.present? %>
+    <h3> Presenters </h3>
+    <table class = "table table-bordered">
+      <tr>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+    <% @presenters.each do |usr| %>
+      <tr>
+        <td> <%= "#{usr.presenter.first_name} #{usr.presenter.last_name}" %></td>
+        <td> <%= link_to "View", presenter_profile_path(usr.presenter), class: "btn btn-info" %> </td>
+      </tr>
+    <% end %>
+    </table>
   <% end %>
-  </table>
-<% end %>
 
-<% if @customers.present? %>
-  <h3> Schools </h3>
-  <table class = "table table-bordered">
-    <tr>
-      <th>Name</th>
-      <th>Action</th>
-    </tr>
-  <% @customers.each do |usr| %>
-    <tr> 
-      <td> <%= "#{usr.customer.school_info.school_name} #{usr.customer.department}" %></td>
-      <td> <%= link_to "View", customer_path(usr.customer), class: "btn btn-info" %> </td>
-    </tr>  
+  <% if @customers.present? %>
+    <h3> Schools </h3>
+    <table class = "table table-bordered pending-user-registrations">
+      <tr>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+    <% @customers.each do |usr| %>
+      <tr>
+        <td> <%= "#{usr.customer.school_info.school_name} #{usr.customer.department}" %></td>
+        <td> <%= link_to "View", customer_path(usr.customer), class: "btn btn-info" %> </td>
+      </tr>
+    <% end %>
+    </table>
   <% end %>
-  </table>
-<% end %>
+</div>

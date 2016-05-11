@@ -32,6 +32,9 @@ module UsersHelper
 		end
 		return 'active'
 	end
+	def presenter_search_active?
+		unless params[:controller] == 'search' && params[:action] == 'index'
+	end
 	
 	def suspended_users_active? 
 		unless params[:controller] == 'users' && params[:action] == 'suspended_users'
@@ -60,11 +63,11 @@ module UsersHelper
 
 
 	def if_params_school_info?(field, params)
-			if params[:school_info].nil?
-				''
-			else 
-				params[:school_info][field]
-			end
+		if params[:school_info].nil?
+			''
+		else
+			params[:school_info][field]
+		end
 	end
 
 	def if_params_customer?(field, params)
