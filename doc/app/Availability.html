@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Availability - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">ActiveRecord::Base
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-for_presenter">::for_presenter</a>
+    
+    <li ><a href="#method-i-end_time_string">#end_time_string</a>
+    
+    <li ><a href="#method-i-get_days">#get_days</a>
+    
+    <li ><a href="#method-i-list_days">#list_days</a>
+    
+    <li ><a href="#method-i-set_days">#set_days</a>
+    
+    <li ><a href="#method-i-start_time_string">#start_time_string</a>
+    
+    <li ><a href="#method-i-times_string">#times_string</a>
+    
+    <li ><a href="#method-i-to_string">#to_string</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Availability">
+  <h1 id="class-Availability" class="class">
+    class Availability
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-for_presenter" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">for_presenter</span><span
+            class="method-args">(presenter)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>get bookings for current user</p>
+          
+          
+
+          
+          <div class="method-source-code" id="for_presenter-source">
+            <pre><span class="ruby-comment"># File app/models/availability.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">for_presenter</span>(<span class="ruby-identifier">presenter</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">presenter</span><span class="ruby-operator">:</span> <span class="ruby-identifier">presenter</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;availabilities.start_time ASC&#39;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-end_time_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">end_time_string</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="end_time_string-source">
+            <pre><span class="ruby-comment"># File app/models/availability.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">end_time_string</span>
+        <span class="ruby-identifier">plus</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">end_time</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">start_time</span>
+                <span class="ruby-identifier">plus</span> = <span class="ruby-string">&quot;+&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">to_string</span>(<span class="ruby-keyword">self</span>[<span class="ruby-value">:end_time</span>]) <span class="ruby-operator">+</span> <span class="ruby-identifier">plus</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-get_days" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_days</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>convert each day attribute to a single bool array</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_days-source">
+            <pre><span class="ruby-comment"># File app/models/availability.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_days</span>
+        <span class="ruby-identifier">bool_array</span> = []
+
+        <span class="ruby-identifier">bool_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:monday</span>]
+        <span class="ruby-identifier">bool_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:tuesday</span>]
+        <span class="ruby-identifier">bool_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:wednesday</span>]
+        <span class="ruby-identifier">bool_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:thursday</span>]
+        <span class="ruby-identifier">bool_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:friday</span>]
+        <span class="ruby-identifier">bool_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:saturday</span>]
+        <span class="ruby-identifier">bool_array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">self</span>[<span class="ruby-value">:sunday</span>]
+
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">bool_array</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-list_days" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">list_days</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>convert the days to a readable string of day names.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="list_days-source">
+            <pre><span class="ruby-comment"># File app/models/availability.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">list_days</span>
+        <span class="ruby-identifier">d</span> = [<span class="ruby-string">&quot;Mondays,&quot;</span>, <span class="ruby-string">&quot;Tuesdays,&quot;</span>, <span class="ruby-string">&quot;Wednesdays,&quot;</span>, <span class="ruby-string">&quot;Thursdays,&quot;</span>, <span class="ruby-string">&quot;Fridays,&quot;</span>, <span class="ruby-string">&quot;Saturdays,&quot;</span>, <span class="ruby-string">&quot;Sundays,&quot;</span>]
+        <span class="ruby-identifier">x</span> = []
+
+        <span class="ruby-identifier">boolDays</span> = <span class="ruby-identifier">get_days</span>
+
+        <span class="ruby-keyword">for</span> <span class="ruby-identifier">i</span> <span class="ruby-keyword">in</span> <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-identifier">d</span>.<span class="ruby-identifier">length</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">boolDays</span>[<span class="ruby-identifier">i</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>
+                        <span class="ruby-identifier">x</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">d</span>[<span class="ruby-identifier">i</span>]
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">x</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-identifier">x</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>, <span class="ruby-string">&quot;and&quot;</span>)
+        <span class="ruby-keyword">return</span> (<span class="ruby-identifier">x</span><span class="ruby-operator">*</span><span class="ruby-string">&quot; &quot;</span>).<span class="ruby-identifier">chop</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_days" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_days</span><span
+            class="method-args">(days)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>TODO error checking</p>
+          
+          
+
+          
+          <div class="method-source-code" id="set_days-source">
+            <pre><span class="ruby-comment"># File app/models/availability.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_days</span>(<span class="ruby-identifier">days</span>)
+        <span class="ruby-identifier">this</span>.<span class="ruby-identifier">days</span> = <span class="ruby-constant">Integer</span>(<span class="ruby-identifier">days</span>, <span class="ruby-value">2</span>)
+        <span class="ruby-identifier">this</span>.<span class="ruby-identifier">save</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-start_time_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">start_time_string</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="start_time_string-source">
+            <pre><span class="ruby-comment"># File app/models/availability.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start_time_string</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">to_string</span>(<span class="ruby-keyword">self</span>[<span class="ruby-value">:start_time</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-times_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">times_string</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="times_string-source">
+            <pre><span class="ruby-comment"># File app/models/availability.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">times_string</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">start_time_string</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; - &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">end_time_string</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-to_string" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">to_string</span><span
+            class="method-args">(time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="to_string-source">
+            <pre><span class="ruby-comment"># File app/models/availability.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_string</span>(<span class="ruby-identifier">time</span>)
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">x</span>= (<span class="ruby-identifier">time</span><span class="ruby-operator">/</span><span class="ruby-value">60</span>).<span class="ruby-identifier">floor</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">rjust</span>(<span class="ruby-value">2</span>,<span class="ruby-string">&#39;0&#39;</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;:&quot;</span> <span class="ruby-operator">+</span> (<span class="ruby-identifier">time</span> <span class="ruby-operator">%</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">floor</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">rjust</span>(<span class="ruby-value">2</span>,<span class="ruby-string">&#39;0&#39;</span>)    
+        <span class="ruby-keyword">rescue</span>
+                <span class="ruby-identifier">x</span> = <span class="ruby-identifier">time</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">x</span>;
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
