@@ -15,10 +15,9 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
       <% if current_user %>
-        <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
         <li>
           <div class="dropdown">
-              <span class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><%= fa_icon "envelope" %></span>
+              <span class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><%= fa_icon "bell-o" %><span class="badge"><%= current_user.display_notifications.count %></span></span>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
               <% current_user.display_notifications.each do |notification| %>
               <li><%= link_to notification.message, notif_read_path(id: notification) %></li>
@@ -28,6 +27,7 @@
             </ul>
           </div>
         </li>
+        <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
       <% else %>
         <li><%= link_to 'School Registration', registration_customers_path %></li>
         <li><%= link_to 'Presenter Registration', registration_presenters_path %></li>

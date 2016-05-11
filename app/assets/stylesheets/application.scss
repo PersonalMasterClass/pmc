@@ -16,3 +16,14 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "font-awesome";
+
+
+.dropdown-toggle > i{
+  font-size: 1.7em;
+  padding-top: 13px;
+}
+.dropdown-toggle > .badge{
+	margin-bottom: 31px;
+    padding: 2px 6px 2px 6px;
+    background-color: #e80202;
+}
