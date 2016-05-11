@@ -3,7 +3,7 @@ class PresenterProfile < ActiveRecord::Base
 
   validates :bio_edit, length: { maximum: 5000 }
 
-  validates_size_of :picture_edit, maximum: 5.megabytes
+  validates_size_of :picture_edit, maximum: 10.megabytes
   validates_property :format, of: :picture_edit, in: ['jpeg', 'png',]
   validates_property :ext, of: :picture_edit, in: ['jpeg', 'png', 'JPEG', 'jpg', 'JPG', 'PNG']
   
@@ -18,10 +18,14 @@ class PresenterProfile < ActiveRecord::Base
   # => :bio, :bio_edit, :status, :presenter, 
   # dragonfly magic columns: :picture_uid, :picture_edit_uid, 
 
-  enum status: [:new_profile, :pending_admin, :pending_presenter, :approved]
+  enum status: [:new_profile, :pending_admin, :pending_presenter, :approved, :draft_admin, :draft_presenter]
 
   def self.unapproved_profiles
     PresenterProfile.where('status= ?', 1)
+  end
+
+  def self.admin_drafts
+    PresenterProfile.where('status= ?', 4)
   end
 
   def approve

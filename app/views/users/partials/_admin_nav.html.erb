@@ -4,7 +4,7 @@
 	</li>
   <li role="presentation" class="<%= p_rego_active?%>">
   	<%= link_to admin_pending_registrations_path do %>
-      Pending registrations <span class="badge"><%= @pending_user_count%> </span> 
+      Pending registrations <span class="badge"><%= @pending_user_count%> </span>
     <% end %>
 	</li>
   <li role="presentation" class="<%=p_profile_active?%>">
@@ -12,10 +12,19 @@
       Pending profile updates<span class="badge"> <%= @profile_count%> </span>
     <%end%>
   </li>
+  <li role="presentation" class="<%= suspended_users_active?  %>">
+    <%= link_to "Suspended Users", admin_suspended_users_path %>
+  </li>
+  <li role="presentation" class="<%= presenters_active?  %>">
+    <%= link_to "Presenters", admin_presenters_path %>
+  </li>
+  <li role="presentation" class="<%= schools_active?  %>">
+    <%= link_to "Schools", admin_customers_path %>
+  </li>
   <li role="presentation" class="<%= subject_active?%>">
   	<%= link_to "Subjects", subjects_path %>
   </li>
-  <li role="presentation" class="<%= subject_active?%> ">
+  <li role="presentation" class="<%= presenter_search_active?%> ">
     <%= link_to "Presenter Search", profiles_search_path %>
   </li>
 
