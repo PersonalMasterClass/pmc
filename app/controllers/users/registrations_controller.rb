@@ -95,15 +95,12 @@ before_filter :configure_sign_up_params, only: [:create]
                                  contact_title: params["customer"]["contact_title"])
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
-    resource.save
     
-      # Code here doesn't work with Devise    
-      # if resource.save
-      # else
-      #     render :new_customer
-      # end
-
-      # #Code from devise
+    if resource.save
+    else
+        render action: "new_customer"
+    end
+   # #Code from devise
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -124,7 +121,6 @@ before_filter :configure_sign_up_params, only: [:create]
     else
       clean_up_passwords resource
       set_minimum_password_length
-      render :new_customer
     end
   end
 
