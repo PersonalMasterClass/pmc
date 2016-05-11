@@ -34,11 +34,11 @@ module UsersHelper
 	end
 
 
-	def if_params_school_info?(params)
+	def if_params_school_info?(field, params)
 			if params[:school_info].nil?
 				''
 			else 
-				params[:school_info][:school_name]
+				params[:school_info][field]
 			end
 	end
 

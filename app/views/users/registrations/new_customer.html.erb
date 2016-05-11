@@ -23,7 +23,7 @@
    <%= fields_for :school_info do |school_info_fields| %>
   <div class="form-group">
     <%= f.label "School" %>
-    <%= school_info_fields.text_field :school_name,  value: if_params_school_info?(params),class: "form-control", :id=>"school_search" %>
+    <%= school_info_fields.text_field :school_name,  value: if_params_school_info?(:school_name,params),class: "form-control", :id=>"school_search" %>
   </div>
   <% end %>
 
