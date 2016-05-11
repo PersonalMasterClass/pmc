@@ -10,7 +10,7 @@ class PresenterProfilesController < ApplicationController
   def show
     @presenter = find_presenter
     @profile = @presenter.presenter_profile
-    @user = @presenter.get_user
+    @user = @presenter.user
     @availability = @presenter.availabilitys.order('availabilities.start_time ASC')
     
     if !session[:search_params].nil?

@@ -7,8 +7,8 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: true
   validates :email, length: { minimum: 8 }
   
-  has_one :presenter
-  has_one :customer
+  has_one :presenter, inverse_of: :user
+  has_one :customer, inverse_of: :user
   has_many :notifications
 
   accepts_nested_attributes_for :presenter

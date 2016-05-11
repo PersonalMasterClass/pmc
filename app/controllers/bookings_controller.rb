@@ -88,7 +88,7 @@ class BookingsController < ApplicationController
       @presenter.bids.last.bid_date = DateTime.now
     end
 
-    Notification.send_message(@booking.creator.get_user, "#{@presenter.first_name} has expressed an interest in this booking.", "/bookings/#{@booking.id}")
+    Notification.send_message(@booking.creator.user, "#{@presenter.first_name} has expressed an interest in this booking.", "/bookings/#{@booking.id}")
     flash[:success] = "You have successfully placed a bid on this booking."
     redirect_to bookings_open_path
   end
@@ -99,7 +99,7 @@ class BookingsController < ApplicationController
       if booking.creator == current_user.customer
         booking.chosen_presenter = @presenter
         booking.save
-        Notification.send_message(@presenter.get_user, "You've been locked in for a booking!", "/bookings/#{booking.id}")
+        Notification.send_message(@presenter.user, "You've been locked in for a booking!", "/bookings/#{booking.id}")
       end
     end
     flash[:success] = "#{@presenter.first_name} #{@presenter.last_name} has been assigned to this booking."
