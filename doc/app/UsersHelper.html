@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module UsersHelper - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-dashboard_active-3F">#dashboard_active?</a>
+    
+    <li ><a href="#method-i-if_params_customer-3F">#if_params_customer?</a>
+    
+    <li ><a href="#method-i-if_params_presenter-3F">#if_params_presenter?</a>
+    
+    <li ><a href="#method-i-if_params_school_info-3F">#if_params_school_info?</a>
+    
+    <li ><a href="#method-i-p_profile_active-3F">#p_profile_active?</a>
+    
+    <li ><a href="#method-i-p_rego_active-3F">#p_rego_active?</a>
+    
+    <li ><a href="#method-i-pending_count">#pending_count</a>
+    
+    <li ><a href="#method-i-presenter_search_active-3F">#presenter_search_active?</a>
+    
+    <li ><a href="#method-i-presenters_active-3F">#presenters_active?</a>
+    
+    <li ><a href="#method-i-schools_active-3F">#schools_active?</a>
+    
+    <li ><a href="#method-i-search_active-3F">#search_active?</a>
+    
+    <li ><a href="#method-i-subject_active-3F">#subject_active?</a>
+    
+    <li ><a href="#method-i-suspended_users_active-3F">#suspended_users_active?</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-UsersHelper">
+  <h1 id="module-UsersHelper" class="module">
+    module UsersHelper
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-dashboard_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dashboard_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="dashboard_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dashboard_active?</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;users&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;index&#39;</span> 
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-if_params_customer-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">if_params_customer?</span><span
+            class="method-args">(field, params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="if_params_customer-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">if_params_customer?</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">params</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:customer</span>].<span class="ruby-identifier">nil?</span>
+                <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">params</span>[<span class="ruby-value">:customer</span>][<span class="ruby-identifier">field</span>]
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-if_params_presenter-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">if_params_presenter?</span><span
+            class="method-args">(field, params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="if_params_presenter-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">if_params_presenter?</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">params</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter</span>].<span class="ruby-identifier">nil?</span>
+                <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter</span>][<span class="ruby-identifier">field</span>]
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-if_params_school_info-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">if_params_school_info?</span><span
+            class="method-args">(field, params)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="if_params_school_info-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">if_params_school_info?</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">params</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:school_info</span>].<span class="ruby-identifier">nil?</span>
+                <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">params</span>[<span class="ruby-value">:school_info</span>][<span class="ruby-identifier">field</span>]
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-p_profile_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">p_profile_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="p_profile_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">p_profile_active?</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;presenter_profiles&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;pending&#39;</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-p_rego_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">p_rego_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="p_rego_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">p_rego_active?</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;users&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;registrations&#39;</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-pending_count" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pending_count</span><span
+            class="method-args">(presenter, customer)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="pending_count-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 2</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">pending_count</span>(<span class="ruby-identifier">presenter</span>, <span class="ruby-identifier">customer</span>)
+        <span class="ruby-identifier">total_pending</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">count</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">total_pending</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+                <span class="ruby-node">&quot;There are #{total_pending} pending registrations.&quot;</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-string">&quot;There are no pending registrations.&quot;</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-presenter_search_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">presenter_search_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="presenter_search_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 35</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">presenter_search_active?</span>
+                <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;search&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;index&#39;</span>
+        <span class="ruby-keyword">end</span>
+        
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">suspended_users_active?</span> 
+                <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;users&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;suspended_users&#39;</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">search_active?</span>
+                <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_page?</span>(<span class="ruby-identifier">profiles_search_path</span>)
+                        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">schools_active?</span>
+                <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_page?</span>(<span class="ruby-identifier">admin_customers_path</span>)
+                        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">presenters_active?</span>
+                <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_page?</span>(<span class="ruby-identifier">admin_presenters_path</span>)
+                        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+        <span class="ruby-keyword">end</span>
+
+
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">if_params_school_info?</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">params</span>)
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:school_info</span>].<span class="ruby-identifier">nil?</span>
+                        <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">params</span>[<span class="ruby-value">:school_info</span>][<span class="ruby-identifier">field</span>]
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">if_params_customer?</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">params</span>)
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:customer</span>].<span class="ruby-identifier">nil?</span>
+                        <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">params</span>[<span class="ruby-value">:customer</span>][<span class="ruby-identifier">field</span>]
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">def</span> <span class="ruby-identifier">if_params_presenter?</span>(<span class="ruby-identifier">field</span>, <span class="ruby-identifier">params</span>)
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter</span>].<span class="ruby-identifier">nil?</span>
+                        <span class="ruby-string">&#39;&#39;</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter</span>][<span class="ruby-identifier">field</span>]
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-presenters_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">presenters_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="presenters_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">presenters_active?</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_page?</span>(<span class="ruby-identifier">admin_presenters_path</span>)
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-schools_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">schools_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="schools_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 51</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">schools_active?</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_page?</span>(<span class="ruby-identifier">admin_customers_path</span>)
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-search_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">search_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="search_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">search_active?</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_page?</span>(<span class="ruby-identifier">profiles_search_path</span>)
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-subject_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">subject_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="subject_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">subject_active?</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;subjects&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;index&#39;</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-suspended_users_active-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">suspended_users_active?</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="suspended_users_active-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/users_helper.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">suspended_users_active?</span> 
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;users&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;suspended_users&#39;</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;active&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
