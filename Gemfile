@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
 
+# simple form
+gem 'simple_form'
+
+# mail form
+gem 'mail_form'
+
 # page scraper
 gem 'nokogiri'
 # enviroment variables

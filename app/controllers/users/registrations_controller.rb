@@ -123,7 +123,20 @@ before_filter :configure_sign_up_params, only: [:create]
   end
 
   def contact_form
+      @contact = Contact_Form.new
       render action: "contact_form"
+  end
+
+  def contact_form_create
+    @contact = Contact_Form.new(params[:contact])
+    @contact.request = request
+    if @contact.deliver
+      flash.now[:notice] = 'Thank you for your message. We will contact you soon!'
+    else
+      flash.now[:error] = 'Cannot send message.'
+    end
+      render action: "contact_form"
+
   end
 
   def approve_registration
