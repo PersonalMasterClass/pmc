@@ -34,6 +34,9 @@ module UsersHelper
 	end
 	def presenter_search_active?
 		unless params[:controller] == 'search' && params[:action] == 'index'
+			return ''
+		end
+		return 'active'
 	end
 	
 	def suspended_users_active? 
@@ -54,6 +57,7 @@ module UsersHelper
 		end
 		return 'active'
 	end
+
 	def presenters_active?
 		unless current_page?(admin_presenters_path)
 			return ''
@@ -77,6 +81,7 @@ module UsersHelper
 			params[:customer][field]
 		end
 	end
+
 	def if_params_presenter?(field, params)
 		if params[:presenter].nil?
 			''

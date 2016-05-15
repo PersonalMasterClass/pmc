@@ -11,18 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160422051634) do
+ActiveRecord::Schema.define(version: 20160511141021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "availabilities", force: :cascade do |t|
-    t.integer  "days"
-    t.integer  "start_time"
-    t.integer  "end_time"
     t.integer  "presenter_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "start_time",   default: 0
+    t.integer  "end_time",     default: 0
+    t.boolean  "monday",       default: false
+    t.boolean  "tuesday",      default: false
+    t.boolean  "wednesday",    default: false
+    t.boolean  "thursday",     default: false
+    t.boolean  "friday",       default: false
+    t.boolean  "saturday",     default: false
+    t.boolean  "sunday",       default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "bids", force: :cascade do |t|
@@ -50,9 +56,15 @@ ActiveRecord::Schema.define(version: 20160422051634) do
     t.integer  "approval"
     t.integer  "subject_id"
     t.boolean  "presenter_paid",       default: false
+    t.integer  "chosen_presenter_id"
+    t.integer  "creator_id"
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
+    t.integer  "rate"
   end
+
+  add_index "bookings", ["chosen_presenter_id"], name: "index_bookings_on_chosen_presenter_id", using: :btree
+  add_index "bookings", ["creator_id"], name: "index_bookings_on_creator_id", using: :btree
 
   create_table "customers", force: :cascade do |t|
     t.string   "phone_number"
@@ -101,6 +113,7 @@ ActiveRecord::Schema.define(version: 20160422051634) do
     t.datetime "updated_at",     null: false
     t.integer  "user_id"
     t.integer  "school_info_id"
+    t.integer  "rate"
   end
 
   add_index "presenters", ["user_id"], name: "index_presenters_on_user_id", using: :btree

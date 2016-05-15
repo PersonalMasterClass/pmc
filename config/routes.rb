@@ -62,6 +62,8 @@ root 'home#index'
   get 'admin/schools' => 'users#customers', as: 'admin_customers'
 
   get 'admin/presenters' => 'users#presenters', as: 'admin_presenters'
+
+  resources :notifications, only: :index
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
