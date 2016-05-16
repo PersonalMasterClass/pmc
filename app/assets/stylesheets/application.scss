@@ -20,9 +20,16 @@
 @import "variables";
 @import "branding";
 
+//  Some globals
+html { background: darken($pmc_blue, 7.5%); }
+a {
+  transition: color 250ms ease;
+}
+
 body {
   margin: $navbar-height 0 0 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  background: none;
 
   //  Navbar
   nav.navbar-fixed-top {
@@ -64,15 +71,19 @@ body {
   footer {
     width: 100%;
     float: left;
+    color: #EEEEEE;
     .footer-content,
     .afterfooter {
       width: 100%;
       float: left;
     }
     .footer-content {
-      background: #BBB;
+      background: $pmc_blue;
       .container {
         display: table;
+        $vPadding: 12px;
+        padding-top: $vPadding;
+        padding-bottom: $vPadding;
         section {
           display: table-cell;
           width: 33%;
@@ -96,7 +107,7 @@ body {
     }
     .afterfooter {
       width: 100%;
-      background:#AAA;
+      background:darken($pmc_blue, 7.5%);
       padding: 8px 0;
       .left, .right { width: 50%; }
       .left { float:left; }
@@ -115,3 +126,6 @@ body {
     padding: 2px 6px 2px 6px;
     background-color: #e80202;
 }
+
+//  Hide the debug_dump that appears when we're working in !Production
+pre.debug_dump { display: none !important; }
