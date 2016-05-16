@@ -1,21 +1,25 @@
 <h1>Presenters</h1>
 
 <% if @presenters.present? %>
-  <table class = "table table-bordered">
-    <tr>
-      <th></th>
-      <th>Name</th>
-      <th>Status</th>
-      <th>Action</th>
-    </tr>
-    <% @presenters.each do |presenter| %>
-      <%  user = presenter.user %>
-      <tr> 
-        <td> <%= image_tag presenter.profile_picture_path('50x50#'), class: "img-responsive" %></td>
-        <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>
-        <td> <%= user.status %>
-        <td> <%= link_to "View", presenter_profile_path(presenter), class: "btn btn-primary" %> </td>
-      </tr>  
-    <% end %>
+  <table class = "table table-bordered" id='presenters_table'>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @presenters.each do |presenter| %>
+        <%  user = presenter.user %>
+        <tr> 
+          <td> <%= image_tag presenter.profile_picture_path('50x50#'), class: "img-responsive" %></td>
+          <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>
+          <td> <%= user.status %></td>
+          <td> <%= link_to "View", presenter_profile_path(presenter), class: "btn btn-primary" %> </td>
+        </tr>  
+      <% end %>
+    </tbody>
   </table>
 <% end %>
