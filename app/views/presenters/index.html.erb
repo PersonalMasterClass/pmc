@@ -1,6 +1,7 @@
-
+		<% if current_user.presenter.rate.nil? %>
+			<%= render 'presenters/partials/rate'%>
+		<% end %>		
 <div class = "col-md-9">
-
 	<div class = "p-container">
 		<h2> Presenter Dashboard </h1>
 		<h3> Upcoming bookings </h3>

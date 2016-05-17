@@ -11,6 +11,7 @@ class Presenter < ActiveRecord::Base
   validates :vit_number, format: /\A^\d{6}$\Z/
   validate :vit_number_must_be_valid
   validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
+  validates :rate, numericality: true
 
   def vit_number_must_be_valid
     unless VitValidation.check_vit(first_name, last_name, vit_number)
@@ -37,6 +38,22 @@ class Presenter < ActiveRecord::Base
     else
       return "#{self.first_name} #{self.last_name.at(0)}"
     end      
+  end
+
+  def remove_upcoming_bookings
+    bookings = Booking.upcoming(self.user)
+    if bookings.present?
+      bookings.each do  |booking|
+        if booking.remove_chosen_presenter == self
+          booking.remove_chosen_presenter
+          Notification.send_message(booking.creator.user, "The presenter for this booking are now unavailable", booking_path(booking))
+        end
+      end
+    end
+  end
+
+  def remove_all_bids
+    Bids.where(presenter_id: self).delete_all
   end
 
 end

@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511141021) do
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 20160516023149) do
+=======
+ActiveRecord::Schema.define(version: 20160517091518) do
+>>>>>>> 628138864643e607a33015684cb9edfea66efc2b
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160511141021) do
     t.integer  "booking_id"
     t.integer  "presenter_id"
     t.datetime "bid_date"
+    t.integer  "rate"
   end
 
   create_table "booked_customers", force: :cascade do |t|
@@ -61,10 +66,17 @@ ActiveRecord::Schema.define(version: 20160511141021) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.integer  "rate"
+<<<<<<< HEAD
+    t.boolean  "help_required",        default: false
+=======
+    t.integer  "period"
+    t.datetime "deleted_at"
+>>>>>>> 628138864643e607a33015684cb9edfea66efc2b
   end
 
   add_index "bookings", ["chosen_presenter_id"], name: "index_bookings_on_chosen_presenter_id", using: :btree
   add_index "bookings", ["creator_id"], name: "index_bookings_on_creator_id", using: :btree
+  add_index "bookings", ["deleted_at"], name: "index_bookings_on_deleted_at", using: :btree
 
   create_table "customers", force: :cascade do |t|
     t.string   "phone_number"

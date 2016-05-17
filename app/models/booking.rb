@@ -1,4 +1,5 @@
 class Booking < ActiveRecord::Base
+  acts_as_paranoid
   has_many :booked_customers
   has_many :customers, through: :booked_customers
   belongs_to :chosen_presenter, class_name: "Presenter"
@@ -53,5 +54,15 @@ class Booking < ActiveRecord::Base
       end
     end
     return false
+  end
+
+  #Removes chosen presenter from booking and notifies creator of that booking
+  def remove_chosen_presenter
+    self.chosen_presenter = nil
+    self.save
+  end
+
+  def remove_all_bids
+    Bid.where(bookind_id: self).delete_all
   end
 end

@@ -15,12 +15,16 @@ root 'home#index'
     get 'admin/pending_registrations' => 'users#registrations'
     get 'users/:id' => 'users#show', as: "user"
   
-  resources :customers, only: [:index, :show]
+  #resources :customers, only: [:index, :show], as: "schools" 
+
+  get 'schools' => 'customers#index', as: "customers"
+  get 'school/:id' => 'customer#show', as: "customer"
+
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
-    get 'registration/customers' => 'users/registrations#new_customer'
-    post 'registration/customers' => 'users/registrations#create_customer'
+    get 'registration/schools' => 'users/registrations#new_customer'
+    post 'registration/schools' => 'users/registrations#create_customer'
     get 'registration/vit_validation' => 'users/registrations#vit_validation'
   end
 
@@ -35,7 +39,9 @@ root 'home#index'
 
   get 'bookings/open' => 'bookings#open'
   get 'bookings/bid/:id' => 'bookings#bid', as: "bookings_bid"
+  post 'bookings/set_bid/' => 'bookings#set_bid', as: "bookings_set_bid"
   get 'bookings/choose_presenter/:presenter_id' => 'bookings#choose_presenter', as: "bookings_choose"
+  get 'bookings/:id/gethelp' =>'bookings#get_help', as: 'bookings_help'
   resources :bookings
   
   resources :presenters do
@@ -43,7 +49,9 @@ root 'home#index'
     resources :availabilities
     resources :subjects
     get 'edit_subjects' => 'presenters#edit_subjects'
-    post 'add_subject' => 'presenters#add_subject'
+    post 'edit_subjects' => 'presenters#add_subject'
+    get 'rate' => 'presenters#rate'
+    
     post 'remove_subject' => 'presenters#remove_subject'
   end
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
@@ -63,7 +71,7 @@ root 'home#index'
   get 'admin/presenters' => 'users#presenters', as: 'admin_presenters'
 
   resources :notifications, only: :index
-  
+  post 'set_rate' => 'presenters#set_rate', as: "set_rate"  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

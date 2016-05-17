@@ -1,6 +1,15 @@
 <h3> Current bids </h3>
-<li> 
-<% @booking.presenters.each do |presenter| %>
-  <%= link_to "#{presenter.first_name} #{presenter.last_name}", presenter_profile_path(presenter) %>
+<% if current_user.customer? %>
+  <% if @booking.help_required %>
+    <div>You have asked for help choosing a presenter. </div>
+  <% else %>
+    <%= link_to "Help me choose", bookings_help_path(@booking), class: 'btn btn-default' if @booking.presenters.count > 1 %>
+  <% end %>
 <% end %>
-</li>
+<ul>
+  <li> 
+    <% @booking.presenters.each do |presenter| %>
+      <%= link_to presenter.get_private_full_name(current_user), presenter_profile_path(presenter) %>
+    <% end %>
+  </li>
+</ul>
