@@ -1,0 +1,7 @@
+<h1>Presenters of <%= @subject.name %> </h1>
+<ul>
+	<% @presenters.each do |p| %>
+	<li> <%= link_to p.first_name + " " + p.last_name, presenter_profile_path(p) %> </li>
+
+	<% end %>
+</ul>

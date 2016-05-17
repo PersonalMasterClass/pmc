@@ -30,6 +30,7 @@ root 'home#index'
 
 
   get "/school_info/find" => 'school_info#find'
+  get "school_info/:id" => 'school_info#show'
 
   get "/subjects/find" => 'subjects#find'
   resources :subjects do

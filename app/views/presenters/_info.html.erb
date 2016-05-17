@@ -1,7 +1,7 @@
 	<% if @presenter.present? %>
 
 		<h3><%= @presenter.get_private_full_name(current_user) %>'s Profile </h3>
-    <p><%= image_tag @presenter.profile_picture_path('400x300#'), class: "img-responsive" %></p>
+    <p><%= image_tag @presenter.profile_picture_path('225x300#'), class: "img-responsive" %></p>
 	  <p>Name: <%= @presenter.get_private_full_name(current_user) %></p>
 
 	  <% #hide personal information from everyone but admin and owner of profile 
