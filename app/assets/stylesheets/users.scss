@@ -1,6 +1,7 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "branding";
 table.pending-user-registrations {
   /*
     We set the first th to 99% width, so that the action column will
@@ -18,7 +19,8 @@ div.user-auth-dialog {
       max-width: 640px;
       margin: 0 auto;
       padding: 24px;
-      background: #EEE;
+      background: lighten($pmc_yellow, 15%);
+      border-radius: 2px;
       form.new_user {
         margin-bottom: 16px;
         .remember-wrap {

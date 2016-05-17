@@ -27,3 +27,8 @@ Thumbs.db
 
 # Ignore SASS/SCSS caches
 .sass-cache
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
