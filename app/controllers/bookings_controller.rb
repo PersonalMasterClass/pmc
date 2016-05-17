@@ -2,11 +2,12 @@ class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
 
   def index  
-    @upcoming = Booking.upcoming(current_user) 
-    @completed = Booking.completed(current_user)
-    if current_user.user_type == "customer"
-      @upcoming += Booking.where(creator: current_user.customer)
-    end
+    # Refactored to presenter/customer/admin controllers
+    # @upcoming = Booking.upcoming(current_user) 
+    # @completed = Booking.completed(current_user)
+    # if current_user.user_type == "customer"
+      # @upcoming += Booking.where(creator: current_user.customer)
+    # end
   end
 
   def show
