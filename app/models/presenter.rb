@@ -53,7 +53,7 @@ class Presenter < ActiveRecord::Base
   end
 
   def remove_all_bids
-    Bids.where(presenter_id: self).delete_all
+    Bid.where(presenter_id: self).delete_all
   end
 
 end

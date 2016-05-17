@@ -23,8 +23,9 @@ root 'home#index'
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
-    get 'registration/schools' => 'users/registrations#new_customer'
-    post 'registration/schools' => 'users/registrations#create_customer'
+    #TODO: customers to schools
+    get 'registration/customers' => 'users/registrations#new_customer' #as: "registrations_customers"
+    post 'registration/customers' => 'users/registrations#create_customer' #as: "registrations_customers"
     get 'registration/vit_validation' => 'users/registrations#vit_validation'
   end
 
