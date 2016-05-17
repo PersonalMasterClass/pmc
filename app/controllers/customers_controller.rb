@@ -2,6 +2,7 @@ class CustomersController < ApplicationController
 	before_filter :has_access, :only => [:show]
 
   def index
+  	@search_params = params();
 	end
 
 	def show
