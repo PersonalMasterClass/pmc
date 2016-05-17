@@ -2,7 +2,6 @@
  <% unless @booking.presenters.include?(current_user.presenter) %>
 	<div class = "container">
 		<%= form_tag(:controller => "bookings", :action => "set_bid", method: "post") do %>
-			<%= label_tag :rate %>
 			<%= text_field_tag :rate %>
 			<%= hidden_field_tag "id", params[:id]  %>
 			<%= submit_tag "Express interest", class: "btn btn-success" %>

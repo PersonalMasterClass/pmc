@@ -45,7 +45,7 @@ root 'home#index'
     get 'edit_subjects' => 'presenters#edit_subjects'
     post 'edit_subjects' => 'presenters#add_subject'
     get 'rate' => 'presenters#rate'
-    post 'set_rate' => 'presenters#set_rate'
+    
     post 'remove_subject' => 'presenters#remove_subject'
   end
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
@@ -65,7 +65,7 @@ root 'home#index'
   get 'admin/presenters' => 'users#presenters', as: 'admin_presenters'
 
   resources :notifications, only: :index
-  
+  post 'set_rate' => 'presenters#set_rate', as: "set_rate"  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
