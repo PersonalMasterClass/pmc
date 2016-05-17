@@ -17,7 +17,9 @@ class SearchController < ApplicationController
 	    	results_added = add_presenters(by_name, results_added)
 	    	results_added = add_presenters(by_subject, results_added)
 	    	results_added = add_presenters(by_availability, results_added)
+	    	@presenter |= by_subject
 	    	@presenter = remove_non_profiles(@presenter)
+
 	    	
 	  end	
 	    

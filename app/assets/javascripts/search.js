@@ -14,6 +14,7 @@ $(document).on('ready page:load', function(){
 						id: m.id
 					};
 				});
+				$("#ui-id-1").addClass("dropdown-menu");
 				response(array);
 			});
 		},
