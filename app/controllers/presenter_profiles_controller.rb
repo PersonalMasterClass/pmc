@@ -46,6 +46,7 @@ class PresenterProfilesController < ApplicationController
         @presenter_profile.status = :pending_admin
         if @presenter_profile.save
           flash[:info] = "Profile submitted to admin for approval"
+          notify_admin_profile_changes(@presenter)
           redirect_to presenters_path
         else
           render 'new'
@@ -104,9 +105,11 @@ class PresenterProfilesController < ApplicationController
             if current_user.user_type == "admin"
               @presenter_profile.update_attribute(:status, :pending_presenter)
               flash[:info] = "Profile changes submitted to presenter for approval"
+              Notification.send_message(@presenter.user, "You have pending profile changes to review from an Admin", presenter_profile_path(@presenter))
             else #current user is profile owner
               @presenter_profile.update_attribute(:status, :pending_admin)
               flash[:info] = "Profile changes submitted to admin for approval"
+              notify_admin_profile_changes(@presenter)
             end
             redirect_to presenters_path
           else
@@ -152,7 +155,7 @@ class PresenterProfilesController < ApplicationController
       if current_user.user_type == "admin"
         if profile.approve
           flash[:info] = "This profile has been approved"
-          #TODO: send notification to presenter
+          Notification.send_message(@presenter.user, "Your profile changes have been approved.", presenter_profile_path(@presenter))
           redirect_to presenter_profile_path(presenter)
         else
           flash[:danger] = "Something went wrong"
@@ -167,7 +170,7 @@ class PresenterProfilesController < ApplicationController
     #if waiting for profile owner approval
     elsif profile.status == "pending_presenter"
       #check if logged in presenter is profile owner
-      if presenter == Presenter.find_by(user_id: current_user)
+      if presenter == current_user.presenter
         if profile.approve
           flash[:info] = "Your profile has been approved"
           redirect_to presenter_profile_path(presenter)
@@ -204,6 +207,10 @@ class PresenterProfilesController < ApplicationController
 
     def find_presenter
       Presenter.find(params[:presenter_id])
+    end
+
+    def notify_admin_profile_changes(presenter)
+      Notification.notify_admin("#{presenter.first_name} #{presenter.last_name} has submitted a profile for approval", presenter_profile_path(presenter))
     end
 
     #before filters

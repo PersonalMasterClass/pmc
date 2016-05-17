@@ -1,15 +1,18 @@
 <div>
 	<% if @booking.present? %>
 		<h3>Booking for <%= @booking.subject.name %> 	<%= booked_label(@booking) %> </h3>
-
+    <% if current_user.admin? %>
+      Owner: <%= link_to "#{@creator.first_name} #{@creator.last_name}", customer_path(@creator) %>  
+    <% end %> 
 		<p> Date: <%= @booking.booking_date.strftime("%d/%m/%Y") %> </p>
 		<p> Time: <%= @booking.booking_date.strftime("%H:%M %p") %> - <%= duration(@booking) %> </p>
 
 	  <p>Subject: <%= @booking.subject.name %></p>
   <% end %>
 
-  <% if current_user.customer == @booking.creator && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
-  	<ul><%= render 'bookings/partials/bids', object: @booking %></ul>
+  <% if (current_user.customer == @booking.creator || current_user.admin?) && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
+
+  	<%= render 'bookings/partials/bids', object: @booking %>
   <% end %>
 
   <%= render 'partials/presenter_actions', object: @booking %>
