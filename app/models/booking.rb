@@ -1,4 +1,5 @@
 class Booking < ActiveRecord::Base
+  acts_as_paranoid
   has_many :booked_customers
   has_many :customers, through: :booked_customers
   belongs_to :chosen_presenter, class_name: "Presenter"

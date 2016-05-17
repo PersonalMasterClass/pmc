@@ -114,7 +114,7 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:duration_minutes, :presenter_paid)
+      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period)
     end
 
     def admin_or_customer_logged_in

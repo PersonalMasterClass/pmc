@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517070527) do
+ActiveRecord::Schema.define(version: 20160517091518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,10 +62,13 @@ ActiveRecord::Schema.define(version: 20160517070527) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.integer  "rate"
+    t.integer  "period"
+    t.datetime "deleted_at"
   end
 
   add_index "bookings", ["chosen_presenter_id"], name: "index_bookings_on_chosen_presenter_id", using: :btree
   add_index "bookings", ["creator_id"], name: "index_bookings_on_creator_id", using: :btree
+  add_index "bookings", ["deleted_at"], name: "index_bookings_on_deleted_at", using: :btree
 
   create_table "customers", force: :cascade do |t|
     t.string   "phone_number"
