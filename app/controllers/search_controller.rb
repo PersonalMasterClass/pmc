@@ -35,10 +35,11 @@ class SearchController < ApplicationController
 	  end
 	  	return []
   end
-  # Check if anything has been entered
+  # Check if anything has been entered 
 	  def any_present?
-	    return !(params[:subject_id].blank? && params[:date_part].blank? && 
-	    	params[:time_part].blank? && params[:first_name].blank?)
+	    # return !(params[:subject_id].blank? && params[:date_part].blank? && 
+	    # 	params[:time_part].blank? && params[:first_name].blank?)
+			return !params[:subject_id].blank?
 	  end
 
 	  # Add found presenters to array

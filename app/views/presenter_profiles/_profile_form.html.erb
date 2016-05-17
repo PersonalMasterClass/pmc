@@ -14,7 +14,7 @@
   <% end %>
   <div class="actions">
     <%= f.submit "Save Draft", name: 'save',  class: "btn btn-default" %>
-    <%= f.submit "Submit", name: 'submit', disabled: 'true', id: 'submitBtn', class: "btn btn-default disabled"  %>
+    <%= f.submit "Submit", name: 'submit',  id: 'submitBtn', class: "btn btn-default"  %>
   </div>
   
   <div class="form-group">
@@ -31,7 +31,7 @@
   </div>   
   <div class="actions">
     <%= f.submit "Save Draft", name: 'save', class: "btn btn-default" %>
-    <%= f.submit "Submit", name: 'submit', disabled: 'true', id: 'submitBtn2', class: "btn btn-default"  %>
+    <%= f.submit "Submit", name: 'submit', id: 'submitBtn2', class: "btn btn-default"  %>
   </div> 
 <% end %>
 
@@ -44,4 +44,4 @@
   });
 </script>
 
-<%= tinymce_assets %>
+ <%= tinymce_assets %> 
