@@ -17,6 +17,16 @@ class PresentersController < ApplicationController
   	@presenter = current_user.presenter
   end
 
+  def rate
+  end
+  def set_rate
+    @presenter = current_user.presenter
+    @presenter.rate = params[:rate]
+    @presenter.save(:validate => false)
+    flash[:success] = "You have set your base rate to $#{@presenter.rate}"
+    redirect_to presenters_path
+  end
+
   # add a subject to the presenter's subject
   def add_subject
   	@subject = Subject.find_by(name: params[:subjects][:name])
