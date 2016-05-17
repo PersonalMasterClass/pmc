@@ -3,6 +3,8 @@ class CustomersController < ApplicationController
 
   def index
   	@search_params = params();
+  	@upcoming = Booking.upcoming(current_user) 
+  	@bookings = Booking.where(shared: true)
 	end
 
 	def show
