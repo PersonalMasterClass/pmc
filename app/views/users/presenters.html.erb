@@ -1,0 +1,36 @@
+<h1>Presenters</h1>
+
+<% if @presenters.present? %>
+  <table class = "table table-bordered" id='presenters_table'>
+    <thead>
+      <tr>
+        <th></th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Subjects</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @presenters.each do |presenter| %>
+        <%  user = presenter.user %>
+        <tr> 
+          <td> <%= image_tag presenter.profile_picture_path('50x50#'), class: "img-responsive" %></td>
+          <td> <%= presenter.first_name %></td>
+          <td> <%= presenter.last_name %> </td>
+          <td> <% if presenter.subjects.present? %>
+            <ul>
+              <% presenter.subjects.each do |sub| %>
+               <li><%= sub.name %></li>
+              <% end %>
+            </ul>
+            <% end %>
+          </td>
+          <td> <%= user.status %></td>
+          <td> <%= link_to "View", presenter_profile_path(presenter), class: "btn btn-primary" %> </td>
+        </tr>  
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

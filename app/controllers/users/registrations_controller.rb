@@ -1,7 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
-
   def new_presenter
     # Code from Devise 
     build_resource({})
@@ -28,7 +27,7 @@ before_filter :configure_sign_up_params, only: [:create]
     resource.presenter = presenter
     resource.save
 
-#     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school'])
+    # customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school'])
     # resource.customer = customer
     # resource.save
 
@@ -45,7 +44,8 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # Send notification to admin
-        Notification.new_registration
+        Notification.send_message(resource, "Welcome! Set your base rate!", root_path)
+        Notification.notify_admin("A new registration has been submitted for approval.", admin_pending_profiles_path)
         # redirect_to new_presenter_presenter_profile_path(presenter), notice: "Whilst your account is pending approval, you can continue to complete your profile."
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."
@@ -58,14 +58,28 @@ before_filter :configure_sign_up_params, only: [:create]
     end
   end
 
+  def vit_validation
+    # first check to see if the three parameters we use are populated
+    if params[:first_name] != "" && params[:last_name] != "" && params[:vit_number] != ""
+      vit = VitValidation.check_vit(params[:first_name], params[:last_name], params[:vit_number])
+      render json: vit
+    end
+  end
+
   def new_customer
     # Code from Devise 
-    build_resource({})
+    # Params by default have two hashes; controller and action
+    # If validation fails, params will have more hash values
+    # if params.count > 2
+    #   build_resource(params)
+    # else
+      build_resource({})
+    # end
     set_minimum_password_length
     # resource.build_presenter
     yield resource if block_given?
     respond_with self.resource
-
+    # resource = User.new
   end
 
   def create_customer
@@ -84,8 +98,7 @@ before_filter :configure_sign_up_params, only: [:create]
     resource.customer = customer
     resource.save
 
-
-    #Code from devise
+   # #Code from devise
     yield resource if block_given?
     if resource.persisted?
       if resource.active_for_authentication?
@@ -98,7 +111,7 @@ before_filter :configure_sign_up_params, only: [:create]
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
         # Send notification to admin
-        Notification.new_registration
+        Notification.notify_admin("A new registration has been submitted for approval.", admin_pending_profiles_path)
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."
         redirect_to root_url

@@ -1,9 +1,8 @@
+class VitValidation
 require 'open-uri'
 
-class VitValidation
-
 # function to check if a given VIT number is valid, given a presenter First Name, Last Name and VIT
-	def check_vit(presenterFirstName, presenterLastName, presenterVIT)
+	def self.check_vit(presenterFirstName, presenterLastName, presenterVIT)
 		page_url = "http://www.vit.vic.edu.au/search-the-register/_nocache?first_name=" + presenterFirstName + "&last_name=" + presenterLastName + "&reg_number=" + presenterVIT
 	  page = Nokogiri::HTML(open(page_url))   
 

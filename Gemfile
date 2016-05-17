@@ -1,7 +1,21 @@
 source 'https://rubygems.org'
 
+# soft delete model
+gem "paranoia", "~> 2.0"
 # page scraper
 gem 'nokogiri'
+# enviroment variables
+gem "figaro"
+
+#image upload
+gem 'dragonfly', '~> 1.0.12'
+gem 'dragonfly-s3_data_store'
+#gem "mini_magick"
+
+
+gem "font-awesome-rails"
+#bio editor
+gem 'tinymce-rails'
 
 # background jobs
 gem 'resque', :require => "resque/server"
@@ -40,6 +54,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # in-line editor
 gem 'best_in_place'
 
+gem 'jquery-turbolinks'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -59,6 +74,7 @@ group :development, :test do
   gem "capybara"
   gem 'rspec-rails', '~> 3.0'
   gem 'factory_girl_rails'
+  
 end
 
 group :production do
