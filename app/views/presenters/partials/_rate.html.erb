@@ -1,0 +1,7 @@
+<div class = "container">
+	<%= form_tag "set_rate", method: "post" do %>
+		<%= label_tag :rate %>
+		<%= text_field_tag :rate %>
+		<%= submit_tag "Set rate" %>
+	<% end %>
+</div>
