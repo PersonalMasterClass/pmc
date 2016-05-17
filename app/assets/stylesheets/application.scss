@@ -15,3 +15,93 @@
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome";
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,300);
+
+//  Re-defining some bootstrap variables
+$navbar-height: 64px;
+$navbar-logo-size: 50px;
+
+body {
+  margin: $navbar-height 0 0 0;
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+
+  //  Navbar
+  nav.navbar-fixed-top {
+    min-height: $navbar-height;
+    a.navbar-brand {
+      display: table;
+      padding: 0;
+      .logo, .text {
+        display: table-cell;
+        vertical-align: middle;
+        height: $navbar-height;
+        padding: 8px;
+      }
+      .logo {
+        img {
+          height: 100%;
+          width: auto;
+        }
+      }
+      .text {
+        line-height: 18px;
+      }
+    }
+  }
+
+  //  Footer
+  footer {
+    width: 100%;
+    float: left;
+    .footer-content,
+    .afterfooter {
+      width: 100%;
+      float: left;
+    }
+    .footer-content {
+      background: #BBB;
+      .container {
+        display: table;
+        section {
+          display: table-cell;
+          width: 33%;
+          h3 {
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+            margin: 4px 0;
+          }
+          ul {
+            text-transform: uppercase;
+            list-style: none;
+            padding-left: 8px;
+            margin: 0 0 8px 0;
+            font-size: 12px;
+            font-weight: 700;
+            li { cursor: pointer; }
+          }
+        }
+      }
+    }
+    .afterfooter {
+      width: 100%;
+      background:#AAA;
+      padding: 8px 0;
+      .left, .right { width: 50%; }
+      .left { float:left; }
+      .right { float:right; }
+    }
+  }
+}
+
+
+.dropdown-toggle > i{
+  font-size: 1.7em;
+  padding-top: 13px;
+}
+.dropdown-toggle > .badge{
+	margin-bottom: 31px;
+    padding: 2px 6px 2px 6px;
+    background-color: #e80202;
+}

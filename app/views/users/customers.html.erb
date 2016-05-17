@@ -1,0 +1,21 @@
+<h1>Schools</h1>
+
+<% if @customers.present? %>
+  <table class = "table table-bordered">
+    <tr>
+      <th>School</th>
+      <th>Contact Name</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    <% @customers.each do |customer| %>
+      <% user = customer.user %>
+      <tr> 
+        <td> <%= customer.school_info.school_name %></td>
+        <td> <%= "#{customer.first_name} #{customer.last_name}" %></td>
+        <td> <%= user.status %>
+        <td> <%= link_to "View", customer_path(customer), class: "btn btn-primary" %> </td>
+      </tr>  
+    <% end %>
+  </table>
+<% end %>

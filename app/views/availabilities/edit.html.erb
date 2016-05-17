@@ -1,0 +1,86 @@
+<div class="container">
+
+<h1>Edit Availability</h1>
+<%= form_for @availability, method: :put do |f| %>
+    <%= f.hidden_field :id, :value => params[:id] %>
+  <div class = "btn-group " data-toggle="buttons">
+    <!-- <label class="btn btn-default active keyContactToggle" for = "availability_monday">  -->
+   
+    <%= f.check_box :monday %>
+    <%= f.label :monday, "Mondays" %> <br>
+      
+    <%= f.check_box :tuesday %>
+    <%= f.label :tuesday, "Tuesdays" %> <br>
+
+    <%= f.check_box :wednesday %>
+    <%= f.label :wednesday, "Wednesdays" %> <br>
+
+    <%= f.check_box :thursday %>
+    <%= f.label :thursday, "Thursdays" %> <br>
+
+    <%= f.check_box :friday %>
+    <%= f.label :friday, "Fridays" %> <br>
+
+    <%= f.check_box :saturday %>
+    <%= f.label :saturday, "Saturndays" %> <br>
+
+    <%= f.check_box :sunday %>
+    <%= f.label :sunday, "Sundays" %><br>
+
+
+<!--
+    <label class="btn btn-default active keyContactToggle" for = "Monday_check"> 
+      <input type = "checkbox" name = "day_val" value="Monday" id="Monday_check">
+      Mondays
+    </label>
+
+    
+    <label class="btn btn-default active keyContactToggle" for = "Tuesday_check"> 
+      <input type = "checkbox" name = "day_val" value="Tuesday" id="Tuesday_check">
+      Tuesdays
+    </label>
+
+    
+    <label class="btn btn-default active keyContactToggle" for = "Wednesday_check"> 
+      <input type = "checkbox" name = "day_val" value="Wednesday" id="Wednesday_check">
+      Wednesdays
+    </label>
+    
+    <label class="btn btn-default active keyContactToggle" for = "Thursday_check">
+      <input type = "checkbox" name = "day_val" value="Thursday" id="Thursday_check"> 
+      Thursdays
+    </label>
+    
+    <label class="btn btn-default active keyContactToggle" for = "Friday_check">
+      <input type = "checkbox" name = "day_val" value="Friday" id="Friday_check"> 
+      Fridays
+    </label>
+    
+    <label class="btn btn-default active keyContactToggle" for = "Saturday_check"> 
+      <input type = "checkbox" name = "day_val" value="Saturday" id="Saturday_check">
+      Saturdays
+    </label>
+
+    <label class="btn btn-default active keyContactToggle" for = "Sunday_check"> 
+      <input type = "checkbox" name = "day_val" value="Saturday" id="Sunday_check">
+      Sundays
+    </label>-->
+  </div>
+
+  <div class="input-group">
+  <span class="input-group-addon " id="start_time" >start</span>
+  <input type="time" name="start_time" class="form-control glyphicon glyphicon-time" 
+  value = <%=@availability.start_time_string %>>
+  </div>
+  <div class="input-group">
+  <span class="input-group-addon " id="end_time" >end</span>
+  <input type="time" name= "end_time" class="form-control glyphicon glyphicon-time" value = <%=@availability.end_time_string %>>
+</div>
+
+  <div class="actions">
+    <%= f.submit "Save", :class => "btn-success" %>
+  </div>
+
+<% end %>
+
+</div>

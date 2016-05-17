@@ -1,10 +1,18 @@
 class SubjectsController < ApplicationController
 before_filter :find_subjects, :only => [:edit, :update, :destroy]
-before_filter :admin_logged_in, :only=> [:update, :destroy, :edit, :index]
+before_filter :admin_logged_in, :only=> [:update, :destroy, :edit]
 
 	def index
-		@subject = Subject.all
+		if current_user.user_type == "admin"
+			@subject = Subject.all
+		else
+			@subject = Subject.by_presenter(current_user.presenter)
+		end
+	end
 
+	def view_presenters
+		@subject = Subject.find(params[:subject_id])
+		@presenters = @subject.presenters
 	end
 
 	def create
@@ -14,6 +22,10 @@ before_filter :admin_logged_in, :only=> [:update, :destroy, :edit, :index]
 		else
 			render 'new'
 		end
+	end
+
+	def find
+		render json: Subject.where("name LIKE ?","%#{params[:term].titlecase}%")
 	end
 
 	def destroy
@@ -58,6 +70,7 @@ before_filter :admin_logged_in, :only=> [:update, :destroy, :edit, :index]
 		def admin_logged_in
 
       if current_user.nil? || (current_user.user_type != "admin")
+        # TODO remove this for production
         flash[:danger] = "Admin can only edit subjects."
         redirect_to root_url
       end

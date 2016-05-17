@@ -1,0 +1,14 @@
+<h1>Notifications</h1>
+<% if @notifications.present? %>
+  <table class = "table table-bordered">
+    <tr>
+      <th>Message</th>
+      <th></th>
+  <% @notifications.each do |notification| %>
+    <tr> 
+      <td> <%=notification.message %> </td>
+      <td> <%= link_to "View", notification.reference, class: "btn btn-info" %> </td>
+    </tr>  
+  <% end %>
+  </table>
+<% end %>

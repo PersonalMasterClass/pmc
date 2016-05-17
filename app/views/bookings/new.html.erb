@@ -1,50 +1,37 @@
 <%= form_for @booking, url:  bookings_path do |b| %>
+
   <div class = "form-group">
     <%= b.label "date" %><br>
-    <input type= "input" name = "date_part" id="date_part" value = "" class="form-control" /><br>
+    <input type= "input" name = "date_part" id="date_part" class="form-control" value = <%= is_empty?(@date_part) %> /><br>
     <%= b.label "time" %><br>
 
-    <input type = "time" name = "time_part" id="time_part" value = "" step = "300" class="form-control" />
+    <input type = "time" name = "time_part" id="time_part" value = <%= is_empty?(@time_part) %> step = "300" class="form-control" />
   </div>
   <div class = "form-group">
     <%= b.label :duration_minutes %><br>
-    <%= b.number_field :duration_minutes, step: 5, class: "form-control"  %>
-  </div>
-
-  <div class = "form-group">
-    <%= b.label :cancellation_message %><br>
-    <%= b.text_area :cancellation_message, class: "form-control" %>
+    <%= b.number_field :duration_minutes, step: 15, min: 60, value: 60, class: "form-control" %>
   </div>
  
   <div class = "form-group">
     <%= b.label :shared %>
-    <%= check_box_tag(:shared, "true", "true") %>    
+
+    <%= check_box_tag :shared, false, false  %>    
   </div>
+
 
   <div class = "form-group">
     <%= b.label :subject_id %><br>
-    <%= b.text_field :subject_id, class: "form-control" %>
+    <input type = "input" id="subject_select"  class = "form-control" value = "<%= is_empty?(@subject_select) %>"/>
   </div>
 
-  <div class = "form-group">
-    <%= b.label :presenter_paid %>
-    <%= check_box_tag(:presenter_paid, "true", "true") %>
-  </div>
+  <%= hidden_field_tag :subject_id, is_empty?(@subject_id) %>
+  <%= hidden_field_tag :presenter_id, is_empty?(@presenter_id) %>
+  <div class="col-sm-3">
+    
 
 
   <div class = "form-group">
     <%= b.submit "Create Booking", class: "btn btn-default"%>
   </div>
+
 <% end %>
-<!-- 
-    t.integer  "customer_id"
-    t.integer  "presenter_id"
-    t.datetime "booking_date"
-    t.integer  "duration_minutes"
-    t.string   "cancellation_message"
-    t.boolean  "shared",               default: false
-    t.integer  "approval"
-    t.integer  "subject_id"
-    t.boolean  "presenter_paid",       default: false
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at", -->

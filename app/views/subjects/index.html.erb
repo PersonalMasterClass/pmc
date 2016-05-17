@@ -22,12 +22,13 @@ $(document).on('ready page:load', function() {
 		<td class="col-md-4">
 			<%= best_in_place s, :note, :as => :input %>
 		</td>
-		<th class="col-md-2"><%= s.presenters.count %></th>
+		<th class="col-md-2"><%= link_to s.presenters.count, subject_presenters_path(s) %></th>
 		<td class="col-md-2" >
 			<%= link_to 'Delete', subject_path(s),
 			method: :delete, data:{confirm: 'Are you sure?'}, :class=>"btn btn-danger" %>
 		</td>
 	</tr>
 <% end %>
+</table>
 
 </div>

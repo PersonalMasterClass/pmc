@@ -1,15 +1,32 @@
 <div>
-	<%= render "presenters/info", object: @presenter %>
+  <%= render "presenters/info", object: @presenter %>
 </div>
 
 <div>
-	<% if @presenter.presenter_profile.present? %>
-	  <p>Bio: <%= @presenter.presenter_profile.bio %></p>
-	  <p>Picture: <%= @presenter.presenter_profile.picture %></p>
-    <%= render 'presenter_profiles/pending_profile_changes' %>
+	<% if !@profile.nil? && !@profile.bio.nil? %>
+	  <h2>Bio</h2>
+    <div class = "panel panel-default">
+      <div class = "panel-body">
+        <%= sanitize @profile.bio %>
+      </div>
+    </div>
+    Subjects: <br>
+    <ul>
+    	<% @presenter.subjects.each do |s| %>
+    		<li> <%= s.name %> </li>
+    	<% end%>
+    </ul>
   <% else %>
-	  <p> <%= fullname(@presenter) %> has not filled out profile. </p>
+	  <p> <%= @presenter.first_name %> has not filled out bio. </p>
+  <% end %>
+  <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
+	<%= render 'partials/admin_actions', object: @user %>
+  <%= render 'presenter_profiles/availabilities' %>
+
+  <% if current_user.customer? %>
+    <% unless @display_creator_actions %>
+      <%= render 'partials/customer_actions' %>
+    <% end %>
   <% end %>
 
-	<%= render 'partials/admin_actions', object: @user %>
 </div>

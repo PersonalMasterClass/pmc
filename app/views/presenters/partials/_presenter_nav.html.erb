@@ -6,14 +6,15 @@
   	<%= link_to "View Profile", presenter_profile_path(current_user.presenter) %>
 	</li>
   <li role="presentation" class="<%= edit_profile_active?%>">
-    <%= link_to "Edit Profile",  new_presenter_profile_path(current_user.presenter) %>
-  </li>
-  <li role="presentation" class="<%=open_bookings_active?%>">
-    <%= link_to "Open Bookings",  bookings_open_path %>
+    <%= edit_presenter_profile_link(current_user.presenter) %>
   </li>
   <li role="presentation" class="<%=my_bookings_active?%>">
-    <%= link_to "My Bookings", bookings_path %>
+    <%= link_to "Subjects", presenter_edit_subjects_path(current_user.presenter) %>
   </li>
+  <li role="presentation" class="<%=my_bookings_active?%>">
+    <%= link_to "Availabilities", presenter_availabilities_path(current_user.presenter) %>
+  </li>
+
 </ul>
 
 

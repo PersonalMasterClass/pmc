@@ -1,9 +1,15 @@
 	<% if @presenter.present? %>
-		<h3><%= fullname(@presenter)%>'s Profile </h3>
-	  <p>First Name: <%= @presenter.first_name %></p>
-	  <p>Last Name: <%= @presenter.last_name %></p>
+
+		<h3><%= @presenter.get_private_full_name(current_user) %>'s Profile </h3>
+    <p><%= image_tag @presenter.profile_picture_path('225x300#'), class: "img-responsive" %></p>
+	  <p>Name: <%= @presenter.get_private_full_name(current_user) %></p>
+
+	  <% #hide personal information from everyone but admin and owner of profile 
+		if current_user.user_type == "admin" || current_user == User.find(@presenter.user_id) %>
 	  <p>Vit Number: <%= @presenter.vit_number%></p>
 	  <p>ABN number: <%= @presenter.abn_number%></p>
 	  <p>Phone Number: <%= @presenter.phone_number%></p>
 	  <p>Vit Number: <%= @presenter.vit_number%></p>
+		<% end %>
   <% end %>
+  
