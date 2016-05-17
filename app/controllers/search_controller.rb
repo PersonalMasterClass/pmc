@@ -16,7 +16,13 @@ class SearchController < ApplicationController
 	    # Search:
 	    	results_added = add_presenters(by_name, results_added)
 	    	results_added = add_presenters(by_subject, results_added)
-	    	results_added = add_presenters(by_availability, results_added)
+	    	results_added = add_presenters(by_availability, results_added)	    
+    		if @presenter.empty?
+    			@no_profiles = 0
+    		else
+    			@no_profiles = @presenter.count
+    		end
+	    	
 	    	@presenter |= by_subject
 	    	@presenter = remove_non_profiles(@presenter)
 
