@@ -1,4 +1,5 @@
 class Booking < ActiveRecord::Base
+  acts_as_paranoid
   has_many :booked_customers
   has_many :customers, through: :booked_customers
   belongs_to :chosen_presenter, class_name: "Presenter"
@@ -32,6 +33,18 @@ class Booking < ActiveRecord::Base
   	end
   end
 
+  def self.suggested(user)
+    @user = User.check_user(user)
+    booking = nil
+    @user.subjects.each do |subject|
+      if booking.present?
+        booking  << Booking.joins(:subject).where(subjects: {name: subject.name})
+      else
+        booking = Booking.joins(:subject).where(subjects: {name: subject.name}) 
+      end
+    end
+    return booking
+  end
   def self.check_creator(presenter, creator)
     if presenter.bookings.present?
       presenter.bookings.each do |booking|

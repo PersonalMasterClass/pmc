@@ -1,12 +1,13 @@
 class BookingsController < ApplicationController
-  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
+  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :set_bid]
 
   def index  
-    @upcoming = Booking.upcoming(current_user) 
-    @completed = Booking.completed(current_user)
-    if current_user.user_type == "customer"
-      @upcoming += Booking.where(creator: current_user.customer)
-    end
+    # Refactored to presenter/customer/admin controllers
+    # @upcoming = Booking.upcoming(current_user) 
+    # @completed = Booking.completed(current_user)
+    # if current_user.user_type == "customer"
+      # @upcoming += Booking.where(creator: current_user.customer)
+    # end
   end
 
   def show
@@ -77,7 +78,7 @@ class BookingsController < ApplicationController
     @bookings = Booking.where(chosen_presenter_id: nil)
   end
 
-  def bid
+  def set_bid
     @booking = Booking.find(params[:id])
     @presenter = current_user.presenter
     # This will create a bi directional association, @booking will contain @presenter as well.
@@ -86,12 +87,16 @@ class BookingsController < ApplicationController
       redirect_to bookings_open_path
     else
       @presenter.bookings << @booking
-      @presenter.bids.last.bid_date = DateTime.now
+      @bid = Bid.where(booking: @booking, presenter: @presenter).first
+      @bid.bid_date = DateTime.now
+      @bid.rate = params[:rate]
+      @presenter.save
+      @bid.save
     end
 
     Notification.send_message(@booking.creator.user, "#{@presenter.first_name} has expressed an interest in this booking.", booking_path(@booking))
     flash[:success] = "You have successfully placed a bid on this booking."
-    redirect_to bookings_open_path
+    redirect_to presenters_path
   end
 
   def choose_presenter
@@ -122,7 +127,7 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:duration_minutes, :presenter_paid)
+      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period)
     end
 
     def admin_or_customer_logged_in

@@ -1,0 +1,14 @@
+<% if @suggested.present? %>
+  <table class = "table table-hover">
+    <tr>
+      <th>Subject</th>
+      <th></th>
+    </tr>
+  <% @suggested.each do |booking| %>
+    <tr>
+      <td> <%= booking.subject.name %></td> 
+      <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
+    </tr>   
+  <% end %>
+  </table>
+<% end %>

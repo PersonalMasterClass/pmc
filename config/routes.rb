@@ -38,6 +38,7 @@ root 'home#index'
 
   get 'bookings/open' => 'bookings#open'
   get 'bookings/bid/:id' => 'bookings#bid', as: "bookings_bid"
+  post 'bookings/set_bid/' => 'bookings#set_bid', as: "bookings_set_bid"
   get 'bookings/choose_presenter/:presenter_id' => 'bookings#choose_presenter', as: "bookings_choose"
   get 'bookings/:id/gethelp' =>'bookings#get_help', as: 'bookings_help'
   resources :bookings
@@ -47,7 +48,9 @@ root 'home#index'
     resources :availabilities
     resources :subjects
     get 'edit_subjects' => 'presenters#edit_subjects'
-    post 'add_subject' => 'presenters#add_subject'
+    post 'edit_subjects' => 'presenters#add_subject'
+    get 'rate' => 'presenters#rate'
+    
     post 'remove_subject' => 'presenters#remove_subject'
   end
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
@@ -67,7 +70,7 @@ root 'home#index'
   get 'admin/presenters' => 'users#presenters', as: 'admin_presenters'
 
   resources :notifications, only: :index
-  
+  post 'set_rate' => 'presenters#set_rate', as: "set_rate"  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

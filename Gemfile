@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+# soft delete model
+gem "paranoia", "~> 2.0"
 # page scraper
 gem 'nokogiri'
 # enviroment variables
