@@ -39,4 +39,20 @@ class Presenter < ActiveRecord::Base
     end      
   end
 
+  def remove_upcoming_bookings
+    bookings = Booking.upcoming(self.user)
+    if bookings.present?
+      bookings.each do  |booking|
+        if booking.remove_chosen_presenter == self
+          booking.remove_chosen_presenter
+          Notification.send_message(booking.creator.user, "The presenter for this booking are now unavailable", booking_path(booking))
+        end
+      end
+    end
+  end
+
+  def remove_all_bids
+    Bids.where(presenter_id: self).delete_all
+  end
+
 end

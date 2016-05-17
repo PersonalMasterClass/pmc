@@ -23,6 +23,19 @@
 
   def index
     @pending_user_count = User.where(status: "pending").count
+    @pending_profile_count = PresenterProfile.where(status: "pending_admin").count
+    #TODO: fix search 
+    #@search_params
+
+    #pending presenter accounts
+    @presenters = User.unapproved_presenters.first(5)
+
+    #pending profile changes
+    #@profiles = PresenterProfile.find(:first, :conditions => {status: "pending_admin"}, limit: 5)
+    @profiles = PresenterProfile.unapproved_profiles.first(5)
+
+
+
   end
 
   def success
@@ -59,6 +72,8 @@
     user.save
     Notification.send_message(user, "Your account has been suspended", "")
     if user.presenter.present?
+      user.presenter.remove_upcoming_bookings
+      user.presenter.remove_all_bids
       flash[:success] = "#{user.presenter.first_name} #{user.presenter.last_name}'s
                         account has been suspended."
     elsif user.customer.present?

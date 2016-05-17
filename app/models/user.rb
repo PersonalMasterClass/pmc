@@ -39,9 +39,9 @@ class User < ActiveRecord::Base
   # return a presenter or customer
   # returns nil of user is an admin
   def self.check_user(user)
-    if user.user_type == "presenter"
+    if user.presenter?
       return user.presenter
-    elsif user.user_type == "customer"
+    elsif user.customer?
       return user.customer
     else
       return nil

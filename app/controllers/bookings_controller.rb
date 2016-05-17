@@ -100,10 +100,12 @@ class BookingsController < ApplicationController
       if booking.creator == current_user.customer
         booking.chosen_presenter = @presenter
         booking.save
+        booking.remove_all_bids
+        @booking = booking
         Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(@booking))
       end
     end
-    flash[:success] = "#{@presenter.first_name} #{@presenter.last_name} has been assigned to this booking."
+    flash[:success] = "#{@presenter.get_private_full_name(current_user)} has been assigned to this booking."
     
     redirect_to bookings_path
   end
