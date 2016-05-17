@@ -24,7 +24,9 @@ class SearchController < ApplicationController
     		end
 	    	
 	    	@presenter |= by_subject
-	    	@presenter = remove_non_profiles(@presenter)
+	    	if(!current_user.admin?)
+	    		@presenter = remove_non_profiles(@presenter)
+	    	end
 
 	    	
 	  end	
