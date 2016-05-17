@@ -24,8 +24,8 @@
   def index
     @pending_user_count = User.where(status: "pending").count
     @pending_profile_count = PresenterProfile.where(status: "pending_admin").count
-    #TODO: fix search 
-    #@search_params
+     
+    @search_params = params
 
     #pending presenter accounts
     @presenters = User.unapproved_presenters.first(5)

@@ -15,12 +15,16 @@ root 'home#index'
     get 'admin/pending_registrations' => 'users#registrations'
     get 'users/:id' => 'users#show', as: "user"
   
-  resources :customers, only: [:index, :show]
+  #resources :customers, only: [:index, :show], as: "schools" 
+
+  get 'schools' => 'customers#index', as: "customers"
+  get 'school/:id' => 'customer#show', as: "customer"
+
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
-    get 'registration/customers' => 'users/registrations#new_customer'
-    post 'registration/customers' => 'users/registrations#create_customer'
+    get 'registration/schools' => 'users/registrations#new_customer'
+    post 'registration/schools' => 'users/registrations#create_customer'
     get 'registration/vit_validation' => 'users/registrations#vit_validation'
   end
 

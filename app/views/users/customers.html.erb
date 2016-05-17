@@ -14,7 +14,7 @@
     <% @customers.each do |customer| %>
       <% user = customer.user %>
       <tr> 
-        <td> <%= customer.school_info.school_name %></td>
+        <td> <%= link_to customer.school_info.school_name, school_info_path(customer.school_info) %></td>
         <td> <%= "#{customer.first_name} #{customer.last_name}" %></td>
         <td> <%= user.status %> </td>
         <td> <%= link_to "View", customer_path(customer), class: "btn btn-primary" %> </td>

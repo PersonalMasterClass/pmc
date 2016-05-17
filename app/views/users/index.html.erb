@@ -1,6 +1,6 @@
 <div class="container">
 	<h1> Admin Dashboard</h1>
-  <%# render 'search/form' %>
+  <%= render 'search/form' %>
 
   <div class = "col-md-6">
     <h2>Pending Presenter Registrations</h2>
@@ -21,7 +21,7 @@
         <% end %>
         </table>
       <% if @pending_user_count > 5 %>
-        <%= link_to "See all", admin_pending_profiles_path, class: "btn btn-primary" %>
+        <%= link_to "See all", admin_pending_registrations_path, class: "btn btn-primary" %>
       <% end %>
     </div>
     <% end %>
