@@ -2,11 +2,12 @@ class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
 
   def index  
-    @upcoming = Booking.upcoming(current_user) 
-    @completed = Booking.completed(current_user)
-    if current_user.user_type == "customer"
-      @upcoming += Booking.where(creator: current_user.customer)
-    end
+    # Refactored to presenter/customer/admin controllers
+    # @upcoming = Booking.upcoming(current_user) 
+    # @completed = Booking.completed(current_user)
+    # if current_user.user_type == "customer"
+      # @upcoming += Booking.where(creator: current_user.customer)
+    # end
   end
 
   def show
@@ -99,7 +100,7 @@ class BookingsController < ApplicationController
       if booking.creator == current_user.customer
         booking.chosen_presenter = @presenter
         booking.save
-        Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(@booking))
+        Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(booking))
       end
     end
     flash[:success] = "#{@presenter.first_name} #{@presenter.last_name} has been assigned to this booking."

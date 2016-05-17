@@ -1,0 +1,30 @@
+<% if @upcoming.present? %>
+  <table class = "table table-hover">
+    <tr>
+      <th>Subject</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th></th>
+  <% @upcoming.each do |booking| %>
+    <tr>
+      <td> <%= booking.subject.name %></td> 
+      <td> <%= booking.booking_date.strftime("%d/%m/%Y") %></td> 
+      <td> <%= booking.booking_date.strftime("%H:%M %p") %> - <%= duration(booking) %></td> 
+      <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
+    </tr>  
+  <% end %>
+  </table>
+<% end %>
+
+<% if @completed.present? %>  
+  <h3> Completed Bookings <span class="badge"><%=@completed.count%></span></h3>
+  <table class = "table table-bordered">
+    <tr>
+      <th>id</th>
+  <% @completed.each do |booking| %>
+    <tr> 
+      <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
+    </tr>  
+  <% end %>
+  </table>
+<% end %>
