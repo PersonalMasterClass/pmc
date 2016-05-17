@@ -8,12 +8,6 @@
   <li role="presentation" class="<%= edit_profile_active?%>">
     <%= edit_presenter_profile_link(current_user.presenter) %>
   </li>
-  <li role="presentation" class="<%=open_bookings_active?%>">
-    <%= link_to "Open Bookings",  bookings_open_path %>
-  </li>
-  <li role="presentation" class="<%=my_bookings_active?%>">
-    <%= link_to "My Bookings", bookings_path %>
-  </li>
   <li role="presentation" class="<%=my_bookings_active?%>">
     <%= link_to "Subjects", presenter_edit_subjects_path(current_user.presenter) %>
   </li>
