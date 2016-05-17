@@ -2,6 +2,8 @@ class CustomersController < ApplicationController
 	before_filter :has_access, :only => [:show]
 
   def index
+  	@upcoming = Booking.upcoming(current_user) 
+  	@bookings = Booking.where(shared: true)
 	end
 
 	def show
