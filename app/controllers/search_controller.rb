@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-	
+	before_filter :authorise_search, only: :index
 
 	 def index 
   	@search_params = params
@@ -22,11 +22,16 @@ class SearchController < ApplicationController
 
 	    	
 	  end	
-	    
   end
-
   private
 
+  def authorise_search
+  	if !current_user
+  		redirect_to root_path
+  	elsif current_user.presenter? 
+  		redirect_to root_path
+  	end
+	end
   def remove_non_profiles(x)
   	unless x == nil
 	  	x = x.reject{|d| d.nil?}
