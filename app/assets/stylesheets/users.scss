@@ -13,16 +13,20 @@ div.user-auth-dialog {
   $vPadding: 36px;
   padding-top: $vPadding;
   padding-bottom: $vPadding;
+  color: white;
   .container {
     .user-auth-wrap {
       > h2 { margin: 0 0 24px 0; }
+      > a {
+        color: #DDDDDD;
+      }
       max-width: 640px;
       margin: 0 auto;
       padding: 24px;
-      background: lighten($pmc_yellow, 15%);
-      border-radius: 2px;
+      background: darken($pmc_red, 15%);
+      border-radius: 3px;
       form.new_user {
-        margin-bottom: 16px;
+        margin-bottom: 24px;
         .remember-wrap {
           margin-bottom: 0;
           line-height: 32px;
