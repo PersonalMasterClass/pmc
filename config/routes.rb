@@ -18,7 +18,7 @@ root 'home#index'
   #resources :customers, only: [:index, :show], as: "schools" 
 
   get 'schools' => 'customers#index', as: "customers"
-  get 'school/:id' => 'customer#show', as: "customer"
+  get 'school/:id' => 'customers#show', as: "customer"
 
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
@@ -31,7 +31,7 @@ root 'home#index'
 
 
   get "/school_info/find" => 'school_info#find'
-  get "school_info/:id" => 'school_info#show'
+  get "school_info/:id" => 'school_info#show', as: 'school_info'
 
   get "/subjects/find" => 'subjects#find'
   resources :subjects do
