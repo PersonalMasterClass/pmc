@@ -11,14 +11,21 @@ class Booking < ActiveRecord::Base
   # Return upcoming booking for a customer or presenter
 	# Return all upcoming bookings for an admin
   def self.upcoming(user)
-  	@user = User.check_user(user)
+  	# @user = User.check_user(user)
   	date_today = DateTime.now
-  	if @user.nil?
-  		return Booking.all.select{ |booking| booking.booking_date > date_today}
-  	else
-  		return @user.bookings.select{ |booking| booking.booking_date > date_today}
+    booking = nil
+  	if user.admin?
+  		return Booking.order(created_at: :desc)
+  	elsif user.presenter? # Add all booked then bids
+      booking = Booking.where(chosen_presenter_id: @user.id).order(created_at: :desc)
+      user.bids.each do |bid|
+        booking << Booking.find(bid.booking_id)
+      end
+      return booking
+    elsif user.customer?
+      return Booking.where(creator: user.customer).order(created_at: :desc)
   	end
-  	return false
+  	return nil
   end
 
   # Return completed bookings for a customer or presenter
@@ -26,6 +33,7 @@ class Booking < ActiveRecord::Base
   def self.completed(user)
   	@user = User.check_user(user)
   	date_today = DateTime.now
+    booking = nil
   	if @user.nil?
   		return Booking.all.select{ |booking| booking.booking_date < date_today}
   	else
@@ -38,9 +46,9 @@ class Booking < ActiveRecord::Base
     booking = nil
     @user.subjects.each do |subject|
       if booking.present?
-        booking  << Booking.joins(:subject).where(subjects: {name: subject.name})
+        booking  << Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name})
       else
-        booking = Booking.joins(:subject).where(subjects: {name: subject.name}) 
+        booking = Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name}) 
       end
     end
     return booking
