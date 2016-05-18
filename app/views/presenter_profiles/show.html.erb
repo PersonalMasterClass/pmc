@@ -6,7 +6,7 @@
 	<% if !@profile.nil? && !@profile.bio.nil? %>
 	  <h2>Bio</h2>
     <div class = "panel panel-default">
-      <div class = "panel-body">
+      <div class = "panel-body" id="profile_bio">
         <%= sanitize @profile.bio %>
       </div>
     </div>

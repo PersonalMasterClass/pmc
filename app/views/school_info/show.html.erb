@@ -1,1 +1,36 @@
-<%= @school_info.school_name %>
+<div class = "container-fluid">
+	<div class= "row">
+		<div class ="col-md-8" >
+			<h1><%= @school_info.school_name %></h1>
+				<h4><%= @school_info.sector %> <%= @school_info.school_type %> </h4>
+		</div>
+	</div>
+	<div class "row">
+		<div class = "col-md-6">
+			<h3>General Information</h3>
+			 <strong>Principal: </strong> 
+				 <%= @school_info.principal %><br/>
+				<strong>Phone: </strong> <%= @school_info.phone_number %>  <br/>
+				<strong>Fax: </strong> <%= @school_info.fax_number %> <br/>
+				<strong>Postal Address: </strong><%= @school_info.postal_address + ", " + @school_info.postal_town + " " + @school_info.postal_state + " " + @school_info.postal_postcode %> <br/>
+				<strong>Physical Address: </strong><%= @school_info.address + ", " + @school_info.town + " " + @school_info.state + " " + @school_info.postcode %> <br/>
+		</div>
+		<div class = "col-md-6">
+			<h3>Accounts </h3>
+			<% @accounts.each do |a| %>
+			<div class = "row">
+				<div class = "col-md-6">
+					<strong>Department: </strong> <%= a.department %> <br/>
+					<strong>Contact Name: </strong><%= a.first_name + " " + a.last_name %> <br/>
+					<strong>Contact Phone: </strong><%= a.phone_number %> <br/> <br/>
+				</div>
+				<div class = "col-md-6">
+			  	<%= link_to "View Account", customer_path(a), class: "btn btn-primary" %>
+			  </div>
+			</div>
+			  <hr />
+			<% end %>
+		</div>
+	</div>
+</div>
+
