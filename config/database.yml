@@ -80,6 +80,8 @@ test:
 #
 production:
   <<: *default
-  database: pmc_production
-  username: pmc
-  password: <%= ENV['PMC_DATABASE_PASSWORD'] %>
+  host: <%= ENV['RDS_HOST'] || "localhost" %>
+  database: <%= ENV['RDS_NAME'] || "pmc_production" %>
+  username: <%= ENV['RDS_USERNAME'] || "pmc" %>
+  password: <%= ENV['RDS_PASSWORD'] || ENV['PMC_DATABASE_PASSWORD'] %>
+  port: <%= ENV['RDS_PORT'] || "3306" %>
