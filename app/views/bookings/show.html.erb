@@ -1,17 +1,23 @@
 <div>
 	<% if @booking.present? %>
-		<h3>Booking for <%= @booking.subject.name %> 	<%= booked_label(@booking) %> </h3>
+		<h3>Booking for <%= @booking.subject.name %></h3>
+    <div class="booking-labels">
+      <%= booked_label(@booking) %> <%= rate_label(@booking) %>
+    </div>
     <% if current_user.admin? %>
-      Owner: <%= link_to "#{@creator.first_name} #{@creator.last_name}", customer_path(@creator) %>  
-    <% end %> 
-		<p> Date: <%= @booking.booking_date.strftime("%d/%m/%Y") %> </p>
-		<p> Time: <%= @booking.booking_date.strftime("%H:%M %p") %> - <%= duration(@booking) %> </p>
+      <%= link_to "Created by #{@creator.first_name} #{@creator.last_name}", customer_path(@creator),  class: "label label-primary" %>  
+    <% end %>
+    <div class ="panel panel-default">
+      <div class="panel-body"> 
+		    <p> Date: <%= @booking.booking_date.strftime("%d/%m/%Y") %> </p>
+		    <p> Time: <%= @booking.booking_date.strftime("%H:%M %p") %> - <%= duration(@booking) %> </p>
+	      <p>Subject: <%= @booking.subject.name %></p>
+      </div>
+    </div>
 
-	  <p>Subject: <%= @booking.subject.name %></p>
   <% end %>
 
   <% if (current_user.customer == @booking.creator || current_user.admin?) && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
-
   	<%= render 'bookings/partials/bids', object: @booking %>
   <% end %>
 

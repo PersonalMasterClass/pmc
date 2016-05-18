@@ -104,6 +104,7 @@ class BookingsController < ApplicationController
     @presenter.bookings.each do |booking|
       if booking.creator == current_user.customer
         booking.chosen_presenter = @presenter
+        booking.rate = @presenter.bids.find_by(booking: booking).rate
         booking.save
         booking.remove_all_bids
         @booking = booking

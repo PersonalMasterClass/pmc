@@ -7,10 +7,17 @@ module BookingsHelper
 	def booked_label(booking)
 		presenter = booking.chosen_presenter
 		if presenter.present?
-			link_to "Presented by #{presenter.first_name} #{presenter.last_name}",  presenter_profile_path(presenter), class: "btn btn-xs btn-primary"
+			link_to "Presented by #{presenter.first_name} #{presenter.last_name}",  presenter_profile_path(presenter), class: "btn btn-xs btn-info"
 		end
 	end
 
+	def rate_label(booking)
+		if current_user.customer?
+			if booking.creator == current_user.customer
+				content_tag(:span, "Rate at #{number_to_currency(booking.rate)}", class: "btn btn-xs btn-success")	
+			end
+		end
+	end
 	def is_booked(booking,user)
 		if user.presenter? && booking.chosen_presenter == user.presenter 
 			content_tag(:span, "booked", class: "label label-primary")

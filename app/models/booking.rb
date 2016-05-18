@@ -63,6 +63,6 @@ class Booking < ActiveRecord::Base
   end
 
   def remove_all_bids
-    Bid.where(bookind_id: self).delete_all
+    Bid.where(booking_id: self).delete_all
   end
 end
