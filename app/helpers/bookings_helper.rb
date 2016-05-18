@@ -13,7 +13,7 @@ module BookingsHelper
 
 	def rate_label(booking)
 		if current_user.customer?
-			if booking.creator == current_user.customer
+			if booking.creator == current_user.customer && booking.chosen_presenter.present?
 				content_tag(:span, "Rate at #{number_to_currency(booking.rate)}", class: "btn btn-xs btn-success")	
 			end
 		end
