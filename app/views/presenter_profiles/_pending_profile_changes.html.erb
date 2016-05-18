@@ -12,7 +12,7 @@
     <% end %>
 
     <% if @profile.picture_edit_stored? %>
-      <p>Picture: <%= image_tag @profile.picture_edit.thumb('100x100#').url %></p>   
+      <p>Picture: <%= image_tag @profile.picture_edit.thumb('100x100#').url, class: "img-circle" %></p>   
     <% end %>
     
     <% if (current_user.presenter? && !@profile.pending_admin?) || (current_user.admin? && !@profile.pending_presenter?) %>
