@@ -18,6 +18,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
       <% if current_user %>
+        <%= render 'users/partials/admin_nav'%>
+        <%= render "presenters/partials/presenter_nav"%>
         <li>
           <div class="dropdown">
               <span class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><%= fa_icon "bell-o" %><span class="badge"><%= current_user.display_notifications.count %></span></span>
