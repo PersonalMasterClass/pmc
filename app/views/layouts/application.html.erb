@@ -12,11 +12,9 @@
     <div class="main">
       <div class="container">
         <% if current_user.present? && params[:controller] != "home" %>
-          <% if current_user.user_type == "presenter" %>
+          <% if current_user.presenter? %>
             <%= render "presenters/partials/presenter_nav"%>
-          <% elsif current_user.user_type == "customer" %>
-            <%= render "customers/partials/customer_nav" %>
-          <% else %>
+          <% elsif current_user.admin?%>
             <%= render "users/partials/admin_nav" %>
           <% end %>
         <% end %>

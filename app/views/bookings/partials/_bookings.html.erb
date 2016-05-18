@@ -14,7 +14,10 @@
     </tr>  
   <% end %>
   </table>
+<% else %>
+  <i> You have no upcoming bookings. </i>
 <% end %>
+
 
 <% if @completed.present? %>  
   <h3> Completed Bookings <span class="badge"><%=@completed.count%></span></h3>

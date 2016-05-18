@@ -1,18 +1,7 @@
-<ul class="nav nav-tabs">
-  <li role="presentation" class="<%= c_dashboard_active?%>">
-		<%= link_to "Dashboard", customers_path %>
-	</li>
-  <li role="presentation" class="<%= new_booking_active?%>">
-		<%= link_to "New booking", new_booking_path %>
-	</li>
-  <li role="presentation" class="<%= new_booking_active?%>">
-		<%= link_to "My bookings", bookings_path %>
-	</li>
-	<li role="presentation" class="<%= new_booking_active?%>">
-		<%= link_to "Search", profiles_search_path %>
-	</li>
-</ul>
-
-
+<% if current_user.customer? %>
+<li>
+  <%= link_to "New Booking", new_booking_path %>
+</li>
+<% end %>
 
 
