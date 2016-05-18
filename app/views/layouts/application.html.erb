@@ -16,9 +16,12 @@
           <div class="alert alert-<%= key %>"><%= value %></div>
         <% end %>
       </div>
+      <% if params[:controller] == 'home' && params[:action] == 'index' %><%= yield %>
+      <% else %>
       <div class = "container">
         <%= yield %>
       </div>
+      <% end %>
       <div class="container">
         <%= debug(params) if Rails.env.development? %>
       </div>
