@@ -4,5 +4,6 @@ class SchoolInfoController < ApplicationController
 	end
 	def show
 		@school_info = SchoolInfo.find(params[:id])
+		@accounts = Customer.where(school_info: params[:id])
 	end
 end

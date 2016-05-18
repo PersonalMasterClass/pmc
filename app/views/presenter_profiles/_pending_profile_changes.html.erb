@@ -5,7 +5,7 @@
     <% if @profile.bio != @profile.bio_edit %>
       <h3>Bio</h3>
       <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body" id="profile_bio_edit">
           <%= sanitize @profile.bio_edit %>
         </div>
       </div> 
