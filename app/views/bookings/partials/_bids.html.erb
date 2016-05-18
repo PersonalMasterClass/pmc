@@ -11,11 +11,11 @@
   <h3> Bids </h3>
   <div class="list-group">
     <% @booking.presenters.each do |presenter| %>
-      <%= link_to presenter_profile_path(presenter), class: 'list-group-item' do %>
+      <%= link_to presenter_profile_path(presenter,:booking_id => params[:id]), class: 'list-group-item' do %>
           <%= image_tag presenter.profile_picture_path('50x50#'), class: "img-circle" %> 
           <h4 class="list-group-item-heading bid-item-h4">
             <%= presenter.get_private_full_name(current_user) %>
-            has made a bid of: <span class="label label-success"><%= number_to_currency(presenter.bids.find_by(booking: 89).rate) %></span>
+            has made a bid of: <span class="label label-success"><%= number_to_currency(presenter.bids.find_by(booking: @booking).rate) %></span>
           </h4>
       <% end %>
     <% end %>

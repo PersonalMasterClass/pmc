@@ -20,6 +20,6 @@
   <% if (current_user.customer == @booking.creator || current_user.admin?) && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
   	<%= render 'bookings/partials/bids', object: @booking %>
   <% end %>
-
+  
   <%= render 'partials/presenter_actions', object: @booking %>
 <div>

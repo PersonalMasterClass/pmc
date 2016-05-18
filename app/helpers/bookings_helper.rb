@@ -19,10 +19,19 @@ module BookingsHelper
 		end
 	end
 	def is_booked(booking,user)
-		if user.presenter? && booking.chosen_presenter == user.presenter 
-			content_tag(:span, "booked", class: "label label-primary")
+		if user.presenter? 
+			if booking.chosen_presenter == user.presenter 
+				content_tag(:span, "booked", class: "label label-primary")
+			elsif booking.bids.include? user.presenter.bids.find_by(booking: booking)
+				content_tag(:span, "placed bid", class: "label label-primary")
+			end
 		elsif user.customer? && booking.creator == user.customer
-			content_tag(:span, "owner", class: "label label-primary")
+				if booking.chosen_presenter.present?
+					content_tag(:span, "confirmed", class: "label label-success")
+				elsif booking.bids.any?
+					content_tag(:span, "pending", class: "label label-primary")
+				end
+				
 		elsif user.admin?
 			if booking.chosen_presenter.present? 
 				content_tag(:span, "booked by #{booking.chosen_presenter.first_name} #{booking.chosen_presenter.last_name}", class: "label label-primary")

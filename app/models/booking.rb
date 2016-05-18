@@ -1,11 +1,11 @@
 class Booking < ActiveRecord::Base
   acts_as_paranoid
-  has_many :booked_customers
-  has_many :customers, through: :booked_customers
+  has_many :booked_customers, :dependent => :destroy
+  has_many :customers, through: :booked_customers, :dependent => :destroy
   belongs_to :chosen_presenter, class_name: "Presenter"
   belongs_to :creator, class_name: "Customer"
-  has_many :bids
-  has_many :presenters, through: :bids
+  has_many :bids, :dependent => :destroy
+  has_many :presenters, through: :bids, :dependent => :destroy
   belongs_to :subject, inverse_of: :bookings
 
   # Return upcoming booking for a customer or presenter
@@ -17,8 +17,8 @@ class Booking < ActiveRecord::Base
   	if user.admin?
   		return Booking.order(created_at: :desc)
   	elsif user.presenter? # Add all booked then bids
-      booking = Booking.where(chosen_presenter_id: @user.id).order(created_at: :desc)
-      user.bids.each do |bid|
+      booking = Booking.where(chosen_presenter_id: user.id).order(created_at: :desc)
+      user.presenter.bids.each do |bid|
         booking << Booking.find(bid.booking_id)
       end
       return booking
@@ -42,15 +42,25 @@ class Booking < ActiveRecord::Base
   end
 
   def self.suggested(user)
-    @user = User.check_user(user)
+    # @user = User.check_user(user)
     booking = nil
-    @user.subjects.each do |subject|
-      if booking.present?
-        booking  << Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name})
-      else
-        booking = Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name}) 
+      if user.presenter?
+        user.presenter.subjects.each do |subject|
+          if booking.present?
+            booking  << Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name})
+          else
+            booking = Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name}) 
+          end
+        # elsif user.customer?
+          # if booking.present?
+          #   booking << Booking.joins(:subject).where(subjects: {name: subject.name})
+          # else  
+            # booking =  Booking.joins(:subject).where(subjects: {name: subject.name})
+          # end
+        end
+      elsif user.customer?
+        booking = Booking.where(shared: true)
       end
-    end
     return booking
   end
   def self.check_creator(presenter, creator)

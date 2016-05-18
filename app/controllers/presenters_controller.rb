@@ -2,8 +2,7 @@ class PresentersController < ApplicationController
 
 	def index
     @upcoming = Booking.upcoming(current_user) 
-    @bookings = Booking.where(chosen_presenter_id: nil)
-    @suggested = Booking.suggested(current_user)
+    @bookings = Booking.suggested(current_user)
 	end
 	
   def new

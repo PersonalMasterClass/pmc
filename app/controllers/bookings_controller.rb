@@ -41,14 +41,11 @@ class BookingsController < ApplicationController
     date = (params['date_part'] + " " + params['time_part']).to_datetime
     @booking.booking_date = date
     # TODO: Refactor for admin booking creation
-    
+    @booking.shared = params["shared"]
     @booking.subject = @subject
     # Add this customer as owner. 
     @booking.creator = current_user.customer
-
-
     @booking.save
-
     # Send messages to customers if applicable && @booking is open
     if @booking.chosen_presenter.nil?
       Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking))
@@ -101,19 +98,17 @@ class BookingsController < ApplicationController
 
   def choose_presenter
     @presenter = Presenter.find(params[:presenter_id])
-    @presenter.bookings.each do |booking|
-      if booking.creator == current_user.customer
-        booking.chosen_presenter = @presenter
-        booking.rate = @presenter.bids.find_by(booking: booking).rate
-        booking.save
-        booking.remove_all_bids
-        @booking = booking
-        Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(@booking))
-      end
-    end
+    @booking = Booking.find(params[:booking_id])
+    
+    @booking.chosen_presenter = @presenter
+    @booking.rate = @presenter.bids.find_by(booking: booking).rate
+    @booking.save
+    @booking.remove_all_bids
+
+    Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(@booking))
     flash[:success] = "#{@presenter.get_private_full_name(current_user)} has been assigned to this booking."
     
-    redirect_to bookings_path
+    redirect_to root_path
   end
 
   def get_help 
@@ -128,7 +123,7 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period)
+      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared)
     end
 
     def admin_or_customer_logged_in
