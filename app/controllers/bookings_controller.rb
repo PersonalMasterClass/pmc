@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :bid]
+  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :set_bid]
 
   def index  
     # Refactored to presenter/customer/admin controllers
@@ -12,6 +12,7 @@ class BookingsController < ApplicationController
 
   def show
     @booking = Booking.find(params["id"])
+    @creator = @booking.creator
   end
 
   def new
@@ -40,14 +41,11 @@ class BookingsController < ApplicationController
     date = (params['date_part'] + " " + params['time_part']).to_datetime
     @booking.booking_date = date
     # TODO: Refactor for admin booking creation
-    
+    @booking.shared = params["shared"]
     @booking.subject = @subject
     # Add this customer as owner. 
     @booking.creator = current_user.customer
-
-
     @booking.save
-
     # Send messages to customers if applicable && @booking is open
     if @booking.chosen_presenter.nil?
       Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking))
@@ -77,7 +75,7 @@ class BookingsController < ApplicationController
     @bookings = Booking.where(chosen_presenter_id: nil)
   end
 
-  def bid
+  def set_bid
     @booking = Booking.find(params[:id])
     @presenter = current_user.presenter
     # This will create a bi directional association, @booking will contain @presenter as well.
@@ -86,31 +84,46 @@ class BookingsController < ApplicationController
       redirect_to bookings_open_path
     else
       @presenter.bookings << @booking
-      @presenter.bids.last.bid_date = DateTime.now
+      @bid = Bid.where(booking: @booking, presenter: @presenter).first
+      @bid.bid_date = DateTime.now
+      @bid.rate = params[:rate]
+      @presenter.save
+      @bid.save
     end
 
     Notification.send_message(@booking.creator.user, "#{@presenter.first_name} has expressed an interest in this booking.", booking_path(@booking))
     flash[:success] = "You have successfully placed a bid on this booking."
-    redirect_to bookings_open_path
+    redirect_to presenters_path
   end
 
   def choose_presenter
     @presenter = Presenter.find(params[:presenter_id])
-    @presenter.bookings.each do |booking|
-      if booking.creator == current_user.customer
-        booking.chosen_presenter = @presenter
-        booking.save
-        Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(booking))
-      end
-    end
-    flash[:success] = "#{@presenter.first_name} #{@presenter.last_name} has been assigned to this booking."
+    @booking = Booking.find(params[:booking_id])
     
-    redirect_to bookings_path
+    @booking.chosen_presenter = @presenter
+    @booking.rate = @presenter.bids.find_by(booking: booking).rate
+    @booking.save
+    @booking.remove_all_bids
+
+    Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(@booking))
+    flash[:success] = "#{@presenter.get_private_full_name(current_user)} has been assigned to this booking."
+    
+    redirect_to root_path
+  end
+
+  def get_help 
+    @booking = Booking.find(params[:id])
+    owner = @booking.creator
+    Notification.notify_admin("#{owner.first_name} #{owner.last_name} has asked for help choosing a presenter for their booking", booking_path(@booking))
+    flash[:info] = "An admin has been notified that you would like help choosing. They will be in contact with you shortly"
+    @booking.help_required = true
+    @booking.save
+    redirect_to booking_path(@booking)
   end
 
   private
     def booking_params
-      params.require(:booking).permit(:duration_minutes, :presenter_paid)
+      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared)
     end
 
     def admin_or_customer_logged_in

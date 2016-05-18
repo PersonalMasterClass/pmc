@@ -12,20 +12,16 @@
     <%= render partial: 'layouts/nav' %>
     <div class="main">
       <div class="container">
-        <% if current_user.present? && params[:controller] != "home" %>
-          <% if current_user.user_type == "presenter" %>
-            <%= render "presenters/partials/presenter_nav"%>
-          <% elsif current_user.user_type == "customer" %>
-            <%= render "customers/partials/customer_nav" %>
-          <% else %>
-            <%= render "users/partials/admin_nav" %>
-          <% end %>
-        <% end %>
         <% flash.each do |key, value| %>
           <div class="alert alert-<%= key %>"><%= value %></div>
         <% end %>
       </div>
-      <%= yield %>
+      <div class = "container">
+        <%= yield %>
+      </div>
+      <div class="container">
+        <%= debug(params) if Rails.env.development? %>
+      </div>
     </div>
     <footer>
       <div class="footer-content">

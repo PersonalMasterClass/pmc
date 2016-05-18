@@ -3,14 +3,25 @@
 Personal Masterclass is a two-sided marketplace. On one side are the country-based schools and their VCE teachers who book and pay for VCE revision sessions; on the other side of the marketplace are freelance presenters who are typically highly credentialed VCE teachers in Melbourne.
 
 ===User
+There are three classes of User: 
+*Customer - a school (or department of a school) that books presenters for VCE revision sessions. 
+*Presenter - a VCE teacher who can be booked for revision sessions. 
+*Administrator - User for managing the system. 
+
 ===Notification
 ===Customer (School)
-===Booked_Customers
+The Customer model represents a school User.
+
+===BookedCustomer
 ===Booking
 ===Presenter_Bids
-===Presenter_Profile
+===PresenterProfile
 ===Presenter
-===Presenter_Availability
-===School_Info
+===Availability
+===SchoolInfo
+Information about each school is obtained from http://data.gov.au/storage/f/2013-05-12T190731/tmpo4Hjs2all-schools-list.csv a dataset of information about ever school in Victoria. The data is populated by running the `import:school_info` rake task. Should the location of this dataset change in the future, the URL can be updated using the `dat` variable in import.rake .
+
+Both the Customer (school) and Presenter model use the SchoolInfo model to provide static contact information. 
+
 ===Subject
 ===Subscription

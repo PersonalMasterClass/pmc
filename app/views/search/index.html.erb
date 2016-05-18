@@ -3,17 +3,34 @@
 <div class = "container">
 
 	<div class="container-fluid">
-		<% @presenter.each do |p| %>
+		<% if @no_profiles == 0 && !@presenter.empty?%>
+			<div class="row bg-danger">
+				<h4>No exact matches found, but here are some other profiles you may like. <h4>
+			</div>
+		<%end%>
+
+		<% if @no_profiles == 0 && @presenter.empty?%>
+			<div class="row bg-danger">
+				<h4>No profiles found.<h4>
+			</div>
+		<%end%>
+
+		<% @presenter.each_with_index do |p, i| %>
+			<% if i == @no_profiles && i !=0 %>
+				<div class="row bg-success">
+					<h4>Here are some more profiles you may be interested in.</h4>
+				</div>
+			<% end %>
 	<div class="row bg-warning">
 		<div class="col-md-3">
-			<%= image_tag p.profile_picture_path('150x200#'), class: "img-responsive" %>
+			<%= image_tag p.profile_picture_path('150x150#'), class: "img-responsive img-circle" %>
 		</div>
 		<div class="col-md-6">
 			<h3>
-				<%= p.first_name %>
+				<%= p.get_private_full_name(current_user) %>
 			</h3>
 			<p>
-			<%= p.presenter_profile.bio if p.presenter_profile.present? %>
+			<%= p.presenter_profile.bio.scan(/\s+[^\<\/\>]*[.!?]/)[0] if p.presenter_profile.present? %>
 			</p>
 		</div>
 			<%= link_to "View Profile", presenter_profile_path(p), :class => "btn btn-info pull-right" %>

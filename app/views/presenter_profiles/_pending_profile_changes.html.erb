@@ -5,14 +5,14 @@
     <% if @profile.bio != @profile.bio_edit %>
       <h3>Bio</h3>
       <div class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body" id="profile_bio_edit">
           <%= sanitize @profile.bio_edit %>
         </div>
       </div> 
     <% end %>
 
     <% if @profile.picture_edit_stored? %>
-      <p>Picture: <%= image_tag @profile.picture_edit.thumb('100x100#').url %></p>   
+      <p>Picture: <%= image_tag @profile.picture_edit.thumb('100x100#').url, class: "img-circle" %></p>   
     <% end %>
     
     <% if (current_user.presenter? && !@profile.pending_admin?) || (current_user.admin? && !@profile.pending_presenter?) %>

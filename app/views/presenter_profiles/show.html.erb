@@ -6,7 +6,7 @@
 	<% if !@profile.nil? && !@profile.bio.nil? %>
 	  <h2>Bio</h2>
     <div class = "panel panel-default">
-      <div class = "panel-body">
+      <div class = "panel-body" id="profile_bio">
         <%= sanitize @profile.bio %>
       </div>
     </div>
@@ -23,10 +23,9 @@
 	<%= render 'partials/admin_actions', object: @user %>
   <%= render 'presenter_profiles/availabilities' %>
 
-  <% if current_user.customer? %>
-    <% unless @display_creator_actions %>
+<!-- Fix vulnerablility -->
+  <% if current_user.customer? && params[:booking_id].present? %>
       <%= render 'partials/customer_actions' %>
-    <% end %>
   <% end %>
 
 </div>

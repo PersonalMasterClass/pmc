@@ -18,13 +18,18 @@ Rake::Task['import:school_info'].invoke
 # Need this for the phone numbers and stuff.
 Faker::Config.locale = 'en-AU'
 
-20.times do |f|
-  word = (Faker::Hipster.words(2)* ' ').titleize
-  while Subject.where(name: word).present?
-    word = (Faker::Hipster.words(2)* ' ').titleize
-  end
-    Subject.create(name: word)
+subs = ["English", "History", "Physical Education", "Japanese", "Geography", "Art", "Economics", "Albanian", "Biology", "Mathematics"]
+subs.each do |s|
+  Subject.create(name: s)
 end
+
+# 20.times do |f|
+#   word = (Faker::Hipster.words(2)* ' ').titleize
+#   while Subject.where(name: word).present?
+#     word = (Faker::Hipster.words(2)* ' ').titleize
+#   end
+#     Subject.create(name: word)
+# end
 
 # Test admin
 User.create!(
@@ -93,12 +98,21 @@ c.save(:validate => false)
   presenter.school_info = SchoolInfo.all.sample
 
   require 'open-uri'  
-  presenter.presenter_profile = PresenterProfile.create(bio: Faker::Hacker.say_something_smart,
+  bio = ""
+  bio += "<h1>" + Faker::Book.title + "</h1>"
+  bio += "<p>" + Faker::Hacker.say_something_smart + " <em> " + Faker::Hacker.abbreviation + " </em> " + " <strong> " + Faker::Hacker.noun + " </strong> " + "</p>"
+  bio += "<p>" + Faker::Hacker.say_something_smart + " <em> " + Faker::Hacker.abbreviation + " </em> " + " <strong> " + Faker::Hacker.noun + " </strong> " + "</p>"
+  bio += "<ul>"
+  Faker::Hipster.words(rand(1..10)).each do |w|
+    bio += "<li>" + w + "</li>"
+  end
+  bio += "</ul>"
+  presenter.presenter_profile = PresenterProfile.create(bio: bio,
                                                         bio_edit: '',
                                                         status: "approved",
                                                         picture: 
                                                           open('../profilePic.png', 'wb') do |file|
-                                                             open('http://lorempixel.com/300/400/animals/').read
+                                                             open('http://jupiter.csit.rmit.edu.au/~s3449789/testImages/pic'+((f+1).to_s)+'.jpg').read
                                                           end
                                                         )
   a.presenter = presenter
@@ -153,6 +167,18 @@ end
   booking.save
 end
 
+def generate_profile
+  bio = ""
+  bio += "<h1>" + Faker::Book.title + "</h1>"
+  bio += "<p>" + Faker::Hacker.say_something_smart + "<em>" + Faker::Hacker.abbreviation + "</em>" + "<strong>" + Faker::Hacker.noun + "</strong>" + "</p>"
+  bio += "<p>" + Faker::Hacker.say_something_smart + "<em>" + Faker::Hacker.abbreviation + "</em>" + "<strong>" + Faker::Hacker.noun + "</strong>" + "</p>"
+  bio += "<ul>"
+  Faker::Hipster.words(rand(1..10)).each do |w|
+    bio += "<li>" + w + "</li>"
+  end
+  bio += "</ul>"
+  return bio
+end
 
 # 5.times do |f|
 #   a = User.new(

@@ -1,8 +1,9 @@
 <div>
 	<% if @customer.present? %>
-		<h3><%= fullname(@customer)%>'s Profile </h3>
+		<h3><%= @customer.school_info.school_name %></h3>
 	  <p>First Name: <%= @customer.first_name %></p>
 	  <p>Last Name: <%= @customer.last_name %></p>
+	  <p>Email: <%= @customer.user.email %> </p>
 	  <p>Vit Number: <%= @customer.vit_number%></p>
 	  <p>ABN number: <%= @customer.abn_number%></p>
 	  <p>Phone Number: <%= @customer.phone_number%></p>

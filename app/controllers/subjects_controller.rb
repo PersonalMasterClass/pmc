@@ -10,6 +10,11 @@ before_filter :admin_logged_in, :only=> [:update, :destroy, :edit]
 		end
 	end
 
+	def view_presenters
+		@subject = Subject.find(params[:subject_id])
+		@presenters = @subject.presenters
+	end
+
 	def create
 		@subject = Subject.new(subject_params)
 		if @subject.save

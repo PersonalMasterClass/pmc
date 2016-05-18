@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-	
+	before_filter :authorise_search, only: :index
 
 	 def index 
   	@search_params = params
@@ -16,15 +16,30 @@ class SearchController < ApplicationController
 	    # Search:
 	    	results_added = add_presenters(by_name, results_added)
 	    	results_added = add_presenters(by_subject, results_added)
-	    	results_added = add_presenters(by_availability, results_added)
-	    	@presenter = remove_non_profiles(@presenter)
+	    	results_added = add_presenters(by_availability, results_added)	    
+    		if @presenter.empty?
+    			@no_profiles = 0
+    		else
+    			@no_profiles = @presenter.count
+    		end
+	    	
+	    	@presenter |= by_subject
+	    	if(!current_user.admin?)
+	    		@presenter = remove_non_profiles(@presenter)
+	    	end
+
 	    	
 	  end	
-	    
   end
-
   private
 
+  def authorise_search
+  	if !current_user
+  		redirect_to root_path
+  	elsif current_user.presenter? 
+  		redirect_to root_path
+  	end
+	end
   def remove_non_profiles(x)
   	unless x == nil
 	  	x = x.reject{|d| d.nil?}
@@ -35,10 +50,11 @@ class SearchController < ApplicationController
 	  end
 	  	return []
   end
-  # Check if anything has been entered
+  # Check if anything has been entered 
 	  def any_present?
-	    return !(params[:subject_id].blank? && params[:date_part].blank? && 
-	    	params[:time_part].blank? && params[:first_name].blank?)
+	    # return !(params[:subject_id].blank? && params[:date_part].blank? && 
+	    # 	params[:time_part].blank? && params[:first_name].blank?)
+			return !params[:subject_id].blank?
 	  end
 
 	  # Add found presenters to array
@@ -52,7 +68,7 @@ class SearchController < ApplicationController
 	  			return true
 				end		    		
 			end
-			return false || loaded
+			return loaded
   	end
 
 	  # Find presenters based on subject
@@ -92,6 +108,7 @@ class SearchController < ApplicationController
   		end
 	  end
 
+	  # This is here just in case we decide to searh by time later on. 
 	  # Generate query string for time portion of availability search.
 	  def by_time
   		str = ""
