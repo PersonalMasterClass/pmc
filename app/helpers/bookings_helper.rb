@@ -29,7 +29,9 @@ module BookingsHelper
 				if booking.chosen_presenter.present?
 					content_tag(:span, "confirmed", class: "label label-success")
 				elsif booking.bids.any?
-					content_tag(:span, "pending", class: "label label-primary")
+					content_tag(:span, "bids made", class: "label label-primary")
+				else
+					content_tag(:span, "pending", class: "label label-info")
 				end
 				
 		elsif user.admin?
