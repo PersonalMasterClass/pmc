@@ -2,56 +2,36 @@
 	<h1> Admin Dashboard</h1>
   <%= render 'search/form' %>
 
-  <div class = "col-md-6">
-    <h2>Pending Presenter Registrations</h2>
-    <% if @presenters.present? %>
-      <button data-toggle="collapse" data-target="#pending_presenters" class="btn btn-primary">Show/Hide</button>
-      <div id="pending_presenters" class="collapse in">
-        <h3> Presenters </h3>
-        <table class = "table table-bordered">
-          <tr>
-            <th>Name</th>
-            <th>Action</th>
-          </tr>
-        <% @presenters.each do |usr| %>
-          <tr>
-            <td> <%= "#{usr.presenter.first_name} #{usr.presenter.last_name}" %></td>
-            <td> <%= link_to "View", presenter_profile_path(usr.presenter), class: "btn btn-info" %> </td>
-          </tr>
-        <% end %>
-        </table>
-      <% if @pending_user_count > 5 %>
-        <%= link_to "See all", admin_pending_registrations_path, class: "btn btn-primary" %>
-      <% end %>
-    </div>
-    <% end %>
-  </div>
+ 
 
-  <div class = "col-md-6">
-    <h2>Pending Profile Changes (<%= @profiles.count %>)</h2>
-    <% if @profiles.present? %>
-    <button data-toggle="collapse" data-target="#pending_profiles" class="btn btn-primary">Show/Hide</button>
-    <div id="pending_profiles" class="collapse in">
-      <h3>Awaiting approval</h3>
-      <table class = "table table-bordered">
-        <tr>
-          <th>Name</th>
-          <th>Action</th>
-        </tr>
-        <% @profiles.each do |profile| %>
-          <% presenter = Presenter.find(profile.presenter_id) %>
-          <tr> 
-            <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>
-            <td> <%= link_to "View", presenter_profile_path(presenter), class: "btn btn-info" %> </td>
-          </tr>  
-        <% end %>
-      </table>
-      <% if @pending_profile_count > 5 %>
-        <%= link_to "See all", admin_pending_profiles_path, class: "btn btn-primary" %>
-      <% end %>
+  <h3>Actions Needed (<%= @total %>)</h3>
+  <button data-toggle="collapse" data-target="#admin_actions_needed" class="btn btn-primary">Show/Hide</button>
+  <div class="row collapse" id="admin_actions_needed">
+    
+    <div class = "col-md-4">
+      <%= render 'users/partials/pending_users' %>
     </div>
     
-  <% end %>
+    <div class = "col-md-4">
+     <%= render 'users/partials/pending_profiles' %>
+    </div>
+
+    <div class = "col-md-4">
+     <%= render 'users/partials/help_required_bookings' %>
+    </div>
+
   </div>
+
+   <!-- upcoming bookings -->
+  <h3>Upcoming Bookings</h3>
+  <button data-toggle="collapse" data-target="#upcoming_bookings" class="btn btn-primary">Show/Hide</button>
+  <div class = "row collapse in" id="upcoming_bookings">
+    <div class = "">
+      <%= render 'users/partials/upcoming_bookings' %>
+    </div>
+  </div>
+  
+
+
 
 </div>
