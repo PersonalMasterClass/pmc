@@ -1,15 +1,17 @@
 FROM rails:4.2
 
-# Environment variables for Rails
-ENV RAILS_ENV 'test'
+# (Example) Environment variables for Rails
+ENV RAILS_ENV 'development'
 ENV REDIS_URL 'redis:///pmc_redis'
 ENV SECRET_KEY_BASE 'youshouldreallyoverridethiswhenrunningthecontainerorwhendeployed'
+ENV S3_KEY ''
+ENV S3_SECRET ''
 
 # (Default) Database Environment Variables
 ENV RDS_HOST 'pmc_postgres'
 ENV RDS_NAME 'pmc'
 ENV RDS_USERNAME 'pmc'
-ENV RDS_PASSWORD 'thisshouldmostcertainlybechangedviaelasticbeanstalk'
+ENV RDS_PASSWORD ''
 ENV RDS_PORT '5432'
 
 # Taken from the master Dockerfile: https://github.com/docker-library/rails/blob/master/onbuild/Dockerfile
@@ -25,8 +27,7 @@ RUN bundle install
 
 COPY . /usr/src/app
 
-RUN apt-get update && apt-get install -y nodejs --no-install-recommends && rm -rf /var/lib/apt/lists/*
-RUN apt-get update && apt-get install -y mysql-client postgresql-client sqlite3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y postgresql-client --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
