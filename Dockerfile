@@ -12,9 +12,6 @@ ENV RDS_USERNAME 'pmc'
 ENV RDS_PASSWORD 'thisshouldmostcertainlybechangedviaelasticbeanstalk'
 ENV RDS_PORT '5432'
 
-# The line below is only required for production environments.
-#RUN rake assets:precompile
-
 # Taken from the master Dockerfile: https://github.com/docker-library/rails/blob/master/onbuild/Dockerfile
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
@@ -22,14 +19,18 @@ RUN bundle config --global frozen 1
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-ONBUILD COPY Gemfile /usr/src/app/
-ONBUILD COPY Gemfile.lock /usr/src/app/
-ONBUILD RUN bundle install
+COPY Gemfile /usr/src/app/
+COPY Gemfile.lock /usr/src/app/
+RUN bundle install
 
-ONBUILD COPY . /usr/src/app
+COPY . /usr/src/app
 
 RUN apt-get update && apt-get install -y nodejs --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y mysql-client postgresql-client sqlite3 --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
+
+# Post-build commands
+# The line below is only required for production environments.
+#RUN rake assets:precompile
