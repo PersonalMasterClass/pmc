@@ -1,7 +1,7 @@
 FROM rails:onbuild
 
 # Environment variables for Rails
-ENV RAILS_ENV 'production'
+ENV RAILS_ENV 'test'
 ENV REDIS_URL 'redis:///pmc_redis'
 ENV SECRET_KEY_BASE 'youshouldreallyoverridethiswhenrunningthecontainerorwhendeployed'
 
