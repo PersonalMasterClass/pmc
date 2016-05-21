@@ -12,8 +12,8 @@ table.pending-user-registrations {
 div.user-auth-dialog {
   $vPadding: 36px;
   $textColour: #333333;
-  padding-top: $vPadding;
-  padding-bottom: $vPadding;
+  padding-top: 0;
+  padding-bottom: 0;
   color: $textColour;
   .container {
     .user-auth-wrap {
@@ -26,11 +26,29 @@ div.user-auth-dialog {
       border-radius: 2px;
       form {
         margin-bottom: 12px;
+        div#error_explanation {
+          margin: 24px 0;
+          color: $pmc_red;
+          h2 {
+            font-size: 0px;
+            &:before {
+              font-size: 16px;
+              content: 'Unable to process your request:';
+              display:inline-block;
+            }
+          }
+        }
         input[type=submit] {
           border: none;
           border-radius: 3px;
           background: darken($pmc_red, 25%);
           color: #FFFFFF;
+        }
+        .field_with_errors {
+          > input, > textarea {
+            border: 1px solid $pmc_red;
+            box-shadow: 0 0 2px $pmc_red;
+          }
         }
       }
     }

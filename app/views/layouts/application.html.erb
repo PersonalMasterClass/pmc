@@ -11,20 +11,15 @@
   <body <%= yield(:body_attributes) if content_for?(:body_attributes) %>>
     <%= render partial: 'layouts/nav' %>
     <div class="main">
-      <div class="container">
-        <% flash.each do |key, value| %>
-          <div class="alert alert-<%= key %>"><%= value %></div>
-        <% end %>
-      </div>
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+      <% end %>
       <% if params[:controller] == 'home' && params[:action] == 'index' %><%= yield %>
       <% else %>
-      <div class = "container">
+      <div class = "container main">
         <%= yield %>
       </div>
       <% end %>
-      <div class="container">
-        <%= debug(params) if Rails.env.development? %>
-      </div>
     </div>
     <footer>
       <div class="footer-content">

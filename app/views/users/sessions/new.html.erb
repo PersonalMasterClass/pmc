@@ -1,5 +1,6 @@
+<% content_for :body_attributes do 'class=no-container-bg' end %>
 <div class="user-auth-dialog">
-  <div class="container">
+  <div class="container no-bg">
     <div class="user-auth-wrap">
       <h2>Log In</h2>
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>

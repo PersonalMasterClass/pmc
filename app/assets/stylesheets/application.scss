@@ -72,6 +72,22 @@ body {
     }
   }
 
+  > .main {
+    .container {
+      $vPadding: 18px;
+      background: rgb(250,250,250);
+      padding-top:$vPadding;
+      padding-bottom:$vPadding;
+      &.no-bg {
+        background: none;
+      }
+      > *:first-child { margin-top: 0; }
+    }
+  }
+  &.no-container-bg {
+    > .main .container { background: none; }
+  }
+
   //  Footer
   footer {
     width: 100%;
