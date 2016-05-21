@@ -11,24 +11,26 @@ table.pending-user-registrations {
 }
 div.user-auth-dialog {
   $vPadding: 36px;
-  $textColour: lighten($pmc_red, 5%);
+  $textColour: #333333;
   padding-top: $vPadding;
   padding-bottom: $vPadding;
   color: $textColour;
   .container {
     .user-auth-wrap {
-      > h2 { margin: 0 0 24px 0; }
+      > h2 { margin-top: 0; }
       > a { color: $textColour; }
-      max-width: 640px;
+      max-width: 360px;
       margin: 0 auto;
-      padding: 24px;
-      background: lighten($pmc_yellow, 33%);
+      padding: 18px;
+      background: lighten($pmc_yellow, 15%);
       border-radius: 2px;
-      form.new_user {
-        margin-bottom: 24px;
-        .remember-wrap {
-          margin-bottom: 0;
-          line-height: 32px;
+      form {
+        margin-bottom: 12px;
+        input[type=submit] {
+          border: none;
+          border-radius: 3px;
+          background: darken($pmc_red, 25%);
+          color: #FFFFFF;
         }
       }
     }

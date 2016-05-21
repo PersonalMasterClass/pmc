@@ -41,12 +41,7 @@ div.landing-page-sections {
       font-weight: bold;
       padding: 24px 36px;
       margin-top: 36px;
-      transition: transform 100ms ease;
-      transform: scale(1);
       border: none;
-      &:active {
-        transform: scale(0.9);
-      }
     }
     &#leader {
       $dblue: darken($pmc_blue, 25%);
