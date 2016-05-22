@@ -92,9 +92,11 @@ class Booking < ActiveRecord::Base
 
   #Returns a status message depending on the booking information
   def status_message
-    if self.chosen_presenter = nil?
+    if self.chosen_presenter == nil
       if self.help_required
         return "Help Required"
+      elsif self.presenters.present?
+        return "Bids Pending"
       else
         return "Awaiting Bids"
       end

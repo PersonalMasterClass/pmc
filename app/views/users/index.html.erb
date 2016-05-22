@@ -4,8 +4,11 @@
 
  
 
-  <h3>Actions Needed (<%= @total %>)</h3>
-  <button data-toggle="collapse" data-target="#admin_actions_needed" class="btn btn-primary">Show/Hide</button>
+  <h3>
+    Actions Needed (<%= @total %>)
+    <button data-toggle="collapse" data-target="#admin_actions_needed" class="btn btn-primary">Show/Hide</button>
+  </h3>
+  
   <div class="row collapse" id="admin_actions_needed">
     
     <div class = "col-md-4">
@@ -23,15 +26,12 @@
   </div>
 
    <!-- upcoming bookings -->
-  <h3>Upcoming Bookings</h3>
-  <button data-toggle="collapse" data-target="#upcoming_bookings" class="btn btn-primary">Show/Hide</button>
-  <div class = "row collapse in" id="upcoming_bookings">
-    <div class = "">
-      <%= render 'users/partials/upcoming_bookings' %>
-    </div>
+  <h3>
+    Upcoming Bookings
+    <%= link_to "See all", bookings_path, class: "btn btn-primary" %>
+  </h3>
+  <div class = "">
+    <%= render 'users/partials/upcoming_bookings' %>
   </div>
   
-
-
-
 </div>
