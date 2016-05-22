@@ -1,8 +1,8 @@
 #!/bin/bash
-CWD="$(pwd)"
-cd "$(git rev-parse --show-toplevel)" &&
-docker build -t pmc . &&
-for i in Docker/Dockerfile_*;do
-	docker build -t "pmc_${i##*_}" -f "${i}" .
+source "$(git rev-parse --show-toplevel)/Docker/app_source.sh"
+cd "${REPO_ROOT}" &&
+docker build -t "${APP_PREFIX}" . &&
+for component in "${APP_COMPONENTS[@]}"; do
+	docker build -t "${APP_PREFIX}_${component}" -f "${REPO_ROOT}/Docker/Dockerfile_${component}" .
 done
-cd "${CWD}"
+cd "${WORKING_DIR}"
