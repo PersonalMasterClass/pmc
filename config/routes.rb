@@ -75,7 +75,11 @@ root 'home#index'
   get 'admin/presenters' => 'users#presenters', as: 'admin_presenters'
 
   resources :notifications, only: :index
-  post 'set_rate' => 'presenters#set_rate', as: "set_rate"  
+  post 'set_rate' => 'presenters#set_rate', as: "set_rate"
+
+  resources :page_contents, :only => [:edit, :update]
+
+  get 'legal' => 'home#legal'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
