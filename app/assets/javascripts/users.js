@@ -12,10 +12,11 @@ $(document).on('ready page:load', function(){
 						var array = data.error ? [] : $.map(data, function(m) {
 							return {
 								value: m.school_name,
-								// label: m.id
+								id: m.id
 							};
 						});
 						response(array);
+						
 					});
 				},
 				focus: function(event, ui) {
@@ -23,11 +24,18 @@ $(document).on('ready page:load', function(){
 					// event.preventDefault();
 				},
 				select: function(event, ui) {
-
+					$("#school_id").val(ui.item.id)
 					// prevent autocomplete from updating the textbox
 					// event.preventDefault();
 					// navigate to the selected item's url
 					// window.open(ui.item.url);
+				}
+			});
+			
+			// clear out the subject ID field if the search field is cleared
+			$("#school_search").blur(function() {
+				if(!$(this).val()) {
+					$("#school_id").val("");
 				}
 			});
 

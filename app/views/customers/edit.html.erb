@@ -1,0 +1,62 @@
+<h2>Customer - Update your profile</h2>
+<style> 
+.ui-autocomplete .ui-menu-item a{
+    color: #96f226;
+    border-radius: 0px;
+    border: 1px solid #454545;
+}
+</style>
+<%= form_for @customer, url: { action: "customers", profiles: params[:id], action: "update"} do |f| %>
+
+  <%= fields_for :school_info, @customer.school_info do |school_info_fields| %>
+  <div class="form-group">
+    <%= f.label "School" %>
+    <% if @customer.school_info.present?
+          school = @customer.school_info.school_name
+          school_id = @customer.school_info.id
+          
+        else
+          school = ""
+          school_id = ""
+        end
+      %>
+      <%= hidden_field_tag 'school_id', school_id %>
+      <%= school_info_fields.text_field :school_name, value: school, class: "form-control", :id=>"school_search" %>
+  </div>
+  <% end %>
+
+    <div class="form-group">
+      <%= f.label :first_name %><br />
+      <%= f.text_field :first_name,  value: @customer.first_name, autofocus: true, class: "form-control" %>
+    </div>
+   <div class="form-group">
+      <%= f.label :last_name %><br />
+      <%= f.text_field :last_name, value: @customer.last_name, autofocus: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :phone_number %><br />
+      <%= f.text_field :phone_number, value: @customer.phone_number, autofocus: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :vit_number %><br />
+      <%= f.text_field :vit_number,  value: @customer.vit_number, autofocus: true, :size =>"10", :maxlength=>"10", class: "form-control control-label" %>
+      <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
+      <span id="failed_vit_validation_link"><%= link_to("Contact Form", "../contact_form", target: "new") %></span>
+    </div>
+ 
+    <div class="form-group">
+      <%= f.label :department %><br />
+      <%= f.text_field :department,  value: @customer.department, autofocus: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :contact_title %><br />
+      <%= f.text_field :contact_title, value: @customer.contact_title, autofocus: true, class: "form-control" %>
+    </div>  
+ 
+    <div class="actions">
+      <%= f.submit "Save Changes", class: "btn btn-default" %>
+    </div>
+<% end %>

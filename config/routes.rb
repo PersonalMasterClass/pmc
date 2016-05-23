@@ -25,6 +25,11 @@ root 'home#index'
     get 'registration/submit_form' => 'users/registrations#submit_form' 
     get 'registration/contact_form' => 'users/registrations#contact_form'  
     post 'registration/contact_form_create' => 'users/registrations#contact_form_create'
+
+    get 'customers/:id/edit' => 'customers#edit'
+    patch 'customers/:id/update' => 'customers#update'
+    get 'customers/:id/edit/contact_form' => 'customers#contact_form'
+    post 'customers/:id/update/contact_form_create' => 'customers#contact_form_create'
   end
 
   
