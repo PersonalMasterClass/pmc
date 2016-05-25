@@ -22,13 +22,13 @@ div.user-auth-dialog {
       max-width: 360px;
       margin: 0 auto;
       padding: 18px;
-      background: darken($accent_cyan, 2.5%);
+      background: darken($accentCyan, 2.5%);
       border-radius: 2px;
       form {
         margin-bottom: 12px;
         div#error_explanation {
           margin: 24px 0;
-          color: $pmc_red;
+          color: $pmcRed;
           h2 {
             font-size: 0px;
             &:before {
@@ -41,7 +41,7 @@ div.user-auth-dialog {
         input[type=submit] {
           border: none;
           border-radius: 3px;
-          background: lighten($pmc_red, 15%);
+          background: lighten($pmcRed, 15%);
           color: #FFFFFF;
         }
         .help-block { color: #EFEFEF; }

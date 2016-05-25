@@ -21,7 +21,7 @@
 @import "branding";
 
 //  Some globals
-html { background: darken($pmc_blue, 7.5%); }
+html { background: lighten(saturate($pmcBlue, 10%), 0%); }
 a { transition: color 250ms ease; }
 .btn {
   &.push-transition {
@@ -32,14 +32,15 @@ a { transition: color 250ms ease; }
 }
 
 body {
-  margin: $navbar-height 0 0 0;
+  margin: $navbarHeight 0 0 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   background: none;
 
   //  Navbar
   nav.navbar-fixed-top {
-    min-height: $navbar-height;
-    background: $pmc_blue;
+    $borderWidth: 1px;
+    min-height: $navbarHeight - $borderWidth;
+    background: $accentBlue;
     border-bottom: none;
     a.navbar-brand {
       display: table;
@@ -99,7 +100,7 @@ body {
       float: left;
     }
     .footer-content {
-      background: $pmc_blue;
+      background: lighten(saturate($pmcBlue, 20%), 5%);
       .container {
         display: table;
         $vPadding: 12px;
@@ -128,7 +129,7 @@ body {
     }
     .afterfooter {
       width: 100%;
-      background:darken($pmc_blue, 7.5%);
+      background: lighten(saturate($pmcBlue, 10%), 0%);
       padding: 8px 0;
       .left, .right { width: 50%; }
       .left { float:left; }
