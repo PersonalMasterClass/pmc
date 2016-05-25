@@ -38,17 +38,17 @@ body {
 
   //  Navbar
   nav.navbar-fixed-top {
-    $borderWidth: 1px;
-    min-height: $navbarHeight - $borderWidth;
+    min-height: $navbarHeight;
     background: $accentBlue;
-    border-bottom: none;
+    border-bottom: 1px solid $pmcBlue;
+    box-sizing: border-box;
     a.navbar-brand {
       display: table;
       padding: 0;
       .logo, .text {
         display: table-cell;
         vertical-align: middle;
-        height: $navbar-height;
+        height: $navbarHeight;
         padding: 8px;
       }
       .logo {
