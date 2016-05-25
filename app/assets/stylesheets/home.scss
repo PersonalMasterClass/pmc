@@ -36,12 +36,18 @@ div.landing-page-sections {
     }
     //  Generic button for use in each of the sections on the homepage
     a.btn {
-      background: lighten($pmc_yellow, 15%) !important;
+      background: lighten($pmc_red, 15%);
+      color: #ffffff;
       font-size: 14px;
       font-weight: bold;
       padding: 24px 36px;
       margin-top: 36px;
       border: none;
+    }
+    .underbutton {
+      display: inline-block;
+      margin-top: 12px;
+      color: #EEEEEE;
     }
     &#leader {
       $dblue: darken($pmc_blue, 25%);
@@ -87,12 +93,12 @@ div.landing-page-sections {
             }
           }
           a.btn { margin-top: 0; }
-          .underbutton {
-            display: inline-block;
-            margin-top: 8px;
-            color: #EEEEEE;
+          .after-tile-callout {
+            margin: 36px 0;
+            .underbutton {
+              color: #ffffff;
+            }
           }
-          .after-tile-callout { margin: 36px 0; }
         }
       }
     }
