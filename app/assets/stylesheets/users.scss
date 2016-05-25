@@ -11,7 +11,7 @@ table.pending-user-registrations {
 }
 div.user-auth-dialog {
   $vPadding: 36px;
-  $textColour: #333333;
+  $textColour: #FFFFFF;
   padding-top: 0;
   padding-bottom: 0;
   color: $textColour;
@@ -22,7 +22,7 @@ div.user-auth-dialog {
       max-width: 360px;
       margin: 0 auto;
       padding: 18px;
-      background: lighten($pmc_yellow, 15%);
+      background: darken($accent_cyan, 2.5%);
       border-radius: 2px;
       form {
         margin-bottom: 12px;
@@ -41,14 +41,12 @@ div.user-auth-dialog {
         input[type=submit] {
           border: none;
           border-radius: 3px;
-          background: darken($pmc_red, 25%);
+          background: lighten($pmc_red, 15%);
           color: #FFFFFF;
         }
+        .help-block { color: #EFEFEF; }
         .field_with_errors {
-          > input, > textarea {
-            border: 1px solid $pmc_red;
-            box-shadow: 0 0 2px $pmc_red;
-          }
+          > input, > textarea { box-shadow: 0 0 2px #ff0000; }
         }
       }
     }
