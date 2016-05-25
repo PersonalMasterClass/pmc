@@ -3,8 +3,8 @@ class BookingsController < ApplicationController
 
   def index  
     # Refactored to presenter/customer/admin controllers
-    # @upcoming = Booking.upcoming(current_user) 
-    # @completed = Booking.completed(current_user)
+    @upcoming = Booking.upcoming(current_user) 
+    @completed = Booking.completed(current_user)
     # if current_user.user_type == "customer"
       # @upcoming += Booking.where(creator: current_user.customer)
     # end
