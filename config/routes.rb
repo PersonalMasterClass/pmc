@@ -36,7 +36,8 @@ root 'home#index'
   get "/subjects/find" => 'subjects#find'
   get "/subscribe/index" => 'subjects#subscriptions', as: "subscriptions"
   get "/subscribe/new" => 'subjects#new_subscription', as: "subscriptions_new"
-  post "/subscribe/index/:id" => 'subjects#subscribe', as: "subscribe"
+  post "/subscribe/remove/:id" => 'subjects#unsubscribe', as: "unsubscribe"
+  post "/subscribe/create" => 'subjects#subscribe', as: "subscribe"
   resources :subjects do
     get "/presenters" => 'subjects#view_presenters'
   end

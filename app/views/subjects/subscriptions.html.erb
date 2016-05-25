@@ -1,1 +1,16 @@
 <h1> My subscriptions </h1>
+<%= render "subscription_form" %>
+
+<% if @subscriptions.any? %>
+	<table class = "table table-hover">
+	<% @subscriptions.each do |s| %>
+		<tr>
+			<td class = 'col-md-4'> <%= s.name %> </td>
+			<td class = 'col-md-4'> <%= s.note %> </td>
+			<td class = 'col-md-4'> 
+				<%= link_to 'Unsubscribe', unsubscribe_path(s.id),
+			method: :post, :class=>"btn btn-danger btn-xs" %> </td>
+		</tr>
+	<% end %>
+	</table>
+<% end %>

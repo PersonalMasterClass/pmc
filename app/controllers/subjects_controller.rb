@@ -1,7 +1,7 @@
 class SubjectsController < ApplicationController
 before_filter :find_subjects, :only => [:edit, :update, :destroy]
 before_filter :admin_logged_in, :only => [:update, :destroy, :edit]
-before_filter :customer_logged_in, :only => [:subscribe, :subscriptions]
+before_filter :customer_logged_in, :only => [:subscribe, :subscriptions, :unsubscribe]
 
 	def index
 		if current_user.user_type == "admin"
@@ -62,10 +62,18 @@ before_filter :customer_logged_in, :only => [:subscribe, :subscriptions]
 	end
 	
 	def subscribe
+		@subject = Subject.find_by_name(params[:name])
+		@customer = current_user.customer
+		@customer.subjects << @subject
+		flash[:success] = "You have subscribed to #{@subject.name}."
+		redirect_to root_url
+	end
+
+	def unsubscribe
 		@subject = Subject.find(params[:id])
 		@customer = current_user.customer
-		customer.subjects << @subject
-		flash[:success] = "You have subscribed to #{@subject.name}."
+		@customer.subjects.delete(@subject)
+		flash[:success] = "You have unsubscribed from #{@subject.name}."
 		redirect_to root_url
 	end
 
