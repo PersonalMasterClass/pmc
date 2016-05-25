@@ -4,6 +4,8 @@
   <%= @content.content.html_safe %>
   
 </div>
-<% if current_user.admin? %>
-  <%= link_to "Update Content", edit_page_content_path(@content) %>
+<% if current_user %>
+  <% if current_user.admin? %>
+    <%= link_to "Update Content", edit_page_content_path(@content) %>
+  <% end %>
 <% end %>

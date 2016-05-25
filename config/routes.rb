@@ -24,8 +24,8 @@ root 'home#index'
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
     #TODO: customers to schools
-    get 'registration/customers' => 'users/registrations#new_customer' #as: "registrations_customers"
-    post 'registration/customers' => 'users/registrations#create_customer' #as: "registrations_customers"
+    get 'registration/schools' => 'users/registrations#new_customer', as: "registration_customers"
+    post 'registration/schools' => 'users/registrations#create_customer' #as: "registrations_customers"
     get 'registration/vit_validation' => 'users/registrations#vit_validation'
   end
 
@@ -48,7 +48,7 @@ root 'home#index'
   get 'bookings/:id/gethelp' =>'bookings#get_help', as: 'bookings_help'
   resources :bookings
   
-  resources :presenters do
+  resources :presenters, :only =>[:create, :edit, :update, :destroy] do
     resource :presenter_profile, as: 'profile'
     resources :availabilities
     resources :subjects

@@ -4,18 +4,11 @@ class BookingsController < ApplicationController
 
   #admin view for all bookings
   def index  
-    @bookings = Booking.all
-    # Refactored to presenter/customer/admin controllers
-    # @upcoming = Booking.upcoming(current_user) 
-    # @completed = Booking.completed(current_user)
-    # if current_user.user_type == "customer"
-      # @upcoming += Booking.where(creator: current_user.customer)
-    # end
-
+    @bookings = Booking.with_deleted
   end
 
   def show
-    @booking = Booking.find(params["id"])
+    @booking = Booking.with_deleted.find(params["id"])
     @creator = @booking.creator
   end
 

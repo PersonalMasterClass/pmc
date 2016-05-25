@@ -16,11 +16,11 @@ class ApplicationController < ActionController::Base
 #     # end
 #     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
 #   end
-	def notif_read
-		notification = Notification.find(params[:id])
-		notification.is_read = true
-		notification.save
-		redirect_to notification.reference
-	end
+  def notif_read
+    notification = Notification.find(params[:id])
+    notification.is_read = true
+    notification.save
+    redirect_to notification.reference
+  end
 
 end
