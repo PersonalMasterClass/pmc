@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160517091518) do
+ActiveRecord::Schema.define(version: 20160525010124) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,14 @@ ActiveRecord::Schema.define(version: 20160517091518) do
     t.string   "contact_title"
     t.integer  "school_info_id"
   end
+
+  create_table "customers_subjects", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "subject_id"
+  end
+
+  add_index "customers_subjects", ["customer_id"], name: "index_customers_subjects_on_customer_id", using: :btree
+  add_index "customers_subjects", ["subject_id"], name: "index_customers_subjects_on_subject_id", using: :btree
 
   create_table "notifications", force: :cascade do |t|
     t.boolean  "is_read",    default: false
