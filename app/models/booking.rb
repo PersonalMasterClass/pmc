@@ -51,15 +51,15 @@ class Booking < ActiveRecord::Base
           else
             booking = Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name}) 
           end
-        # elsif user.customer?
-          # if booking.present?
-          #   booking << Booking.joins(:subject).where(subjects: {name: subject.name})
-          # else  
-            # booking =  Booking.joins(:subject).where(subjects: {name: subject.name})
-          # end
         end
-      elsif user.customer?
-        booking = Booking.where(shared: true)
+        elsif user.customer?
+          user.customer.subjects.each do |subject|
+          if booking.present?
+            booking << Booking.joins(:subject).where(subjects: {name: subject.name})
+          else  
+            booking =  Booking.joins(:subject).where(subjects: {name: subject.name})
+          end
+        end
       end
     return booking
   end
