@@ -20,21 +20,23 @@
 @import "variables";
 @import "branding";
 
-//  Some globals
+//  Background for the entire page
 html { background: lighten(saturate($pmcBlue, 10%), 0%); }
-a { transition: color 250ms ease; }
-.btn {
-  &.push-transition {
-    transition: transform 100ms ease;
-    transform: scale(1);
-    &:active { transform: scale(0.9); }
-  }
-}
 
 body {
   margin: $navbarHeight 0 0 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   background: none;
+
+  //  Some globals
+  a { transition: color 250ms ease; }
+  .btn {
+    &.push-transition {
+      transition: transform 100ms ease;
+      transform: scale(1);
+      &:active { transform: scale(0.9); }
+    }
+  }
 
   //  Navbar
   nav.navbar-fixed-top {

@@ -36,13 +36,16 @@ div.landing-page-sections {
     }
     //  Generic button for use in each of the sections on the homepage
     a.btn {
-      background: lighten($pmcRed, 15%);
+      $buttonBackground: lighten($pmcRed, 15%);
+      background: $buttonBackground;
       color: #FFFFFF;
       font-size: 14px;
       font-weight: bold;
       padding: 24px 36px;
       margin-top: 36px;
       border: none;
+      //  Ensure that the colour doesn't get overriden by the Bootstrap default style.
+      &:active, &:focus { background: $buttonBackground; }
     }
     .underbutton {
       display: inline-block;
