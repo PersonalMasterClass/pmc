@@ -62,9 +62,9 @@ ActiveRecord::Schema.define(version: 20160517091518) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.integer  "rate"
+    t.boolean  "help_required",        default: false
     t.integer  "period"
     t.datetime "deleted_at"
-    t.boolean  "help_required",        default: false
   end
 
   add_index "bookings", ["chosen_presenter_id"], name: "index_bookings_on_chosen_presenter_id", using: :btree
