@@ -121,6 +121,15 @@ class BookingsController < ApplicationController
     redirect_to booking_path(@booking)
   end
 
+  def join
+    @booking = Booking.find(params[:id])
+    @booking.customers << current_user.customer
+    Notification.notify_admin("#{current_user.customer.first_name} of #{current_user.customer.school_info.school_name} has joined a booking.", booking_path(@booking))
+    Notification.send_message(@booking.creator.user, "A school has joined your booking.", booking_path(@booking))
+    flash[:success] = "Success! You've joined the booking!"
+    redirect_to booking_path(@booking)
+  end
+
   private
     def booking_params
       params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared)

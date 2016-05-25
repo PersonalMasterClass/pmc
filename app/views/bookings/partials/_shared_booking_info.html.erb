@@ -1,0 +1,10 @@
+<div class="col-md-8">
+  <h3> Schools joined </h3>
+  <div class="list-group">
+    <% @booking.customers.each do |customer| %>
+      <h4 class="list-group-item-heading bid-item-h4">
+      	<%= customer.school_info.school_name %>
+      </h4>
+    <% end %>
+  </div>
+</div>

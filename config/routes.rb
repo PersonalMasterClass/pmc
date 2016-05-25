@@ -47,6 +47,7 @@ root 'home#index'
   post 'bookings/set_bid/' => 'bookings#set_bid', as: "bookings_set_bid"
   get 'bookings/choose_presenter/:presenter_id' => 'bookings#choose_presenter', as: "bookings_choose"
   get 'bookings/:id/gethelp' =>'bookings#get_help', as: 'bookings_help'
+  post 'booking/:id/join' => "bookings#join", as: "bookings_join" 
   resources :bookings
 
   resources :presenters do
@@ -54,7 +55,7 @@ root 'home#index'
     resources :availabilities
     resources :subjects
     get 'edit_subjects' => 'presenters#edit_subjects'
-    post 'edit_subjects' => 'presenters#add_subject'
+    post 'edit_subjects/:id' => 'presenters#add_subject'
     get 'rate' => 'presenters#rate'
     
     post 'remove_subject' => 'presenters#remove_subject'

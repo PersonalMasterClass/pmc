@@ -18,6 +18,18 @@ module BookingsHelper
 			end
 		end
 	end
+
+	def view_schools(booking)
+		if booking.shared? && booking.customers.any?
+			if booking.creator == current_user.customer || current_user.customer?
+				content_tag(:span, "Number of schools joined: #{booking.customers.count}", class: "label label-primary")
+			elsif current_user.presenter?
+				render partial: 'bookings/partials/shared_booking_info', object: booking
+			end
+		end
+	end
+
+
 	def is_booked(booking,user)
 		if user.presenter? 
 			if booking.chosen_presenter == user.presenter 
@@ -33,7 +45,6 @@ module BookingsHelper
 				else
 					content_tag(:span, "pending", class: "label label-info")
 				end
-				
 		elsif user.admin?
 			if booking.chosen_presenter.present? 
 				content_tag(:span, "booked by #{booking.chosen_presenter.first_name} #{booking.chosen_presenter.last_name}", class: "label label-primary")

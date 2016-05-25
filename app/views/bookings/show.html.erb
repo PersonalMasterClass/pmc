@@ -7,6 +7,7 @@
     <% if current_user.admin? %>
       <%= link_to "Created by #{@creator.first_name} #{@creator.last_name}", customer_path(@creator),  class: "label label-primary" %>  
     <% end %>
+    <%= view_schools(@booking) %>
     <div class ="panel panel-default">
       <div class="panel-body"> 
 		    <p> Date: <%= @booking.booking_date.strftime("%d/%m/%Y") %> </p>
@@ -16,10 +17,10 @@
     </div>
 
   <% end %>
-
+  
   <% if (current_user.customer == @booking.creator || current_user.admin?) && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
   	<%= render 'bookings/partials/bids', object: @booking %>
   <% end %>
-  
+  <%= render 'bookings/partials/customer_join', object: @booking %>
   <%= render 'partials/presenter_actions', object: @booking %>
 <div>

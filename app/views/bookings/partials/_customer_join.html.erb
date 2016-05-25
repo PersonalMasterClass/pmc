@@ -1,0 +1,7 @@
+<% if @booking.shared? %>
+	<% if current_user.customer? && current_user.customer != @booking.creator %>
+		<%= form_tag(bookings_join_path(@booking), class: "form-inline") do %>
+			<%= submit_tag "Join Booking", class: "btn btn-success" %>
+		<% end %>
+	<% end %>
+<% end %>
