@@ -32,4 +32,20 @@ class Notification < ActiveRecord::Base
   		end
   	end
 	end
+
+	def self.canceled_booking(booking, reference)
+		message = "One of your bookings have been cancelled"
+		notification = Notification.create(message: message, reference: reference)
+		booking.presenters.each do |presenter|
+			presenter.user.notifications << notification
+		end
+		booking.customers.each do |customer|
+			customer.user.notifications << notification
+		end
+
+		if booking.chosen_presenter.present?
+			booking.chosen_presenter.user.notifications << notification
+		end
+		notify_admin(message, reference)
+	end
 end

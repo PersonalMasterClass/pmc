@@ -29,7 +29,11 @@ module BookingsHelper
 		end
 	end
 
-
+	def cancellation_message(booking)
+		if booking.cancellation_message.present?
+				content_tag(:p, "Cancellation message: <i>\"#{booking.cancellation_message}\"</i>".html_safe)
+		end
+	end
 	def is_booked(booking,user)
 		if user.presenter? 
 			if booking.chosen_presenter == user.presenter 

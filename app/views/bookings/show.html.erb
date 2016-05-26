@@ -1,9 +1,11 @@
 <div>
 	<% if @booking.present? %>
 		<h3>Booking for <%= @booking.subject.name %></h3>
+    <%= cancellation_message(@booking) %>
     <div class="booking-labels">
       <%= booked_label(@booking) %> <%= rate_label(@booking) %>
     </div>
+    
     <% if current_user.admin? %>
       <%= link_to "Created by #{@creator.first_name} #{@creator.last_name}", customer_path(@creator),  class: "label label-primary" %>  
     <% end %>
@@ -17,11 +19,14 @@
     </div>
 
   <% end %>
-  
-  <% if (current_user.customer == @booking.creator || current_user.admin?) && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
-  	<%= render 'bookings/partials/place_bid', object: @booking %>
+  <!-- TODO: Refactor this filth  -->
+  <% if @booking.cancellation_message.nil? %>
+    <% if (current_user.customer == @booking.creator || current_user.admin?) && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
+    	<%= render 'bookings/partials/place_bid', object: @booking %>
+    <% end %>
+    <%= render 'bookings/partials/customer_join', object: @booking %>
+    <%= render 'bookings/partials/cancel_bid', object: @booking %>
+    <%= render 'bookings/partials/cancel_booking', object: @booking %>
+    <%= render 'partials/presenter_actions', object: @booking %>
   <% end %>
-  <%= render 'bookings/partials/customer_join', object: @booking %>
-  <%= render 'bookings/partials/cancel_bid', object: @booking %>
-  <%= render 'partials/presenter_actions', object: @booking %>
 <div>

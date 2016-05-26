@@ -11,7 +11,7 @@ class BookingsController < ApplicationController
   end
 
   def show
-    @booking = Booking.find(params["id"])
+    @booking = Booking.with_deleted.find(params["id"])
     @creator = @booking.creator
   end
 
@@ -126,10 +126,18 @@ class BookingsController < ApplicationController
     Notification.notify_admin("#{current_user.customer.first_name} of #{current_user.customer.school_info.school_name} has joined a booking.", booking_path(@booking))
     Notification.send_message(@booking.creator.user, "A school has joined your booking.", booking_path(@booking))
     flash[:success] = "Success! You've joined the booking!"
-    redirect_to booking_path(@booking)
+    redirect_to root_url
   end
 
   def cancel_booking
+    @booking = Booking.find(params[:id])
+    @message = params[:cancellation_message]
+    @booking.cancellation_message = @message
+    @booking.save
+    Notification.canceled_booking(@booking, booking_path(@booking))
+    @booking.destroy 
+    flash[:success] = "Booking has been canceled and potential participants notified!"
+    redirect_to booking_path(@booking)
   end
 
   def cancel_bid
