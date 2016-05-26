@@ -12,4 +12,17 @@ class HomeController < ApplicationController
       end
     end
   end
+
+  def about
+
+  end
+
+  def legal
+    @content = PageContent.find_by(name: "legal")
+  end
+
+  def contact
+
+  end
+
 end

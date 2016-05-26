@@ -8,6 +8,11 @@ class Booking < ActiveRecord::Base
   has_many :presenters, through: :bids, :dependent => :destroy
   belongs_to :subject, inverse_of: :bookings
 
+
+  def self.help_required
+    Booking.where('help_required = ? AND booking_date > ?', true, DateTime.now)
+  end
+
   # Return upcoming booking for a customer or presenter
 	# Return all upcoming bookings for an admin
   def self.upcoming(user)
@@ -83,4 +88,25 @@ class Booking < ActiveRecord::Base
   def remove_all_bids
     Bid.where(booking_id: self).delete_all
   end
+
+
+  #Returns a status message depending on the booking information
+  def status_message
+    if self.deleted_at
+      return "Cancelled"
+    else
+      if self.chosen_presenter == nil
+        if self.help_required
+          return "Help Required"
+        elsif self.presenters.present?
+          return "Bids Pending"
+        else
+          return "Awaiting Bids"
+        end
+      else
+        return "Locked in"
+      end
+    end
+  end
+
 end
