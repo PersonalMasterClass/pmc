@@ -1,6 +1,25 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+// The homepage banner background was sourced from:
+// https://www.pexels.com/photo/apple-iphone-books-desk-232/
+
+@import "branding";
+@import "variables";
+div.fixed-background {
+  position:fixed;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-color: darken($pmc_blue, 25%);
+  background-image: asset-url('homepage-banner-background.jpg');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 div.landing-page-sections {
   section {
     width: 100%;
@@ -15,22 +34,29 @@ div.landing-page-sections {
         > *:first-child { margin-top:0; }
       }
     }
+    //  Generic button for use in each of the sections on the homepage
+    a.btn {
+      background: lighten($pmc_yellow, 15%) !important;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 24px 36px;
+      margin-top: 36px;
+      border: none;
+    }
     &#leader {
-      background: #EEE;
+      $dblue: darken($pmc_blue, 25%);
       padding: 128px 0;
+      background: rgba(red($dblue), green($dblue), blue($dblue), 0.67);
       .container {
         .section-content {
+          color: white;
           h1 { font-size: 32px; }
           p { font-size: 16px; }
-          a.button {
-            font-size: 18px;
-            padding: 16px 32px;
-          }
         }
       }
     }
     &#subject-tiles {
-      background: #CCC;
+      background: lighten($pmc_blue, 10%);
       padding: 8px 0;
       .container {
         .section-content {
@@ -38,6 +64,7 @@ div.landing-page-sections {
             text-align: center;
             margin: 16px 0;
             font-weight: 400;
+            color: #FFFFFF;
           }
           .tile-wrap {
             display: table;
@@ -50,7 +77,7 @@ div.landing-page-sections {
                 display: table-cell;
                 vertical-align: middle;
                 height: 200px;
-                background: #BBB;
+                background: #EEE;
                 padding: 16px;
                 width: 33%;
                 font-size: 32px;
@@ -59,13 +86,11 @@ div.landing-page-sections {
               }
             }
           }
-          a.button {
-            font-size: 18px;
-            padding: 16px 24px;
-          }
+          a.btn { margin-top: 0; }
           .underbutton {
             display: inline-block;
             margin-top: 8px;
+            color: #EEEEEE;
           }
           .after-tile-callout { margin: 36px 0; }
         }

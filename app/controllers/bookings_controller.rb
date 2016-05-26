@@ -1,13 +1,10 @@
 class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :set_bid, :cancel_bid]
+  before_filter :admin_logged_in, :only => [:index]
 
+  #admin view for all bookings
   def index  
-    # Refactored to presenter/customer/admin controllers
-    # @upcoming = Booking.upcoming(current_user) 
-    # @completed = Booking.completed(current_user)
-    # if current_user.user_type == "customer"
-      # @upcoming += Booking.where(creator: current_user.customer)
-    # end
+    @bookings = Booking.with_deleted
   end
 
   def show
@@ -159,6 +156,10 @@ class BookingsController < ApplicationController
         flash[:danger] = "Only admin and customer are allowed to create a booking."
         redirect_to root_url        
       end
+    end
+
+    def admin_logged_in
+      redirect_to root_url unless current_user.admin?
     end
 end
 

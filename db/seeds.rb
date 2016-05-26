@@ -12,6 +12,7 @@ Customer.delete_all
 Booking.delete_all
 Subject.delete_all
 Availability.delete_all
+PageContent.delete_all
 
 Rake::Task['import:school_info'].invoke
 
@@ -22,6 +23,8 @@ subs = ["English", "History", "Physical Education", "Japanese", "Geography", "Ar
 subs.each do |s|
   Subject.create(name: s)
 end
+
+PageContent.create(name: "legal", content: "Legal Content Placeholder")
 
 # 20.times do |f|
 #   word = (Faker::Hipster.words(2)* ' ').titleize
@@ -54,6 +57,7 @@ b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number,
                      vit_number: Faker::Number.number(6), 
                      abn_number: Faker::Number.number(11) )
 b.school_info = SchoolInfo.all.sample
+b.subjects << Subject.first
 a.presenter = b
 a.save(:validate => false)
 

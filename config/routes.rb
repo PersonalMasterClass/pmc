@@ -18,20 +18,23 @@ root 'home#index'
   #resources :customers, only: [:index, :show], as: "schools" 
 
   get 'schools' => 'customers#index', as: "customers"
-  get 'school/:id' => 'customer#show', as: "customer"
+  get 'school/:id' => 'customers#show', as: "customer"
 
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
     #TODO: customers to schools
-    get 'registration/customers' => 'users/registrations#new_customer' #as: "registrations_customers"
-    post 'registration/customers' => 'users/registrations#create_customer' #as: "registrations_customers"
+    get 'registration/schools' => 'users/registrations#new_customer', as: "registration_customers"
+    post 'registration/schools' => 'users/registrations#create_customer' #as: "registrations_customers"
     get 'registration/vit_validation' => 'users/registrations#vit_validation'
   end
 
 
   get "/school_info/find" => 'school_info#find'
-  get "school_info" => 'school_info#show' 
+
+  get "school_info/:id" => 'school_info#show', as: 'school_info'
+
+  #get "school_info" => 'school_info#show' 
 
   get "/subjects/find" => 'subjects#find'
   get "/subscribe/index" => 'subjects#subscriptions', as: "subscriptions"
@@ -51,8 +54,7 @@ root 'home#index'
   patch 'booking/:id/cancel_booking' => "bookings#cancel_booking", as: "bookings_cancel"
   patch 'booking/:id/cancel_bid/' => "bookings#cancel_bid", as: "bookings_bid_cancel"
   resources :bookings
-
-  resources :presenters do
+  resources :presenters, :only =>[:create, :edit, :update, :destroy] do
     resource :presenter_profile, as: 'profile'
     resources :availabilities
     resources :subjects
@@ -79,5 +81,7 @@ root 'home#index'
   get 'admin/presenters' => 'users#presenters', as: 'admin_presenters'
 
   resources :notifications, only: :index
-  post 'set_rate' => 'presenters#set_rate', as: "set_rate"  
+  resources :page_contents, :only => [:edit, :update]
+
+  get 'legal' => 'home#legal'
 end

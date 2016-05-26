@@ -57,4 +57,24 @@ module BookingsHelper
 			end
 		end
 	end
+
+	def chosen_presenter(booking) 
+		if booking.chosen_presenter == nil
+			"none"
+		else
+			link_to "#{booking.chosen_presenter.first_name} #{booking.chosen_presenter.last_name}", presenter_profile_path(booking.chosen_presenter)
+		end
+	end
+
+	def shared_message(booking)
+		if booking.shared
+			if booking.customers.count > 1
+				"Shared with other school/s"
+			else
+				"Awaiting other schools"
+			end
+		else
+			"Not open for sharing"
+		end
+	end
 end

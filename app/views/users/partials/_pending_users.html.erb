@@ -1,0 +1,22 @@
+<h4>Pending School Registrations (<%= @pending_user_count %>)</h4>
+<% if @customers.present? %>
+  
+  <table class = "table table-bordered">
+    <tr>
+      <th>School</th>
+      <th>Contact Name</th>
+      <th>Action</th>
+    </tr>
+  <% @customers.each do |usr| %>
+    <tr>
+      <td> <%= link_to usr.customer.school_info.school_name, school_info_path(usr.customer.school_info) %> </td>
+      <td> <%= "#{usr.customer.first_name} #{usr.customer.last_name}" %></td>
+      <td> <%= link_to "View", customer_path(usr.customer), class: "btn btn-info" %> </td>
+    </tr>
+  <% end %>
+  </table>
+  <% if @pending_user_count > 5 %>
+    <%= link_to "See all", admin_pending_registrations_path, class: "btn btn-primary" %>
+  <% end %>
+
+<% end %>

@@ -1,0 +1,23 @@
+<h4>Pending Profile Changes (<%= @pending_profile_count %>)</h4>
+<% if @profiles.present? %>
+
+  <table class = "table table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    <% @profiles.each do |profile| %>
+      <% presenter = Presenter.find(profile.presenter_id) %>
+      <tr> 
+        <td> <%= "#{presenter.first_name} #{presenter.last_name}" %></td>
+        <td> <%= presenter.profile_status_message %></td>
+        <td> <%= link_to "View", presenter_profile_path(presenter), class: "btn btn-info" %> </td>
+      </tr>  
+    <% end %>
+  </table>
+  <% if @pending_profile_count > 5 %>
+    <%= link_to "See all", admin_pending_profiles_path, class: "btn btn-primary" %>
+  <% end %>
+
+<% end %>
