@@ -7,14 +7,12 @@ $accentCyan: #00D1C1;
 $tiffanyBlue: #81D8D0;
 
 .btn.btn-pmcred {
-	background-color: lighten($pmcRed, 15%);
-	border: none;
-	color: white;
-	&:hover {
-		background-color: lighten($pmcRed, 10%);
-	}
-	&:active, &:focus {
-		border: none;
-		color: white;
-	}
+  $buttonRed: lighten($pmcRed, 20%);
+  background-color: $buttonRed !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 8px;
+  &:hover {
+    background-color: lighten($pmcRed, 10%);
+  }
 }
