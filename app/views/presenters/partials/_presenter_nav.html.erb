@@ -1,32 +1,18 @@
-<ul class="nav nav-tabs">
-  <li role="presentation" class="<%= p_dashboard_active?%>">
-  	<%= link_to "Dashboard", presenters_path %>
-	</li>
-  <li role="presentation" class="<%= view_profile_active?%>">
+<% if current_user.presenter? %>
+  <li role="presentation" >
   	<%= link_to "View Profile", presenter_profile_path(current_user.presenter) %>
-	</li>
-  <li role="presentation" class="<%= edit_profile_active?%>">
+  </li>
+  <li role="presentation" >
     <%= edit_presenter_profile_link(current_user.presenter) %>
   </li>
-  <li role="presentation" class="<%=open_bookings_active?%>">
-    <%= link_to "Open Bookings",  bookings_open_path %>
-  </li>
-  <li role="presentation" class="<%=my_bookings_active?%>">
-    <%= link_to "My Bookings", bookings_path %>
-  </li>
-  <li role="presentation" class="<%=my_bookings_active?%>">
+  <li role="presentation" >
     <%= link_to "Subjects", presenter_edit_subjects_path(current_user.presenter) %>
   </li>
-  <li role="presentation" class="<%=my_bookings_active?%>">
+  <li role="presentation" >
     <%= link_to "Availabilities", presenter_availabilities_path(current_user.presenter) %>
   </li>
   <li role="presentation" class="<%= edit_profile_active?%>">
     <%= link_to "Presenter Edit Details", controller: "presenters", id: @presenter, action: "edit_details" %>
   </li>
-
 </ul>
-
-
-
-
-
+<% end %>

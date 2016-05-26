@@ -151,6 +151,8 @@ GEM
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     orm_adapter (0.5.0)
+    paranoia (2.1.5)
+      activerecord (~> 4.0)
     pg (0.18.4)
     pry (0.10.3)
       coderay (~> 1.1.0)
@@ -297,6 +299,7 @@ DEPENDENCIES
   letter_opener
   mail_form
   nokogiri
+  paranoia (~> 2.0)
   pg (~> 0.15)
   pry
   rails (= 4.2.5)

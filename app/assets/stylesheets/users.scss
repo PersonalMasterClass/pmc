@@ -1,6 +1,7 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "branding";
 table.pending-user-registrations {
   /*
     We set the first th to 99% width, so that the action column will
@@ -13,4 +14,50 @@ table.pending-user-registrations {
     color: #96f226;
     border-radius: 0px;
     border: 1px solid #454545;
+}
+
+div.user-auth-dialog {
+  $vPadding: 36px;
+  $textColour: #333333;
+  padding-top: 0;
+  padding-bottom: 0;
+  color: $textColour;
+  .container {
+    .user-auth-wrap {
+      > h2 { margin-top: 0; }
+      > a { color: $textColour; }
+      max-width: 360px;
+      margin: 0 auto;
+      padding: 18px;
+      background: lighten($pmc_yellow, 15%);
+      border-radius: 2px;
+      form {
+        margin-bottom: 12px;
+        div#error_explanation {
+          margin: 24px 0;
+          color: $pmc_red;
+          h2 {
+            font-size: 0px;
+            &:before {
+              font-size: 16px;
+              content: 'Unable to process your request:';
+              display:inline-block;
+            }
+          }
+        }
+        input[type=submit] {
+          border: none;
+          border-radius: 3px;
+          background: darken($pmc_red, 25%);
+          color: #FFFFFF;
+        }
+        .field_with_errors {
+          > input, > textarea {
+            border: 1px solid $pmc_red;
+            box-shadow: 0 0 2px $pmc_red;
+          }
+        }
+      }
+    }
+  }
 }

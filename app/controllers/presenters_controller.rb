@@ -2,6 +2,8 @@ class PresentersController < ApplicationController
 
 	def index
     @presenter = current_user.presenter
+    @upcoming = Booking.upcoming(current_user) 
+    @bookings = Booking.suggested(current_user)
 	end
 	
   def new
@@ -13,6 +15,16 @@ class PresentersController < ApplicationController
   # list current profiles and provide CrUD like interface. 
   def edit_subjects
   	@presenter = current_user.presenter
+  end
+
+  def rate
+  end
+  def set_rate
+    @presenter = current_user.presenter
+    @presenter.rate = params[:rate]
+    @presenter.save(:validate => false)
+    flash[:success] = "You have set your base rate to $#{@presenter.rate}"
+    redirect_to presenters_path
   end
 
   # add a subject to the presenter's subject

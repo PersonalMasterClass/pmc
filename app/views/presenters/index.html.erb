@@ -1,1 +1,17 @@
-<h1> Presenter Dashboard </h1>
+<% if current_user.presenter.rate.nil? %>
+	<%= render 'presenters/partials/rate'%>
+<% end %>		
+<div class = "col-md-6">
+	<div class = "p-container">
+		<h2> Presenter Dashboard </h1>
+		<h3> Upcoming bookings </h3>
+		<%= render 'bookings/partials/bookings' %>
+	</div>
+</div>
+
+<div class = "col-md-6">
+	<div class = "s-container">
+		<h3> Open bookings </h3>
+		<%= render 'bookings/partials/open_bookings' %>
+	</div>
+</div>

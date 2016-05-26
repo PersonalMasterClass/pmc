@@ -1,0 +1,21 @@
+<% if @bookings.present? %>
+  <table class = "table table-hover">
+    <tr>
+      <th>Subject</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th></th>
+    </tr>
+  <% @bookings.each do |booking| %>
+    <tr>
+      <td> <%= booking.subject.name %></td> 
+      <td> <%= booking.booking_date.strftime("%d/%m/%Y") %></td> 
+      <td> <%= booking.booking_date.strftime("%H:%M %p") %> - <%= duration(booking) %></td> 
+      <td> <%= link_to "View", booking_path(booking), class: "btn btn-info" %> </td>
+    </tr>   
+  <% end %>
+  </table>
+<% else %>
+ <i> There are currently no open bookings. </i>
+ <% end %>
+

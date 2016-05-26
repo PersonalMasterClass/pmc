@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <ul class="nav nav-tabs">
   <li role="presentation" class="<%= c_dashboard_active?%>">
 		<%= link_to "Dashboard", customers_path %>
@@ -14,8 +15,11 @@
 	<li role="presentation" class="<%= new_booking_active?%>">
 		<%= link_to "Customer Edit", controller: "customers", id: @customer, action: "edit" %>
 	</li>
+<% if current_user.customer? %>
+<li>
+  <%= link_to "New Booking", new_booking_path %>
+</li>
 </ul>
-
-
+<% end %>
 
 

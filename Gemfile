@@ -6,6 +6,9 @@ gem 'simple_form'
 # mail form
 gem 'mail_form'
 
+# soft delete model
+gem "paranoia", "~> 2.0"
+
 # page scraper
 gem 'nokogiri'
 # enviroment variables

@@ -1,5 +1,13 @@
-<% if current_user.user_type == "presenter" %>
- 		<%= link_to_unless @booking.presenters.include?(current_user.presenter), "Express interest", bookings_bid_path(@booking), class: "btn btn-success" do |name|%>
+<% if current_user.presenter? %>
+ <% unless @booking.presenters.include?(current_user.presenter) || @booking.chosen_presenter.present?%>
+	<div class = "container">
+		<%= form_tag(:controller => "bookings", :action => "set_bid", method: "post") do %>
+			<%= text_field_tag :rate %>
+			<%= hidden_field_tag "id", params[:id]  %>
+			<%= submit_tag "Express interest", class: "btn btn-success" %>
 		<% end %>
-		<%= link_to "Back to open bookings",  :back, class: "btn btn-default" %>
+	</div>
+	<% end %>
+
+	<%= link_to "Back to open bookings",  :back, class: "btn btn-default" %>
 <% end %>
