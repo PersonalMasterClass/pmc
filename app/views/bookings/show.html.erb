@@ -19,7 +19,7 @@
   <% end %>
   
   <% if (current_user.customer == @booking.creator || current_user.admin?) && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
-  	<%= render 'bookings/partials/bids', object: @booking %>
+  	<%= render 'bookings/partials/place_bid', object: @booking %>
   <% end %>
   <%= render 'bookings/partials/customer_join', object: @booking %>
   <%= render 'partials/presenter_actions', object: @booking %>

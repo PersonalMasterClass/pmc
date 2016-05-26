@@ -17,11 +17,7 @@ class Booking < ActiveRecord::Base
   	if user.admin?
   		return Booking.order(created_at: :desc)
   	elsif user.presenter? # Add all booked then bids
-      booking = Booking.where(chosen_presenter_id: user.id).order(created_at: :desc)
-      user.presenter.bids.each do |bid|
-        booking << Booking.find(bid.booking_id)
-      end
-      return booking
+      return booking = Booking.where(chosen_presenter_id: user.id).select{ |booking| booking.booking_date > date_today}
     elsif user.customer?
       return Booking.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
   	end
@@ -31,13 +27,12 @@ class Booking < ActiveRecord::Base
   # Return completed bookings for a customer or presenter
   # Return all completed bookings for an admin
   def self.completed(user)
-  	@user = User.check_user(user)
   	date_today = DateTime.now
     booking = nil
-  	if @user.nil?
-  		return Booking.all.select{ |booking| booking.booking_date < date_today}
-  	else
-  		return @user.bookings.select{ |booking| booking.booking_date < date_today}
+  	if @user.presenter?
+  		return @user.presenter.bookings.with_deleted.order(created_at: :desc)
+  	elsif @user.customer?
+  		return @user.customer.bookings.with_deleted.order(created_at: :desc)
   	end
   end
 
@@ -46,9 +41,17 @@ class Booking < ActiveRecord::Base
     bookings = []
     if user.presenter?
       user.presenter.subjects.each do |subject|
-        subject.each do |booking|
-          if booking.booking_date > date_today
-            bookings  << booking
+        subject.bookings.each do |booking|
+          if user.presenter.bids.empty? || booking.bids.empty?
+            bookings << booking
+          else
+            booking.bids.each do |bid|
+              if bid.presenter != user.presenter && booking.chosen_presenter_id.nil?
+                if booking.booking_date > date_today 
+                  bookings << booking
+                end
+              end
+            end
           end
         end
       end

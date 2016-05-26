@@ -37,7 +37,7 @@ module BookingsHelper
 			elsif booking.bids.include? user.presenter.bids.find_by(booking: booking)
 				content_tag(:span, "placed bid", class: "label label-primary")
 			end
-		elsif user.customer? && booking.creator == user.customer
+		elsif user.customer? #&& booking.creator == user.customer
 				if booking.chosen_presenter.present?
 					content_tag(:span, "confirmed", class: "label label-success")
 				elsif booking.bids.any?
