@@ -79,22 +79,20 @@ class BookingsController < ApplicationController
   def set_bid
     @booking = Booking.find(params[:id])
     @presenter = current_user.presenter
-    # This will create a bi directional association, @booking will contain @presenter as well.
     if @booking.presenters.include? @presenter
       flash[:info] = "You have already expressed interest in this booking"
-      redirect_to bookings_open_path
+      redirect_to root_url
     else
-      @presenter.bookings << @booking
-      @bid = Bid.where(booking: @booking, presenter: @presenter).first
+      @booking.presenters << @presenter
+      @bid = @booking.bids.find_by(presenter: @presenter)
       @bid.bid_date = DateTime.now
       @bid.rate = params[:rate]
-      @presenter.save
       @bid.save
     end
 
     Notification.send_message(@booking.creator.user, "#{@presenter.first_name} has expressed an interest in this booking.", booking_path(@booking))
     flash[:success] = "You have successfully placed a bid on this booking."
-    redirect_to presenters_path
+    redirect_to root_url
   end
 
   def choose_presenter
