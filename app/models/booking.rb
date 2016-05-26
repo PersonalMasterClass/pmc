@@ -59,7 +59,7 @@ class Booking < ActiveRecord::Base
       user.customer.subjects.each do |subject|
         subject.bookings.each do |booking|
           if !booking.customers.include?(user.customer) && booking.creator != user.customer
-            if booking.booking_date > date_today
+            if booking.booking_date > date_today && booking.shared?
               bookings << booking
             end
           end
