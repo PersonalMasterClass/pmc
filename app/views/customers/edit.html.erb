@@ -1,11 +1,4 @@
 <h2>Customer - Update your profile</h2>
-<style> 
-.ui-autocomplete .ui-menu-item a{
-    color: #96f226;
-    border-radius: 0px;
-    border: 1px solid #454545;
-}
-</style>
 <%= form_for @customer, url: { action: "customers", profiles: params[:id], action: "update"} do |f| %>
 
   <%= fields_for :school_info, @customer.school_info do |school_info_fields| %>

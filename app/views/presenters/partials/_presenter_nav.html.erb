@@ -20,6 +20,9 @@
   <li role="presentation" class="<%=my_bookings_active?%>">
     <%= link_to "Availabilities", presenter_availabilities_path(current_user.presenter) %>
   </li>
+  <li role="presentation" class="<%= edit_profile_active?%>">
+    <%= link_to "Presenter Edit Details", controller: "presenters", id: @presenter, action: "edit_details" %>
+  </li>
 
 </ul>
 

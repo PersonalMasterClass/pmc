@@ -1,0 +1,50 @@
+<h2>Presenter - Update your profile</h2>
+
+<%= form_for @presenter, url: { action: "presenters", profiles: params[:id], action: "update"} do |f| %>
+
+  <%= fields_for :school_info, @presenter.school_info do |school_info_fields| %>
+  <div class="form-group">
+    <%= f.label "School" %>
+    <% if @presenter.school_info.present?
+          school = @presenter.school_info.school_name
+          school_id = @presenter.school_info.id
+          
+        else
+          school = ""
+          school_id = ""
+        end
+      %>
+      <%= hidden_field_tag 'school_id', school_id %>
+      <%= school_info_fields.text_field :school_name, value: school, class: "form-control", :id=>"school_search" %>
+  </div>
+  <% end %>
+
+  <%= fields_for :presenter do |presenter_fields| %>
+    <div class="form-group">
+      <%= presenter_fields.label :first_name %><br />
+      <%= presenter_fields.text_field :first_name, value: @presenter.first_name, autofocus: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= presenter_fields.label :last_name %><br />
+      <%= presenter_fields.text_field :last_name, value: @presenter.last_name, autofocus: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= presenter_fields.label :phone_number %><br />
+      <%= presenter_fields.text_field :phone_number, value: @presenter.phone_number,autofocus: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= presenter_fields.label :vit_number %><br />
+      <%= presenter_fields.text_field :vit_number, value: @presenter.vit_number, autofocus: true, class: "form-control" %>
+      <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
+    </div>
+    <% end %>
+    <!-- maybe add abn later -->
+  <div class="actions">
+    <%= f.submit "Save Changes", class: "btn btn-default" %>
+  </div>
+<% end %>
+
+<%= render "users/shared/links" %>

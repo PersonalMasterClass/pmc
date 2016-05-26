@@ -26,6 +26,9 @@ root 'home#index'
     get 'registration/contact_form' => 'users/registrations#contact_form'  
     post 'registration/contact_form_create' => 'users/registrations#contact_form_create'
 
+    get 'presenters/:id/edit_details' => 'presenters#edit_details'
+    patch 'presenters/:id/update_details' => 'presenters#update_details'
+
     get 'customers/:id/edit' => 'customers#edit'
     patch 'customers/:id/update' => 'customers#update'
     get 'customers/:id/edit/contact_form' => 'customers#contact_form'
