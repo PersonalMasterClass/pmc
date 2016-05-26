@@ -70,6 +70,18 @@ body {
           padding-top: 22px;
           padding-bottom: 22px;
           color: white;
+          &.btn {
+            $vOffset: 12px;
+            $hOffset: 8px;
+            $buttonHeight: $navbar-height - ($vOffset * 2);
+            margin-top: $vOffset;
+            height: $buttonHeight;
+            padding: 0 14px;
+            margin-right: $hOffset;
+            margin-left: $hOffset;
+            line-height: $buttonHeight;
+            background: lighten($pmcRed, 15%) !important;
+          }
         }
       }
     }

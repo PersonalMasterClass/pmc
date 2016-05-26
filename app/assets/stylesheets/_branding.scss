@@ -4,3 +4,14 @@ $pmcYellow: #D5A30E;
 $pmcBlue: #569BB0;
 $accentBlue: saturate($pmcBlue, 50%);
 $accentCyan: #00D1C1;
+
+.btn.btn-pmcred {
+	background-color: lighten($pmcRed, 15%);
+	border: none;
+	color: white;
+	&:hover {
+		background-color: lighten($pmcRed, 10%);
+		border: none;
+		color: white;
+	}
+}
