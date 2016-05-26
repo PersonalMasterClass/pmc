@@ -121,7 +121,7 @@ body {
       float: left;
     }
     .footer-content {
-      background: lighten(saturate($pmcBlue, 20%), 5%);
+      background: $accentBlue;
       .container {
         display: table;
         $vPadding: 12px;
@@ -150,7 +150,7 @@ body {
     }
     .afterfooter {
       width: 100%;
-      background: lighten(saturate($pmcBlue, 10%), 0%);
+      background: darken($accentBlue, 5%);
       padding: 8px 0;
       .left, .right {
         width: 50%;
