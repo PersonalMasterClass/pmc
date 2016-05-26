@@ -34,7 +34,7 @@ root 'home#index'
     get 'presenters/:id/edit_details' => 'presenters#edit_details'
     patch 'presenters/:id/update_details' => 'presenters#update_details'
 
-    get 'customers/:id/edit' => 'customers#edit'
+    get 'customers/:id/edit' => 'customers#edit', as: "edit_customer"
     patch 'customers/:id/update' => 'customers#update'
     get 'customers/:id/edit/contact_form' => 'customers#contact_form'
     post 'customers/:id/update/contact_form_create' => 'customers#contact_form_create'

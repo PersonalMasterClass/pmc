@@ -13,7 +13,7 @@
 		<%= link_to "Search", profiles_search_path %>
 	</li>
 	<li role="presentation" class="<%= new_booking_active?%>">
-		<%= link_to "Customer Edit", controller: "customers", id: @customer, action: "edit" %>
+		<%= link_to "Customer Edit", edit_customer_path(current_user.customer) %>
 	</li>
 <% if current_user.customer? %>
 <li>
