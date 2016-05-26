@@ -2,6 +2,7 @@ class Customer < ActiveRecord::Base
   has_many :booked_customers
   has_many :bookings, through: :booked_customers
   has_and_belongs_to_many :subjects
+  has_many :created_bookings, class_name: "Booking"
 	belongs_to :school_info
   belongs_to :user, inverse_of: :customer
 	validates :first_name, :last_name, :school_info, :department, :contact_title, presence: true

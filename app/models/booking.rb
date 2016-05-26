@@ -23,7 +23,7 @@ class Booking < ActiveRecord::Base
       end
       return booking
     elsif user.customer?
-      return Booking.where(creator: user.customer).order(created_at: :desc)
+      return Booking.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
   	end
   	return nil
   end
@@ -42,26 +42,28 @@ class Booking < ActiveRecord::Base
   end
 
   def self.suggested(user)
-    # @user = User.check_user(user)
-    booking = nil
-      if user.presenter?
-        user.presenter.subjects.each do |subject|
-          if booking.present?
-            booking  << Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name})
-          else
-            booking = Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name}) 
-          end
-        end
-        elsif user.customer?
-          user.customer.subjects.each do |subject|
-          if booking.present?
-            booking << Booking.joins(:subject).where(subjects: {name: subject.name})
-          else  
-            booking =  Booking.joins(:subject).where(subjects: {name: subject.name})
+    date_today = DateTime.now
+    bookings = []
+    if user.presenter?
+      user.presenter.subjects.each do |subject|
+        subject.each do |booking|
+          if booking.booking_date > date_today
+            bookings  << booking
           end
         end
       end
-    return booking
+    elsif user.customer?
+      user.customer.subjects.each do |subject|
+        subject.bookings.each do |booking|
+          if !booking.customers.include?(user.customer) && booking.creator != user.customer
+            if booking.booking_date > date_today
+              bookings << booking
+            end
+          end
+        end
+      end
+    end
+    return bookings
   end
   def self.check_creator(presenter, creator)
     if presenter.bookings.present?
@@ -72,6 +74,22 @@ class Booking < ActiveRecord::Base
       end
     end
     return false
+  end
+
+  # View all upcoming shared bookings that a school has joined
+  def self.joined_bookings(customer)
+    bookings = []
+    date_today = DateTime.now
+    customer.subjects.each do |subject|
+      subject.bookings.each do |booking|
+        if booking.customers.include?(customer) && booking.creator != customer
+          if booking.booking_date > date_today
+            bookings << booking
+          end
+        end
+      end
+    end
+    return bookings
   end
 
   #Removes chosen presenter from booking and notifies creator of that booking

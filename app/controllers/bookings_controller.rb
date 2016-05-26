@@ -46,15 +46,16 @@ class BookingsController < ApplicationController
     # Add this customer as owner. 
     @booking.creator = current_user.customer
     @booking.save
-    # Send messages to customers if applicable && @booking is open
-    if @booking.chosen_presenter.nil?
+
+    # Send messages to customers if booking is shared
+    if @booking.shared?
       Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking))
     end
     Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking))
     Notification.notify_admin("A new booking has been created", booking_path(@booking))
 
     # Add booking to booked customers
-    current_user.customer.bookings << @booking
+    current_user.customer.created_bookings << @booking
 
     #clear search session 
     session[:search_params] = nil
