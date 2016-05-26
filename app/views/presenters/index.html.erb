@@ -11,20 +11,16 @@
 				<%= render 'bookings/partials/bookings', collection: @upcoming %>
 			</div>
 		</div>
-	<% if @bids.present? %>
 		<div class = "col-md-6">
 			<div class = "p-container">
 				<h3> Bids </h3>
 				<%= render 'bookings/partials/bids', collection: @bids %>
 			</div>
 		</div>
-	<% end %>
-	<% if @bookings.present? %>
 		<div class = "col-md-6">
 			<div class = "p-container">
 				<h3> Open bookings </h3>
 				<%= render 'bookings/partials/open_bookings', collection: @bookings %>
 			</div>
 		</div>
-	<% end %>
 </div>
