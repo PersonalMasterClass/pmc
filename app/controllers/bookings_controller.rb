@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :set_bid]
+  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :set_bid, :cancel_bid]
 
   def index  
     # Refactored to presenter/customer/admin controllers
@@ -135,6 +135,12 @@ class BookingsController < ApplicationController
   end
 
   def cancel_bid
+    @booking = Booking.find(params[:id])
+    if @booking.presenters.include?(current_user.presenter)
+      @booking.presenters.delete(current_user.presenter)
+    end
+    flash[:success] = "Success! You've withdrawn your bid."
+    redirect_to root_url
   end
 
   private
