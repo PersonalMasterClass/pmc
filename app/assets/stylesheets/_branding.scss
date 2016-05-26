@@ -11,6 +11,8 @@ $accentCyan: #00D1C1;
 	color: white;
 	&:hover {
 		background-color: lighten($pmcRed, 10%);
+	}
+	&:active, &:focus {
 		border: none;
 		color: white;
 	}
