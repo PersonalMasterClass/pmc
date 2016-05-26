@@ -131,6 +131,12 @@ class BookingsController < ApplicationController
     redirect_to booking_path(@booking)
   end
 
+  def cancel_booking
+  end
+
+  def cancel_bid
+  end
+
   private
     def booking_params
       params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared)

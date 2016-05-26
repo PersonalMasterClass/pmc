@@ -48,6 +48,8 @@ root 'home#index'
   get 'bookings/choose_presenter/:presenter_id' => 'bookings#choose_presenter', as: "bookings_choose"
   get 'bookings/:id/gethelp' =>'bookings#get_help', as: 'bookings_help'
   post 'booking/:id/join' => "bookings#join", as: "bookings_join" 
+  patch 'booking/:id/cancel_booking' => "bookings#cancel_booking", as: "bookings_cancel"
+  patch 'booking/:id/cancel_bid/:bid_id' => "bookings#cancel_bid", as: "bookings_bid_cancel"
   resources :bookings
 
   resources :presenters do
