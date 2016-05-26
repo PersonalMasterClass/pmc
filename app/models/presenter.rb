@@ -11,7 +11,6 @@ class Presenter < ActiveRecord::Base
   validates :vit_number, format: /\A^\d{6}$\Z/
   validate :vit_number_must_be_valid
   validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
-  validates :rate, numericality: true
 
   def vit_number_must_be_valid
     unless VitValidation.check_vit(first_name, last_name, vit_number)
