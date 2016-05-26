@@ -75,6 +75,12 @@ body {
     }
     button.navbar-toggle {
       margin-top: 14px;
+      background: lighten($pmcRed, 15%);
+      border: none;
+      &:hover { background: lighten($pmcRed, 10%); }
+      .icon-bar {
+        background-color: #FFFFFF;
+      }
     }
   }
 
@@ -84,9 +90,7 @@ body {
       background: rgb(250,250,250);
       padding-top:$vPadding;
       padding-bottom:$vPadding;
-      &.no-bg {
-        background: none;
-      }
+      &.no-bg { background: none; }
       > *:first-child { margin-top: 0; }
     }
   }
