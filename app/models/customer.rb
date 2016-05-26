@@ -11,7 +11,7 @@ class Customer < ActiveRecord::Base
 
   def vit_number_must_be_valid
     unless VitValidation.check_vit(first_name, last_name, vit_number)
-      errors.add(:vit_number, "could not be found on the vit register.")
+      errors.add(:vit_number, "could not be found on the VIT register.")
     end
   end
 

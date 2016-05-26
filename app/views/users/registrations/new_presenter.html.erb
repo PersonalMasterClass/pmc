@@ -46,7 +46,7 @@
     </div>
 
     <div class="form-group">
-      <%= presenter_fields.label :vit_number %><br />
+      <%= presenter_fields.label :vit_number, "VIT number" %><br />
       <%= presenter_fields.text_field :vit_number, value: if_params_presenter?(:vit_number,params), autofocus: true, class: "form-control" %>
       <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
     </div>

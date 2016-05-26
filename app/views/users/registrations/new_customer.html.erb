@@ -45,7 +45,7 @@
     </div>
 
     <div class="form-group">
-      <%= customer_fields.label :vit_number %><br />
+      <%= customer_fields.label :vit_number, "VIT number" %><br />
       <%= customer_fields.text_field :vit_number,  value: if_params_customer?(:vit_number,params), autofocus: true, :size =>"10", :maxlength=>"10", class: "form-control control-label" %>
       <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
       <span id="failed_vit_validation_link"><%= link_to("Contact Form", "contact_form", target: "new") %></span>
