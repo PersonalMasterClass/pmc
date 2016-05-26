@@ -7,6 +7,7 @@
 
 @import "branding";
 @import "variables";
+@import "bootstrap";
 div.fixed-background {
   position:fixed;
   top:0;
@@ -56,6 +57,9 @@ div.landing-page-sections {
       $backgroundBlue: darken($pmcBlue, 50%);
       padding: 128px 0;
       background: rgba(red($backgroundBlue), green($backgroundBlue), blue($backgroundBlue), 0.4);
+      @media screen and (max-width: $screen-sm-min) {
+        padding: 36px 0;
+      }
       .container {
         .section-content {
           color: white;
@@ -82,6 +86,9 @@ div.landing-page-sections {
             .tile-row {
               display: table-row;
               width: 100%;
+              @media screen and (max-width: $screen-sm-min) {
+                display: block;
+              }
               .tile {
                 display: table-cell;
                 vertical-align: middle;
@@ -92,12 +99,23 @@ div.landing-page-sections {
                 font-size: 32px;
                 font-weight: 700;
                 cursor: pointer;
+                @media screen and (max-width: $screen-sm-min) {
+                  width: 100%;
+                  display: block;
+                  float: left;
+                  height: auto;
+                  padding: 54px 0;
+                  margin-bottom: 24px;
+                }
               }
             }
           }
           a.btn { margin-top: 0; }
           .after-tile-callout {
             margin: 36px 0;
+            @media screen and (max-width: $screen-sm-min) {
+              margin: 8px 0;
+            }
             .underbutton {
               color: #ffffff;
             }

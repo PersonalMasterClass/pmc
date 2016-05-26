@@ -24,7 +24,7 @@
 html { background: lighten(saturate($pmcBlue, 10%), 0%); }
 
 body {
-  margin: $navbarHeight 0 0 0;
+  margin: $navbar-height 0 0 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   background: none;
 
@@ -40,7 +40,7 @@ body {
 
   //  Navbar
   nav.navbar-fixed-top {
-    min-height: $navbarHeight;
+    min-height: $navbar-height;
     background: $accentBlue;
     border-bottom: 1px solid $pmcBlue;
     box-sizing: border-box;
@@ -50,7 +50,7 @@ body {
       .logo, .text {
         display: table-cell;
         vertical-align: middle;
-        height: $navbarHeight;
+        height: $navbar-height;
         padding: 8px;
       }
       .logo {
@@ -72,6 +72,9 @@ body {
           color: white;
         }
       }
+    }
+    button.navbar-toggle {
+      margin-top: 14px;
     }
   }
 
@@ -133,7 +136,14 @@ body {
       width: 100%;
       background: lighten(saturate($pmcBlue, 10%), 0%);
       padding: 8px 0;
-      .left, .right { width: 50%; }
+      .left, .right {
+        width: 50%;
+        @media screen and (max-width: $screen-sm-min) {
+          width: 100%;
+          float: left;
+          text-align: center;
+        }
+      }
       .left { float:left; }
       .right { float:right; }
     }
