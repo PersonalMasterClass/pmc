@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'invoices/index'
+
 root 'home#index'
   devise_for :users,
               controllers: {
@@ -19,6 +21,10 @@ root 'home#index'
 
   get 'schools' => 'customers#index', as: "customers"
   get 'school/:id' => 'customers#show', as: "customer"
+
+  # invoices
+  get 'invoices' => 'invoices#index'
+  get 'invoices/download/:id' => 'invoices#show', as: 'invoice_download'
 
   get 'presenter' => 'presenters#index'
 

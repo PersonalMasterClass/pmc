@@ -1,0 +1,24 @@
+<h1> Invoices</h1>
+
+<h3>Outstanding Invoices</h3>
+<div class = "row">
+<table class="table table-hover">
+	<tr>
+		<th>Booking</th>
+		<th>Total Due</th>
+		<th>Total Paid</th>
+		<th>Due Date</th>
+		<th>  </td>
+	</tr>
+	<% @outstanding.each do |o| %>
+		<tr>
+			
+			<td><%= "#{o[:booking].duration_minutes} minute #{o[:booking].subject.name} session with #{o[:booking].chosen_presenter.get_private_full_name(current_user)}." %> </td>
+			<td><%= number_to_currency(o[:invoice].amount_due) %></td>
+			<td><%= number_to_currency(o[:invoice].amount_paid) %> </td>
+			<td><%= o[:invoice].due_date %> </td>
+			<td> <%= link_to "Download", invoice_download_path(o[:invoice].id) %> </td>
+		</tr>
+		<% end %>
+</table>
+</div>

@@ -91,8 +91,15 @@ class Xero
 		return contact
 	end
 
-	def self.last_invoice
-		return connect.Contact.all.last
+	def self.get_invoices(user)
+		gateway = connect
+		account = gateway.Contact.all(:where =>{:account_number => user.id}).first
+		# 'Contact.ContactID.ToString()=="cd09aa49-134d-40fb-a52b-b63c6a91d712"'
+		search = 'Contact.ContactID.ToString() == "' + account.id + '"'
+		x=  gateway.Invoice.all(:where => search)
+		binding.pry
+		return x.reject{|i| i.status != "AUTHORISED" }
+		 
 	end
 
 	def self.invoice_booking(booking)
