@@ -14,6 +14,8 @@ The Customer model represents a school User.
 
 ===BookedCustomer
 ===Booking
+Calling invoice! on a Booking model will send booking information to Xero in the form of a accounts payable bill to the presenter as well as an invoice for each Customer (school) in the booking. 
+
 ===Presenter_Bids
 ===PresenterProfile
 ===Presenter

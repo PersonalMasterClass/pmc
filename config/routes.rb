@@ -20,6 +20,8 @@ root 'home#index'
   get 'schools' => 'customers#index', as: "customers"
   get 'school/:id' => 'customers#show', as: "customer"
 
+  get 'presenter' => 'presenters#index'
+
   devise_scope :user do
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'

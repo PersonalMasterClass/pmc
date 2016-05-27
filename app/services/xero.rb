@@ -1,7 +1,7 @@
 class Xero
 	# invoice item codes
 	PRESENTER_RATE = "003"
-	SERVICE_FEE = "004"
+	SERVICE_FEE = "001"
 
 
 	# add school as Xero contact
@@ -99,9 +99,40 @@ class Xero
 		gateway = connect
 		pay_presenter(booking, gateway)
 
-		
+		unless booking.shared?
+			charge_school(booking, gateway, booking.creator, 100)
+		else
+			# TODO add logic for splitting the presenter's charge
+			charge_school(booking, gateway, booking.creator, 100)
+		end
 	end
 
+	# Bill a school based on contribution
+	def self.charge_school(booking, gateway, customer, share)
+		billable_minutes = booking.duration_minutes.to_f / 100 * share
+		account = gateway.Contact.all(:where =>{:account_number => customer.user.id}).first
+
+		inv = gateway.Invoice.build(:contact => account, :line_amount_types => "Exclusive")
+
+		inv.type = "ACCREC"
+		inv.date = booking.booking_date
+		inv.reference = booking.id.to_s
+		inv.status = "DRAFT"
+
+		inv.add_line_item({
+      :description => "#{booking.subject.name} revision session",
+      :item_code => PRESENTER_RATE,
+      :unit_amount => booking.rate.to_f,
+      :quantity => (billable_minutes / 60).to_f,
+      # :tax_type => "INPUT"
+    })
+
+    inv.add_line_item({
+    	:item_code => SERVICE_FEE,
+    	:quantity => 1
+    	})
+    puts inv.save
+	end	
 
 	# Create a Xero bill (Accounts Payable) to credit the presenter their rate
 	def self.pay_presenter(booking, gateway)
