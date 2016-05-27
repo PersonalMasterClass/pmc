@@ -1,0 +1,3 @@
+<% if current_user.presenter? && @booking.presenters.include?(current_user.presenter) %>
+	<%= link_to "Withdraw bid", bookings_bid_cancel_path(@booking), method: :patch, class: "btn btn-danger" %>
+<% end %>

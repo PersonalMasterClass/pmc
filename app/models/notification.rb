@@ -18,17 +18,34 @@ class Notification < ActiveRecord::Base
   def self.notify_applicable_users(creator, booking, type, reference)
   	if type == "presenter"
   		users = User.where(user_type: 1)
+  		applicable_users = Presenter.joins(:subjects).where(subjects: {name: booking.subject.name})
   	elsif type == "customer"
-  		users = User.where(user_type: 0)
+  		applicable_users = Customer.joins(:subjects).where(subjects: {name: booking.subject.name})
   	end
   			
 		message = "A new #{booking.subject.name} booking has been created that you may be interested in."
 		reference = reference
-  	users.each do |user|
-  		unless user == creator
+  	applicable_users.each do |applicable_user|
+  		unless applicable_user.user == creator
   			notification = Notification.create(message: message, reference: reference)
-  			user.notifications << notification
+  			applicable_user.user.notifications << notification
   		end
   	end
+	end
+
+	def self.canceled_booking(booking, reference)
+		message = "One of your bookings have been cancelled"
+		notification = Notification.create(message: message, reference: reference)
+		booking.presenters.each do |presenter|
+			presenter.user.notifications << notification
+		end
+		booking.customers.each do |customer|
+			customer.user.notifications << notification
+		end
+
+		if booking.chosen_presenter.present?
+			booking.chosen_presenter.user.notifications << notification
+		end
+		notify_admin(message, reference)
 	end
 end

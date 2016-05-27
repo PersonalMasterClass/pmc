@@ -1,6 +1,7 @@
 class SubjectsController < ApplicationController
 before_filter :find_subjects, :only => [:edit, :update, :destroy]
-before_filter :admin_logged_in, :only=> [:update, :destroy, :edit]
+before_filter :admin_logged_in, :only => [:update, :destroy, :edit]
+before_filter :customer_logged_in, :only => [:subscribe, :subscriptions, :unsubscribe]
 
 	def index
 		if current_user.user_type == "admin"
@@ -56,7 +57,25 @@ before_filter :admin_logged_in, :only=> [:update, :destroy, :edit]
   	end
 	end
 
+	def subscriptions
+		@subscriptions = current_user.customer.subjects
+	end
 	
+	def subscribe
+		@subject = Subject.find_by_name(params[:name])
+		@customer = current_user.customer
+		@customer.subjects << @subject
+		flash[:success] = "You have subscribed to #{@subject.name}."
+		redirect_to root_url
+	end
+
+	def unsubscribe
+		@subject = Subject.find(params[:id])
+		@customer = current_user.customer
+		@customer.subjects.delete(@subject)
+		flash[:success] = "You have unsubscribed from #{@subject.name}."
+		redirect_to root_url
+	end
 
 	private
 		def subject_params
@@ -68,10 +87,16 @@ before_filter :admin_logged_in, :only=> [:update, :destroy, :edit]
 		end
 
 		def admin_logged_in
-
-      if current_user.nil? || (current_user.user_type != "admin")
+      if current_user.nil? || !current_user.admin?
         # TODO remove this for production
         flash[:danger] = "Admin can only edit subjects."
+        redirect_to root_url
+      end
+    end
+
+		def customer_logged_in
+      if current_user.nil? || !current_user.customer?
+        flash[:danger] = "Unauthorised access."
         redirect_to root_url
       end
     end

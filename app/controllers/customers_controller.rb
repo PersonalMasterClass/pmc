@@ -5,7 +5,8 @@ class CustomersController < ApplicationController
   def index
   	@search_params = params();
   	@upcoming = Booking.upcoming(current_user) 
-  	@bookings = Booking.where(shared: true)
+  	@bookings = Booking.suggested(current_user)
+    @joined_bookings = Booking.joined_bookings(current_user.customer)
 	end
 
 	def show

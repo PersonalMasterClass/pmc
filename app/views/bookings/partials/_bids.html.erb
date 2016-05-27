@@ -1,15 +1,21 @@
-<h3> Current bids </h3>
-<% if current_user.customer? %>
-  <% if @booking.help_required %>
-    <div>You have asked for help choosing a presenter. </div>
-  <% else %>
-    <%= link_to "Help me choose", bookings_help_path(@booking), class: 'btn btn-default' if @booking.presenters.count > 1 %>
+<% if current_user.presenter.bids.present? %>
+  <table class = "table table-hover">
+    <tr>
+      <th>Status </th>
+      <th>Subject</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th></th>
+  <% current_user.presenter.bids.each do |bid| %>
+    <tr>
+      <td><%= is_booked(bid.booking,current_user) %></td>
+      <td> <%= bid.booking.subject.name %></td> 
+      <td> <%= bid.booking.booking_date.strftime("%d/%m/%Y") %></td> 
+      <td> <%= bid.booking.booking_date.strftime("%H:%M %p") %> - <%= duration(bid.booking) %></td> 
+      <td> <%= link_to "View", booking_path(bid.booking), class: "btn btn-info" %> </td>
+    </tr>  
   <% end %>
+  </table>
+<% else %>
+  <i> You have made no bids. </i>
 <% end %>
-<ul>
-  <li> 
-    <% @booking.presenters.each do |presenter| %>
-      <%= link_to presenter.get_private_full_name(current_user), presenter_profile_path(presenter) %>
-    <% end %>
-  </li>
-</ul>

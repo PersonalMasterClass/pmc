@@ -1,0 +1,7 @@
+<% if current_user.customer? && @booking.creator == current_user.customer  && @booking.cancellation_message.nil? %>
+	<%= form_tag(bookings_cancel_path(@booking), method: "patch") do %>
+		<%= label_tag :cancellation_message %>
+		<%= text_area_tag :cancellation_message, nil,class: "form-control" %>
+		<%= submit_tag "Cancel booking", class: "btn btn-danger" %>
+	<% end %>
+<% end %>

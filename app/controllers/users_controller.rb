@@ -1,11 +1,11 @@
   class UsersController < ApplicationController
-  before_filter :admin_only, only: [:management_console,
-                                    :registrations, 
+  before_filter :admin_only, only: [:registrations, 
                                     :approve_user, 
                                     :suspend,
                                     :suspended_users,
                                     :customers,
-                                    :presenters]
+                                    :presenters,
+                                    :index]
   
   # given a user, will redirect to the relevant profile
   # either presenter profile, or customer profile
@@ -22,19 +22,22 @@
   
 
   def index
-    @pending_user_count = User.where(status: "pending").count
-    @pending_profile_count = PresenterProfile.where(status: "pending_admin").count
+    @pending_user_count = User.unapproved_customers.count
+    @pending_profile_count = PresenterProfile.drafts_and_unapproved.count
+    @help_count = Booking.help_required.count
+    @total = @pending_user_count + @pending_profile_count + @help_count
      
     @search_params = params
 
     #pending presenter accounts
-    @presenters = User.unapproved_presenters.first(5)
+    @customers = User.unapproved_customers.first(5)
 
     #pending profile changes
     #@profiles = PresenterProfile.find(:first, :conditions => {status: "pending_admin"}, limit: 5)
-    @profiles = PresenterProfile.unapproved_profiles.first(5)
+    @profiles = PresenterProfile.drafts_and_unapproved.first(5)
 
-
+    @upcoming_bookings = Booking.upcoming(current_user).first(5)
+    @help_bookings = Booking.upcoming(current_user).where(help_required: true).first(5)
 
   end
 
@@ -104,5 +107,4 @@
       redirect_to root_url
     end
   end
-
 end

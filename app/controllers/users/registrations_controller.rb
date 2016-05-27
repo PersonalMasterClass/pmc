@@ -47,7 +47,7 @@ before_filter :configure_sign_up_params, only: [:create]
         expire_data_after_sign_in!
         # Send notification to admin
         Notification.send_message(resource, "Welcome! Set your base rate!", root_path)
-        Notification.notify_admin("A new registration has been submitted for approval.", admin_pending_profiles_path)
+        Notification.notify_admin("A new registration has been submitted for approval.", admin_pending_registrations_path)
         # redirect_to new_presenter_presenter_profile_path(presenter), notice: "Whilst your account is pending approval, you can continue to complete your profile."
         flash[:warning] = "Your application has been submitted for approval. 
                            Please check your email to confirm your email."

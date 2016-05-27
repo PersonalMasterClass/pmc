@@ -1,4 +1,4 @@
-<h1> Welcome <%= current_user.customer.school_info.school_name %> </h1>
+<h1> Welcome, <%= current_user.customer.school_info.school_name %>. </h1>
 <div class = "container-fluid">
 <div class = "row">
 	<h3>Presenter Search</h3>	
@@ -6,13 +6,17 @@
 
 </div>
 	<div class = "row">
-		<div class = "col-md-6">
+		<div class = "col-md-12">
 			<h3>Upcoming Bookings</h3>
-			<%= render 'bookings/partials/bookings' %>
+			<%= render 'bookings/partials/bookings', collection: @upcoming %>
+		</div>
+		<div class = "col-md-6">
+			<h3>Joined Bookings</h3>
+			<%= render 'bookings/partials/joined_bookings', collection: @joined_bookings %>
 		</div>
 		<div class = "col-md-6">
 			<h3>Open Bookings</h3>
-			<%= render 'bookings/partials/open_bookings' %>
+			<%= render 'bookings/partials/open_bookings', collection: @bookings %>
 		</div>
 </div>
 </div>

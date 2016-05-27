@@ -1,5 +1,5 @@
 <% if current_user.presenter? %>
- <% unless @booking.presenters.include?(current_user.presenter) %>
+ <% unless @booking.presenters.include?(current_user.presenter) || @booking.chosen_presenter.present?%>
 	<div class = "container">
 		<%= form_tag(:controller => "bookings", :action => "set_bid", method: "post") do %>
 			<%= text_field_tag :rate %>
