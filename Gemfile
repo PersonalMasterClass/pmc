@@ -56,6 +56,8 @@ gem 'best_in_place'
 
 gem 'jquery-turbolinks'
 
+gem 'xeroizer'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -27,3 +27,6 @@ Thumbs.db
 
 # Ignore SASS/SCSS caches
 .sass-cache
+
+# Xero private key
+/config/privatekey.pem
