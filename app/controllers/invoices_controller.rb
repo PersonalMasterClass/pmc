@@ -4,7 +4,17 @@ class InvoicesController < ApplicationController
   	all_data = []
   	all_invoices = current_user.invoices
   	all_invoices.each do |inv|
-  		all_data << Hash[:invoice => inv, :booking => Booking.find(inv.reference)]
+      if inv.type == "ACCPAY"
+        # account receivable has booking number as invoice number
+        bkg_ref = inv.invoice_number.to_i
+      else
+        # account payable has booking as reference
+        bkg_ref = inv.reference.to_i
+      end
+      if bkg_ref == 0
+        next
+      end
+  	  all_data  << Hash[:invoice => inv, :booking => Booking.find(bkg_ref)]
   	end
     all_data.reject{|i| i[:booking].nil?}
     @outstanding = all_data.reject{|i| i[:invoice].status != "AUTHORISED"}
