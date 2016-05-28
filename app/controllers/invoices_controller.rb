@@ -7,8 +7,11 @@ class InvoicesController < ApplicationController
   		all_data << Hash[:invoice => inv, :booking => Booking.find(inv.reference)]
   	end
     all_data.reject{|i| i[:booking].nil?}
-  	@outstanding = all_data.reject{|i| i[:invoice].amount_due - i[:invoice].amount_credited - i[:invoice].amount_paid <= 0}
-  	@paid = all_data - @outstanding
+    @outstanding = all_data.reject{|i| i[:invoice].status != "AUTHORISED"}
+  	# @outstanding = all_data.reject{|i| i[:invoice].amount_due - i[:invoice].amount_credited - i[:invoice].amount_paid <= 0}
+  	@paid = all_data.reject{|i| i[:invoice].status != "PAID"}
+
+    
   end
 
   def show

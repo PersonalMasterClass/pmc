@@ -97,7 +97,8 @@ class Xero
 		# 'Contact.ContactID.ToString()=="cd09aa49-134d-40fb-a52b-b63c6a91d712"'
 		search = 'Contact.ContactID.ToString() == "' + account.id + '"'
 		x=  gateway.Invoice.all(:where => search)
-		return x.reject{|i| i.status != "AUTHORISED" }
+		return x
+		# return x.reject{|i| i.status != "AUTHORISED"  || i.status != "PAID"}
 		 
 	end
 
