@@ -2,12 +2,13 @@ class InvoicesController < ApplicationController
 	before_filter :check_if_user
   def index
   	all_data = []
-  	x = current_user.invoices
-  	x.each do |inv|
+  	all_invoices = current_user.invoices
+  	all_invoices.each do |inv|
   		all_data << Hash[:invoice => inv, :booking => Booking.find(inv.reference)]
   	end
-  	@outstanding = all_data#.reject{|i| i[:invoice].amount_due - i[:invoice].amount_credited - i[:invoice].amount_paid > 0}
-  	@paid = x - @outstanding
+    all_data.reject{|i| i[:booking].nil?}
+  	@outstanding = all_data.reject{|i| i[:invoice].amount_due - i[:invoice].amount_credited - i[:invoice].amount_paid <= 0}
+  	@paid = all_data - @outstanding
   end
 
   def show
