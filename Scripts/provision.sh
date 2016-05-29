@@ -103,7 +103,8 @@ if [ "$(${FIND} ${POSTGRESQL_DATA_DIR} -empty | ${WC} -l)" -gt 0 ]; then
   "${POSTGRESQL_SETUP}" initdb
 fi
 echo "
-local   all             all                                     ident
+local   all             postgres                                trust
+local   all             all                                     md5
 host    all             all             127.0.0.1/32            md5
 host    all             all             ::1/128                 md5
 " > "${POSTGRESQL_HBA_FILE}"
@@ -113,11 +114,12 @@ if ! "${SYSTEMCTL}" is-enabled postgresql.service; then
 else
   "${SYSTEMCTL}" condrestart postgresql.service
 fi
-log "Configuring PostgreSQL user..."
+log "Configuring PostgreSQL..."
 "${SUDO}" -E -u postgres "${CREATEUSER}" "${POSTGRESQL_USER}"
 "${SUDO}" -E -u postgres "${CREATEDB}" "${POSTGRESQL_USER}"
 "${SUDO}" -E -u postgres "${PSQL}" -d "${POSTGRESQL_USER}" \
   -c "ALTER USER \"${POSTGRESQL_USER}\" WITH PASSWORD '${POSTGRESQL_PASSWORD}';"
+echo "localhost:5432:${POSTGRESQL_USER}:${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}" > /var/lib/nginx/.pgpass
 
 # Configure Passenger
 # https://www.phusionpassenger.com/library/install/nginx/install/oss/el7/
@@ -163,9 +165,6 @@ cd "${WEB_ROOT}" &&
 log "Compiling static assets..."
 "${SUDO}" -E -u "${NGINX_USER}" "${BUNDLE}" exec rake assets:precompile \
   SECRET_KEY_BASE="${SECRET_KEY_BASE}" \
-  PMC_DB_USER="${POSTGRESQL_USER}" \
-  PMC_DB_PASSWORD="${POSTGRESQL_PASSWORD}" \
-  PMC_DB_NAME="${POSTGRESQL_USER}" \
   RAILS_ENV="production"
 
 log "Running migrations..."
