@@ -175,14 +175,6 @@ log "Running migrations..."
   PMC_DB_NAME="${POSTGRESQL_USER}" \
   RAILS_ENV="production"
 
-log "Running seeds..."
-"${SUDO}" -E -u "${NGINX_USER}" "${BUNDLE}" exec rake db:seed \
-  SECRET_KEY_BASE="${SECRET_KEY_BASE}" \
-  PMC_DB_USER="${POSTGRESQL_USER}" \
-  PMC_DB_PASSWORD="${POSTGRESQL_PASSWORD}" \
-  PMC_DB_NAME="${POSTGRESQL_USER}" \
-  RAILS_ENV="production"
-
 log "Configuring redis..."
 "${SYSTEMCTL}" enable redis
 "${SYSTEMCTL}" start redis
