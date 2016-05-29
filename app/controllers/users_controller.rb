@@ -99,6 +99,25 @@
     @presenters = Presenter.all
   end
 
+  def edit_login_details
+  end
+
+  def update_login_details
+
+    if ((params[:email] != "") && (params[:password] != ""  && params[:password_confirmation]!= "") && (params[:password] == params[:password_confirmation]))
+        if current_user.update(email: params[:email], password: params[:password])
+          flash[:info]= "Success"
+          redirect_to root_url
+        else
+          render 'edit_login_details'
+        end
+    else
+      flash[:danger] = "Error!"
+      render 'edit_login_details'
+    end
+
+  end
+
   private
 
   def admin_only
