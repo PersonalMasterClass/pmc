@@ -1,0 +1,24 @@
+<% if @upcoming_bookings.present? %>
+  
+  <table class = "table table-bordered">
+    <tr>
+      <th>School</th>
+      <th>Subject</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    <% @upcoming_bookings.each do |b| %>
+      <tr> 
+        <td> <%= b.creator.school_info.school_name %> </td>
+        <td> <%= b.subject.name %> </td>
+        <td> <%= b.booking_date.strftime("%d/%m/%Y") %> </td>
+        <td> <%= b.booking_date.strftime("%H:%M %p") %> - <%= duration(b) %></td>
+        <td> <%= b.status_message %> </td>
+        <td> <%= link_to "View", booking_path(b), class: "btn btn-info" %> </td>
+      </tr>  
+    <% end %>
+  </table>  
+ 
+<% end %>

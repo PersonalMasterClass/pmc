@@ -28,6 +28,12 @@ class PresenterProfile < ActiveRecord::Base
     PresenterProfile.where('status= ?', 4)
   end
 
+  def self.drafts_and_unapproved
+    PresenterProfile.where(status: [1, 4])
+  end
+
+  #This method takes care of the process of updating the live profile with the new
+  #profile changes. 
   def approve
     if self.status == "pending_presenter" || self.status == "pending_admin"
       
@@ -48,6 +54,8 @@ class PresenterProfile < ActiveRecord::Base
       return false
     end
   end
+
+  
 
   # def approved?
   #   self.status == "approved"

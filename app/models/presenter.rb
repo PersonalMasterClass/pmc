@@ -19,7 +19,8 @@ class Presenter < ActiveRecord::Base
     end
   end
 
-
+  #returns the path of a users profile picture depending on whether a profile
+  #has been created and what enviroment the application is running on
   def profile_picture_path(size = '100x100#')
     if self.presenter_profile.nil?
       return Dragonfly.app.fetch_file('public/images/default-user-display.png').thumb(size).url
@@ -32,6 +33,8 @@ class Presenter < ActiveRecord::Base
     end
   end
 
+  #for a given user, returns the name of the presenter, if the user is a customer, then
+  #the the last name is initialized for privacy.
   def get_private_full_name(user)
     if user.admin? || user == self.user
       return "#{self.first_name} #{self.last_name}"
@@ -40,6 +43,7 @@ class Presenter < ActiveRecord::Base
     end      
   end
 
+  #removes all upcoming bookings for a presenter. 
   def remove_upcoming_bookings
     bookings = Booking.upcoming(self.user)
     if bookings.present?
@@ -52,8 +56,29 @@ class Presenter < ActiveRecord::Base
     end
   end
 
+  #Removes all booking bids the presenter has submitted
   def remove_all_bids
     Bid.where(presenter_id: self).delete_all
+  end
+
+  #Returns string for view depending on status 
+  def profile_status_message
+    profile = self.presenter_profile
+    if profile == nil
+      "No profile created"
+    else
+      if profile.pending_admin?
+        "Pending Approval"
+      elsif profile.draft_admin?
+        "Draft Saved"
+      elsif profile.pending_presenter?
+        "Pending Approval"
+      elsif profile.draft_presenter?
+        "Draft Saved"
+      else
+        ""
+      end
+    end
   end
 
 end

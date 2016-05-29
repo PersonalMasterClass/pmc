@@ -20,11 +20,11 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
-#  host: <%= ENV['RDS_HOST'] || "localhost" %>
-#  database: <%= ENV['RDS_NAME'] || "pmc_development" %>
-#  username: <%= ENV['RDS_USERNAME'] || "pmc" %>
-#  password: <%= ENV['RDS_PASSWORD'] || ENV['PMC_DATABASE_PASSWORD'] %>
-#  port: <%= ENV['RDS_PORT'] || "5432" %>
+  host: <%= ENV['RDS_HOST'] || "localhost" %>
+  database: <%= ENV['RDS_NAME'] || "pmc_development" %>
+  username: <%= ENV['RDS_USERNAME'] || "" %>
+  password: <%= ENV['RDS_PASSWORD'] || "" %>
+  port: <%= ENV['RDS_PORT'] || "5432" %>
 
 development:
   <<: *default

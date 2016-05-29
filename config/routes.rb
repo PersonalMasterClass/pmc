@@ -24,8 +24,8 @@ root 'home#index'
     get 'registration/presenters' => 'users/registrations#new_presenter'
     post 'registration/presenters' => 'users/registrations#create_presenter'
     #TODO: customers to schools
-    get 'registration/customers' => 'users/registrations#new_customer' #as: "registrations_customers"
-    post 'registration/customers' => 'users/registrations#create_customer' #as: "registrations_customers"
+    get 'registration/schools' => 'users/registrations#new_customer', as: "registration_customers"
+    post 'registration/schools' => 'users/registrations#create_customer' #as: "registrations_customers"
     get 'registration/vit_validation' => 'users/registrations#vit_validation'
     get 'registration/submit_form' => 'users/registrations#submit_form' 
     get 'registration/contact_form' => 'users/registrations#contact_form'  
@@ -46,6 +46,10 @@ root 'home#index'
   #get "school_info" => 'school_info#show' 
 
   get "/subjects/find" => 'subjects#find'
+  get "/subscribe/index" => 'subjects#subscriptions', as: "subscriptions"
+  get "/subscribe/new" => 'subjects#new_subscription', as: "subscriptions_new"
+  post "/subscribe/remove/:id" => 'subjects#unsubscribe', as: "unsubscribe"
+  post "/subscribe/create" => 'subjects#subscribe', as: "subscribe"
   resources :subjects do
     get "/presenters" => 'subjects#view_presenters'
   end
@@ -55,14 +59,16 @@ root 'home#index'
   post 'bookings/set_bid/' => 'bookings#set_bid', as: "bookings_set_bid"
   get 'bookings/choose_presenter/:presenter_id' => 'bookings#choose_presenter', as: "bookings_choose"
   get 'bookings/:id/gethelp' =>'bookings#get_help', as: 'bookings_help'
+  post 'booking/:id/join' => "bookings#join", as: "bookings_join" 
+  patch 'booking/:id/cancel_booking' => "bookings#cancel_booking", as: "bookings_cancel"
+  patch 'booking/:id/cancel_bid/' => "bookings#cancel_bid", as: "bookings_bid_cancel"
   resources :bookings
-  
-  resources :presenters do
+  resources :presenters, :only =>[:create, :edit, :update, :destroy] do
     resource :presenter_profile, as: 'profile'
     resources :availabilities
     resources :subjects
     get 'edit_subjects' => 'presenters#edit_subjects'
-    post 'edit_subjects' => 'presenters#add_subject'
+    post 'edit_subjects/:id' => 'presenters#add_subject'
     get 'rate' => 'presenters#rate'
     
     post 'remove_subject' => 'presenters#remove_subject'
@@ -89,59 +95,8 @@ root 'home#index'
   get 'admin/presenters' => 'users#presenters', as: 'admin_presenters'
 
   resources :notifications, only: :index
-  post 'set_rate' => 'presenters#set_rate', as: "set_rate"  
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
+  post 'set_rate' => 'presenters#set_rate', as: "set_rate"
+  resources :page_contents, :only => [:edit, :update]
 
-  # You can have the root of your site routed with "root"
-  # root 'welcome#index'
-
-  # Example of regular route:
-  #   get 'products/:id' => 'catalog#view'
-
-  # Example of named route that can be invoked with purchase_url(id: product.id)
-  #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
-
-  # Example resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Example resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Example resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Example resource route with more complex sub-resources:
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', on: :collection
-  #     end
-  #   end
-
-  # Example resource route with concerns:
-  #   concern :toggleable do
-  #     post 'toggle'
-  #   end
-  #   resources :posts, concerns: :toggleable
-  #   resources :photos, concerns: :toggleable
-
-  # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  get 'legal' => 'home#legal'
 end
