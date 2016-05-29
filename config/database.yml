@@ -87,4 +87,3 @@ production:
   database: <%= ENV['PMC_DB_NAME'] %>
   username: <%= ENV['PMC_DB_USER'] %>
   password: <%= ENV['PMC_DB_PASSWORD'] %>
-  port: 5432
