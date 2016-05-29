@@ -6,10 +6,10 @@
 
 	  <% #hide personal information from everyone but admin and owner of profile 
 		if current_user.user_type == "admin" || current_user == User.find(@presenter.user_id) %>
-	  <p>Vit Number: <%= @presenter.vit_number%></p>
+	  <p>VIT Number: <%= @presenter.vit_number%></p>
 	  <p>ABN number: <%= @presenter.abn_number%></p>
 	  <p>Phone Number: <%= @presenter.phone_number%></p>
-	  <p>Vit Number: <%= @presenter.vit_number%></p>
+	  <p>VIT Number: <%= @presenter.vit_number%></p>
 		<% end %>
   <% end %>
   

@@ -1,6 +1,6 @@
 <h2>Presenter - Update your profile</h2>
 
-<%= form_for @presenter, url: { action: "presenters", profiles: params[:id], action: "update"} do |f| %>
+<%= form_for @presenter, url: { action: "presenters", profiles: params[:id], action: "update_details"} do |f| %>
 
   <%= fields_for :school_info, @presenter.school_info do |school_info_fields| %>
   <div class="form-group">

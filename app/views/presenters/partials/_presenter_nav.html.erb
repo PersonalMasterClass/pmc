@@ -11,8 +11,8 @@
   <li role="presentation" >
     <%= link_to "Availabilities", presenter_availabilities_path(current_user.presenter) %>
   </li>
-  <li role="presentation" class="<%= edit_profile_active?%>">
-    <%= link_to "Presenter Edit Details", controller: "presenters", id: @presenter, action: "edit_details" %>
+  <li role="presentation" >
+    <%= link_to "Presenter Edit Details", presenter_edit_details_path(current_user.presenter) %>
   </li>
 </ul>
 <% end %>

@@ -31,11 +31,9 @@ root 'home#index'
     get 'registration/contact_form' => 'users/registrations#contact_form'  
     post 'registration/contact_form_create' => 'users/registrations#contact_form_create'
 
-    get 'presenters/:id/edit_details' => 'presenters#edit_details'
-    patch 'presenters/:id/update_details' => 'presenters#update_details'
-
     get 'customers/:id/edit' => 'customers#edit', as: "edit_customer"
     patch 'customers/:id/update' => 'customers#update'
+
     get 'customers/:id/edit/contact_form' => 'customers#contact_form'
     post 'customers/:id/update/contact_form_create' => 'customers#contact_form_create'
   end
@@ -68,6 +66,11 @@ root 'home#index'
     get 'rate' => 'presenters#rate'
     
     post 'remove_subject' => 'presenters#remove_subject'
+
+    get '/edit_details' => 'presenters#edit_details', as: "edit_details"
+#    get 'presenters/:id/edit_details' => 'presenters#edit_details', as: "edit_details"
+    patch 'presenters/:id/update_details' => 'presenters#update_details'
+
   end
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
   

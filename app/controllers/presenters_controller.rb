@@ -51,7 +51,7 @@ class PresentersController < ApplicationController
     @presenter = current_user.presenter
     @presenter.school_info = SchoolInfo.find(params[:school_id])
     if @presenter.update(presenter_update_params)
-      render 'index'
+      redirect_to root_url
     else
       render 'edit_details'
     end
