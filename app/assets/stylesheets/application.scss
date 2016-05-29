@@ -21,7 +21,7 @@
 @import "branding";
 
 //  Background for the entire page
-html { background: lighten(saturate($pmcBlue, 10%), 0%); }
+html { background: lighten(saturate($siteBlue, 10%), 0%); }
 
 body {
   margin: $navbar-height 0 0 0;
@@ -41,7 +41,7 @@ body {
   //  Navbar
   nav.navbar-fixed-top {
     min-height: $navbar-height;
-    background: $accentBlue;
+    background: $siteBlue;
     border-bottom: 1px solid $pmcBlue;
     box-sizing: border-box;
     a.navbar-brand {
@@ -85,10 +85,11 @@ body {
       }
     }
     button.navbar-toggle {
+      $buttonRed: $siteRed;
       margin-top: 14px;
-      background: lighten($pmcRed, 15%);
+      background: $buttonRed;
       border: none;
-      &:hover { background: lighten($pmcRed, 10%); }
+      &:hover { background: lighten($buttonRed, 10%); }
       .icon-bar {
         background-color: #FFFFFF;
       }

@@ -6,13 +6,15 @@ $accentBlue: saturate($pmcBlue, 50%);
 $accentCyan: #00D1C1;
 $tiffanyBlue: #81D8D0;
 
+$siteBlue: lighten($tiffanyBlue, 5%);
+$siteRed: #FF2A01;
+
 .btn.btn-pmcred {
-  $buttonRed: lighten($pmcRed, 20%);
+  // $buttonRed: lighten($pmcRed, 20%);
+  $buttonRed: $siteRed;
   background-color: $buttonRed !important;
   border: none !important;
   color: white !important;
   border-radius: 8px;
-  &:hover {
-    background-color: lighten($pmcRed, 10%);
-  }
+  &:hover { background-color: lighten($buttonRed, 10%); }
 }
