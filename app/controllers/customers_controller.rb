@@ -25,6 +25,7 @@ class CustomersController < ApplicationController
     @customer = current_user.customer
     @customer.school_info = SchoolInfo.find(params[:school_id])
     if @customer.update(customer_update_params)
+      flash[:danger]= "Success"
       redirect_to root_url
     else
       render 'edit'

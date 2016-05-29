@@ -16,7 +16,7 @@ root 'home#index'
     get 'users/:id' => 'users#show', as: "user"
   
   #resources :customers, only: [:index, :show], as: "schools" 
-
+  get 'presenters' => 'presenters#index'
   get 'schools' => 'customers#index', as: "customers"
   get 'school/:id' => 'customers#show', as: "customer"
 
@@ -73,9 +73,9 @@ root 'home#index'
     
     post 'remove_subject' => 'presenters#remove_subject'
 
-    get '/edit_details' => 'presenters#edit_details', as: "edit_details"
+    get 'edit_details' => 'presenters#edit_details', as: "edit_details"
 #    get 'presenters/:id/edit_details' => 'presenters#edit_details', as: "edit_details"
-    patch 'presenters/:id/update_details' => 'presenters#update_details'
+    patch 'update_details' => 'presenters#update_details', as: "update_details"
 
   end
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
