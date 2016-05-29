@@ -7,7 +7,7 @@ $accentCyan: #00D1C1;
 $tiffanyBlue: #81D8D0;
 
 $siteBlue: lighten($tiffanyBlue, 5%);
-$siteRed: #FF2A01;
+$siteRed: lighten(#FF2A01, 15%);
 
 .btn.btn-pmcred {
   // $buttonRed: lighten($pmcRed, 20%);

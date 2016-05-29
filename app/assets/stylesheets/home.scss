@@ -17,7 +17,7 @@ div.fixed-background {
   z-index: -1;
   background-color: darken($pmcBlue, 25%);
   background-image: asset-url('homepage-banner-background.jpg');
-  background-position: 50%;
+  background-position: 50% 15%;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -65,7 +65,7 @@ div.landing-page-sections {
     }
     &#subject-tiles {
       // background: lighten(saturate($pmcBlue, 25%), 10%);
-      background: $siteBlue;
+      background: darken($siteBlue, 5%);
       padding: 8px 0;
       .container {
         .section-content {
