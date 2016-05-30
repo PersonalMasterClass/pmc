@@ -153,10 +153,17 @@ class BookingsController < ApplicationController
 
   def cancel_bid
     @booking = Booking.find(params[:id])
-    if @booking.presenters.include?(current_user.presenter)
-      @booking.presenters.delete(current_user.presenter)
-    end
+    @booking.presenters.delete(current_user.presenter)
     flash[:success] = "Success! You've withdrawn your bid."
+    Notification.send_message(@booking.creator.user, "#{current_user.presenter.get_private_full_name(current_user)} has withdrawn their bid.", booking_path(@booking))
+    redirect_to root_url
+  end
+
+  def leave_booking
+    @booking = Booking.find(params[:id])
+    @booking.customers.delete(current_user.customer)
+    flash[:success] = "Success! You've left the booking."
+    Notification.send_message(@booking.creator.user, "A school has left your booking.", booking_path(@booking))
     redirect_to root_url
   end
 

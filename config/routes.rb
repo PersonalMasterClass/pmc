@@ -53,6 +53,7 @@ root 'home#index'
   post 'booking/:id/join' => "bookings#join", as: "bookings_join" 
   patch 'booking/:id/cancel_booking' => "bookings#cancel_booking", as: "bookings_cancel"
   patch 'booking/:id/cancel_bid/' => "bookings#cancel_bid", as: "bookings_bid_cancel"
+  patch 'booking/:id/leave_booking/' => "bookings#leave_booking", as: "bookings_leave"
   resources :bookings
   resources :presenters, :only =>[:create, :edit, :update, :destroy] do
     resource :presenter_profile, as: 'profile'
