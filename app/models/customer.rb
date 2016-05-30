@@ -5,6 +5,8 @@ class Customer < ActiveRecord::Base
   has_many :created_bookings, class_name: "Booking"
 	belongs_to :school_info
   belongs_to :user, inverse_of: :customer
+  has_many :enquiries
+  has_many :presenters, through: :enquiries
 	# validates :first_name, :last_name, :school_info, :department, :contact_title, presence: true
   # validates :vit_number, format: /\A^\d{6}$\Z/
   # validate :vit_number_must_be_valid

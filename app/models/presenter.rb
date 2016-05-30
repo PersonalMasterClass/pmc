@@ -6,6 +6,8 @@ class Presenter < ActiveRecord::Base
   has_and_belongs_to_many :subjects
   has_many :bids
   has_many :bookings, through: :bids
+  has_many :enquiries
+  has_many :customers, through: :enquiries
 
 	validates :first_name, :last_name, :school_info, presence: true
   validates :vit_number, format: /\A^\d{6}$\Z/

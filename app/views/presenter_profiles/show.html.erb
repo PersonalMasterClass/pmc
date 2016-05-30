@@ -27,5 +27,5 @@
   <% if current_user.customer? && params[:booking_id].present? %>
       <%= render 'partials/customer_actions' %>
   <% end %>
-
+<%= render 'enquiries/partials/form' %>
 </div>

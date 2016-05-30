@@ -86,4 +86,8 @@ root 'home#index'
   resources :page_contents, :only => [:edit, :update]
 
   get 'legal' => 'home#legal'
+  resources :enquiries, :only => [:index, :new, :create, :show] do
+    patch '/accept' => 'enquiries#accept'
+    patch '/decline' => 'enquiries#decline'
+  end
 end
