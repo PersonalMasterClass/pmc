@@ -10,6 +10,9 @@
 	<!-- subject, date, name,-->
 	<div class = "col-sm-3">
 	  <%= text_field_tag :date_part, @search_params[:date_part], :placeholder => "date" %>
+	  <% if current_user.admin? %>
+	  	<%= text_field_tag :time_part, @search_params[:time_part], :placeholder => "time" %>
+	  <% end %>
   </div>	
 
   
