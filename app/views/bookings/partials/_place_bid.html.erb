@@ -1,0 +1,23 @@
+
+<% if current_user.customer? && !current_user.suspended? %>
+  <% if @booking.help_required %>
+    <div>You have asked for help choosing a presenter. </div>
+  <% else %>
+    <%= link_to "Help me choose", bookings_help_path(@booking), class: 'btn btn-default' if @booking.presenters.count > 1 %>
+  <% end %>
+<% end %>
+
+<div class="col-md-8">
+  <h3> Bids </h3>
+  <div class="list-group">
+    <% @booking.presenters.each do |presenter| %>
+      <%= link_to presenter_profile_path(presenter,:booking_id => params[:id]), class: 'list-group-item' do %>
+          <%= image_tag presenter.profile_picture_path('50x50#'), class: "img-circle" %> 
+          <h4 class="list-group-item-heading bid-item-h4">
+            <%= presenter.get_private_full_name(current_user) %>
+            has made a bid of: <span class="label label-success"><%= number_to_currency(presenter.bids.find_by(booking: @booking).rate) %></span>
+          </h4>
+      <% end %>
+    <% end %>
+  </div>
+</div>

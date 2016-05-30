@@ -1,0 +1,15 @@
+<h1>Edit Page Content</h1>
+<%= form_for @page_contents do |f| %>
+
+<div class='form-group'>
+  <%= tinymce :cms_editor %>
+  <%= f.text_area :content, class: "tinymce" %>
+
+</div>
+<div class='actions'>
+  <%= f.submit "Submit", class:"btn btn-default" %>
+</div>
+
+<% end %>
+
+<%= tinymce_assets %> 

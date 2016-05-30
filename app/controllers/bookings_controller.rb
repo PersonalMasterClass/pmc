@@ -1,17 +1,14 @@
 class BookingsController < ApplicationController
-  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :set_bid]
+  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :set_bid, :cancel_bid]
+  before_filter :admin_logged_in, :only => [:index]
 
+  #admin view for all bookings
   def index  
-    # Refactored to presenter/customer/admin controllers
-    @upcoming = Booking.upcoming(current_user) 
-    @completed = Booking.completed(current_user)
-    # if current_user.user_type == "customer"
-      # @upcoming += Booking.where(creator: current_user.customer)
-    # end
+    @bookings = Booking.with_deleted
   end
 
   def show
-    @booking = Booking.find(params["id"])
+    @booking = Booking.with_deleted.find(params["id"])
     @creator = @booking.creator
   end
 
@@ -46,15 +43,16 @@ class BookingsController < ApplicationController
     # Add this customer as owner. 
     @booking.creator = current_user.customer
     @booking.save
-    # Send messages to customers if applicable && @booking is open
-    if @booking.chosen_presenter.nil?
+
+    # Send messages to customers if booking is shared
+    if @booking.shared?
       Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking))
     end
     Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking))
     Notification.notify_admin("A new booking has been created", booking_path(@booking))
 
     # Add booking to booked customers
-    current_user.customer.bookings << @booking
+    current_user.customer.created_bookings << @booking
 
     #clear search session 
     session[:search_params] = nil
@@ -78,22 +76,20 @@ class BookingsController < ApplicationController
   def set_bid
     @booking = Booking.find(params[:id])
     @presenter = current_user.presenter
-    # This will create a bi directional association, @booking will contain @presenter as well.
     if @booking.presenters.include? @presenter
       flash[:info] = "You have already expressed interest in this booking"
-      redirect_to bookings_open_path
+      redirect_to root_url
     else
-      @presenter.bookings << @booking
-      @bid = Bid.where(booking: @booking, presenter: @presenter).first
+      @booking.presenters << @presenter
+      @bid = @booking.bids.find_by(presenter: @presenter)
       @bid.bid_date = DateTime.now
       @bid.rate = params[:rate]
-      @presenter.save
       @bid.save
     end
 
     Notification.send_message(@booking.creator.user, "#{@presenter.first_name} has expressed an interest in this booking.", booking_path(@booking))
     flash[:success] = "You have successfully placed a bid on this booking."
-    redirect_to presenters_path
+    redirect_to root_url
   end
 
   def choose_presenter
@@ -121,6 +117,35 @@ class BookingsController < ApplicationController
     redirect_to booking_path(@booking)
   end
 
+  def join
+    @booking = Booking.find(params[:id])
+    @booking.customers << current_user.customer
+    Notification.notify_admin("#{current_user.customer.first_name} of #{current_user.customer.school_info.school_name} has joined a booking.", booking_path(@booking))
+    Notification.send_message(@booking.creator.user, "A school has joined your booking.", booking_path(@booking))
+    flash[:success] = "Success! You've joined the booking!"
+    redirect_to root_url
+  end
+
+  def cancel_booking
+    @booking = Booking.find(params[:id])
+    @message = params[:cancellation_message]
+    @booking.cancellation_message = @message
+    @booking.save
+    Notification.canceled_booking(@booking, booking_path(@booking))
+    @booking.destroy 
+    flash[:success] = "Booking has been canceled and potential participants notified!"
+    redirect_to booking_path(@booking)
+  end
+
+  def cancel_bid
+    @booking = Booking.find(params[:id])
+    if @booking.presenters.include?(current_user.presenter)
+      @booking.presenters.delete(current_user.presenter)
+    end
+    flash[:success] = "Success! You've withdrawn your bid."
+    redirect_to root_url
+  end
+
   private
     def booking_params
       params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared)
@@ -131,6 +156,10 @@ class BookingsController < ApplicationController
         flash[:danger] = "Only admin and customer are allowed to create a booking."
         redirect_to root_url        
       end
+    end
+
+    def admin_logged_in
+      redirect_to root_url unless current_user.admin?
     end
 end
 

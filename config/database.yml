@@ -21,8 +21,8 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
   host: <%= ENV['PMC_DB_HOST'] || "localhost" %>
-  database: <%= ENV['PMC_DB_NAME'] || "pmc" %>
-  username: <%= ENV['PMC_DB_USER'] || "pmc" %>
+  database: <%= ENV['PMC_DB_NAME'] || "pmc_development" %>
+  username: <%= ENV['PMC_DB_USER'] || "" %>
   password: <%= ENV['PMC_DB_PASSWORD'] || "" %>
 
 development:

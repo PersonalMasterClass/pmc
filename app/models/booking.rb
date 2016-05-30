@@ -8,6 +8,11 @@ class Booking < ActiveRecord::Base
   has_many :presenters, through: :bids, :dependent => :destroy
   belongs_to :subject, inverse_of: :bookings
 
+
+  def self.help_required
+    Booking.where('help_required = ? AND booking_date > ?', true, DateTime.now)
+  end
+
   # Return upcoming booking for a customer or presenter
 	# Return all upcoming bookings for an admin
   def self.upcoming(user)
@@ -17,13 +22,9 @@ class Booking < ActiveRecord::Base
   	if user.admin?
   		return Booking.order(created_at: :desc)
   	elsif user.presenter? # Add all booked then bids
-      booking = Booking.where(chosen_presenter_id: user.id).order(created_at: :desc)
-      user.presenter.bids.each do |bid|
-        booking << Booking.find(bid.booking_id)
-      end
-      return booking
+      return booking = Booking.where(chosen_presenter_id: user.id).select{ |booking| booking.booking_date > date_today}
     elsif user.customer?
-      return Booking.where(creator: user.customer).order(created_at: :desc)
+      return Booking.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
   	end
   	return nil
   end
@@ -31,37 +32,46 @@ class Booking < ActiveRecord::Base
   # Return completed bookings for a customer or presenter
   # Return all completed bookings for an admin
   def self.completed(user)
-  	@user = User.check_user(user)
   	date_today = DateTime.now
     booking = nil
-  	if @user.nil?
-  		return Booking.all.select{ |booking| booking.booking_date < date_today}
-  	else
-  		return @user.bookings.select{ |booking| booking.booking_date < date_today}
+  	if @user.presenter?
+  		return @user.presenter.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
+  	elsif @user.customer?
+  		return @user.customer.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
   	end
   end
 
   def self.suggested(user)
-    # @user = User.check_user(user)
-    booking = nil
-      if user.presenter?
-        user.presenter.subjects.each do |subject|
-          if booking.present?
-            booking  << Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name})
+    date_today = DateTime.now
+    bookings = []
+    if user.presenter?
+      user.presenter.subjects.each do |subject|
+        subject.bookings.each do |booking|
+          if user.presenter.bids.empty? || booking.bids.empty?
+            bookings << booking
           else
-            booking = Booking.where(chosen_presenter_id: nil).joins(:subject).where(subjects: {name: subject.name}) 
+            booking.bids.each do |bid|
+              if bid.presenter != user.presenter && booking.chosen_presenter_id.nil?
+                if booking.booking_date > date_today 
+                  bookings << booking
+                end
+              end
+            end
           end
-        # elsif user.customer?
-          # if booking.present?
-          #   booking << Booking.joins(:subject).where(subjects: {name: subject.name})
-          # else  
-            # booking =  Booking.joins(:subject).where(subjects: {name: subject.name})
-          # end
         end
-      elsif user.customer?
-        booking = Booking.where(shared: true)
       end
-    return booking
+    elsif user.customer?
+      user.customer.subjects.each do |subject|
+        subject.bookings.each do |booking|
+          if !booking.customers.include?(user.customer) && booking.creator != user.customer
+            if booking.booking_date > date_today && booking.shared?
+              bookings << booking
+            end
+          end
+        end
+      end
+    end
+    return bookings
   end
   def self.check_creator(presenter, creator)
     if presenter.bookings.present?
@@ -74,6 +84,22 @@ class Booking < ActiveRecord::Base
     return false
   end
 
+  # View all upcoming shared bookings that a school has joined
+  def self.joined_bookings(customer)
+    bookings = []
+    date_today = DateTime.now
+    customer.subjects.each do |subject|
+      subject.bookings.each do |booking|
+        if booking.customers.include?(customer) && booking.creator != customer
+          if booking.booking_date > date_today
+            bookings << booking
+          end
+        end
+      end
+    end
+    return bookings
+  end
+
   #Removes chosen presenter from booking and notifies creator of that booking
   def remove_chosen_presenter
     self.chosen_presenter = nil
@@ -83,4 +109,25 @@ class Booking < ActiveRecord::Base
   def remove_all_bids
     Bid.where(booking_id: self).delete_all
   end
+
+
+  #Returns a status message depending on the booking information
+  def status_message
+    if self.deleted_at
+      return "Cancelled"
+    else
+      if self.chosen_presenter == nil
+        if self.help_required
+          return "Help Required"
+        elsif self.presenters.present?
+          return "Bids Pending"
+        else
+          return "Awaiting Bids"
+        end
+      else
+        return "Locked in"
+      end
+    end
+  end
+
 end

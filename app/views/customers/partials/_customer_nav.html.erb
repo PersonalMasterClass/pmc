@@ -1,5 +1,8 @@
 <% if current_user.customer? %>
 <li>
+  <%= link_to "Subscriptions", subscriptions_path %>
+</li>
+<li>
   <%= link_to "New Booking", new_booking_path %>
 </li>
 <% end %>
