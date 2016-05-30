@@ -14,8 +14,14 @@ module BookingsHelper
 	def rate_label(booking)
 		if current_user.customer?
 			if booking.creator == current_user.customer && booking.chosen_presenter.present?
-				content_tag(:span, "Rate at #{number_to_currency(booking.rate)}", class: "btn btn-xs btn-success")	
+				content_tag(:span, "Rate at #{number_to_currency(booking.rate)}", class: "btn btn-xs btn-info")	
 			end
+		end
+	end
+
+	def capacity_label(booking)
+		if booking.remaining_slots == 0
+			content_tag(:span, "Booking full", class: "btn btn-xs btn-danger")	
 		end
 	end
 
@@ -78,11 +84,9 @@ module BookingsHelper
 		end
 	end
 
-	def remaining_booking_slots(booking)
-		@count = 0
-		booking.booked_customers.each do |booked_customer|
-			@count += booked_customer.number_students 
+	def display_booking_slots(booking)
+		if @remaining != 0
+			return content_tag(:p, "Capacity: #{booking.cap - booking.remaining_slots}/30 students booked.")
 		end
-		@remaining = booking.cap - @count
-		return @remaining
+	end
 end

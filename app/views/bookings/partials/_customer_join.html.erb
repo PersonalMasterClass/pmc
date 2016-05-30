@@ -1,8 +1,9 @@
-<% if @booking.shared? && !current_user.suspended? %>
+<% if @booking.shared? && !current_user.suspended? && @booking.remaining_slots != 0 %>
 	<% if current_user.customer? && current_user.customer != @booking.creator  && !@booking.customers.include?(current_user.customer)%>
-		<%= form_tag(bookings_join_path(@booking), class: "form-inline") do %>
-			<%= label_tag "Number of students" %>
-			<%= text_field_tag :num_students, nil, class: "form-control" %>
+		<%= form_tag(bookings_join_path(@booking)) do %>
+			<%= label_tag "Number of students" %> <br/>
+			<p><i> There are <%= @booking.remaining_slots%> slots remaining. </p>
+			<%= number_field_tag :num_students, 1, max: @booking.remaining_slots , class: "form-control" %>
 			<%= submit_tag "Join Booking", class: "btn btn-success" %>
 		<% end %>
 	<% end %>

@@ -63,7 +63,7 @@ class Booking < ActiveRecord::Base
     elsif user.customer?
       user.customer.subjects.each do |subject|
         subject.bookings.each do |booking|
-          if !booking.customers.include?(user.customer) && booking.creator != user.customer
+          if !booking.customers.include?(user.customer) && booking.creator != user.customer && booking.remaining_slots != 0
             if booking.booking_date > date_today && booking.shared?
               bookings << booking
             end
@@ -128,6 +128,14 @@ class Booking < ActiveRecord::Base
         return "Locked in"
       end
     end
+  end
+
+  def remaining_slots
+    @count = 0
+    self.booked_customers.each do |booked_customer|
+      @count += booked_customer.number_students 
+    end
+    return self.cap - @count
   end
 
 end

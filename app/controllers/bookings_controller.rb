@@ -42,7 +42,8 @@ class BookingsController < ApplicationController
     @booking.subject = @subject
     # Add this customer as owner. 
     @booking.creator = current_user.customer
-    @booking.save
+    @booking.customers << current_user.customer
+    @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
 
     # Send messages to customers if booking is shared
     if @booking.shared?
@@ -119,11 +120,19 @@ class BookingsController < ApplicationController
 
   def join
     @booking = Booking.find(params[:id])
-    @booking.customers << current_user.customer
-    Notification.notify_admin("#{current_user.customer.first_name} of #{current_user.customer.school_info.school_name} has joined a booking.", booking_path(@booking))
-    Notification.send_message(@booking.creator.user, "A school has joined your booking.", booking_path(@booking))
-    flash[:success] = "Success! You've joined the booking!"
-    redirect_to root_url
+    if params[:num_students].to_i > @booking.remaining_slots
+      flash[:danger] = "Oops! There is not enough room for the number of students you've specified."
+      render :show
+    else
+      @booking.customers << current_user.customer
+      @booked_customer = @booking.booked_customers.find_by(customer: current_user.customer)
+      @booked_customer.number_students = params[:num_students]
+      @booked_customer.save
+      Notification.notify_admin("#{current_user.customer.first_name} of #{current_user.customer.school_info.school_name} has joined a booking.", booking_path(@booking))
+      Notification.send_message(@booking.creator.user, "A school has joined your booking.", booking_path(@booking))
+      flash[:success] = "Success! You've joined the booking!"
+      redirect_to root_url
+    end
   end
 
   def cancel_booking
