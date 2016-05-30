@@ -16,7 +16,7 @@ root 'home#index'
     get 'users/:id' => 'users#show', as: "user"
   
   #resources :customers, only: [:index, :show], as: "schools" 
-
+  get 'presenters' => 'presenters#index'
   get 'schools' => 'customers#index', as: "customers"
   get 'school/:id' => 'customers#show', as: "customer"
 
