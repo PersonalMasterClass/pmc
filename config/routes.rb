@@ -67,7 +67,7 @@ root 'home#index'
     resources :availabilities
     resources :subjects
     get 'edit_subjects' => 'presenters#edit_subjects'
-    post 'edit_subjects/:id' => 'presenters#add_subject'
+    post 'edit_subjects/' => 'presenters#add_subject'
     get 'rate' => 'presenters#rate'
     
     post 'remove_subject' => 'presenters#remove_subject'
