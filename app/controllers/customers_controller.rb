@@ -6,7 +6,7 @@ class CustomersController < ApplicationController
   	@search_params = params();
   	@upcoming = Booking.upcoming(current_user) 
   	@bookings = Booking.suggested(current_user)
-    @joined_bookings = current_user.customer.bookings
+    @joined_bookings = current_user.customer.bookings.where.not(creator: current_user.customer)
 	end
 
 	def show
