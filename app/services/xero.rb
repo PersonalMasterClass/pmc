@@ -31,7 +31,14 @@ class Xero
 	# add presenter as Xero contact
 	def self.add_presenter_account(presenter)
 		begin
-			contact = connect.Contact.build(:name => "PRESENTER: #{presenter.first_name} #{presenter.last_name}" )
+			gateway = connect
+
+			if !gateway
+				return false
+			end
+
+			contact = gateway.Contact.build(:name => "PRESENTER: #{presenter.first_name} #{presenter.last_name}" )
+
 
 			contact.first_name = presenter.first_name
 			contact.last_name = presenter.last_name
@@ -46,12 +53,19 @@ class Xero
 		rescue Xeroizer::ApiException => e
 			return e.message
 		end
+		return true
 	end
 
 	# update a presenter Xero contact
 	def self.update_presenter_account(presenter)
 		begin
+			
+			if !connect
+				return false
+			end
 			contact = connect.Contact.all(:where => {:account_number => presenter.user.id.to_s}).first
+			
+			
 			contact.first_name = presenter.first_name
 			contact.last_name = presenter.last_name
 			contact.email_address = presenter.user.email
@@ -65,7 +79,7 @@ class Xero
 		rescue Xeroizer::ApiException => e
 			return e.message
 		end
-		return contact
+		return true
 	end
 
 		# update a school Xero contact
@@ -75,8 +89,15 @@ class Xero
 			if customer.department
 				dept = customer.department 
 			end
+			gateway = connect
 
-			contact = connect.Contact.all(:where => {:account_number => customer.user.id.to_s}).first
+			if !gateway
+				return false
+			end
+			
+			contact = gateway.Contact.all(:where => {:account_number => customer.user.id.to_s}).first
+			
+			
 			contact.name = "#{customer.school_info.school_name} #{dept}"
 			contact.first_name = customer.first_name
 			contact.last_name = customer.last_name
@@ -88,22 +109,30 @@ class Xero
 		rescue Xeroizer::ApiException => e
 			return e.message
 		end
-		return contact
+		return true
 	end
 
 	def self.get_invoices(user)
 		gateway = connect
+		
+		if !gateway
+			return []
+		end
+		
 		account = gateway.Contact.all(:where =>{:account_number => user.id}).first
 		# 'Contact.ContactID.ToString()=="cd09aa49-134d-40fb-a52b-b63c6a91d712"'
 		search = 'Contact.ContactID.ToString() == "' + account.id + '"'
 		x=  gateway.Invoice.all(:where => search)
 		return x
 		# return x.reject{|i| i.status != "AUTHORISED"  || i.status != "PAID"}
-		 
+		
 	end
 
 	def self.invoice_booking(booking)
 		gateway = connect
+		if !gateway
+			return false
+		end
 		pay_presenter(booking, gateway)
 
 		unless booking.shared?
@@ -112,6 +141,7 @@ class Xero
 			# TODO add logic for splitting the presenter's charge
 			charge_school(booking, gateway, booking.creator, 100)
 		end
+		return true
 	end
 
 	# Bill a school based on contribution
@@ -138,7 +168,6 @@ class Xero
     	:item_code => SERVICE_FEE,
     	:quantity => 1
     	})
-    puts inv.save
 	end	
 
 	# Create a Xero bill (Accounts Payable) to credit the presenter their rate
@@ -164,6 +193,9 @@ class Xero
 	end
 
 	def self.connect
+		if Figaro.env.xero_consumer.nil? || Figaro.env.xero_secret.nil? || Figaro.env.xero_cert_location
+			return false
+		end
 		return Xeroizer::PrivateApplication.new(Figaro.env.xero_consumer, Figaro.env.xero_secret, Figaro.env.xero_cert_location)
 	end
 
