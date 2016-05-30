@@ -77,4 +77,12 @@ module BookingsHelper
 			"Not open for sharing"
 		end
 	end
+
+	def remaining_booking_slots(booking)
+		@count = 0
+		booking.booked_customers.each do |booked_customer|
+			@count += booked_customer.number_students 
+		end
+		@remaining = booking.cap - @count
+		return @remaining
 end
