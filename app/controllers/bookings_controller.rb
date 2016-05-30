@@ -44,7 +44,7 @@ class BookingsController < ApplicationController
     @booking.creator = current_user.customer
     @booking.customers << current_user.customer
     @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
-
+    @booking.save
     # Send messages to customers if booking is shared
     if @booking.shared?
       Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking))
@@ -137,13 +137,18 @@ class BookingsController < ApplicationController
 
   def cancel_booking
     @booking = Booking.find(params[:id])
-    @message = params[:cancellation_message]
-    @booking.cancellation_message = @message
-    @booking.save
-    Notification.canceled_booking(@booking, booking_path(@booking))
-    @booking.destroy 
-    flash[:success] = "Booking has been canceled and potential participants notified!"
-    redirect_to booking_path(@booking)
+    @message = params[:cancellation_message].strip!
+    if @message == "" || @message.nil?
+      flash[:danger] = "Message needs to be specified before cancelling a booking."
+      redirect_to booking_path(@booking)
+    else
+      @booking.cancellation_message = @message
+      @booking.save
+      Notification.canceled_booking(@booking, booking_path(@booking))
+      @booking.destroy 
+      flash[:success] = "Booking has been canceled and potential participants notified!"
+      redirect_to booking_path(@booking)
+    end
   end
 
   def cancel_bid
