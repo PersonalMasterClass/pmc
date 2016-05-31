@@ -79,6 +79,7 @@
       flash[:success] = "#{user.presenter.first_name} #{user.presenter.last_name}'s
                         account has been suspended."
     elsif user.customer.present?
+      user.customer.cancel_upcoming_bookings
       flash[:success] = "#{user.customer.first_name} #{user.customer.last_name}'s 
                         account has been suspended."
     end
