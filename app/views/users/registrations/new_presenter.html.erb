@@ -1,9 +1,8 @@
+<% content_for :body_attributes do 'class=no-container-bg' end %>
 <h2>Presenter Registration</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_presenters_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
-
-
   <div class="form-group">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, class: "form-control" %>
@@ -56,5 +55,4 @@
     <%= f.submit "Sign up", class: "btn btn-default" %>
   </div>
 <% end %>
-
 <%= render "users/shared/links" %>
