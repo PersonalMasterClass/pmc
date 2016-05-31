@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
 root 'home#index'
+
+#Embed resque frontend
+mount Resque::Server.new, :at => "/resque"
+
   devise_for :users,
               controllers: {
                 registrations: 'users/registrations',
