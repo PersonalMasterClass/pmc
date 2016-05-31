@@ -27,6 +27,8 @@ before_filter :configure_sign_up_params, only: [:create]
     resource.presenter = presenter
     resource.save
 
+
+
     # customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school'])
     # resource.customer = customer
     # resource.save
@@ -97,7 +99,7 @@ before_filter :configure_sign_up_params, only: [:create]
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
     resource.customer = customer
     resource.save
-
+    # Xero.add_school_account(customer)
    # #Code from devise
     yield resource if block_given?
     if resource.persisted?

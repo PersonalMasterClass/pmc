@@ -1,0 +1,55 @@
+<h1> Invoices</h1>
+
+<% if !@outstanding.empty? %>
+<div class = "row">
+<h3>Outstanding Invoices</h3>
+<table class="table table-hover">
+	<tr>
+		<th>Booking</th>
+		<th>Invoice #</th>
+		<th>Total Due</th>
+		<th>Total Paid</th>
+		<th>Due Date</th>
+		<th>  </td>
+	</tr>
+	<% @outstanding.each do |o| %>
+		<tr>
+			
+			<td><%= link_to "#{o[:booking].duration_minutes} minute #{o[:booking].subject.name} session with #{o[:booking].chosen_presenter.get_private_full_name(current_user)}.", booking_path(o[:booking].id) %> </td>
+			<td><%= o[:invoice].invoice_number %> </td>
+			<td><%= number_to_currency(o[:invoice].amount_due) %></td>
+			<td><%= number_to_currency(o[:invoice].amount_paid) %> </td>
+			<td><%= o[:invoice].due_date.strftime("%d/%m/%Y") %> </td>
+			<td> <%= link_to "Download", invoice_download_path(o[:invoice].id) %> </td>
+		</tr>
+		<% end %>
+</table>
+</div>
+<% end %>
+
+
+<% if !@paid.empty? %>
+<div class = "row">
+	<h3>Paid Invoices</h3>
+		<table class="table table-hover">
+			<tr>
+				<th>Booking</th>
+				<th>Invoice #</th>
+				<th>Total Due</th>
+				<th>Total Paid</th>
+				<th>Due Date</th>
+				<th>  </td>
+			</tr>
+			<% @paid.each do |o| %>
+			<tr> 
+				<td><%= link_to "#{o[:booking].duration_minutes} minute #{o[:booking].subject.name} session with #{o[:booking].chosen_presenter.get_private_full_name(current_user)}.", booking_path(o[:booking].id) %> </td>
+					<td><%= o[:invoice].invoice_number %> </td>
+					<td><%= number_to_currency(o[:invoice].amount_due) %></td>
+					<td><%= number_to_currency(o[:invoice].amount_paid) %> </td>
+					<td><%= o[:invoice].due_date.strftime("%d/%m/%Y") %> </td>
+					<td> <%= link_to "Download", invoice_download_path(o[:invoice].id) %> </td>
+				</tr>
+		<% end %>
+	</table>
+</div>
+<% end %>

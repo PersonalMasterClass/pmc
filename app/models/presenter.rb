@@ -12,11 +12,18 @@ class Presenter < ActiveRecord::Base
   validate :vit_number_must_be_valid
   validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
 
+  # validates :rate, numericality: true
+  
+  after_create :add_to_xero
+  after_update :update_xero
+
+  # Validate presenter's VIT number
   def vit_number_must_be_valid
     unless VitValidation.check_vit(first_name, last_name, vit_number)
       errors.add(:vit_number, "could not be found on the vit register.")
     end
   end
+
 
   #returns the path of a users profile picture depending on whether a profile
   #has been created and what enviroment the application is running on
@@ -32,6 +39,7 @@ class Presenter < ActiveRecord::Base
     end
   end
 
+
   #for a given user, returns the name of the presenter, if the user is a customer, then
   #the the last name is initialized for privacy.
   def get_private_full_name(user)
@@ -40,6 +48,15 @@ class Presenter < ActiveRecord::Base
     else
       return "#{self.first_name} #{self.last_name.at(0)}"
     end      
+  end
+  # send updated peresnter details to Xero
+  def update_xero
+    Xero.update_presenter_account(self)
+  end
+
+  # add new presenter to Xero
+  def add_to_xero
+    Xero.add_presenter_account(self)
   end
 
   #removes all upcoming bookings for a presenter. 

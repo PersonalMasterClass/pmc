@@ -110,6 +110,12 @@ class Booking < ActiveRecord::Base
     Bid.where(booking_id: self).delete_all
   end
 
+  def invoice!
+    if self.chosen_presenter && self.rate 
+      Xero.invoice_booking(self)
+    end
+  end
+
 
   #Returns a status message depending on the booking information
   def status_message
