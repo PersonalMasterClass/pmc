@@ -8,6 +8,8 @@ class Booking < ActiveRecord::Base
   has_many :presenters, through: :bids, :dependent => :destroy
   belongs_to :subject, inverse_of: :bookings
 
+  after_create :send_booking_reminder
+
 
   def self.help_required
     Booking.where('help_required = ? AND booking_date > ?', true, DateTime.now)
@@ -137,5 +139,12 @@ class Booking < ActiveRecord::Base
     end
     return self.cap - @count
   end
-
+  private
+  def send_booking_reminder
+    @curr_date = Date.today
+    @end_date = self.booking_date - self.period.days
+    @end_date = Date.parse(@end_date.strftime("%d/%m/%Y"))
+    @period = (@end_date - @curr_date).to_i
+    Resque.enqueue_in @period.day, BookingReminder, self.id
+  end
 end

@@ -27,7 +27,6 @@ class BookingsController < ApplicationController
   end
 
   def create
-    binding.pry
     @booking = Booking.new(booking_params)
     # Create closed booking if customer came from searching or enquiring.
     if session[:search_params].present? || params[:presenter_id].present?
@@ -48,10 +47,11 @@ class BookingsController < ApplicationController
     @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
     @booking.save
     # Send messages to customers if booking is shared
+    @message = "A new #{@booking.subject.name} booking has been created that you may be interested in."
     if @booking.shared?
-      Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking))
+      Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking), @message)
     end
-    Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking))
+    Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking), @message)
     Notification.notify_admin("A new booking has been created", booking_path(@booking))
 
     # Add booking to booked customers

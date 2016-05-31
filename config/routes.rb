@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 root 'home#index'
 
 #Embed resque frontend
-mount Resque::Server.new, :at => "/resque"
+mount Resque::Server.new, :at => "admin/resque"
+mount ResqueWeb::Engine => 'admin/resque'
 
   devise_for :users,
               controllers: {

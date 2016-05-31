@@ -17,7 +17,10 @@ gem 'tinymce-rails'
 # background jobs
 gem 'resque', :require => "resque/server"
 # schedule jobs
-gem 'resque-delayed'
+gem 'resque-scheduler'
+
+gem 'resque-scheduler-web'
+
 gem 'bootstrap-sass', '~> 3.3.6'
 # add Devise
 gem 'devise' 
