@@ -164,14 +164,21 @@ body {
 }
 
 
-.dropdown-toggle > i{
-  font-size: 1.7em;
-  padding-top: 13px;
-}
-.dropdown-toggle > .badge{
-  margin-bottom: 31px;
+.dropdown-toggle {
+  $hMargin: 8px;
+  > i {
+    $padding: 20px;
+    font-size: 24px;
+    padding-top: $padding;
+    padding-bottom: $padding;
+    margin-left: $hMargin;
+  }
+  > .badge {
+    margin-bottom: 31px;
     padding: 2px 6px 2px 6px;
     background-color: #e80202;
+    margin-right: ($hMargin/2);
+  }
 }
 
 //  Hide the debug_dump that appears when we're working in !Production
