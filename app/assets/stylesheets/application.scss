@@ -26,7 +26,7 @@ html { background: lighten(saturate($siteBlue, 10%), 0%); }
 body {
   margin: $navbar-height 0 0 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  background: none;
+  background: white;
 
   //  Some globals
   a { transition: color 250ms ease; }
@@ -99,16 +99,13 @@ body {
   > .main {
     .container {
       $vPadding: 18px;
-      background: rgb(250,250,250);
       padding-top:$vPadding;
       padding-bottom:$vPadding;
       &.no-bg { background: none; }
       > *:first-child { margin-top: 0; }
     }
   }
-  &.no-container-bg {
-    > .main .container { background: none; }
-  }
+  &.no-container-bg { background: none; }
 
   //  Footer
   footer {
