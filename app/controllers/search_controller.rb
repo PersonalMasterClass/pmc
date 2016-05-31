@@ -35,10 +35,7 @@ class SearchController < ApplicationController
 		    	end
 	    	end 	
 	  	end	
-	  	pres = @presenter
-	  	@presenter = WillPaginate::Collection.create(params[:page], 3, pres.length) do |pager|
- 				pager.replace pres
-			end
+	  	
 
 	  	# @presenter = @presenter.paginate(:page => [:params], :per_page => 3)
 	  	
