@@ -51,7 +51,25 @@ module EnquiriesHelper
 			user.school_info.school_name
 		end
 	end
+	def enquiry_panel_color(enquiry) 
+		if enquiry.accepted?
+			"success"
+		elsif enquiry.declined?
+			"danger"
+		else
+			"primary"
+		end
+	end
 
+	def enquiry_status(enquiry)
+		if enquiry.accepted?
+			content_tag(:span, "ACCEPTED", class: "btn btn-xs btn-success")	
+		elsif enquiry.declined?
+			content_tag(:span, "DECLINED", class: "btn btn-xs btn-danger")	
+		else
+			content_tag(:span, "PENDING", class: "btn btn-xs btn-primary")	
+		end
+	end
 	def current_enquiry(index)
 		if index == 0
 			return "list-group-item-success"

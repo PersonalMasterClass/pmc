@@ -1,4 +1,4 @@
-<% if current_user.presenter.rate.nil? %>
+<% if current_user.presenter.presenter_profile.present?%>
 	<%= render 'presenters/partials/rate'%>
 <% end %>		
 <div class = "col-md-12">

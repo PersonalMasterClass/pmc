@@ -7,7 +7,7 @@ module BookingsHelper
 	def booked_label(booking)
 		presenter = booking.chosen_presenter
 		if presenter.present?
-			link_to "Presented by #{presenter.first_name} #{presenter.last_name}",  presenter_profile_path(presenter), class: "btn btn-xs btn-info"
+			link_to "Presented by #{presenter.get_private_full_name(current_user)}",  presenter_profile_path(presenter), class: "btn btn-xs btn-info"
 		end
 	end
 

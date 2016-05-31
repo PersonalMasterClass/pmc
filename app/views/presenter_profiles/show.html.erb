@@ -27,5 +27,6 @@
   <% if current_user.customer? && params[:booking_id].present? %>
       <%= render 'partials/customer_actions' %>
   <% end %>
+<p><i>Can't find a day, time or rate to suit your needs?</i></p>
 <%= render 'enquiries/partials/form' %>
 </div>

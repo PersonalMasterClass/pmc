@@ -100,7 +100,7 @@ class BookingsController < ApplicationController
     @booking = Booking.find(params[:booking_id])
     
     @booking.chosen_presenter = @presenter
-    @booking.rate = @presenter.bids.find_by(booking: booking).rate
+    @booking.rate = @presenter.bids.find_by(booking: @booking).rate
     @booking.save
     @booking.remove_all_bids
 
@@ -140,11 +140,11 @@ class BookingsController < ApplicationController
   def cancel_booking
     @booking = Booking.find(params[:id])
     @message = params[:cancellation_message].strip!
-    if @message == "" || @message.nil?
+    if @message == ""
       flash[:danger] = "Message needs to be specified before cancelling a booking."
       redirect_to booking_path(@booking)
     else
-      @booking.cancellation_message = @message
+      @booking.cancellation_message = params[:cancellation_message]
       @booking.save
       Notification.canceled_booking(@booking, booking_path(@booking))
       @booking.destroy 
@@ -171,7 +171,7 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared, :rate)
+      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared)
     end
 
     def admin_or_customer_logged_in

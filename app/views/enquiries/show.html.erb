@@ -1,6 +1,6 @@
-<div class="panel panel-primary">
+<div class="panel panel-<%= enquiry_panel_color(@enquiry) %>">
   <div class="panel-heading">
-    <%= from(@enquiry) %>
+    <%= from(@enquiry) %> <%= enquiry_status(@enquiry) %>
   </div>
   <div class="panel-body">
     <p> Rate: <%= number_to_currency(@enquiry.rate) %> </p>
