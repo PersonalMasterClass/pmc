@@ -83,6 +83,27 @@ body {
           }
         }
       }
+      .dropdown {
+        .dropdown-toggle {
+          $hMargin: 8px;
+          > i {
+            $padding: 20px;
+            font-size: 24px;
+            padding-top: $padding;
+            padding-bottom: $padding;
+            margin-left: $hMargin;
+          }
+          > .badge {
+            margin-bottom: 31px;
+            padding: 2px 6px 2px 6px;
+            background-color: #e80202;
+            margin-right: ($hMargin/2);
+          }
+        }
+        @media screen and (max-width: $screen-sm-min) {
+          display: none;
+        }
+      }
     }
     button.navbar-toggle {
       $buttonRed: $siteRed;
@@ -160,24 +181,6 @@ body {
       .left { float:left; }
       .right { float:right; }
     }
-  }
-}
-
-
-.dropdown-toggle {
-  $hMargin: 8px;
-  > i {
-    $padding: 20px;
-    font-size: 24px;
-    padding-top: $padding;
-    padding-bottom: $padding;
-    margin-left: $hMargin;
-  }
-  > .badge {
-    margin-bottom: 31px;
-    padding: 2px 6px 2px 6px;
-    background-color: #e80202;
-    margin-right: ($hMargin/2);
   }
 }
 
