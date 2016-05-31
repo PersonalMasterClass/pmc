@@ -1,13 +1,17 @@
+require 'will_paginate/array'
 class SearchController < ApplicationController
 	before_filter :authorise_search, only: :index
+	
 
 	 def index 
   	@search_params = params
   	# for use in booking
   	session[:search_params] = @search_params
-  	if current_user.customer?
-  		session[:search_params].merge!({:creator_id => current_user.customer.id})
-  	end
+  	unless current_user.nil?
+	  	if current_user.customer?
+	  		session[:search_params].merge!({:creator_id => current_user.customer.id})
+	  	end
+	  end
 	 	@presenter= []
 		 	
     if any_present?
@@ -24,18 +28,36 @@ class SearchController < ApplicationController
     		end
 	    	
 	    	@presenter |= by_subject
-	    	if(!current_user.admin?)
-	    		@presenter = remove_non_profiles(@presenter)
-	    	end
-
 	    	
-	  end	
+	    	unless current_user.nil?
+		    	if(!current_user.admin?)
+		    		@presenter = remove_non_profiles(@presenter)
+		    	end
+	    	end 	
+	  	end	
+	  	pres = @presenter
+	  	@presenter = WillPaginate::Collection.create(params[:page], 3, pres.length) do |pager|
+ 				pager.replace pres
+			end
+
+	  	# @presenter = @presenter.paginate(:page => [:params], :per_page => 3)
+	  	
   end
   private
 
+  	MAX_PROFILE_VIEWS = 3
   def authorise_search
-  	if !current_user
-  		redirect_to root_path
+  	if current_user.nil?
+  		if cookies[:unregistered].nil?
+  			cookies[:unregistered] = session.id
+  			session[:profile_count] = 0
+  			return
+  		elsif cookies[:unregistered] == session.id
+  			if session[:profile_count].to_i > MAX_PROFILE_VIEWS 
+  				redirect_to registration_customers_path
+				end
+  			return
+  		end
   	elsif current_user.presenter? 
   		redirect_to root_path
   	end

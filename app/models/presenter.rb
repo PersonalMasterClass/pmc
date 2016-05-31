@@ -43,7 +43,9 @@ class Presenter < ActiveRecord::Base
   #for a given user, returns the name of the presenter, if the user is a customer, then
   #the the last name is initialized for privacy.
   def get_private_full_name(user)
-    if user.admin? || user == self.user
+    if user.nil?
+      return "#{self.first_name} #{self.last_name.at(0)}"
+    elsif user.admin? || user == self.user
       return "#{self.first_name} #{self.last_name}"
     else
       return "#{self.first_name} #{self.last_name.at(0)}"

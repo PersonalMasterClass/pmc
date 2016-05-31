@@ -1,5 +1,7 @@
 <div>
+  
   <%= render "presenters/info", object: @presenter %>
+  
 </div>
 
 <div>
@@ -19,13 +21,17 @@
   <% else %>
 	  <p> <%= @presenter.first_name %> has not filled out bio. </p>
   <% end %>
-  <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
-	<%= render 'partials/admin_actions', object: @user %>
-  <%= render 'presenter_profiles/availabilities' %>
+  <% unless current_user.nil? %>
+    <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
+  	<%= render 'partials/admin_actions', object: @user %>
+    <%= render 'presenter_profiles/availabilities' %>
+  <% end %>
 
-<!-- Fix vulnerablility -->
-  <% if current_user.customer? && params[:booking_id].present? %>
+<!-- Fix vulnerablility -->  
+  <% unless current_user.nil? %>
+    <% if current_user.customer? && params[:booking_id].present? %>
       <%= render 'partials/customer_actions' %>
+    <%  end %>
   <% end %>
 
 </div>
