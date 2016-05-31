@@ -8,11 +8,10 @@ ENV S3_KEY ''
 ENV S3_SECRET ''
 
 # (Default) Database Environment Variables
-ENV RDS_HOST 'pmc_postgres'
-ENV RDS_NAME 'pmc'
-ENV RDS_USERNAME 'pmc'
-ENV RDS_PASSWORD ''
-ENV RDS_PORT '5432'
+ENV PMC_DB_HOST 'pmc_postgres'
+ENV PMC_DB_NAME 'pmc'
+ENV PMC_DB_USER 'pmc'
+ENV PMC_DB_PASSWORD 'changeme123'
 
 # Taken from the master Dockerfile: https://github.com/docker-library/rails/blob/master/onbuild/Dockerfile
 # throw errors if Gemfile has been modified since Gemfile.lock
