@@ -17,14 +17,13 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require jquery-ui/autocomplete
+//= require jquery.turbolinks
 //= require best_in_place
 //= require best_in_place.jquery-ui
 //= require datatables-lib
 //= require_tree .
 $(document).on('ready page:load', function(){
-	var url = window.location.pathname;
-	alert(url);
-	$('.list-group').on("click",'a', function(event) {    
+	$('.enquiry-users').on("click",'a', function(event) {    
 		// $(this).parent().children().find(".active").removeClass("active")
 		$(this).addClass("list-group-item active");
 	});

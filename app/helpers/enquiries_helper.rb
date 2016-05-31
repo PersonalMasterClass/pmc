@@ -54,9 +54,9 @@ module EnquiriesHelper
 
 	def current_enquiry(index)
 		if index == 0
-			return "primary"
+			return "list-group-item-info"
 		else
-			return "default"
+			return "disabled"
 		end
 	end
 end

@@ -1,5 +1,5 @@
 <div class="col-md-4">
-	<div class="list-group">
+	<div class="list-group enquiry-users">
 	<% if @users.present? %>
 	<% @users.each do |user| %>
 		<%= link_to name_or_school(user), enquiries_path(id: user), class: "list-group-item", id: user.id %>
@@ -10,20 +10,14 @@
 <div class="col-md-8">
 	<% if @conversation.present? %>
 	<% @conversation.each_with_index do |enquiry, index| %>
-
-		<div class="panel panel-<%=current_enquiry(index)%>">
-		  <div class="panel-heading">
-		    <%= from(enquiry) %>
-		  </div>
-		  <div class="panel-body">
-		    <p> Rate: <%= number_to_currency(enquiry.rate) %> </p>
-		    <p> Date: <%= enquiry.date.strftime("%d/%m/%Y") %></p>
-		    <p> Time: <%= enquiry.time.strftime("%H:%M %p") %></p>
-		  </div>
-		  <div class="panel-footer">
-		    <%= link_to "View", enquiry_path(enquiry), class: "btn btn-default" %>
-		  </div>
-		</div>
+		<div class="list-group">
+	    <%= link_to enquiry_path(enquiry), class: "list-group-item #{current_enquiry(index)}" do %>
+	      <h4 class="list-group-item-heading"><%= from(enquiry) %></h4>
+		    <p class="list-group-item-text"> Rate: <%= number_to_currency(enquiry.rate) %> </p>
+		    <p class="list-group-item-text"> Date: <%= enquiry.date.strftime("%d/%m/%Y") %></p>
+		    <p class="list-group-item-text"> Time: <%= enquiry.time.strftime("%H:%M %p") %></p>
+	    <% end %>
+	  </div>
   <% end %>
   <% end %>
 </div>

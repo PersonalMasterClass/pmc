@@ -27,8 +27,10 @@ class BookingsController < ApplicationController
   end
 
   def create
+    binding.pry
     @booking = Booking.new(booking_params)
-    if session[:search_params].present?
+    # Create closed booking if customer came from searching or enquiring.
+    if session[:search_params].present? || params[:presenter_id].present?
       @booking.chosen_presenter = Presenter.find(params[:presenter_id])
       @booking.creator = current_user.customer
     end
@@ -169,7 +171,7 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared)
+      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared, :rate)
     end
 
     def admin_or_customer_logged_in

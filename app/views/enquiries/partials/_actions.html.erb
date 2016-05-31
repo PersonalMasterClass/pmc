@@ -1,3 +1,7 @@
+<% unless @enquiry.accepted? && current_user.customer?%>
 <%= link_to "Accept", enquiry_accept_path(@enquiry), method: :patch, class: "btn btn-success" %>
 <%= render "enquiries/partials/form"%>
+<% else %>
+<%= link_to "Create Booking", new_booking_path(rate: @enquiry.rate, date: @enquiry.date.strftime("%d/%m/%Y"), time: @enquiry.time.strftime("%H:%M %p"), presenter_id: @enquiry.presenter.id), method: :get, class: 'btn btn-success' %>
+<% end %>
 <%= link_to "Decline", enquiry_decline_path(@enquiry), method: :patch, class: "btn btn-danger" %>
