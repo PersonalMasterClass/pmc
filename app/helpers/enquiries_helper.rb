@@ -54,7 +54,7 @@ module EnquiriesHelper
 
 	def current_enquiry(index)
 		if index == 0
-			return "list-group-item-info"
+			return "list-group-item-success"
 		else
 			return "disabled"
 		end
