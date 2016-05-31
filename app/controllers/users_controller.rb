@@ -33,7 +33,6 @@
     @customers = User.unapproved_customers.first(5)
 
     #pending profile changes
-    #@profiles = PresenterProfile.find(:first, :conditions => {status: "pending_admin"}, limit: 5)
     @profiles = PresenterProfile.drafts_and_unapproved.first(5)
 
     @upcoming_bookings = Booking.upcoming(current_user).first(5)

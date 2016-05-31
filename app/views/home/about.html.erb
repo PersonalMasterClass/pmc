@@ -1,0 +1,16 @@
+<div>
+  <% if current_user %>
+    <% if current_user.admin? %>
+      <p><%= link_to "Update Content", edit_page_content_path(@aboutPMC), class: "btn btn-info" %></p>
+    <% end %>
+  <% end %>
+  <%= @aboutPMC.content.html_safe %>  
+</div>
+<div>
+  <% if current_user %>
+    <% if current_user.admin? %>
+      <p><%= link_to "Update Content", edit_page_content_path(@aboutRosemary), class: "btn btn-info"  %></p>
+    <% end %>
+  <% end %>
+  <%= @aboutRosemary.content.html_safe %>  
+</div>

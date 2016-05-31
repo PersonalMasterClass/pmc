@@ -1,5 +1,8 @@
 <% if current_user.admin? %>
   <li role="presentation" >
+    <%= link_to "Dashboard", admin_path %>
+  </li>
+  <li role="presentation" >
     <%= link_to "Suspended Users", admin_suspended_users_path %>
   </li>
   <li role="presentation" >
