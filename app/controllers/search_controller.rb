@@ -33,7 +33,9 @@ class SearchController < ApplicationController
 		    	if(!current_user.admin?)
 		    		@presenter = remove_non_profiles(@presenter)
 		    	end
-	    	end 	
+	    	end 
+	    	@presenter = @presenter.paginate(:page => params[:page], :per_page => 3)
+	
 	  	end	
 	  	
 

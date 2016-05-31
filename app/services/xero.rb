@@ -193,7 +193,7 @@ class Xero
 	end
 
 	def self.connect
-		if Figaro.env.xero_consumer.nil? || Figaro.env.xero_secret.nil? || Figaro.env.xero_cert_location
+		if Figaro.env.xero_consumer.nil? || Figaro.env.xero_secret.nil? || Figaro.env.xero_cert_location.nil?
 			return false
 		end
 		return Xeroizer::PrivateApplication.new(Figaro.env.xero_consumer, Figaro.env.xero_secret, Figaro.env.xero_cert_location)
