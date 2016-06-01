@@ -1,26 +1,35 @@
-<div class="container-fluid">
-	<div class="row bg-info">
+<div class="panel panel-danger">
+	<div class="panel-body">
 <%= form_tag "/profiles/search", method: "get", id: "search_form" do %>
 	<%= hidden_field_tag :subject_id, @search_params[:subject_id] %>
 	<div class="col-sm-3">
-		
-		<%= text_field_tag nil, @search_params[:subject_name], id: "subject_select", :placeholder => "Subject" %>
-
+		<div class="form-group">
+			<%= text_field_tag nil, @search_params[:subject_name], id: "subject_select", :placeholder => "Subject", class: "form-control" %>
+		</div>
 	</div>
 	<!-- subject, date, name,-->
 	<div class = "col-sm-3">
-	  <%= text_field_tag :date_part, @search_params[:date_part], :placeholder => "date" %>
-	  <% if current_user.admin? %>
-	  	<%= text_field_tag :time_part, @search_params[:time_part], :placeholder => "time" %>
-	  <% end %>
+		<div class="form-group">
+		  <%= text_field_tag :date_part, @search_params[:date_part], :placeholder => "Date", class: "form-control" %>
+		  <% if current_user.admin? %>
+		  	<%= text_field_tag :time_part, @search_params[:time_part], :placeholder => "Time", class: "form-control" %>
+		  <% end %>
+		</div>
   </div>	
 
   
 	<div class="col-sm-3">
-		<%= text_field_tag :first_name, @search_params[:first_name], :placeholder => "First Name" %>
+		<div class="form-group">
+			<%= text_field_tag :first_name, @search_params[:first_name], :placeholder => "First Name", class: "form-control" %>
+		</div>
  	</div>
  	<div class = "col-sm-3">
- 		<%= submit_tag "Search", :class => "btn btn-success"%>
+
+ 		<div class="form-group">
+ 			<%= button_tag :class => "btn btn-danger" do %>
+ 				Search <%= fa_icon 'search' %>
+ 			<% end %>
+ 		</div>
  	</div>
 
 <% end %>

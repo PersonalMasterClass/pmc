@@ -13,7 +13,7 @@ before_filter :configure_sign_up_params, only: [:create]
   def create_presenter
     build_resource(sign_up_params)
     resource.user_type = :presenter
-    resource.status = :pending
+    resource.status = :approved
     # Populate presenter obj
     presenter = Presenter.create(phone_number: params["presenter"]["phone_number"], 
                                  first_name: params["presenter"]["first_name"],

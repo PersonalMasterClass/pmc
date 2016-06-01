@@ -15,7 +15,7 @@ class Notification < ActiveRecord::Base
 		end
 	end
 
-  def self.notify_applicable_users(creator, booking, type, reference)
+  def self.notify_applicable_users(creator, booking, type, reference, message)
   	if type == "presenter"
   		users = User.where(user_type: 1)
   		applicable_users = Presenter.joins(:subjects).where(subjects: {name: booking.subject.name})
@@ -23,7 +23,6 @@ class Notification < ActiveRecord::Base
   		applicable_users = Customer.joins(:subjects).where(subjects: {name: booking.subject.name})
   	end
   			
-		message = "A new #{booking.subject.name} booking has been created that you may be interested in."
 		reference = reference
   	applicable_users.each do |applicable_user|
   		unless applicable_user.user == creator

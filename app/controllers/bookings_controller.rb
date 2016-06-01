@@ -28,11 +28,13 @@ class BookingsController < ApplicationController
 
   def create
     @booking = Booking.new(booking_params)
-    if session[:search_params].present?
+    # Create closed booking if customer came from searching or enquiring.
+    if session[:search_params].present? || params[:presenter_id].present?
       @booking.chosen_presenter = Presenter.find(params[:presenter_id])
       @booking.creator = current_user.customer
     end
 
+      
     @subject = Subject.find(params[:subject_id])
     # TODO date and time validation
     date = (params['date_part'] + " " + params['time_part']).to_datetime
@@ -42,13 +44,18 @@ class BookingsController < ApplicationController
     @booking.subject = @subject
     # Add this customer as owner. 
     @booking.creator = current_user.customer
-    @booking.save
-
-    # Send messages to customers if booking is shared
-    if @booking.shared?
-      Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking))
+    @booking.customers << current_user.customer
+    @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
+    if params[:rate].present?
+      @booking.rate = params[:rate]
     end
-    Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking))
+    @booking.save
+    # Send messages to customers if booking is shared
+    @message = "A new #{@booking.subject.name} booking has been created that you may be interested in."
+    if @booking.shared?
+      Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking), @message)
+    end
+    Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking), @message)
     Notification.notify_admin("A new booking has been created", booking_path(@booking))
 
     # Add booking to booked customers
@@ -97,7 +104,7 @@ class BookingsController < ApplicationController
     @booking = Booking.find(params[:booking_id])
     
     @booking.chosen_presenter = @presenter
-    @booking.rate = @presenter.bids.find_by(booking: booking).rate
+    @booking.rate = @presenter.bids.find_by(booking: @booking).rate
     @booking.save
     @booking.remove_all_bids
 
@@ -119,30 +126,49 @@ class BookingsController < ApplicationController
 
   def join
     @booking = Booking.find(params[:id])
-    @booking.customers << current_user.customer
-    Notification.notify_admin("#{current_user.customer.first_name} of #{current_user.customer.school_info.school_name} has joined a booking.", booking_path(@booking))
-    Notification.send_message(@booking.creator.user, "A school has joined your booking.", booking_path(@booking))
-    flash[:success] = "Success! You've joined the booking!"
-    redirect_to root_url
+    if params[:num_students].to_i > @booking.remaining_slots
+      flash[:danger] = "Oops! There is not enough room for the number of students you've specified."
+      render :show
+    else
+      @booking.customers << current_user.customer
+      @booked_customer = @booking.booked_customers.find_by(customer: current_user.customer)
+      @booked_customer.number_students = params[:num_students]
+      @booked_customer.save
+      Notification.notify_admin("#{current_user.customer.first_name} of #{current_user.customer.school_info.school_name} has joined a booking.", booking_path(@booking))
+      Notification.send_message(@booking.creator.user, "A school has joined your booking.", booking_path(@booking))
+      flash[:success] = "Success! You've joined the booking!"
+      redirect_to root_url
+    end
   end
 
   def cancel_booking
     @booking = Booking.find(params[:id])
-    @message = params[:cancellation_message]
-    @booking.cancellation_message = @message
-    @booking.save
-    Notification.canceled_booking(@booking, booking_path(@booking))
-    @booking.destroy 
-    flash[:success] = "Booking has been canceled and potential participants notified!"
-    redirect_to booking_path(@booking)
+    if params[:cancellation_message].strip == "" || params[:cancellation_message].nil?
+      flash[:danger] = "Message needs to be specified before cancelling a booking."
+      redirect_to booking_path(@booking)
+    else
+      @booking.cancellation_message = params[:cancellation_message]
+      @booking.save
+      Notification.canceled_booking(@booking, booking_path(@booking))
+      @booking.destroy 
+      flash[:success] = "Booking has been canceled and potential participants notified!"
+      redirect_to booking_path(@booking)
+    end
   end
 
   def cancel_bid
     @booking = Booking.find(params[:id])
-    if @booking.presenters.include?(current_user.presenter)
-      @booking.presenters.delete(current_user.presenter)
-    end
+    @booking.presenters.delete(current_user.presenter)
     flash[:success] = "Success! You've withdrawn your bid."
+    Notification.send_message(@booking.creator.user, "#{current_user.presenter.get_private_full_name(current_user)} has withdrawn their bid.", booking_path(@booking))
+    redirect_to root_url
+  end
+
+  def leave_booking
+    @booking = Booking.find(params[:id])
+    @booking.customers.delete(current_user.customer)
+    flash[:success] = "Success! You've left the booking."
+    Notification.send_message(@booking.creator.user, "A school has left your booking.", booking_path(@booking))
     redirect_to root_url
   end
 
