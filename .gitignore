@@ -32,6 +32,9 @@ Thumbs.db
 # Xero private key
 /config/privatekey.pem
 
+#gemfile lock
+Gemfile.lock
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
