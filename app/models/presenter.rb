@@ -17,8 +17,8 @@ class Presenter < ActiveRecord::Base
 
   # validates :rate, numericality: true
   
-  # after_create :add_to_xero
-  # after_update :update_xero
+  after_create :add_to_xero
+  after_update :update_xero
 
   # Validate presenter's VIT number
   def vit_number_must_be_valid
