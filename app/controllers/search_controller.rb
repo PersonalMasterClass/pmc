@@ -47,15 +47,15 @@ class SearchController < ApplicationController
   	MAX_PROFILE_VIEWS = 3
   def authorise_search
   	if current_user.nil?
-  		if cookies[:unregistered].nil?
-  			cookies[:unregistered] = session.id
+  		if cookies.permanent[:unregistered].nil?
+  			cookies.permanent[:unregistered] = session.id
   			session[:profile_count] = 0
   			return
-  		elsif cookies[:unregistered] == session.id
+  		elsif cookies.permanent[:unregistered] == session.id
   			if session[:profile_count].to_i > MAX_PROFILE_VIEWS 
   				redirect_to registration_customers_path
 				end
-  			return
+  			redirect_to registration_customers_path
   		end
   	elsif current_user.presenter? 
   		redirect_to root_path
