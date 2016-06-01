@@ -148,7 +148,7 @@ class Booking < ActiveRecord::Base
   private
   def send_booking_reminder
     @curr_date = Date.today
-    @end_date = self.booking_date - self.period.days
+    @end_date = self.booking_date - self.period.day
     @end_date = Date.parse(@end_date.strftime("%d/%m/%Y"))
     @period = (@end_date - @curr_date).to_i
     Resque.enqueue_in @period.day, BookingReminder, self.id

@@ -29,6 +29,7 @@ class EnquiriesController < ApplicationController
 			@enquiry.presenter = current_user.presenter
 			@enquiry.customer = @customer
 			@enquiry.save
+			binding.pry
 			@message = "#{current_user.presenter.get_private_full_name(@customer.user)} has responded with a counter offer."
 			Notification.send_message(@customer.user, @message, enquiry_path(@enquiry))
 			redirect_to customers_path

@@ -1,5 +1,7 @@
 <% if current_user.customer? || (params[:action] == "show" && params[:controller] == "enquiries") %>
-
+<% if (params[:action] == "show" && params[:controller] == "presenter_profiles") %>
+	<p><i>Can't find a day, time or rate to suit your needs?</i></p>
+<% end %>
 	<!-- Button trigger modal -->
 	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#enquiry">
 		<%= enquiry_user(current_user) %>
@@ -29,6 +31,7 @@
 						</div>
 						<% if current_user.customer? %>
 							<%= f.hidden_field(:recipient_id, :value => form_variable(@enquiry, @presenter)) %>
+							<%= params.inspect %>
 						<% elsif current_user.presenter? %>
 							<%= f.hidden_field(:recipient_id, :value => @enquiry.customer.id) %>
 						<% end %>

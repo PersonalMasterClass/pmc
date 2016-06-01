@@ -166,7 +166,7 @@ end
 end
 
 4.times do
-  booking = Booking.create(booking_date: Time.now+rand(170).days, creator: c.customer, duration_minutes: 60)  
+  booking = Booking.create(booking_date: Time.now+rand(170).days, creator: c.customer, duration_minutes: 60, period: 2)  
   booking.subject = Subject.all.sample
   booking.save
 end

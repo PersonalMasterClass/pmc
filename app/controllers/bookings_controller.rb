@@ -34,6 +34,7 @@ class BookingsController < ApplicationController
       @booking.creator = current_user.customer
     end
 
+      
     @subject = Subject.find(params[:subject_id])
     # TODO date and time validation
     date = (params['date_part'] + " " + params['time_part']).to_datetime
@@ -45,6 +46,10 @@ class BookingsController < ApplicationController
     @booking.creator = current_user.customer
     @booking.customers << current_user.customer
     @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
+    binding.pry
+    if params[:rate].present?
+      @booking.rate = params[:rate]
+    end
     @booking.save
     # Send messages to customers if booking is shared
     @message = "A new #{@booking.subject.name} booking has been created that you may be interested in."
@@ -139,8 +144,7 @@ class BookingsController < ApplicationController
 
   def cancel_booking
     @booking = Booking.find(params[:id])
-    @message = params[:cancellation_message].strip!
-    if @message == ""
+    if params[:cancellation_message].strip == "" || params[:cancellation_message].nil?
       flash[:danger] = "Message needs to be specified before cancelling a booking."
       redirect_to booking_path(@booking)
     else

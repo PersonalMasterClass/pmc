@@ -36,6 +36,7 @@
 
   <%= hidden_field_tag :subject_id, is_empty?(@subject_id) %>
   <%= hidden_field_tag :presenter_id, @presenter_id || params[:presenter_id] %>
+  <%= hidden_field_tag :rate, nil || params[:rate] %>
   <div class="col-sm-3">
     
 
