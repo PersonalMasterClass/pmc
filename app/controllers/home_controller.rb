@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   def index
     if current_user 
       if current_user.admin?
-        # redirect_to :controller => 'users', :action => 'index'
+        redirect_to :controller => 'users', :action => 'index'
       elsif current_user.presenter?
         redirect_to :controller => 'presenters', :action => 'index'
       elsif current_user.customer?
