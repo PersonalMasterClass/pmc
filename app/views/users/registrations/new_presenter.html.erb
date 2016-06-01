@@ -1,60 +1,64 @@
-<h2>Presenter Registration</h2>
+<% content_for :body_attributes do 'class=no-container-bg' end %>
+<div class="user-auth-dialog">
+  <div class="container">
+    <div class="user-auth-wrap">
+      <h2>Presenter Registration</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_presenters_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+      <%= form_for(resource, as: resource_name, url: registration_presenters_path(resource_name)) do |f| %>
+        <%= devise_error_messages! %>
+        <div class="form-group">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, class: "form-control" %>
+        </div>
 
+        <div class="form-group">
+          <%= f.label :password %>
+          <% if @minimum_password_length %>
+             <em>(<%= @minimum_password_length %> characters minimum)</em>
+          <% end %><br />
+          <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+        </div>
 
-  <div class="form-group">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, class: "form-control" %>
-  </div>
+        <div class="form-group">
+          <%= f.label :password_confirmation %><br />
+          <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+        </div>
 
-  <div class="form-group">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-       <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-  </div>
+        <%= fields_for :school_info do |school_info_fields| %>
+          <div class="form-group">
+          <%= f.label "School" %>
+          <%= school_info_fields.text_field :school_name, value: if_params_school_info?(:school_name,params), class: "form-control", :id=>"school_search" %>
+        </div>
+        <% end %>
 
-  <div class="form-group">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
-  </div>
+        <%= fields_for :presenter do |presenter_fields| %>
+          <div class="form-group">
+            <%= presenter_fields.label :first_name %><br />
+            <%= presenter_fields.text_field :first_name, value: if_params_presenter?(:first_name,params), autofocus: true, class: "form-control" %>
+          </div>
 
-  <%= fields_for :school_info do |school_info_fields| %>
-    <div class="form-group">
-    <%= f.label "School" %>
-    <%= school_info_fields.text_field :school_name, value: if_params_school_info?(:school_name,params), class: "form-control", :id=>"school_search" %>
-  </div>
-  <% end %>
+          <div class="form-group">
+            <%= presenter_fields.label :last_name %><br />
+            <%= presenter_fields.text_field :last_name, value: if_params_presenter?(:last_name ,params), autofocus: true, class: "form-control" %>
+          </div>
 
-  <%= fields_for :presenter do |presenter_fields| %>
-    <div class="form-group">
-      <%= presenter_fields.label :first_name %><br />
-      <%= presenter_fields.text_field :first_name, value: if_params_presenter?(:first_name,params), autofocus: true, class: "form-control" %>
+          <div class="form-group">
+            <%= presenter_fields.label :phone_number %><br />
+            <%= presenter_fields.text_field :phone_number, value: if_params_presenter?(:phone_number,params),autofocus: true, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <%= presenter_fields.label :vit_number %><br />
+            <%= presenter_fields.text_field :vit_number, value: if_params_presenter?(:vit_number,params), autofocus: true, class: "form-control" %>
+            <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
+          </div>
+          <% end %>
+          <!-- maybe add abn later -->
+        <div class="actions">
+          <%= f.submit "Sign up", class: "btn btn-default btn-lg push-transition" %>
+        </div>
+      <% end %>
+      <%= render "users/shared/links" %>
     </div>
-
-    <div class="form-group">
-      <%= presenter_fields.label :last_name %><br />
-      <%= presenter_fields.text_field :last_name, value: if_params_presenter?(:last_name ,params), autofocus: true, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= presenter_fields.label :phone_number %><br />
-      <%= presenter_fields.text_field :phone_number, value: if_params_presenter?(:phone_number,params),autofocus: true, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= presenter_fields.label :vit_number %><br />
-      <%= presenter_fields.text_field :vit_number, value: if_params_presenter?(:vit_number,params), autofocus: true, class: "form-control" %>
-      <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
-    </div>
-    <% end %>
-    <!-- maybe add abn later -->
-  <div class="actions">
-    <%= f.submit "Sign up", class: "btn btn-default" %>
   </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+</div>

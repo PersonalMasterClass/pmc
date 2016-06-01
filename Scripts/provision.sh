@@ -75,8 +75,8 @@ if ! rpm -q epel-release; then "${YUM_MGR}" --enable epel; fi
 "${CURL}" --fail -sSLo /etc/yum.repos.d/passenger.repo \
   https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
-# Install depedencies
-log "Installing depedencies..."
+# Install dependencies
+log "Installing dependencies..."
 "${YUM}" -y install \
   postgresql postgresql-server postgresql-devel postgresql-contrib \
   git \
