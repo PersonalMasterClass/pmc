@@ -15,7 +15,18 @@
   <div class="actions">
     <%= f.submit "Save Draft", name: 'save',  class: "btn btn-default" %>
     <%= f.submit "Submit", name: 'submit',  id: 'submitBtn', class: "btn btn-default"  %>
-    
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :picture_edit, "Profile Picture" %><br/><small>Leave blank to keep current image </small>
+    <%= f.file_field :picture_edit, class: "form-control", accept: "image/jpeg, image/png" %>
+    <%= f.hidden_field :retained_picture_edit %>
+    <p><small>Note: Pictures must be jpeg or png </small></p>
+  </div>  
+  
+  <div class="form-group">
+    <%= tinymce %>
+    <%= f.label :bio_edit, "Bio" %>
     <!-- what to include in profile -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">What to include?</button>
 
@@ -33,18 +44,6 @@
         </div>
       </div>
     </div>
-  </div>
-  
-  <div class="form-group">
-    <%= f.label :picture_edit, "Profile Picture" %><br/><small>Leave blank to keep current image </small>
-    <%= f.file_field :picture_edit, class: "form-control", accept: "image/jpeg, image/png" %>
-    <%= f.hidden_field :retained_picture_edit %>
-    <p><small>Note: Pictures must be jpeg or png </small></p>
-  </div>  
-  
-  <div class="form-group">
-    <%= tinymce %>
-    <%= f.label :bio_edit, "Bio" %>
     <%= f.text_area :bio_edit, class: "tinymce", rows: 20 %>
   </div>   
   <div class="actions">

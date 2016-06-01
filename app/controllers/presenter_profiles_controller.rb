@@ -27,6 +27,7 @@ class PresenterProfilesController < ApplicationController
   end
 
   def new
+    @help = PageContent.find_by_name("profile-help")
     @presenter = find_presenter
     if @presenter.presenter_profile.nil?
       @presenter_profile = @presenter.build_presenter_profile(status: :new_profile)
@@ -67,6 +68,7 @@ class PresenterProfilesController < ApplicationController
   end
 
   def edit
+    @help = PageContent.find_by_name("profile-help")
     @presenter = find_presenter
     @presenter_profile = @presenter.presenter_profile
     if @presenter_profile.nil?

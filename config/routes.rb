@@ -82,7 +82,7 @@ root 'home#index'
 
   resources :notifications, only: :index
   post 'set_rate' => 'presenters#set_rate', as: "set_rate"
-  resources :page_contents, :only => [:edit, :update, :index]
+  resources :page_contents, :only => [:edit, :update, :index, :show]
 
   #Static Pages
   get 'aboutus' => 'home#about'

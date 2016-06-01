@@ -17,7 +17,6 @@ class HomeController < ApplicationController
 
   def about
      @aboutPMC = PageContent.find_by_name("aboutPMC")
-     @aboutRosemary = PageContent.find_by_name("aboutRosemary")
   end
 
   def contact
