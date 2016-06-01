@@ -30,7 +30,7 @@ class PresentersController < ApplicationController
 
   # add a subject to the presenter's subject
   def add_subject
-  	@subject = Subject.find_by(name: params[:subjects][:name])
+  	@subject = Subject.find_by_name(params[:name])
   	unless current_user.presenter.subjects.include?(@subject)
       current_user.presenter.subjects << @subject 
     end

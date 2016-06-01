@@ -28,6 +28,13 @@ Thumbs.db
 # Ignore SASS/SCSS caches
 .sass-cache
 
+
+# Xero private key
+/config/privatekey.pem
+
+#gemfile lock
+Gemfile.lock
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
