@@ -101,6 +101,7 @@ mount ResqueWeb::Engine => 'admin/resque'
   get 'legal' => 'home#legal'
   resources :enquiries, :only => [:index, :new, :create, :show] do
     patch '/accept' => 'enquiries#accept'
+    get '/booked' => 'enquiries#booked', as: "booked"
     patch '/decline' => 'enquiries#decline'
   end
 end

@@ -31,7 +31,6 @@
 						</div>
 						<% if current_user.customer? %>
 							<%= f.hidden_field(:recipient_id, :value => form_variable(@enquiry, @presenter)) %>
-							<%= params.inspect %>
 						<% elsif current_user.presenter? %>
 							<%= f.hidden_field(:recipient_id, :value => @enquiry.customer.id) %>
 						<% end %>

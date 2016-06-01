@@ -46,7 +46,6 @@ class BookingsController < ApplicationController
     @booking.creator = current_user.customer
     @booking.customers << current_user.customer
     @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
-    binding.pry
     if params[:rate].present?
       @booking.rate = params[:rate]
     end

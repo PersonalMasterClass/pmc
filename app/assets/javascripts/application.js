@@ -11,16 +11,15 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require bootstrap-sprockets
-//= require turbolinks
-//= require jquery
 //= require jquery-ui
 //= require jquery_ujs
 //= require jquery-ui/autocomplete
-//= require jquery.turbolinks
 //= require best_in_place
 //= require best_in_place.jquery-ui
 //= require datatables-lib
+//= require turbolinks
 //= require_tree .
 $(document).on('ready page:load', function(){
 	$('.enquiry-users').on("click",'a', function(event) {    

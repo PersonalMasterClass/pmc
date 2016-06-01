@@ -2,7 +2,7 @@ class Enquiry < ActiveRecord::Base
 	belongs_to :presenter
 	belongs_to :customer
 
-	enum status: [:pending, :declined, :accepted]
+	enum status: [:pending, :declined, :accepted, :booked]
 
 	def self.from(current_user)
 		@users = []

@@ -9,7 +9,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
-  <body <%= yield(:body_attributes) if content_for?(:body_attributes) %>>
+  <body data-no-turbolink="true">
     <%= render partial: 'layouts/nav' %>
     <div class="main">
       <% flash.each do |key, value| %>
