@@ -10,8 +10,8 @@ class Customer < ActiveRecord::Base
   validate :vit_number_must_be_valid
   validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
 
-  # after_create :save_to_xero
-  # after_update :update_xero
+  after_create :save_to_xero
+  after_update :update_xero
 
   def vit_number_must_be_valid
     unless VitValidation.check_vit(first_name, last_name, vit_number)
