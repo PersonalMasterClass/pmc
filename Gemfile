@@ -56,6 +56,8 @@ gem 'best_in_place'
 
 gem 'jquery-turbolinks'
 
+gem 'xeroizer'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -78,7 +80,8 @@ group :development, :test do
 end
 
 group :production do
-	gem 'rails_12factor'
+  gem 'rails_12factor'
+  gem 'therubyracer'
 end
 
 group :development do

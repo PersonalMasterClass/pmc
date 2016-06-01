@@ -20,6 +20,10 @@ default: &default
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
+  host: <%= ENV['PMC_DB_HOST'] || "localhost" %>
+  database: <%= ENV['PMC_DB_NAME'] || "pmc_development" %>
+  username: <%= ENV['PMC_DB_USER'] || "" %>
+  password: <%= ENV['PMC_DB_PASSWORD'] || "" %>
 
 development:
   <<: *default
@@ -57,7 +61,6 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: pmc_test
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -80,6 +83,7 @@ test:
 #
 production:
   <<: *default
-  database: pmc_production
-  username: pmc
-  password: <%= ENV['PMC_DATABASE_PASSWORD'] %>
+  host: <%= ENV['PMC_DB_HOST'] %>
+  database: <%= ENV['PMC_DB_NAME'] %>
+  username: <%= ENV['PMC_DB_USER'] %>
+  password: <%= ENV['PMC_DB_PASSWORD'] %>

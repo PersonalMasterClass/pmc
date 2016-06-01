@@ -14,6 +14,10 @@ The Customer model represents a school User.
 
 ===BookedCustomer
 ===Booking
+Calling invoice! on a Booking model will send booking information to Xero in the form of a accounts payable bill to the presenter as well as an invoice for each Customer (school) in the booking. 
+
+===PageContent
+The PageContent model stores the content for the CMS.  
 ===Presenter_Bids
 ===PresenterProfile
 The PresenterProfile model represents each presenters profile. Due to the requirement for administrators to approve profiles, this model contains a "live" profile and "editing" profile, once the profile has been approved, the editing profile overwrites the live to be displayed to system users. 
