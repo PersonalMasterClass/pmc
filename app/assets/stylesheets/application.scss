@@ -21,10 +21,12 @@
 @import "branding";
 
 //  Background for the entire page
-html { background: lighten(saturate($siteBlue, 10%), 0%); }
+html {
+  background: lighten(saturate($siteBlue, 10%), 0%);
+  margin: $navbar-height 0 0 0;
+}
 
 body {
-  margin: $navbar-height 0 0 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   background: white;
 
@@ -125,6 +127,15 @@ body {
       &.no-bg { background: none; }
       > *:first-child { margin-top: 0; }
     }
+    > .alert {
+      width: auto;
+      text-align: center;
+      background: $siteRed;
+      padding: 8px 18px;
+      margin: 0;
+      width: 100%;
+      color: white;
+    }
   }
   &.no-container-bg { background: none; }
 
@@ -180,6 +191,22 @@ body {
       }
       .left { float:left; }
       .right { float:right; }
+    }
+  }
+  > .support-tab {
+    transform: rotate(270deg);
+    background: #ff6a4e;
+    padding: 12px 24px;
+    position: fixed;
+    left: -16px;
+    top: 180px;
+    line-height: 24px;
+    font-size: 16px;
+    transform-origin: bottom;
+    @media screen and (max-width: $screen-sm-min) { display: none; }
+    span {
+      font-weight: bold;
+      color: white;
     }
   }
 }
