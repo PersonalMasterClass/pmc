@@ -6,6 +6,8 @@ class Presenter < ActiveRecord::Base
   has_and_belongs_to_many :subjects
   has_many :bids
   has_many :bookings, through: :bids
+  has_many :enquiries
+  has_many :customers, through: :enquiries
 
 	validates :first_name, :last_name, :school_info, presence: true
   validates :vit_number, format: /\A^\d{6}$\Z/
@@ -15,8 +17,8 @@ class Presenter < ActiveRecord::Base
 
   # validates :rate, numericality: true
   
-  after_create :add_to_xero
-  after_update :update_xero
+  # after_create :add_to_xero
+  # after_update :update_xero
 
   # Validate presenter's VIT number
   def vit_number_must_be_valid

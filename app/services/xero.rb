@@ -1,4 +1,4 @@
-class Xero
+	class Xero
 	# invoice item codes
 	PRESENTER_RATE = "003"
 	SERVICE_FEE = "001"
@@ -32,7 +32,6 @@ class Xero
 	def self.add_presenter_account(presenter)
 		begin
 			gateway = connect
-
 			if !gateway
 				return false
 			end

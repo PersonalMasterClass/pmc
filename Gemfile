@@ -17,9 +17,6 @@ gem "figaro"
 #image upload
 gem 'dragonfly', '~> 1.0.12'
 gem 'dragonfly-s3_data_store'
-#gem "mini_magick"
-
-
 gem "font-awesome-rails"
 #bio editor
 gem 'tinymce-rails'
@@ -27,7 +24,10 @@ gem 'tinymce-rails'
 # background jobs
 gem 'resque', :require => "resque/server"
 # schedule jobs
-gem 'resque-delayed'
+gem 'resque-scheduler'
+
+gem 'resque-scheduler-web'
+
 gem 'bootstrap-sass', '~> 3.3.6'
 # add Devise
 gem 'devise' 
