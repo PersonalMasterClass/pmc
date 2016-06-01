@@ -1,10 +1,15 @@
+<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseForm" aria-expanded="false" aria-controls="collapseForm">
+  Join booking
+</a>
 <% if @booking.shared? && !current_user.suspended? && @booking.remaining_slots != 0 %>
 	<% if current_user.customer? && current_user.customer != @booking.creator  && !@booking.customers.include?(current_user.customer)%>
+	<div class="collapse" id="collapseForm">
 		<%= form_tag(bookings_join_path(@booking)) do %>
 			<%= label_tag "Number of students" %> <br/>
-			<p><i> There are <%= @booking.remaining_slots%> slots remaining. </p>
+			<p><i> There are <%= @booking.remaining_slots%> slots remaining. </i></p>
 			<%= number_field_tag :num_students, 1, max: @booking.remaining_slots , class: "form-control" %>
-			<%= submit_tag "Join Booking", class: "btn btn-success" %>
+			<%= submit_tag "Submit", class: "btn btn-success" %>
 		<% end %>
+	</div>
 	<% end %>
 <% end %>
