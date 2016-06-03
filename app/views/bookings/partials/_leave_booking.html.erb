@@ -1,0 +1,3 @@
+<% if @booking.customers.include?(current_user.customer) && @booking.creator != current_user.customer%>
+	<%= link_to "Leave booking", bookings_leave_path(@booking), method: :patch, class: "btn btn-danger" %>
+<% end %>
