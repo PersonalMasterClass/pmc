@@ -88,7 +88,7 @@ c.save(:validate => false)
 10.times do |f|
   a = User.new(
              user_type: :presenter,
-             status: :pending,
+             status: :approved,
              email: "example#{f+111}@gmail.com",
              password:              "password",
              password_confirmation: "password",
