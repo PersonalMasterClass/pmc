@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "branding";
+@import "bootstrap";
 table.pending-user-registrations {
   /*
     We set the first th to 99% width, so that the action column will
@@ -11,7 +12,7 @@ table.pending-user-registrations {
 }
 div.user-auth-dialog {
   $vPadding: 36px;
-  $textColour: #333333;
+  $textColour: #FFFFFF;
   padding-top: 0;
   padding-bottom: 0;
   color: $textColour;
@@ -22,13 +23,13 @@ div.user-auth-dialog {
       max-width: 360px;
       margin: 0 auto;
       padding: 18px;
-      background: lighten($pmc_yellow, 15%);
+      background: darken($siteBlue, 15%);
       border-radius: 2px;
       form {
         margin-bottom: 12px;
         div#error_explanation {
           margin: 24px 0;
-          color: $pmc_red;
+          color: $pmcRed;
           h2 {
             font-size: 0px;
             &:before {
@@ -41,15 +42,25 @@ div.user-auth-dialog {
         input[type=submit] {
           border: none;
           border-radius: 3px;
-          background: darken($pmc_red, 25%);
+          background: $siteRed;
           color: #FFFFFF;
+          width: 100%;
         }
+        .help-block { color: #EFEFEF; }
         .field_with_errors {
-          > input, > textarea {
-            border: 1px solid $pmc_red;
-            box-shadow: 0 0 2px $pmc_red;
-          }
+          > input, > textarea { box-shadow: 0 0 2px #ff0000; }
         }
+      }
+    }
+  }
+}
+table.upcoming-bookings {
+  tr {
+    > *:nth-child(1),
+    > *:nth-child(4),
+    > *:nth-child(5) {
+      @media screen and (max-width: $screen-sm-min) {
+        display: none;
       }
     }
   }

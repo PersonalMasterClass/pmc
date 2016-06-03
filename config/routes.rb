@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   get 'invoices/index'
 
 root 'home#index'
+
+#Embed resque frontend
+mount Resque::Server.new, :at => "admin/resque"
+mount ResqueWeb::Engine => 'admin/resque'
+
   devise_for :users,
               controllers: {
                 registrations: 'users/registrations',
@@ -18,7 +23,7 @@ root 'home#index'
     get 'users/:id' => 'users#show', as: "user"
   
   #resources :customers, only: [:index, :show], as: "schools" 
-
+  get 'presenters' => 'presenters#index'
   get 'schools' => 'customers#index', as: "customers"
   get 'school/:id' => 'customers#show', as: "customer"
 
@@ -61,6 +66,7 @@ root 'home#index'
   post 'booking/:id/join' => "bookings#join", as: "bookings_join" 
   patch 'booking/:id/cancel_booking' => "bookings#cancel_booking", as: "bookings_cancel"
   patch 'booking/:id/cancel_bid/' => "bookings#cancel_bid", as: "bookings_bid_cancel"
+  patch 'booking/:id/leave_booking/' => "bookings#leave_booking", as: "bookings_leave"
   resources :bookings
   resources :presenters, :only =>[:create, :edit, :update, :destroy] do
     resource :presenter_profile, as: 'profile'
@@ -93,4 +99,9 @@ root 'home#index'
   resources :page_contents, :only => [:edit, :update]
 
   get 'legal' => 'home#legal'
+  resources :enquiries, :only => [:index, :new, :create, :show] do
+    patch '/accept' => 'enquiries#accept'
+    get '/booked' => 'enquiries#booked', as: "booked"
+    patch '/decline' => 'enquiries#decline'
+  end
 end

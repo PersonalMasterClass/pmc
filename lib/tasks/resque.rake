@@ -1,3 +1,3 @@
 require 'resque/tasks'
-require 'resque-delayed/tasks'
+require 'resque/scheduler/tasks'
 task "resque:setup" => :environment

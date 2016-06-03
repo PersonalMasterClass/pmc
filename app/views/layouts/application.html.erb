@@ -4,11 +4,12 @@
     <title>Personal Masterclass</title>
     <% if !Rails.env.production? %><meta name="robots" content="noindex,nofollow"><% end %>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="<%= image_path('pmc-icon.png') %>">
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
-  <body <%= yield(:body_attributes) if content_for?(:body_attributes) %>>
+  <body data-no-turbolink="true">
     <%= render partial: 'layouts/nav' %>
     <div class="main">
       <% flash.each do |key, value| %>

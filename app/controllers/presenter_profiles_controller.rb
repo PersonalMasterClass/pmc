@@ -156,7 +156,7 @@ class PresenterProfilesController < ApplicationController
       if current_user.user_type == "admin"
         if profile.approve
           flash[:info] = "This profile has been approved"
-          Notification.send_message(@presenter.user, "Your profile changes have been approved.", presenter_profile_path(@presenter))
+          Notification.send_message(presenter.user, "Your profile changes have been approved.", presenter_profile_path(presenter))
           redirect_to presenter_profile_path(presenter)
         else
           flash[:danger] = "Something went wrong"

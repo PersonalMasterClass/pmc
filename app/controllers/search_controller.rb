@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+# require 'will_paginate/array'
 class SearchController < ApplicationController
 	before_filter :authorise_search, only: :index
 	
@@ -34,7 +34,8 @@ class SearchController < ApplicationController
 		    		@presenter = remove_non_profiles(@presenter)
 		    	end
 	    	end 
-	    	@presenter = @presenter.paginate(:page => params[:page], :per_page => 3)
+	    	# @presenter = @presenter.paginate(:page => params[:page], :per_page => 3)
+	    	@presenter = Presenter.all.paginate(:page => params[:page], :per_page => 3)
 	
 	  	end	
 	  	

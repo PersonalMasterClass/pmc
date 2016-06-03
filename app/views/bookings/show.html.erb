@@ -3,7 +3,7 @@
 		<h3>Booking for <%= @booking.subject.name %></h3>
     <%= cancellation_message(@booking) %>
     <div class="booking-labels">
-      <%= booked_label(@booking) %> <%= rate_label(@booking) %>
+      <%= booked_label(@booking) %> <%= rate_label(@booking) %> <%= capacity_label(@booking) %>
     </div>
     
     <% if current_user.admin? %>
@@ -15,6 +15,7 @@
 		    <p> Date: <%= @booking.booking_date.strftime("%d/%m/%Y") %> </p>
 		    <p> Time: <%= @booking.booking_date.strftime("%H:%M %p") %> - <%= duration(@booking) %> </p>
 	      <p>Subject: <%= @booking.subject.name %></p>
+        <%= display_booking_slots(@booking) %>
       </div>
     </div>
 
@@ -27,6 +28,6 @@
     <%= render 'bookings/partials/customer_join', object: @booking %>
     <%= render 'bookings/partials/cancel_bid', object: @booking %>
     <%= render 'bookings/partials/cancel_booking', object: @booking %>
+    <%= render 'bookings/partials/leave_booking', object: @booking %>
     <%= render 'partials/presenter_actions', object: @booking %>
   <% end %>
-<div>

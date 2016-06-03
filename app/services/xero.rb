@@ -1,4 +1,4 @@
-class Xero
+	class Xero
 	# invoice item codes
 	PRESENTER_RATE = "003"
 	SERVICE_FEE = "001"
@@ -32,7 +32,6 @@ class Xero
 	def self.add_presenter_account(presenter)
 		begin
 			gateway = connect
-
 			if !gateway
 				return false
 			end
@@ -168,6 +167,7 @@ class Xero
     	:item_code => SERVICE_FEE,
     	:quantity => 1
     	})
+    inv.save
 	end	
 
 	# Create a Xero bill (Accounts Payable) to credit the presenter their rate
@@ -188,7 +188,7 @@ class Xero
       :quantity => (booking.duration_minutes / 60).to_f,
       :tax_type => "INPUT"
     })
-		puts p_inv.save
+		p_inv.save
     return p_inv
 	end
 

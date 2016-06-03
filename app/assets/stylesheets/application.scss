@@ -20,27 +20,30 @@
 @import "variables";
 @import "branding";
 
-//  Some globals
-html { background: darken($pmc_blue, 7.5%); }
-a { transition: color 250ms ease; }
-.btn {
-  &.push-transition {
-    transition: transform 100ms ease;
-    transform: scale(1);
-    &:active { transform: scale(0.9); }
-  }
-}
+//  Background for the entire page
+html { background: lighten(saturate($siteBlue, 10%), 0%); }
 
 body {
   margin: $navbar-height 0 0 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  background: none;
+  background: white;
+
+  //  Some globals
+  a { transition: color 250ms ease; }
+  .btn {
+    &.push-transition {
+      transition: transform 100ms ease;
+      transform: scale(1);
+      &:active { transform: scale(0.9); }
+    }
+  }
 
   //  Navbar
   nav.navbar-fixed-top {
     min-height: $navbar-height;
-    background: $pmc_blue;
-    border-bottom: none;
+    background: $siteBlue;
+    border-bottom: 1px solid $pmcBlue;
+    box-sizing: border-box;
     a.navbar-brand {
       display: table;
       padding: 0;
@@ -67,7 +70,49 @@ body {
           padding-top: 22px;
           padding-bottom: 22px;
           color: white;
+          &.btn {
+            $vOffset: 12px;
+            $hOffset: 8px;
+            $buttonHeight: $navbar-height - ($vOffset * 2);
+            margin-top: $vOffset;
+            height: $buttonHeight;
+            padding: 0 14px;
+            margin-right: $hOffset;
+            margin-left: $hOffset;
+            line-height: $buttonHeight;
+          }
         }
+      }
+      .dropdown {
+        .dropdown-toggle {
+          $hMargin: 8px;
+          > i {
+            $padding: 20px;
+            font-size: 24px;
+            padding-top: $padding;
+            padding-bottom: $padding;
+            margin-left: $hMargin;
+          }
+          > .badge {
+            margin-bottom: 31px;
+            padding: 2px 6px 2px 6px;
+            background-color: #e80202;
+            margin-right: ($hMargin/2);
+          }
+        }
+        @media screen and (max-width: $screen-sm-min) {
+          display: none;
+        }
+      }
+    }
+    button.navbar-toggle {
+      $buttonRed: $siteRed;
+      margin-top: 14px;
+      background: $buttonRed;
+      border: none;
+      &:hover { background: lighten($buttonRed, 10%); }
+      .icon-bar {
+        background-color: #FFFFFF;
       }
     }
   }
@@ -75,18 +120,13 @@ body {
   > .main {
     .container {
       $vPadding: 18px;
-      background: rgb(250,250,250);
       padding-top:$vPadding;
       padding-bottom:$vPadding;
-      &.no-bg {
-        background: none;
-      }
+      &.no-bg { background: none; }
       > *:first-child { margin-top: 0; }
     }
   }
-  &.no-container-bg {
-    > .main .container { background: none; }
-  }
+  &.no-container-bg { background: none; }
 
   //  Footer
   footer {
@@ -99,7 +139,7 @@ body {
       float: left;
     }
     .footer-content {
-      background: $pmc_blue;
+      background: darken($siteBlue, 15%);
       .container {
         display: table;
         $vPadding: 12px;
@@ -128,24 +168,20 @@ body {
     }
     .afterfooter {
       width: 100%;
-      background:darken($pmc_blue, 7.5%);
+      background: darken($siteBlue, 20%);
       padding: 8px 0;
-      .left, .right { width: 50%; }
+      .left, .right {
+        width: 50%;
+        @media screen and (max-width: $screen-sm-min) {
+          width: 100%;
+          float: left;
+          text-align: center;
+        }
+      }
       .left { float:left; }
       .right { float:right; }
     }
   }
-}
-
-
-.dropdown-toggle > i{
-  font-size: 1.7em;
-  padding-top: 13px;
-}
-.dropdown-toggle > .badge{
-  margin-bottom: 31px;
-    padding: 2px 6px 2px 6px;
-    background-color: #e80202;
 }
 
 //  Hide the debug_dump that appears when we're working in !Production

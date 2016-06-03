@@ -7,6 +7,7 @@
 
 @import "branding";
 @import "variables";
+@import "bootstrap";
 div.fixed-background {
   position:fixed;
   top:0;
@@ -14,9 +15,9 @@ div.fixed-background {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-color: darken($pmc_blue, 25%);
+  background-color: darken($pmcBlue, 25%);
   background-image: asset-url('homepage-banner-background.jpg');
-  background-position: 50%;
+  background-position: 50% 15%;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -36,17 +37,24 @@ div.landing-page-sections {
     }
     //  Generic button for use in each of the sections on the homepage
     a.btn {
-      background: lighten($pmc_yellow, 15%) !important;
       font-size: 14px;
       font-weight: bold;
       padding: 24px 36px;
       margin-top: 36px;
       border: none;
     }
+    .underbutton {
+      display: inline-block;
+      margin-top: 12px;
+      color: #EEEEEE;
+    }
     &#leader {
-      $dblue: darken($pmc_blue, 25%);
+      $backgroundBlue: darken($pmcBlue, 50%);
       padding: 128px 0;
-      background: rgba(red($dblue), green($dblue), blue($dblue), 0.67);
+      background: rgba(red($backgroundBlue), green($backgroundBlue), blue($backgroundBlue), 0.4);
+      @media screen and (max-width: $screen-sm-min) {
+        padding: 36px 0;
+      }
       .container {
         .section-content {
           color: white;
@@ -56,7 +64,8 @@ div.landing-page-sections {
       }
     }
     &#subject-tiles {
-      background: lighten($pmc_blue, 10%);
+      // background: lighten(saturate($pmcBlue, 25%), 10%);
+      background: darken($siteBlue, 5%);
       padding: 8px 0;
       .container {
         .section-content {
@@ -73,6 +82,9 @@ div.landing-page-sections {
             .tile-row {
               display: table-row;
               width: 100%;
+              @media screen and (max-width: $screen-sm-min) {
+                display: block;
+              }
               .tile {
                 display: table-cell;
                 vertical-align: middle;
@@ -83,16 +95,27 @@ div.landing-page-sections {
                 font-size: 32px;
                 font-weight: 700;
                 cursor: pointer;
+                @media screen and (max-width: $screen-sm-min) {
+                  width: 100%;
+                  display: block;
+                  float: left;
+                  height: auto;
+                  padding: 54px 0;
+                  margin-bottom: 24px;
+                }
               }
             }
           }
           a.btn { margin-top: 0; }
-          .underbutton {
-            display: inline-block;
-            margin-top: 8px;
-            color: #EEEEEE;
+          .after-tile-callout {
+            margin: 36px 0;
+            @media screen and (max-width: $screen-sm-min) {
+              margin: 8px 0;
+            }
+            .underbutton {
+              color: #ffffff;
+            }
           }
-          .after-tile-callout { margin: 36px 0; }
         }
       }
     }
