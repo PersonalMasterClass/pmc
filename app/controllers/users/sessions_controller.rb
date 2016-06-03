@@ -17,12 +17,17 @@ class Users::SessionsController < Devise::SessionsController
   # end
 
   def after_sign_in_path_for(resource)
-    if current_user.user_type == "admin"
-      admin_path
-    elsif current_user.user_type == "customer"
-      customers_path
+    if !current_user.suspended?
+      if current_user.user_type == "admin"
+        admin_path
+      else
+        root_url
+      end
     else
-      presenters_path
+      flash.discard
+      flash[:danger] = "Your account is currently suspended and therefore you are unable to log in."
+      sign_out current_user
+      return root_url
     end
   end
 
