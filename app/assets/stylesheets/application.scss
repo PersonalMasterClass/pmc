@@ -22,13 +22,13 @@
 
 //  Background for the entire page
 html {
-  background: lighten(saturate($siteBlue, 10%), 0%);
+  background: white;
   margin: $navbar-height 0 0 0;
 }
 
 body {
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-  background: white;
+  background: none;
 
   //  Some globals
   a { transition: color 250ms ease; }
@@ -82,6 +82,10 @@ body {
             margin-right: $hOffset;
             margin-left: $hOffset;
             line-height: $buttonHeight;
+          }
+          &#presenter-register-call-to-action {
+            background: none;
+            border: 1px solid $siteRed;
           }
         }
       }
@@ -137,7 +141,6 @@ body {
       color: white;
     }
   }
-  &.no-container-bg { background: none; }
 
   //  Footer
   footer {
@@ -194,8 +197,9 @@ body {
     }
   }
   > .support-tab {
+    $borderRadius: 4px;
     transform: rotate(270deg);
-    background: #ff6a4e;
+    background: $siteRed;
     padding: 12px 24px;
     position: fixed;
     left: -16px;
@@ -203,7 +207,9 @@ body {
     line-height: 24px;
     font-size: 16px;
     transform-origin: bottom;
+    border-radius: 0 0 $borderRadius $borderRadius;
     @media screen and (max-width: $screen-sm-min) { display: none; }
+    &:hover { text-decoration: none; }
     span {
       font-weight: bold;
       color: white;

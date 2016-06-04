@@ -17,7 +17,7 @@ div.fixed-background {
   z-index: -1;
   background-color: darken($pmcBlue, 25%);
   background-image: asset-url('homepage-banner-background.jpg');
-  background-position: 50% 15%;
+  background-position: 50% 0%;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -49,9 +49,7 @@ div.landing-page-sections {
       color: #EEEEEE;
     }
     &#leader {
-      $backgroundBlue: darken($pmcBlue, 50%);
       padding: 128px 0;
-      background: rgba(red($backgroundBlue), green($backgroundBlue), blue($backgroundBlue), 0.4);
       @media screen and (max-width: $screen-sm-min) {
         padding: 36px 0;
       }
@@ -64,7 +62,6 @@ div.landing-page-sections {
       }
     }
     &#subject-tiles {
-      // background: lighten(saturate($pmcBlue, 25%), 10%);
       background: darken($siteBlue, 5%);
       padding: 8px 0;
       .container {
