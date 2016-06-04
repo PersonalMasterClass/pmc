@@ -138,6 +138,15 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  # Get the total number of students in the booking
+  def total_students
+    students = 0
+    self.booked_customers.each do |school|
+      students += school.number_students
+    end
+    return students
+  end
+
   def remaining_slots
     @count = 0
     self.booked_customers.each do |booked_customer|

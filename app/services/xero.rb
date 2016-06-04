@@ -137,8 +137,11 @@
 		unless booking.shared?
 			charge_school(booking, gateway, booking.creator, 100)
 		else
-			# TODO add logic for splitting the presenter's charge
-			charge_school(booking, gateway, booking.creator, 100)
+			# Calculate each schools share and bill them
+			total = booking.total_students.to_f
+			booking.booked_customers.each do |school|
+				charge_school(booking, gateway, school.customer, (school.number_students.to_f / total * 100).ceil)
+			end
 		end
 		return true
 	end

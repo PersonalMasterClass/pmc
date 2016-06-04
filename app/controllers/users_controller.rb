@@ -33,7 +33,6 @@
     @customers = User.unapproved_customers.first(5)
 
     #pending profile changes
-    #@profiles = PresenterProfile.find(:first, :conditions => {status: "pending_admin"}, limit: 5)
     @profiles = PresenterProfile.drafts_and_unapproved.first(5)
 
     @upcoming_bookings = Booking.upcoming(current_user).first(5)
@@ -80,6 +79,7 @@
       flash[:success] = "#{user.presenter.first_name} #{user.presenter.last_name}'s
                         account has been suspended."
     elsif user.customer.present?
+      user.customer.cancel_upcoming_bookings
       flash[:success] = "#{user.customer.first_name} #{user.customer.last_name}'s 
                         account has been suspended."
     end
