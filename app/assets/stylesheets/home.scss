@@ -20,6 +20,11 @@ div.fixed-background {
   background-position: 50% 0%;
   background-repeat: no-repeat;
   background-size: cover;
+  &.test-bg-1 { background-image: url('https://as2.ftcdn.net/jpg/00/79/86/79/500_F_79867983_efeQpy95Jganj6OfJwMiRSZZZ7alHbAm.jpg'); }
+  &.test-bg-2 { background-image: url('https://as2.ftcdn.net/jpg/00/57/95/93/500_F_57959323_0R6BqPnEbagKGSjMtVMf3uw50MmQkVyb.jpg'); }
+  &.test-bg-3 { background-image: url('https://as1.ftcdn.net/jpg/00/44/96/06/500_F_44960643_ncFwYl7VPGTTE4CLF5rbtzul9LV8itKL.jpg'); }
+  &.test-bg-4 { background-image: url('https://as2.ftcdn.net/jpg/00/85/64/11/500_F_85641142_8lHQXxKTHQJXGhbbNIP72pl3xzSTzRVx.jpg'); }
+  &.test-bg-5 { background-image: url('https://as2.ftcdn.net/jpg/01/09/56/65/500_F_109566510_HSOZVDmDktf7PyX4L0rRyGVqsvuNts00.jpg'); }
 }
 div.landing-page-sections {
   section {
