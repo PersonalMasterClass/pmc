@@ -28,11 +28,13 @@ CWD="$(pwd)"
 NGINX_USER="nginx"
 PASSENGER_CONFIG_FILE="/etc/nginx/conf.d/passenger.conf"
 POSTGRESQL_DATA_DIR="/var/lib/pgsql/data"
+POSTGRESQL_HBA_FILE="${POSTGRESQL_DATA_DIR}/pg_hba.conf"
 POSTGRESQL_PASSWORD=""
 POSTGRESQL_USER="pmc"
-POSTGRESQL_HBA_FILE="${POSTGRESQL_DATA_DIR}/pg_hba.conf"
 REPOSITORY_URL="https://github.com/PersonalMasterClass/pmc.git"
 SECRET_KEY_FILE="/usr/local/etc/pmc_secret_key"
+SSL_CERT_BUNDLE="pmc.crt"  # The certificate bundle file as it exists on the remote system.
+SSL_CERT_KEY="pmc.key"     # The certificate private key as it exists on the remote system.
 WEB_ROOT="/var/www/html"
 
 export RAILS_ENV="production"
@@ -222,15 +224,18 @@ http {
     server {
         listen       80 default_server;
         server_name  localhost;
-        root         ${WEB_ROOT}/public;
+        return       301 https://personalmasterclass.com/\$request_uri;
+    }
+    server {
+        listen                       443 default_server;
+        server_name                  localhost;.
+
+        root                         ${WEB_ROOT}/public;
 
         charset utf-8;
 
         access_log  /var/log/nginx/access.log  main;
-
-        location / {
-
-        }
+        
         passenger_enabled on;
         passenger_user \"${NGINX_USER}\";
         passenger_group \"${NGINX_USER}\";
@@ -240,9 +245,25 @@ http {
         passenger_env_var PMC_DB_USER \"${POSTGRESQL_USER}\";
         passenger_env_var PMC_DB_PASSWORD \"${POSTGRESQL_PASSWORD}\";
         passenger_env_var PMC_DB_HOST \"localhost\";
+
+        ssl                          on;
+        ssl_certificate              /etc/nginx/personalmasterclass.crt;
+        ssl_certificate_key          /etc/nginx/personalmasterclass.key;
+        ssl_protocols                TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers                  HIGH:MEDIUM;
+        ssl_prefer_server_ciphers    on;
     }
 }
 " > /etc/nginx/nginx.conf
+
+if [ -f "${SSL_CERT_KEY}" ]; then
+  log "Installing certificate private key.."
+  cp "${SSL_CERT_KEY}" /etc/nginx
+fi
+if [ -f "${SSL_CERT_BUNDLE}" ]; then
+  log "Installing certificate bundle.."
+  cp "${SSL_CERT_BUNDLE}" /etc/nginx
+fi
 
 log "Restarting nginx..."
 "${SYSTEMCTL}" restart nginx
