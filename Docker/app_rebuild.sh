@@ -5,6 +5,5 @@ cd "${REPO_ROOT}" &&
 docker rm -f "${APP_PREFIX}" "${APP_PREFIX}_postgres" "${APP_PREFIX}_redis" > /dev/null 2>&1
 "${REPO_ROOT}/Docker/app_start.sh"
 sleep 2;
-docker exec pmc bundle exec rake db:migrate;
-docker exec pmc bundle exec rake db:seed;
+docker exec pmc bundle exec rake db:migrate
 cd "${WORKING_DIR}"
