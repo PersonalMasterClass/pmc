@@ -110,7 +110,10 @@ div.landing-page-sections {
               }
             }
           }
-          a.btn { margin-top: 0; }
+          a.btn {
+            margin-top: 0;
+            font-size: 24px;
+          }
           .after-tile-callout {
             margin: 36px 0;
             @media screen and (max-width: $screen-sm-min) {
