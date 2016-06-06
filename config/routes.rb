@@ -67,6 +67,7 @@ mount ResqueWeb::Engine => 'admin/resque'
   patch 'booking/:id/cancel_booking' => "bookings#cancel_booking", as: "bookings_cancel"
   patch 'booking/:id/cancel_bid/' => "bookings#cancel_bid", as: "bookings_bid_cancel"
   patch 'booking/:id/leave_booking/' => "bookings#leave_booking", as: "bookings_leave"
+  get 'bookings/past' => "bookings#past", as: "past_bookings"
   resources :bookings
   resources :presenters, :only =>[:create, :edit, :update, :destroy, :index] do
     resource :presenter_profile, as: 'profile'

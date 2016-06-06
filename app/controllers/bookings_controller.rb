@@ -1,10 +1,15 @@
 class BookingsController < ApplicationController
-  before_filter :admin_or_customer_logged_in, :except => [:index, :show, :open, :set_bid, :cancel_bid]
+  before_filter :admin_or_customer_logged_in, :except => [:index, :past, :show, :open, :set_bid, :cancel_bid]
   before_filter :admin_logged_in, :only => [:index]
-
+  before_filter :logged_in, :only => [:past]
   #admin view for all bookings
   def index  
     @bookings = Booking.with_deleted
+  end
+
+  #shows all previous bookings for a user
+  def past
+    @bookings = Booking.completed(current_user)
   end
 
   def show
@@ -187,6 +192,10 @@ class BookingsController < ApplicationController
     def admin_logged_in
       redirect_to root_url unless current_user.admin?
     end
+
+    def logged_in
+      redirect_to root_url unless current_user
+    end 
 end
 
 

@@ -1,0 +1,36 @@
+<%= render "bookings/partials/bookings_table" if current_user.admin? %>
+
+<% if !current_user.admin? %>
+  <% if @bookings.present? %>
+    <table class = "table table-bordered" id='bookings_table'>
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <%= "<th>Presenter</th>" if current_user.customer %>
+          <%= "<th>School</th>" if current_user.presenter %>
+          <th>Shared</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @bookings.each do |b| %>
+          <tr> 
+            <td><%= b.subject.name %> </td>
+            <%= "<td>#{chosen_presenter(b)}</td>" if current_user.customer %>
+            <%= "<td>#{b.creator.school_info.school_name}</td>" if current_user.presenter %>
+            <td><%= shared_message(b) %></td> 
+            <td> <%= b.booking_date.strftime("%d/%m/%Y") %> </td>
+            <td> <%= b.booking_date.strftime("%H:%M %p") %> - <%= duration(b) %></td>
+            <td> <%= b.status_message %> </td>
+            <td> <%= link_to "View", booking_path(b), class: "btn btn-primary" %> </td>
+          </tr>  
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
+
+<%= "No Bookings to display" if !@bookings.any? %>

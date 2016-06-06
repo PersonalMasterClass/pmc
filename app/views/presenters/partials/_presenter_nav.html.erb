@@ -5,6 +5,9 @@
   <li role="presentation" >
     <%= edit_presenter_profile_link(current_user.presenter) %>
   </li>
+  <li role="presentation">
+    <%= link_to "Past Bookings", past_bookings_path %>
+  </li>
   <li role="presentation" >
     <%= link_to "Subjects", presenter_edit_subjects_path(current_user.presenter) %>
   </li>

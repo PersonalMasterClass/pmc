@@ -36,10 +36,12 @@ class Booking < ActiveRecord::Base
   def self.completed(user)
   	date_today = DateTime.now
     booking = nil
-  	if @user.presenter?
-  		return @user.presenter.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
-  	elsif @user.customer?
-  		return @user.customer.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
+  	if user.presenter
+  		return user.presenter.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
+  	elsif user.customer
+  		return user.customer.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
+    else
+      return Booking.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
   	end
   end
 
