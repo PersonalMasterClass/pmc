@@ -23,6 +23,9 @@
 //  Background for the entire page
 html {
   margin: $navbar-height 0 0 0;
+  @media screen and (min-width: $screen-sm-min) and (max-width: 992px) {
+    margin-top: $navbar-height * 2;
+  }
 }
 
 body {
@@ -69,6 +72,9 @@ body {
         color: white;
       }
     }
+    .navbar-collapse {
+      max-height: none;
+    }
     .navbar-nav {
       > li {
         > a {
@@ -92,8 +98,8 @@ body {
             border: $bHeight solid $siteRed !important;
             line-height: $buttonHeight - ($bHeight * 2);
           }
-          &:hover {
-            color: white;
+          &:hover, &:active, &:focus {
+            color: #EEEEEE;
           }
         }
       }
@@ -195,6 +201,9 @@ body {
               a {
                 text-decoration: none;
                 color: white;
+                &:hover, &:active, &:focus {
+                  color: #EEEEEE;
+                }
               }
             }
           }
@@ -235,6 +244,17 @@ body {
       font-weight: bold;
       color: white;
     }
+  }
+  //  Table tweaks
+  table.dataTable.no-footer {
+    border-bottom: 1px solid #DDDDDD;
+  }
+  #presenters_table_paginate {
+    @media screen and (max-width: $screen-sm-min) { width: 100%; }
+  }
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: none;
+    border: 1px solid transparent;
   }
 }
 
