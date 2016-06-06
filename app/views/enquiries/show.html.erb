@@ -1,6 +1,6 @@
 <div class="panel panel-<%= enquiry_panel_color(@enquiry) %>">
   <div class="panel-heading">
-    <%= from(@enquiry) %> <%= enquiry_status(@enquiry) %>
+    <h3><%= from(@enquiry) %> <%= enquiry_status(@enquiry) %></h3>
   </div>
   <div class="panel-body">
     <p> Rate: <%= number_to_currency(@enquiry.rate) %> </p>
@@ -8,6 +8,8 @@
     <p> Time: <%= @enquiry.time.strftime("%H:%M %p") %></p>
   </div>
   <div class="panel-footer">
-    <%= render 'enquiries/partials/actions' %>
+    <% unless @enquiry.declined? %>
+      <%= render 'enquiries/partials/actions' %>
+    <% end %>
   </div>
 </div>

@@ -19,6 +19,7 @@ class EnquiriesController < ApplicationController
 		if current_user.customer?
 			@presenter = Presenter.find(params[:enquiry][:recipient_id])
 			@enquiry.customer = current_user.customer
+			@enquiry.from = :customer
 			@enquiry.presenter = @presenter
 			@enquiry.save
 			@message = "New enquiry from #{current_user.customer.school_info.school_name}."
@@ -27,9 +28,10 @@ class EnquiriesController < ApplicationController
 		elsif current_user.presenter?
 			@customer = Customer.find(params[:enquiry][:recipient_id])
 			@enquiry.presenter = current_user.presenter
+			@enquiry.from = :presenter
 			@enquiry.customer = @customer
+			@enquiry.status = :counteroffer
 			@enquiry.save
-			binding.pry
 			@message = "#{current_user.presenter.get_private_full_name(@customer.user)} has responded with a counter offer."
 			Notification.send_message(@customer.user, @message, enquiry_path(@enquiry))
 			redirect_to customers_path
@@ -45,7 +47,6 @@ class EnquiriesController < ApplicationController
 	end
 
 	def booked
-		binding.pry
 		@enquiry = Enquiry.find(params[:enquiry_id])
 		@enquiry.status = :booked
 		@enquiry.save
@@ -56,7 +57,11 @@ class EnquiriesController < ApplicationController
 	def decline
 		@enquiry.status = :declined
 		@enquiry.save
-		@message = "#{current_user.presenter.get_private_full_name(@enquiry.customer.user)} has declined your enquiry."
+		if current_user.customer?
+			@message = "#{@enquiry.presenter.get_private_full_name(current_user)} has declined your enquiry."
+		elsif current_user.presenter?
+			@message = "#{@enquiry.customer.school_info.school_name} has declined your enquiry."
+		end
 		Notification.send_message(@enquiry.customer.user, @message, enquiry_path(@enquiry))
 		redirect_to root_path
 	end

@@ -3,6 +3,7 @@ class CreateEnquiriesTable < ActiveRecord::Migration
     create_table :enquiries do |t|
       t.integer :customer_id
       t.integer :presenter_id
+      t.integer :from
       t.date :date
       t.time :time
       t.integer :rate
