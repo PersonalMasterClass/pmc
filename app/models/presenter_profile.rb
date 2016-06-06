@@ -21,15 +21,19 @@ class PresenterProfile < ActiveRecord::Base
   enum status: [:new_profile, :pending_admin, :pending_presenter, :approved, :draft_admin, :draft_presenter]
 
   def self.unapproved_profiles
-    PresenterProfile.where('status= ?', 1)
+    # PresenterProfile.where('status= ?', 1)
+    PresenterProfile.joins(presenter: :user).where.not(:users => {:status => 2}, :presenter_profiles => {:status => [0,2,3,4,5]})
   end
 
   def self.admin_drafts
-    PresenterProfile.where('status= ?', 4)
+    # PresenterProfile.where('status= ?', 4)
+    PresenterProfile.joins(presenter: :user).where.not(:users => {:status => 2}, :presenter_profiles => {:status => [0,1,2,3,5]})
   end
 
+  # Gets profiles awaiting admin approval or submission as long as the presenter is not suspended
   def self.drafts_and_unapproved
-    PresenterProfile.where(status: [1, 4])
+    # PresenterProfile.where(status: [1, 4])
+    PresenterProfile.joins(presenter: :user).where.not(:users => {:status => 2}, :presenter_profiles => {:status => [0,2,3,5]})
   end
 
   #This method takes care of the process of updating the live profile with the new
@@ -54,11 +58,5 @@ class PresenterProfile < ActiveRecord::Base
       return false
     end
   end
-
-  
-
-  # def approved?
-  #   self.status == "approved"
-  # end
 
 end

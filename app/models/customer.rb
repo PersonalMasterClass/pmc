@@ -21,6 +21,25 @@ class Customer < ActiveRecord::Base
     end
   end
 
+  # Removes cancels all upcoming bookings for a customer, and removes customer from all joined bookings. 
+  def cancel_upcoming_bookings()
+    created_bookings = Booking.upcoming(self.user)
+    #remove created bookings
+      #send notifications
+    created_bookings.each do |booking|
+      Notification.canceled_booking(booking, "/bookings/#{booking}")
+      booking.destroy
+    end 
+    #remove shared bookings
+    shared_bookings = Booking.joined_bookings(self)
+    
+    shared_bookings.each do |booking|
+      #send notification to owner
+      booking.customers.delete(self)
+      Notification.send_message(booking.creator.user, "Another school has been removed from your booking", "/bookings/#{booking}")
+    end
+  end
+
   def save_to_xero
     Xero.add_school_account(self)
   end

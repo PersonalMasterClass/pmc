@@ -1,8 +1,5 @@
 <% if current_user.admin? %>
   <li role="presentation" >
-    <%= link_to "Suspended Users", admin_suspended_users_path %>
-  </li>
-  <li role="presentation" >
     <%= link_to "Presenters", admin_presenters_path %>
   </li>
   <li role="presentation">
@@ -13,6 +10,9 @@
   </li>
   <li role="presentation">
   	<%= link_to "Subjects", subjects_path %>
+  </li>
+  <li role="presentation">
+    <%= link_to "Content Management", page_contents_path %>
   </li>
   <li role="presentation" >
     <%= link_to "Settings", edit_setting_path(current_user.setting)%>

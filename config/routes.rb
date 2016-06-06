@@ -68,7 +68,7 @@ mount ResqueWeb::Engine => 'admin/resque'
   patch 'booking/:id/cancel_bid/' => "bookings#cancel_bid", as: "bookings_bid_cancel"
   patch 'booking/:id/leave_booking/' => "bookings#leave_booking", as: "bookings_leave"
   resources :bookings
-  resources :presenters, :only =>[:create, :edit, :update, :destroy] do
+  resources :presenters, :only =>[:create, :edit, :update, :destroy, :index] do
     resource :presenter_profile, as: 'profile'
     resources :availabilities
     resources :subjects
@@ -96,9 +96,16 @@ mount ResqueWeb::Engine => 'admin/resque'
 
   resources :notifications, only: :index
   post 'set_rate' => 'presenters#set_rate', as: "set_rate"
-  resources :page_contents, :only => [:edit, :update]
+  resources :page_contents, :only => [:edit, :update, :index, :show]
 
-  get 'legal' => 'home#legal'
+  #Static Pages
+  get 'aboutus' => 'home#about'
+  get 'contactus' => 'home#contact'
+  get 'termsofuse' => 'home#terms'
+  get 'earningsnotice' => 'home#earnings'
+  get 'dmca' => 'home#dmca'
+  get 'privacypolicy' => 'home#privacy'
+
   resources :enquiries, :only => [:index, :new, :create, :show] do
     patch '/accept' => 'enquiries#accept'
     get '/booked' => 'enquiries#booked', as: "booked"
