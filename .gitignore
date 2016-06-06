@@ -39,3 +39,8 @@ Gemfile.lock
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Ignore any cert/key/csr files in the scripts directory
+/Scripts/*.key
+/Scripts/*.crt
+/Scripts/*.csr

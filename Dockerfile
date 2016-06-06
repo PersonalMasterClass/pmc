@@ -2,7 +2,7 @@ FROM rails:4.2
 
 # (Example) Environment variables for Rails
 ENV RAILS_ENV 'development'
-ENV REDIS_URL 'redis:///pmc_redis'
+ENV REDIS_URL 'redis://pmc_redis'
 ENV SECRET_KEY_BASE 'youshouldreallyoverridethiswhenrunningthecontainerorwhendeployed'
 ENV S3_KEY ''
 ENV S3_SECRET ''

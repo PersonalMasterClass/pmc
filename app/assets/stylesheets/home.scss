@@ -17,9 +17,14 @@ div.fixed-background {
   z-index: -1;
   background-color: darken($pmcBlue, 25%);
   background-image: asset-url('homepage-banner-background.jpg');
-  background-position: 50% 15%;
+  background-position: 50% 0%;
   background-repeat: no-repeat;
   background-size: cover;
+  &.test-bg-1 { background-image: url('https://as2.ftcdn.net/jpg/00/79/86/79/500_F_79867983_efeQpy95Jganj6OfJwMiRSZZZ7alHbAm.jpg'); }
+  &.test-bg-2 { background-image: url('https://as2.ftcdn.net/jpg/00/57/95/93/500_F_57959323_0R6BqPnEbagKGSjMtVMf3uw50MmQkVyb.jpg'); }
+  &.test-bg-3 { background-image: url('https://as1.ftcdn.net/jpg/00/44/96/06/500_F_44960643_ncFwYl7VPGTTE4CLF5rbtzul9LV8itKL.jpg'); }
+  &.test-bg-4 { background-image: url('https://as2.ftcdn.net/jpg/00/85/64/11/500_F_85641142_8lHQXxKTHQJXGhbbNIP72pl3xzSTzRVx.jpg'); }
+  &.test-bg-5 { background-image: url('https://as2.ftcdn.net/jpg/01/09/56/65/500_F_109566510_HSOZVDmDktf7PyX4L0rRyGVqsvuNts00.jpg'); }
 }
 div.landing-page-sections {
   section {
@@ -48,32 +53,47 @@ div.landing-page-sections {
       margin-top: 12px;
       color: #EEEEEE;
     }
+    $ctaButtonWidth: 480px;
     &#leader {
-      $backgroundBlue: darken($pmcBlue, 50%);
       padding: 128px 0;
-      background: rgba(red($backgroundBlue), green($backgroundBlue), blue($backgroundBlue), 0.4);
       @media screen and (max-width: $screen-sm-min) {
         padding: 36px 0;
       }
       .container {
         .section-content {
           color: white;
-          h1 { font-size: 32px; }
-          p { font-size: 16px; }
+          h1 { font-size: 48px; }
+          h2 { font-size: 30px; }
+          p { font-size: 36px; }
+          a.btn {
+            font-size: 24px;
+            width: 100%;
+            max-width: $ctaButtonWidth;
+          }
+          @media screen and (max-width: 540px) {
+            h1 { font-size: 36px; }
+            h2 { font-size: 24px; }
+            p { font-size: 28px; }
+            a.btn { font-size: 16px; }
+          }
         }
       }
     }
     &#subject-tiles {
-      // background: lighten(saturate($pmcBlue, 25%), 10%);
-      background: darken($siteBlue, 5%);
+      background: white;
       padding: 8px 0;
       .container {
+        padding-top: 0;
         .section-content {
+          padding-top: 12px;
+          @media screen and (max-width: $screen-sm-min) {
+            padding-top: 0;
+          }
           > h1 {
             text-align: center;
             margin: 16px 0;
             font-weight: 400;
-            color: #FFFFFF;
+            color: darken($siteBlue, 50%);
           }
           .tile-wrap {
             display: table;
@@ -89,7 +109,8 @@ div.landing-page-sections {
                 display: table-cell;
                 vertical-align: middle;
                 height: 200px;
-                background: #EEE;
+                background: $siteBlue;
+                color: white;
                 padding: 16px;
                 width: 33%;
                 font-size: 32px;
@@ -106,7 +127,15 @@ div.landing-page-sections {
               }
             }
           }
-          a.btn { margin-top: 0; }
+          a.btn {
+            margin-top: 0;
+            font-size: 24px;
+            width: 100%;
+            max-width: $ctaButtonWidth;
+            @media screen and (max-width: 540px) {
+              font-size: 16px;
+            }
+          }
           .after-tile-callout {
             margin: 36px 0;
             @media screen and (max-width: $screen-sm-min) {

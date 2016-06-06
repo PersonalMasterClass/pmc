@@ -1,3 +1,4 @@
 FROM postgres:9.5
 ENV POSTGRES_USER 'pmc'
 ENV POSTGRES_DB 'pmc_development'
+EXPOSE 5432
