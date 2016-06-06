@@ -75,15 +75,20 @@ div.landing-page-sections {
       }
     }
     &#subject-tiles {
-      background: darken($siteBlue, 5%);
+      background: white;
       padding: 8px 0;
       .container {
+        padding-top: 0;
         .section-content {
+          padding-top: 12px;
+          @media screen and (max-width: $screen-sm-min) {
+            padding-top: 0;
+          }
           > h1 {
             text-align: center;
             margin: 16px 0;
             font-weight: 400;
-            color: #FFFFFF;
+            color: darken($siteBlue, 20%);
           }
           .tile-wrap {
             display: table;
@@ -99,7 +104,8 @@ div.landing-page-sections {
                 display: table-cell;
                 vertical-align: middle;
                 height: 200px;
-                background: #EEE;
+                background: $siteBlue;
+                color: white;
                 padding: 16px;
                 width: 33%;
                 font-size: 32px;

@@ -92,6 +92,9 @@ body {
             border: $bHeight solid $siteRed !important;
             line-height: $buttonHeight - ($bHeight * 2);
           }
+          &:hover {
+            color: white;
+          }
         }
       }
       .dropdown {
@@ -164,14 +167,17 @@ body {
         $vPadding: 12px;
         padding-top: $vPadding;
         padding-bottom: $vPadding;
-        section {
-          display: table-cell;
+        section.footerlinks {
           width: 33%;
-          h3 {
-            font-size: 14px;
-            font-weight: 400;
-            text-transform: uppercase;
-            margin: 4px 0;
+          padding: 12px 0;
+          @media screen and (max-width: $screen-sm-min) {
+            width: 100%;
+            ul {
+              li {
+                width: 100%;
+                text-align: center;
+              }
+            }
           }
           ul {
             text-transform: uppercase;
@@ -180,8 +186,12 @@ body {
             margin: 0 0 8px 0;
             font-size: 12px;
             font-weight: 700;
+            width: 100%;
+            float: left;
             li {
+              width: 50%;
               cursor: pointer;
+              float: left;
               a {
                 text-decoration: none;
                 color: white;
