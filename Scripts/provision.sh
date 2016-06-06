@@ -2,9 +2,24 @@
 # This script is used to provision and configure a fresh CentOS 7 VM.
 # As this script assumes an atomic deployment, everything will be installed.
 
+CWD="$(pwd)"
+NGINX_USER="nginx"
+PASSENGER_CONFIG_FILE="/etc/nginx/conf.d/passenger.conf"
+POSTGRESQL_DATA_DIR="/var/lib/pgsql/data"
+POSTGRESQL_HBA_FILE="${POSTGRESQL_DATA_DIR}/pg_hba.conf"
+POSTGRESQL_PASSWORD=""
+POSTGRESQL_USER="pmc"
+REPOSITORY_URL="https://github.com/PersonalMasterClass/pmc.git"
+S3_SECRET_KEY="s3_secret_key"
+S3_ACCESS_SECRET="s3_access_secret"
+SECRET_KEY_FILE="/usr/local/etc/pmc_secret_key"
+SSL_CERT_BUNDLE="pmc.crt"  # The certificate bundle file as it exists on the remote system.
+SSL_CERT_KEY="pmc.key"     # The certificate private key as it exists on the remote system.
+WEB_ROOT="/var/www/html"
+
 LOG_FILE="/usr/local/pmc_provisioning.log"
 
-BUNDLE="/usr/local/bin/bundle"
+BUNDLE="${WEB_ROOT}/bin/bundle"
 CAT="/bin/cat"
 CHMOD="/bin/chmod"
 CHOWN="/bin/chown"
@@ -24,21 +39,10 @@ WC="/bin/wc"
 YUM="/usr/bin/yum"
 YUM_MGR="/usr/bin/yum-config-manager"
 
-CWD="$(pwd)"
-NGINX_USER="nginx"
-PASSENGER_CONFIG_FILE="/etc/nginx/conf.d/passenger.conf"
-POSTGRESQL_DATA_DIR="/var/lib/pgsql/data"
-POSTGRESQL_HBA_FILE="${POSTGRESQL_DATA_DIR}/pg_hba.conf"
-POSTGRESQL_PASSWORD=""
-POSTGRESQL_USER="pmc"
-REPOSITORY_URL="https://github.com/PersonalMasterClass/pmc.git"
-SECRET_KEY_FILE="/usr/local/etc/pmc_secret_key"
-SSL_CERT_BUNDLE="pmc.crt"  # The certificate bundle file as it exists on the remote system.
-SSL_CERT_KEY="pmc.key"     # The certificate private key as it exists on the remote system.
-WEB_ROOT="/var/www/html"
-
 export RAILS_ENV="production"
 export HOME="${WEB_ROOT}"
+
+cd "${WEB_ROOT}"
 
 function log() {
   echo "${1}"
@@ -48,11 +52,14 @@ function showHelp() {
   echo "Usage: ${0##*/} [-h] [-p postgresql_password] [-u postgresql_user]"
   echo "  -h:  Show this help text."
   echo "  -p:  The PostgreSQL password."
+  echo "  -s:  The Amazon S3 Secret Key."
+  echo "  -t:  The Amazon S3 Access Secret."
   echo "  -u:  The PostgreSQL user. A database with the same name will be created."
 }
 
 if [ "${EUID}" != 0 ]; then
   >&2 echo "This script must be run as root. Terminating."
+  cd "${CWD}"
   exit 1
 fi
 
@@ -61,6 +68,8 @@ do
   case $flag in
     h)  showHelp ; exit 0;;
     p)  POSTGRESQL_PASSWORD="${OPTARG}";;
+    s)  S3_SECRET_KEY="${OPTARG}";;
+    t)  S3_ACCESS_SECRET="${OPTARG}";;
     u)  POSTGRESQL_USER="${OPTARG}";;
   esac
 done
@@ -77,6 +86,14 @@ if ! rpm -q epel-release; then "${YUM_MGR}" --enable epel; fi
 "${CURL}" --fail -sSLo /etc/yum.repos.d/passenger.repo \
   https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
+log "Installing Ruby via RVM..."
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby=2.3.1
+for i in "/bin/ruby" "/usr/bin/ruby"; do
+  if [ -f "${i}" ]; then rm "${i}"; fi
+  ln -s /usr/local/rvm/rubies/default/bin/ruby "${i}"
+done
+
 # Install dependencies
 log "Installing dependencies..."
 "${YUM}" -y install \
@@ -86,7 +103,6 @@ log "Installing dependencies..."
   curl \
   nginx \
   passenger \
-  ruby ruby-devel \
   zlib zlib-devel \
   gcc gcc-c++ \
   sudo \
@@ -128,7 +144,7 @@ echo "localhost:5432:${POSTGRESQL_USER}:${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD
 log "Configuring Phusion Passenger..."
 echo "
 passenger_root /usr/share/ruby/vendor_ruby/phusion_passenger/locations.ini;
-passenger_ruby $(which ruby);
+passenger_ruby /usr/local/rvm/rubies/default/bin/ruby;
 passenger_instance_registry_dir /var/run/passenger-instreg;" > "${PASSENGER_CONFIG_FILE}"
 
 if [ ! -d "${WEB_ROOT}" ]; then
@@ -141,7 +157,6 @@ if [ ! -d "${WEB_ROOT}/.git" ]; then
   "${GIT}" clone "${REPOSITORY_URL}" "${WEB_ROOT}"
 fi
 
-cd "${WEB_ROOT}"
 "${GIT}" pull
 
 # Set permissions
@@ -158,11 +173,11 @@ else
 fi
 
 log "Installing rails dependencies..."
-"${SUDO}" -E -u "${NGINX_USER}" "${GEM}" install bundle
+"${SUDO}" -E -u "${NGINX_USER}" "${GEM}" install bundle bundler
 
 log "Installing gems in Gemfile..."
 cd "${WEB_ROOT}" &&
-"${SUDO}" -E -u "${NGINX_USER}" "${BUNDLE}" install
+"${SUDO}" -E -u "${NGINX_USER}" "${BUNDLE}" install --deployment
 
 log "Compiling static assets..."
 "${SUDO}" -E -u "${NGINX_USER}" "${BUNDLE}" exec rake assets:precompile \
@@ -245,6 +260,8 @@ http {
         passenger_env_var PMC_DB_USER \"${POSTGRESQL_USER}\";
         passenger_env_var PMC_DB_PASSWORD \"${POSTGRESQL_PASSWORD}\";
         passenger_env_var PMC_DB_HOST \"localhost\";
+        passenger_env_var S3_KEY \"${S3_SECRET_KEY}\";
+        passenger_env_var S3_SECRET \"${S3_ACCESS_SECRET}\";
 
         ssl                          on;
         ssl_certificate              /etc/nginx/personalmasterclass.crt;
@@ -258,11 +275,11 @@ http {
 
 if [ -f "${SSL_CERT_KEY}" ]; then
   log "Installing certificate private key.."
-  cp "${SSL_CERT_KEY}" /etc/nginx
+  cp "${SSL_CERT_KEY}" /etc/nginx/personalmasterclass.key
 fi
 if [ -f "${SSL_CERT_BUNDLE}" ]; then
   log "Installing certificate bundle.."
-  cp "${SSL_CERT_BUNDLE}" /etc/nginx
+  cp "${SSL_CERT_BUNDLE}" /etc/nginx/personalmasterclass.crt
 fi
 
 log "Restarting nginx..."

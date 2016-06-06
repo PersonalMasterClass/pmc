@@ -65,6 +65,12 @@ div.landing-page-sections {
           h2 { font-size: 30px; }
           p { font-size: 36px; }
           a.btn { font-size: 24px; }
+          @media screen and (max-width: 540px) {
+            h1 { font-size: 36px; }
+            h2 { font-size: 24px; }
+            p { font-size: 28px; }
+            a.btn { font-size: 16px; }
+          }
         }
       }
     }
@@ -113,6 +119,9 @@ div.landing-page-sections {
           a.btn {
             margin-top: 0;
             font-size: 24px;
+            @media screen and (max-width: 540px) {
+              font-size: 16px;
+            }
           }
           .after-tile-callout {
             margin: 36px 0;
