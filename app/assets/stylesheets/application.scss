@@ -170,15 +170,7 @@ body {
         section.footerlinks {
           width: 33%;
           padding: 12px 0;
-          @media screen and (max-width: $screen-sm-min) {
-            width: 100%;
-            ul {
-              li {
-                width: 100%;
-                text-align: center;
-              }
-            }
-          }
+          @media screen and (max-width: $screen-sm-min) { width: 100%; }
           ul {
             text-transform: uppercase;
             list-style: none;
@@ -192,6 +184,14 @@ body {
               width: 50%;
               cursor: pointer;
               float: left;
+              box-sizing: border-box;
+              padding-right: 18px;
+              @media screen and (max-width: $screen-sm-min) {
+                width: 100%;
+                text-align: center;
+                padding:16px 0;
+                font-size: 16px;
+              }
               a {
                 text-decoration: none;
                 color: white;

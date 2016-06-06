@@ -53,6 +53,7 @@ div.landing-page-sections {
       margin-top: 12px;
       color: #EEEEEE;
     }
+    $ctaButtonWidth: 480px;
     &#leader {
       padding: 128px 0;
       @media screen and (max-width: $screen-sm-min) {
@@ -64,7 +65,11 @@ div.landing-page-sections {
           h1 { font-size: 48px; }
           h2 { font-size: 30px; }
           p { font-size: 36px; }
-          a.btn { font-size: 24px; }
+          a.btn {
+            font-size: 24px;
+            width: 100%;
+            max-width: $ctaButtonWidth;
+          }
           @media screen and (max-width: 540px) {
             h1 { font-size: 36px; }
             h2 { font-size: 24px; }
@@ -88,7 +93,7 @@ div.landing-page-sections {
             text-align: center;
             margin: 16px 0;
             font-weight: 400;
-            color: darken($siteBlue, 20%);
+            color: darken($siteBlue, 50%);
           }
           .tile-wrap {
             display: table;
@@ -125,6 +130,8 @@ div.landing-page-sections {
           a.btn {
             margin-top: 0;
             font-size: 24px;
+            width: 100%;
+            max-width: $ctaButtonWidth;
             @media screen and (max-width: 540px) {
               font-size: 16px;
             }
