@@ -104,4 +104,6 @@ mount ResqueWeb::Engine => 'admin/resque'
     get '/booked' => 'enquiries#booked', as: "booked"
     patch '/decline' => 'enquiries#decline'
   end
+
+  resources :settings, :only => [:edit, :update]
 end

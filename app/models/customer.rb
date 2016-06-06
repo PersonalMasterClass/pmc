@@ -7,10 +7,10 @@ class Customer < ActiveRecord::Base
   belongs_to :user, inverse_of: :customer
   has_many :enquiries
   has_many :presenters, through: :enquiries
-	# validates :first_name, :last_name, :school_info, presence: true
-  # validates :vit_number, format: /\A^\d{6}$\Z/
-  # validate :vit_number_must_be_valid
-  # # validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
+	validates :first_name, :last_name, :school_info, presence: true
+  validates :vit_number, format: /\A^\d{6}$\Z/
+  validate :vit_number_must_be_valid
+  validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
 
   after_create :save_to_xero
   after_update :update_xero

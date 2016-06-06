@@ -14,5 +14,8 @@
   <li role="presentation">
   	<%= link_to "Subjects", subjects_path %>
   </li>
+  <li role="presentation" >
+    <%= link_to "Settings", edit_setting_path(current_user.setting)%>
+  </li>
 <% end %>
 

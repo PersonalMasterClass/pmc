@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require bootstrap-sprockets
+//= require bootstrap-switch
 //= require jquery-ui
 //= require jquery_ujs
 //= require jquery-ui/autocomplete
@@ -26,4 +27,8 @@ $(document).on('ready page:load', function(){
 		// $(this).parent().children().find(".active").removeClass("active")
 		$(this).addClass("list-group-item active");
 	});
+});
+
+$(function() {
+	$('.settings-switch').bootstrapSwitch();
 });

@@ -80,6 +80,8 @@ d = Customer.create(phone_number:Faker::PhoneNumber.phone_number,
                      vit_number: '184539',  
                      abn_number: Faker::Number.number(11)) 
 d.school_info = SchoolInfo.all.sample
+setting = Setting.create!
+c.setting = setting
 c.customer = d
 c.save(:validate => false)
 
