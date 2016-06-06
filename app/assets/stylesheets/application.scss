@@ -252,9 +252,14 @@ body {
   #presenters_table_paginate {
     @media screen and (max-width: $screen-sm-min) { width: 100%; }
   }
-  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: none;
-    border: 1px solid transparent;
+  .dataTables_wrapper {
+    div.dataTables_filter {
+      @media screen and (max-width: $screen-sm-min) { margin-top: 0; }
+    }
+    .dataTables_paginate .paginate_button:hover {
+      background: none;
+      border: 1px solid transparent;
+    }
   }
 }
 

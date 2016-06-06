@@ -66,9 +66,6 @@ table.upcoming-bookings {
   }
 }
 #presenters_table_wrapper {
-  div#presenters_table_filter {
-    @media screen and (max-width: $screen-sm-min) { margin-top: 0; }
-  }
   table#presenters_table {
     tr {
       > *:nth-child(1),
