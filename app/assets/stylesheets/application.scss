@@ -21,12 +21,19 @@
 @import "branding";
 
 //  Background for the entire page
-html { background: lighten(saturate($siteBlue, 10%), 0%); }
+html {
+  margin: $navbar-height 0 0 0;
+  @media screen and (min-width: $screen-sm-min) and (max-width: 992px) {
+    margin-top: $navbar-height * 2;
+  }
+}
 
 body {
-  margin: $navbar-height 0 0 0;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
   background: white;
+  &.color-bg {
+    background: darken($siteBlue, 5%);
+  }
 
   //  Some globals
   a { transition: color 250ms ease; }
@@ -42,8 +49,9 @@ body {
   nav.navbar-fixed-top {
     min-height: $navbar-height;
     background: $siteBlue;
-    border-bottom: 1px solid $pmcBlue;
+    border-bottom: 1px solid darken($siteBlue, 2.5%);
     box-sizing: border-box;
+    margin: 0;
     a.navbar-brand {
       display: table;
       padding: 0;
@@ -64,22 +72,34 @@ body {
         color: white;
       }
     }
+    .navbar-collapse {
+      max-height: none;
+    }
     .navbar-nav {
       > li {
         > a {
           padding-top: 22px;
           padding-bottom: 22px;
           color: white;
+          $vOffset: 12px;
+          $hOffset: 8px;
+          $buttonHeight: $navbar-height - ($vOffset * 2);
           &.btn {
-            $vOffset: 12px;
-            $hOffset: 8px;
-            $buttonHeight: $navbar-height - ($vOffset * 2);
             margin-top: $vOffset;
             height: $buttonHeight;
             padding: 0 14px;
             margin-right: $hOffset;
             margin-left: $hOffset;
             line-height: $buttonHeight;
+          }
+          &#presenter-register-call-to-action {
+            $bHeight: 2px;
+            background: none !important;
+            border: $bHeight solid $siteRed !important;
+            line-height: $buttonHeight - ($bHeight * 2);
+          }
+          &:hover, &:active, &:focus {
+            color: #EEEEEE;
           }
         }
       }
@@ -125,8 +145,16 @@ body {
       &.no-bg { background: none; }
       > *:first-child { margin-top: 0; }
     }
+    > .alert {
+      width: auto;
+      text-align: center;
+      background: $siteRed;
+      padding: 8px 18px;
+      margin: 0;
+      width: 100%;
+      color: white;
+    }
   }
-  &.no-container-bg { background: none; }
 
   //  Footer
   footer {
@@ -139,21 +167,16 @@ body {
       float: left;
     }
     .footer-content {
-      background: darken($siteBlue, 15%);
+      background: darken($siteBlue, 7.5%);
       .container {
         display: table;
         $vPadding: 12px;
         padding-top: $vPadding;
         padding-bottom: $vPadding;
-        section {
-          display: table-cell;
+        section.footerlinks {
           width: 33%;
-          h3 {
-            font-size: 14px;
-            font-weight: 400;
-            text-transform: uppercase;
-            margin: 4px 0;
-          }
+          padding: 12px 0;
+          @media screen and (max-width: $screen-sm-min) { width: 100%; }
           ul {
             text-transform: uppercase;
             list-style: none;
@@ -161,14 +184,35 @@ body {
             margin: 0 0 8px 0;
             font-size: 12px;
             font-weight: 700;
-            li { cursor: pointer; }
+            width: 100%;
+            float: left;
+            li {
+              width: 50%;
+              cursor: pointer;
+              float: left;
+              box-sizing: border-box;
+              padding-right: 18px;
+              @media screen and (max-width: $screen-sm-min) {
+                width: 100%;
+                text-align: center;
+                padding:16px 0;
+                font-size: 16px;
+              }
+              a {
+                text-decoration: none;
+                color: white;
+                &:hover, &:active, &:focus {
+                  color: #EEEEEE;
+                }
+              }
+            }
           }
         }
       }
     }
     .afterfooter {
       width: 100%;
-      background: darken($siteBlue, 20%);
+      background: darken($siteBlue, 10%);
       padding: 8px 0;
       .left, .right {
         width: 50%;
@@ -180,6 +224,41 @@ body {
       }
       .left { float:left; }
       .right { float:right; }
+    }
+  }
+  > .support-tab {
+    $borderRadius: 4px;
+    transform: rotate(270deg);
+    background: $siteRed;
+    padding: 12px 24px;
+    position: fixed;
+    left: -16px;
+    top: 180px;
+    line-height: 24px;
+    font-size: 16px;
+    transform-origin: bottom;
+    border-radius: 0 0 $borderRadius $borderRadius;
+    @media screen and (max-width: $screen-sm-min) { display: none; }
+    &:hover { text-decoration: none; }
+    span {
+      font-weight: bold;
+      color: white;
+    }
+  }
+  //  Table tweaks
+  table.dataTable.no-footer {
+    border-bottom: 1px solid #DDDDDD;
+  }
+  #presenters_table_paginate {
+    @media screen and (max-width: $screen-sm-min) { width: 100%; }
+  }
+  .dataTables_wrapper {
+    div.dataTables_filter {
+      @media screen and (max-width: $screen-sm-min) { margin-top: 0; }
+    }
+    .dataTables_paginate .paginate_button:hover {
+      background: none;
+      border: 1px solid transparent;
     }
   }
 }

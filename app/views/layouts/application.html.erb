@@ -9,7 +9,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
-  <body data-no-turbolink="true">
+  <body data-no-turbolink="true" <%= yield(:body_attributes) if content_for?(:body_attributes) %>>
     <%= render partial: 'layouts/nav' %>
     <div class="main">
       <% flash.each do |key, value| %>
@@ -25,28 +25,14 @@
     <footer>
       <div class="footer-content">
         <div class="container">
-          <section>
-            <h3>Section Heading</h3>
+          <section class="footerlinks">
             <ul>
               <li><%= link_to "About Us", aboutus_path %></li>
               <li><%= link_to "Contact Us", contactus_path %></li>
               <li><%= link_to "Earnings Notice", earningsnotice_path %></li>
-            </ul>
-          </section>
-          <section>
-            <h3>Section Heading</h3>
-            <ul>
               <li><%= link_to "Privacy Policy", privacypolicy_path %></li>
               <li><%= link_to "DMCA Notice", dmca_path %> </li>
               <li><%= link_to "Terms Of Use", termsofuse_path %></li>
-            </ul>
-          </section>
-          <section>
-            <h3>Section Heading</h3>
-            <ul>
-              <li>ITEM 1</li>
-              <li>ITEM 2</li>
-              <li>ITEM 3</li>
             </ul>
           </section>
         </div>
@@ -64,6 +50,9 @@
         </div>
       </div>
     </footer>
+    <%= mail_to "rosemary@personalmasterclass.com", subject: "Personal Masterclass Support Request", class: "support-tab" do %>
+      <span>SUPPORT</span>
+    <% end %>
     <%= debug(params) if Rails.env.development? %>
   </body>
 </html>
