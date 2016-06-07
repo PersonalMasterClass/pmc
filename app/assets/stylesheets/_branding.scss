@@ -4,10 +4,11 @@ $pmcYellow: #D5A30E;
 $pmcBlue: #569BB0;
 $accentBlue: saturate($pmcBlue, 50%);
 $accentCyan: #00D1C1;
+$accentOrange: #E87A3D;
 $tiffanyBlue: #81D8D0;
 
-$siteBlue: lighten($tiffanyBlue, 5%);
-$siteRed: lighten(#FF2A01, 15%);
+$siteBlue: $accentCyan;
+$siteRed: $accentOrange;
 
 .btn.btn-pmcred {
   // $buttonRed: lighten($pmcRed, 20%);

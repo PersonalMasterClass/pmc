@@ -1,0 +1,19 @@
+<div class = "container">
+	<h1> Settings </h1>
+	<h3> Email Notifications </h3>
+	<%= form_for @setting, method: :patch, class: "form" do |f| %>
+		<div class ="form-group">
+			<%= f.label "Booking", class: "checkbox" %>
+			<%= f.check_box :booking, class: "settings-switch" %>
+		</div>
+		<div class ="form-group">
+			<%= f.label "Enquiry ", class: "checkbox"  %>
+			<%= f.check_box :enquiry, class: "settings-switch"  %>
+		</div>
+		<div class ="form-group">
+			<%= f.label "Account ", class: "checkbox"  %>
+			<%= f.check_box :system, class: "settings-switch"  %>
+		</div>
+		<%= f.submit "Save settings", class: "btn btn-success" %>
+	<% end %>
+</div>

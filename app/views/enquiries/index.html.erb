@@ -23,7 +23,7 @@
 	<% if @conversation.present? %>
 	<h3><i> Current enquiry: </i></h3>
 		<div class= "list-group-item list-group-item-<%=enquiry_panel_color(@conversation.first)%>">
-	    <h4 class="list-group-item-heading"><%= "Enquired on #{@conversation.first.created_at.strftime("%d/%m/%Y")}" %></h4><%= enquiry_status(@conversation.first) %>
+	    <h4 class="list-group-item-heading"><%= "#{from(@conversation.first)} #{@conversation.first.created_at.strftime("%d/%m/%Y")}" %></h4><%= enquiry_status(@conversation.first) %>
 	    <p class="list-group-item-text"> Rate: <%= number_to_currency(@conversation.first.rate) %> </p>
 	    <p class="list-group-item-text"> Date: <%= @conversation.first.date.strftime("%d/%m/%Y") %></p>
 	    <p class="list-group-item-text"> Time: <%= @conversation.first.time.strftime("%H:%M %p") %></p>
@@ -36,7 +36,7 @@
 		<div class="list-group">
 			<% unless index == 0 %>
   		<div class= "list-group-item list-group-item-<%=enquiry_panel_color(enquiry)%>">
-	      <h4 class="list-group-item-heading"><%= "Enquired on #{enquiry.created_at.strftime("%d/%m/%Y")}" %></h4><%= enquiry_status(enquiry) %>
+	      <h4 class="list-group-item-heading"><%= "#{from(enquiry)} #{enquiry.created_at.strftime("%d/%m/%Y")}" %></h4><%= enquiry_status(enquiry) %>
 		    <p class="list-group-item-text"> Rate: <%= number_to_currency(enquiry.rate) %> </p>
 		    <p class="list-group-item-text"> Date: <%= enquiry.date.strftime("%d/%m/%Y") %></p>
 		    <p class="list-group-item-text"> Time: <%= enquiry.time.strftime("%H:%M %p") %></p>

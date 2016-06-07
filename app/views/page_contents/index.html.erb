@@ -1,0 +1,57 @@
+<h1>Content Managment</h1>
+
+<table class="table table-striped">
+  <tr>
+    <th>Page</th>
+    <th>Actions</th>
+  </tr>
+  <tr>
+    <td>About Us</td>
+    <td>
+      <%= link_to "View", page_content_path(@about), class: "btn btn-default" %>
+      <%= link_to "Edit", edit_page_content_path(@about), class: "btn btn-default" %>
+    </td>
+  </tr>
+  <tr>
+    <td>Contact Us</td>
+    <td>
+      <%= link_to "View", page_content_path(@contact), class: "btn btn-default" %>
+      <%= link_to "Edit", edit_page_content_path(@contact), class: "btn btn-default" %>
+    </td>
+  </tr>
+  <tr>
+    <td>DMCA Notice</td>
+    <td>
+      <%= link_to "View", page_content_path(@dmca), class: "btn btn-default" %>
+      <%= link_to "Edit", edit_page_content_path(@dmca), class: "btn btn-default" %>
+    </td>
+  </tr>
+  <tr>
+    <td>Earnings Notice</td>
+    <td>
+      <%= link_to "View", page_content_path(@earnings), class: "btn btn-default" %>
+      <%= link_to "Edit", edit_page_content_path(@earnings), class: "btn btn-default" %>
+    </td>
+  </tr>
+  <tr>
+    <td>Privacy Policy</td>
+    <td>
+      <%= link_to "View", page_content_path(@privacy), class: "btn btn-default" %>
+      <%= link_to "Edit", edit_page_content_path(@privacy), class: "btn btn-default" %>
+    </td>
+  </tr>
+  <tr>
+    <td>Terms Of Use</td>
+    <td>
+      <%= link_to "View", page_content_path(@terms), class: "btn btn-default" %>
+      <%= link_to "Edit", edit_page_content_path(@terms), class: "btn btn-default" %>
+    </td>
+  </tr>
+  <tr>
+    <td>Presenter Bio Help</td>
+    <td>
+      <%= link_to "View", page_content_path(@help), class: "btn btn-default" %>
+      <%= link_to "Edit", edit_page_content_path(@help), class: "btn btn-default" %>
+    </td>
+  </tr>
+</table>

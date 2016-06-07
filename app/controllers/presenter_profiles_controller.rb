@@ -28,6 +28,7 @@ class PresenterProfilesController < ApplicationController
   end
 
   def new
+    @help = PageContent.find_by_name("profile-help")
     @presenter = find_presenter
     if @presenter.presenter_profile.nil?
       @presenter_profile = @presenter.build_presenter_profile(status: :new_profile)
@@ -48,7 +49,7 @@ class PresenterProfilesController < ApplicationController
         if @presenter_profile.save
           flash[:info] = "Profile submitted to admin for approval"
           notify_admin_profile_changes(@presenter)
-          redirect_to presenters_path
+          redirect_to root_url
         else
           render 'new'
         end
@@ -57,7 +58,7 @@ class PresenterProfilesController < ApplicationController
         @presenter_profile.status = :new_profile
         if @presenter_profile.save
           flash[:info] = "Profile draft saved. Go to edit profile to continue editing."
-          redirect_to presenters_path
+          redirect_to root_url
         else
           render 'new'
         end
@@ -68,6 +69,7 @@ class PresenterProfilesController < ApplicationController
   end
 
   def edit
+    @help = PageContent.find_by_name("profile-help")
     @presenter = find_presenter
     @presenter_profile = @presenter.presenter_profile
     if @presenter_profile.nil?
@@ -107,12 +109,13 @@ class PresenterProfilesController < ApplicationController
               @presenter_profile.update_attribute(:status, :pending_presenter)
               flash[:info] = "Profile changes submitted to presenter for approval"
               Notification.send_message(@presenter.user, "You have pending profile changes to review from an Admin", presenter_profile_path(@presenter))
+              redirect_to admin_path
             else #current user is profile owner
               @presenter_profile.update_attribute(:status, :pending_admin)
               flash[:info] = "Profile changes submitted to admin for approval"
               notify_admin_profile_changes(@presenter)
+              redirect_to presenters_profile_path
             end
-            redirect_to presenters_path
           else
             @presenter_profile.bio_edit = ''
             @presenter_profile.picture_edit = nil
@@ -132,7 +135,7 @@ class PresenterProfilesController < ApplicationController
           else #current_user.admin?
             @presenter_profile.update_attribute(:status, :draft_admin)
             flash[:info] = "Profile draft saved for #{@presenter.first_name}'s profile. Go to pending profile changes to continue editing."
-            redirect_to admin_pending_profiles_path
+            redirect_to admin_path
           end
         else
           render 'edit'
