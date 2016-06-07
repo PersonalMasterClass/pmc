@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "bootstrap";
+@import "branding";
 #presenter-profile-info {
   h2 {
     text-align: center;
@@ -17,5 +18,15 @@
 #presenter-availability-table {
   @media screen and (max-width: $screen-sm-min) {
     display: none;
+  }
+  td {
+    a.btn {
+      background: $siteBlue;
+      border: none !important;
+      &:hover, &:active, &:focus {
+        background: darken($siteBlue, 5%);
+        transition: background 200ms ease;
+      }
+    }
   }
 }
