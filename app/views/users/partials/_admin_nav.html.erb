@@ -15,7 +15,9 @@
     <%= link_to "Content Management", page_contents_path %>
   </li>
   <li role="presentation" >
-    <%= link_to "Settings", edit_setting_path(current_user.setting)%>
+    <% if 1==1 %>
+      <%= link_to "Settings", edit_setting_path(current_user.setting)%>
+    <% end %>
   </li>
 <% end %>
 

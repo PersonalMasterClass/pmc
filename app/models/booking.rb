@@ -8,7 +8,7 @@ class Booking < ActiveRecord::Base
   has_many :presenters, through: :bids, :dependent => :destroy
   belongs_to :subject, inverse_of: :bookings
 
-  after_create :send_booking_reminder
+  # after_create :send_booking_reminder
 
 
   def self.help_required
