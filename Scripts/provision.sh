@@ -2,6 +2,7 @@
 # This script is used to provision and configure a fresh CentOS 7 VM.
 # As this script assumes an atomic deployment, everything will be installed.
 
+BRANCH="master"
 CWD="$(pwd)"
 NGINX_USER="nginx"
 PASSENGER_CONFIG_FILE="/etc/nginx/conf.d/passenger.conf"
@@ -50,6 +51,7 @@ function log() {
 }
 function showHelp() {
   echo "Usage: ${0##*/} [-h] [-p postgresql_password] [-u postgresql_user]"
+  echo "  -b:  Select the branch to pull from."
   echo "  -h:  Show this help text."
   echo "  -p:  The PostgreSQL password."
   echo "  -s:  The Amazon S3 Secret Key."
@@ -63,9 +65,10 @@ if [ "${EUID}" != 0 ]; then
   exit 1
 fi
 
-while getopts "h p:p u:u" flag
+while getopts "b:b h p:p u:u" flag
 do
   case $flag in
+    b)  BRANCH="${OPTARG}";;
     h)  showHelp ; exit 0;;
     p)  POSTGRESQL_PASSWORD="${OPTARG}";;
     s)  S3_SECRET_KEY="${OPTARG}";;
@@ -161,6 +164,7 @@ if [ ! -d "${WEB_ROOT}/.git" ]; then
 fi
 
 cd "${WEB_ROOT}"
+"${GIT}" checkout -f "${BRANCH}"
 "${GIT}" pull
 
 # Set permissions
@@ -189,10 +193,10 @@ log "Installing gems in Gemfile..."
 "${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" install --deployment
 
 log "Compiling static assets..."
-"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec rake assets:precompile SECRET_KEY_BASE="${SECRET_KEY_BASE}"
+"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec rake assets:precompile
 
 log "Running migrations..."
-"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec rake db:migrate SECRET_KEY_BASE="${SECRET_KEY_BASE}"
+"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec rake db:migrate PMC_DB_PASSWORD="${PMC_DB_PASSWORD}"
 
 log "Configuring redis..."
 "${SYSTEMCTL}" enable redis
