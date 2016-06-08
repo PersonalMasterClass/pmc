@@ -6,8 +6,8 @@
       <thead>
         <tr>
           <th>Subject</th>
-          <%= "<th>Presenter</th>" if current_user.customer %>
-          <%= "<th>School</th>" if current_user.presenter %>
+          <th><%= "Presenter" if current_user.customer %>
+          <%= "School" if current_user.presenter %></th>
           <th>Shared</th>
           <th>Date</th>
           <th>Time</th>
@@ -19,8 +19,8 @@
         <% @bookings.each do |b| %>
           <tr> 
             <td><%= b.subject.name %> </td>
-            <%= "<td>#{chosen_presenter(b)}</td>" if current_user.customer %>
-            <%= "<td>#{b.creator.school_info.school_name}</td>" if current_user.presenter %>
+            <td><%= "#{chosen_presenter(b)}" if current_user.customer %>
+            <%= "#{b.creator.school_info.school_name}" if current_user.presenter %></td>
             <td><%= shared_message(b) %></td> 
             <td> <%= b.booking_date.strftime("%d/%m/%Y") %> </td>
             <td> <%= b.booking_date.strftime("%H:%M %p") %> - <%= duration(b) %></td>

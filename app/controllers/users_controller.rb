@@ -36,7 +36,7 @@
     @profiles = PresenterProfile.drafts_and_unapproved.first(5)
 
     @upcoming_bookings = Booking.upcoming(current_user).first(5)
-    @help_bookings = Booking.upcoming(current_user).where(help_required: true).first(5)
+    @help_bookings = Booking.help_required.first(5)
 
   end
 

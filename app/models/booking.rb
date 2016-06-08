@@ -22,24 +22,25 @@ class Booking < ActiveRecord::Base
   	date_today = DateTime.now
     booking = nil
   	if user.admin?
-  		return Booking.order(created_at: :desc)
+  		return Booking.order(:booking_date).select{ |booking| booking.booking_date > date_today}
   	elsif user.presenter? # Add all booked then bids
-      return booking = Booking.where(chosen_presenter_id: user.id).select{ |booking| booking.booking_date > date_today}
+      return Booking.with_deleted.where(chosen_presenter: user.presenter).order(:booking_date).select{ |booking| booking.booking_date >= date_today}
     elsif user.customer?
-      return Booking.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
+      return Booking.with_deleted.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
   	end
   	return nil
   end
 
-  # Return completed bookings for a customer or presenter
-  # Return all completed bookings for an admin
+  # Return past bookings for a customer or presenter
+  # Return all past bookings for an admin
   def self.completed(user)
   	date_today = DateTime.now
     booking = nil
   	if user.presenter
-  		return user.presenter.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
+  		return Booking.with_deleted.where(chosen_presenter: user.presenter).order(:booking_date).select{ |booking| booking.booking_date < date_today}
   	elsif user.customer
-  		return user.customer.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
+      # TODO: FIX THIS
+  		return Bookings.with_deleted.where(creator: user.customer).select{ |booking| booking.booking_date < date_today}
     else
       return Booking.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
   	end
@@ -135,7 +136,11 @@ class Booking < ActiveRecord::Base
           return "Awaiting Bids"
         end
       else
-        return "Locked in"
+        if self.booking_date < Time.now
+          return "Completed"
+        else
+          return "Locked in"
+        end
       end
     end
   end
