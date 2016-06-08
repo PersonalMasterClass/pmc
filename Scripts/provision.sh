@@ -100,9 +100,20 @@ if ! rpm -q epel-release; then "${YUM_MGR}" --enable epel; fi
 "${CURL}" --fail -sSLo /etc/yum.repos.d/passenger.repo \
   https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
-# Install nginx first, because we need it's home directory
-log "Installing nginx..."
-"${YUM}" -y install nginx
+# Install dependencies
+log "Installing other dependencies..."
+"${YUM}" -y install \
+  postgresql postgresql-server postgresql-devel postgresql-contrib \
+  git \
+  pygpgme \
+  nginx \
+  curl \
+  passenger \
+  zlib zlib-devel \
+  gcc gcc-c++ \
+  sudo \
+  redis \
+  v8 v8-devel
 
 log "Installing Ruby via RVM..."
 GPG_DIR="${HOME}/.gnupg"
@@ -118,20 +129,6 @@ for i in "/bin/ruby" "/usr/bin/ruby"; do
 done
 source /usr/local/rvm/scripts/rvm
 /sbin/usermod -aG rvm "${NGINX_USER}"
-
-# Install dependencies
-log "Installing other dependencies..."
-"${YUM}" -y install \
-  postgresql postgresql-server postgresql-devel postgresql-contrib \
-  git \
-  pygpgme \
-  curl \
-  passenger \
-  zlib zlib-devel \
-  gcc gcc-c++ \
-  sudo \
-  redis \
-  v8 v8-devel
 
 # Set up the system user
 log "Creating the '${APP_USER}' system user"
