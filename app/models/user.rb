@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   
   has_one :presenter, inverse_of: :user
   has_one :customer, inverse_of: :user
+  has_one :setting
   has_many :notifications
 
   accepts_nested_attributes_for :presenter

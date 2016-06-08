@@ -24,7 +24,9 @@ before_filter :configure_sign_up_params, only: [:create]
     # presenter.school_info:= SchoolInfo.find(params["s"])
     
     presenter.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
+    settings = Setting.create!
     resource.presenter = presenter
+    resource.setting = settings
     resource.save
 
 
@@ -97,7 +99,9 @@ before_filter :configure_sign_up_params, only: [:create]
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
+    settings = Setting.create!
     resource.customer = customer
+    resource.setting = settings
     resource.save
     # Xero.add_school_account(customer)
    # #Code from devise

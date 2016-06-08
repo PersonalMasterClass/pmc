@@ -1,11 +1,10 @@
-<% unless @enquiry.pending? && current_user.customer? %>
-	<% unless @enquiry.declined? %> 
+<%= enquiry_actions(@enquiry) %>
+<% if false %>
 		<% unless @enquiry.accepted? && current_user.customer?%>
 			<%= link_to "Accept", enquiry_accept_path(@enquiry), method: :patch, class: "btn btn-success" %>
-			<%= render "enquiries/partials/form"%>
+			
 		<% else %>
 		<%= link_to "Create Booking", enquiry_booked_path(@enquiry), method: :get, class: 'btn btn-success' %>
 		<% end %>
 		<%= link_to "Decline", enquiry_decline_path(@enquiry), method: :patch, class: "btn btn-danger" %>
-	<% end %>
 <% end %>

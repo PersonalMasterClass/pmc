@@ -11,10 +11,12 @@
  * file per style scope.
  *
  *= require_tree .
+
  *= require_self
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "bootstrap3-switch";
 @import "font-awesome";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,300);
 @import "variables";

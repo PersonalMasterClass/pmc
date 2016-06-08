@@ -112,4 +112,5 @@ mount ResqueWeb::Engine => 'admin/resque'
     patch '/decline' => 'enquiries#decline'
   end
 
+  resources :settings, :only => [:edit, :update]
 end
