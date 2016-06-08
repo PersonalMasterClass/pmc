@@ -7,6 +7,8 @@ BRANCH="master"
 CWD="$(pwd)"
 NGINX_USER="nginx"
 PASSENGER_CONFIG_FILE="/etc/nginx/conf.d/passenger.conf"
+PMC_DB_USER="${APP_USER}"
+PMC_DB_HOST="localhost"
 POSTGRESQL_DATA_DIR="/var/lib/pgsql/data"
 POSTGRESQL_HBA_FILE="${POSTGRESQL_DATA_DIR}/pg_hba.conf"
 POSTGRESQL_PASSWORD=""
@@ -82,6 +84,9 @@ done
 export RAILS_ENV="production"
 export HOME="/var/lib/nginx"
 export PMC_DB_PASSWORD="${POSTGRESQL_PASSWORD}"
+export PMC_DB_USER="${POSTGRESQL_USER}"
+export PMC_DB_NAME="${POSTGRESQL_USER}"
+export PMC_DB_HOST
 
 log "Beginning provisioning at $(date)"
 log "Installing updates..."
@@ -95,8 +100,12 @@ if ! rpm -q epel-release; then "${YUM_MGR}" --enable epel; fi
 "${CURL}" --fail -sSLo /etc/yum.repos.d/passenger.repo \
   https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
+# Install nginx first, because we need it's home directory
+log "Installing nginx..."
+"${YUM}" -y install nginx
+
 log "Installing Ruby via RVM..."
-GPG_DIR="${HOME}/.gpg"
+GPG_DIR="${HOME}/.gnupg"
 if [ ! -d "${GPG_DIR}" ]; then
   mkdir "${GPG_DIR}"
   chown "${NGINX_USER}": "${GPG_DIR}"
@@ -111,13 +120,12 @@ source /usr/local/rvm/scripts/rvm
 /sbin/usermod -aG rvm "${NGINX_USER}"
 
 # Install dependencies
-log "Installing dependencies..."
+log "Installing other dependencies..."
 "${YUM}" -y install \
   postgresql postgresql-server postgresql-devel postgresql-contrib \
   git \
   pygpgme \
   curl \
-  nginx \
   passenger \
   zlib zlib-devel \
   gcc gcc-c++ \
@@ -157,8 +165,8 @@ log "Configuring PostgreSQL..."
 "${SUDO}" -E -u postgres "${CREATEUSER}" "${POSTGRESQL_USER}"
 "${SUDO}" -E -u postgres "${CREATEDB}" "${POSTGRESQL_USER}"
 "${SUDO}" -E -u postgres "${PSQL}" -d "${POSTGRESQL_USER}" \
-  -c "ALTER USER \"${POSTGRESQL_USER}\" WITH PASSWORD '${PMC_DB_PASSWORD}';"
-echo "localhost:5432:${POSTGRESQL_USER}:${POSTGRESQL_USER}:${PMC_DB_PASSWORD}" > /var/lib/nginx/.pgpass
+  -c "ALTER USER \"${POSTGRESQL_USER}\" WITH PASSWORD '${POSTGRESQL_PASSWORD}';"
+echo "localhost:5432:${POSTGRESQL_USER}:${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}" > /var/lib/nginx/.pgpass
 "${CHOWN}" "${NGINX_USER}": /var/lib/nginx/.pgpass
 
 # Configure Passenger
@@ -270,10 +278,12 @@ http {
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
     include /etc/nginx/conf.d/*.conf;
+    passenger_default_user \"${NGINX_USER}\";
+    passenger_default_group \"${NGINX_USER}\";
     server {
       listen        80 default_server;" > /etc/nginx/nginx.conf
 if [ "${SSL_PRESENT}" = true ]; then
-  echo "return    301 https://personalmasterclass.com/\$request_uri;
+  echo "return    301 https://personalmasterclass.com\$request_uri;
     }
     server {
       listen        443 default_server;
@@ -293,15 +303,13 @@ echo "
       access_log  /var/log/nginx/access.log  main;
       
       passenger_enabled on;
-      passenger_default_user \"${NGINX_USER}\";
       passenger_user \"${NGINX_USER}\";
-      passenger_default_group \"${NGINX_USER}\";
       passenger_group \"${NGINX_USER}\";
       passenger_app_env \"production\";
       passenger_env_var SECRET_KEY_BASE \"${SECRET_KEY_BASE}\";
       passenger_env_var PMC_DB_NAME \"${POSTGRESQL_USER}\";
       passenger_env_var PMC_DB_USER \"${POSTGRESQL_USER}\";
-      passenger_env_var PMC_DB_PASSWORD \"${PMC_DB_PASSWORD}\";
+      passenger_env_var PMC_DB_PASSWORD \"${POSTGRESQL_PASSWORD}\";
       passenger_env_var PMC_DB_HOST \"localhost\";
       passenger_env_var S3_KEY \"${S3_SECRET_KEY}\";
       passenger_env_var S3_SECRET \"${S3_ACCESS_SECRET}\";
