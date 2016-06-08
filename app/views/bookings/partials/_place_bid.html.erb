@@ -1,12 +1,3 @@
-
-<% if current_user.customer? && !current_user.suspended? %>
-  <% if @booking.help_required %>
-    <div>You have asked for help choosing a presenter. </div>
-  <% else %>
-    <%= link_to "Help me choose", bookings_help_path(@booking), class: 'btn btn-default' if @booking.presenters.count > 1 %>
-  <% end %>
-<% end %>
-
 <div class="col-md-8">
   <h3> Bids </h3>
   <div class="list-group">

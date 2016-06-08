@@ -1,5 +1,5 @@
 class PresentersController < ApplicationController
-
+  skip_before_filter :profile_created?
 	def index
     @upcoming = Booking.upcoming(current_user) 
     @bookings = Booking.suggested(current_user)

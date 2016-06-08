@@ -1,6 +1,7 @@
 include ActionView::Helpers::SanitizeHelper
 
 class PresenterProfilesController < ApplicationController
+    skip_before_filter :profile_created?
     before_filter :correct_user, :only => [:new, :create]
     before_filter :admin_or_presenter_logged_in, :only => [:edit, :update]
     before_filter :logged_in_user, :only => [:show]

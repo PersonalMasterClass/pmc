@@ -88,9 +88,18 @@ class BookingsController < ApplicationController
   def set_bid
     @booking = Booking.find(params[:id])
     @presenter = current_user.presenter
+    
+    if !@presenter.presenter_profile
+      flash[:info] = "You must create your profile before you can do this"
+      redirect_to edit_presenter_profile_path(@presenter) and return
+    elsif @presenter.presenter_profile.bio.nil?
+      flash[:info] = "You must wait for your profile to be approved before you can do this"
+      redirect_to root_url and return
+    end
+
     if @booking.presenters.include? @presenter
       flash[:info] = "You have already expressed interest in this booking"
-      redirect_to root_url
+      redirect_to root_url and return
     else
       @booking.presenters << @presenter
       @bid = @booking.bids.find_by(presenter: @presenter)
@@ -110,6 +119,7 @@ class BookingsController < ApplicationController
     
     @booking.chosen_presenter = @presenter
     @booking.rate = @presenter.bids.find_by(booking: @booking).rate
+    @booking.help_required = false
     @booking.save
     @booking.remove_all_bids
 
@@ -118,7 +128,8 @@ class BookingsController < ApplicationController
     
     redirect_to root_path
   end
-
+  # get_help allows a school to request help choosing a presenter for a booking
+  # This action notifies the admin that a school has requested help, and updates the help_required flag.
   def get_help 
     @booking = Booking.find(params[:id])
     owner = @booking.creator
@@ -127,6 +138,14 @@ class BookingsController < ApplicationController
     @booking.help_required = true
     @booking.save
     redirect_to booking_path(@booking)
+  end
+  # cancel_help allows a school or admin to dismiss the help requested flag for a booking. 
+  def cancel_help
+    booking = Booking.find(params[:id])
+    flash[:info] = "Help no longer required"
+    booking.help_required = false
+    booking.save
+    redirect_to booking_path(booking)
   end
 
   def join
@@ -148,15 +167,20 @@ class BookingsController < ApplicationController
 
   def cancel_booking
     @booking = Booking.find(params[:id])
-    if params[:cancellation_message].strip == "" || params[:cancellation_message].nil?
-      flash[:danger] = "Message needs to be specified before cancelling a booking."
-      redirect_to booking_path(@booking)
+    if @booking.booking_date > Time.now
+      if params[:cancellation_message].strip == "" || params[:cancellation_message].nil?
+        flash[:danger] = "Message needs to be specified before cancelling a booking."
+        redirect_to booking_path(@booking)
+      else
+        @booking.cancellation_message = params[:cancellation_message]
+        @booking.save
+        Notification.cancelled_booking(@booking, booking_path(@booking))
+        @booking.destroy 
+        flash[:success] = "Booking has been cancelled and potential participants notified!"
+        redirect_to booking_path(@booking)
+      end
     else
-      @booking.cancellation_message = params[:cancellation_message]
-      @booking.save
-      Notification.canceled_booking(@booking, booking_path(@booking))
-      @booking.destroy 
-      flash[:success] = "Booking has been canceled and potential participants notified!"
+      flash[:danger] = "Booking cannot be cancelled as it has already been completed"
       redirect_to booking_path(@booking)
     end
   end
@@ -165,6 +189,10 @@ class BookingsController < ApplicationController
     @booking = Booking.find(params[:id])
     @booking.presenters.delete(current_user.presenter)
     flash[:success] = "Success! You've withdrawn your bid."
+    if @booking.presenters.count < 2
+      @booking.help_required = false
+      @booking.save
+    end
     Notification.send_message(@booking.creator.user, "#{current_user.presenter.get_private_full_name(current_user)} has withdrawn their bid.", booking_path(@booking))
     redirect_to root_url
   end

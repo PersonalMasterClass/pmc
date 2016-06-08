@@ -63,6 +63,7 @@ mount ResqueWeb::Engine => 'admin/resque'
   post 'bookings/set_bid/' => 'bookings#set_bid', as: "bookings_set_bid"
   get 'bookings/choose_presenter/:presenter_id' => 'bookings#choose_presenter', as: "bookings_choose"
   get 'bookings/:id/gethelp' =>'bookings#get_help', as: 'bookings_help'
+  get 'bookings/:id/cancelhelp' => 'bookings#cancel_help', as:"cancel_bookings_help"
   post 'booking/:id/join' => "bookings#join", as: "bookings_join" 
   patch 'booking/:id/cancel_booking' => "bookings#cancel_booking", as: "bookings_cancel"
   patch 'booking/:id/cancel_bid/' => "bookings#cancel_bid", as: "bookings_bid_cancel"
