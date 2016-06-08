@@ -2,6 +2,7 @@
 # This script is used to provision and configure a fresh CentOS 7 VM.
 # As this script assumes an atomic deployment, everything will be installed.
 
+APP_USER="pmc" # System account, also used for database
 BRANCH="master"
 CWD="$(pwd)"
 NGINX_USER="nginx"
@@ -9,22 +10,24 @@ PASSENGER_CONFIG_FILE="/etc/nginx/conf.d/passenger.conf"
 POSTGRESQL_DATA_DIR="/var/lib/pgsql/data"
 POSTGRESQL_HBA_FILE="${POSTGRESQL_DATA_DIR}/pg_hba.conf"
 POSTGRESQL_PASSWORD=""
-POSTGRESQL_USER="pmc"
+POSTGRESQL_USER="${APP_USER}"
 REPOSITORY_URL="https://github.com/PersonalMasterClass/pmc.git"
 RUBY_VERSION="2.3.1"
 S3_SECRET_KEY="s3_secret_key"
 S3_ACCESS_SECRET="s3_access_secret"
 SECRET_KEY_FILE="/usr/local/etc/pmc_secret_key"
-SSL_CERT_BUNDLE="pmc.crt"  # The certificate bundle file as it exists on the remote system.
-SSL_CERT_KEY="pmc.key"     # The certificate private key as it exists on the remote system.
+SSL_CERT_BUNDLE="personalmasterclass.crt"  # The certificate bundle file as it exists on the remote system.
+SSL_CERT_KEY="personalmasterclass.key"     # The certificate private key as it exists on the remote system.
 WEB_ROOT="/var/www/html"
 
 LOG_FILE="/usr/local/pmc_provisioning.log"
 
+ADDUSER="/sbin/adduser"
 BUNDLE="${WEB_ROOT}/bin/bundle"
 CAT="/bin/cat"
 CHMOD="/bin/chmod"
 CHOWN="/bin/chown"
+CP="/usr/bin/cp"
 CREATEDB="/usr/bin/createdb"
 CREATEUSER="/usr/bin/createuser"
 CURL="/usr/bin/curl"
@@ -38,12 +41,10 @@ PSQL="/bin/psql"
 RVM="/usr/local/rvm/bin/rvm"
 SUDO="/usr/bin/sudo"
 SYSTEMCTL="/usr/bin/systemctl"
+USERMOD="/sbin/usermod"
 WC="/bin/wc"
 YUM="/usr/bin/yum"
 YUM_MGR="/usr/bin/yum-config-manager"
-
-export RAILS_ENV="production"
-export HOME="/var/lib/nginx"
 
 function log() {
   echo "${1}"
@@ -77,6 +78,11 @@ do
   esac
 done
 
+# Export things for environment usage later down the track
+export RAILS_ENV="production"
+export HOME="/var/lib/nginx"
+export PMC_DB_PASSWORD="${POSTGRESQL_PASSWORD}"
+
 log "Beginning provisioning at $(date)"
 log "Installing updates..."
 # Run updates
@@ -90,6 +96,11 @@ if ! rpm -q epel-release; then "${YUM_MGR}" --enable epel; fi
   https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
 log "Installing Ruby via RVM..."
+GPG_DIR="${HOME}/.gpg"
+if [ ! -d "${GPG_DIR}" ]; then
+  mkdir "${GPG_DIR}"
+  chown "${NGINX_USER}": "${GPG_DIR}"
+fi
 gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 \curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby="${RUBY_VERSION}"
 for i in "/bin/ruby" "/usr/bin/ruby"; do
@@ -114,6 +125,11 @@ log "Installing dependencies..."
   redis \
   v8 v8-devel
 
+# Set up the system user
+log "Creating the '${APP_USER}' system user"
+"${ADDUSER}" -r "${APP_USER}"
+"${USERMOD}" -d "${WEB_ROOT}" -aG "${NGINX_USER}" "${APP_USER}"
+
 # Disable SELinux, as it causes issues with PostgreSQL
 echo "SELINUX=permissive
 SELINUXTYPE=targeted" > "/etc/sysconfig/selinux"
@@ -131,7 +147,7 @@ local   all             all                                     md5
 host    all             all             127.0.0.1/32            md5
 host    all             all             ::1/128                 md5
 " > "${POSTGRESQL_HBA_FILE}"
-if ! "${SYSTEMCTL}" is-enabled postgresql.service; then
+if ! "${SYSTEMCTL}" is-enabled postgresql.service > /dev/null 2>&1; then
   "${SYSTEMCTL}" enable postgresql.service &&
   "${SYSTEMCTL}" start postgresql.service
 else
@@ -141,8 +157,8 @@ log "Configuring PostgreSQL..."
 "${SUDO}" -E -u postgres "${CREATEUSER}" "${POSTGRESQL_USER}"
 "${SUDO}" -E -u postgres "${CREATEDB}" "${POSTGRESQL_USER}"
 "${SUDO}" -E -u postgres "${PSQL}" -d "${POSTGRESQL_USER}" \
-  -c "ALTER USER \"${POSTGRESQL_USER}\" WITH PASSWORD '${POSTGRESQL_PASSWORD}';"
-echo "localhost:5432:${POSTGRESQL_USER}:${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}" > /var/lib/nginx/.pgpass
+  -c "ALTER USER \"${POSTGRESQL_USER}\" WITH PASSWORD '${PMC_DB_PASSWORD}';"
+echo "localhost:5432:${POSTGRESQL_USER}:${POSTGRESQL_USER}:${PMC_DB_PASSWORD}" > /var/lib/nginx/.pgpass
 "${CHOWN}" "${NGINX_USER}": /var/lib/nginx/.pgpass
 
 # Configure Passenger
@@ -171,8 +187,8 @@ cd "${WEB_ROOT}"
 log "Setting permissions for web root..."
 PARENT_DIR="$(${DIRNAME} ${WEB_ROOT})"
 "${CHOWN}" -R "${NGINX_USER}":"${NGINX_USER}" "${PARENT_DIR}"
-"${FIND}" "${WEB_ROOT}" -type d -exec "${CHMOD}" 755 {} \;
-"${FIND}" "${WEB_ROOT}" -type f -exec "${CHMOD}" 751 {} \;
+"${FIND}" "${WEB_ROOT}" -type d -exec "${CHMOD}" 775 {} \;
+"${FIND}" "${WEB_ROOT}" -type f -exec "${CHMOD}" 771 {} \;
 
 log "Installing rails dependencies..."
 "${RVM}" "${RUBY_VERSION}" do gem install bundle
@@ -190,17 +206,30 @@ BUNDLE="$(${RVM} which bundle)"
 echo "Using bundle located at ${BUNDLE}"
 
 log "Installing gems in Gemfile..."
-"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" install --deployment
-
-log "Compiling static assets..."
-"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec rake assets:precompile
-
-log "Running migrations..."
-"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec rake db:migrate PMC_DB_PASSWORD="${PMC_DB_PASSWORD}"
+"${SUDO}" -E -u "${APP_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" install --deployment
 
 log "Configuring redis..."
 "${SYSTEMCTL}" enable redis
 "${SYSTEMCTL}" start redis
+
+if [ -f "${CWD}/${SSL_CERT_KEY}" ]; then
+  log "Installing certificate private key..."
+  DEST_FILE="/etc/nginx/personalmasterclass.key"
+  "${CP}" "${CWD}/${SSL_CERT_KEY}" /etc/nginx/personalmasterclass.key &&
+  "${CHOWN}" root:root "${DEST_FILE}"
+  "${CHMOD}" 600 "${DEST_FILE}"
+fi
+if [ -f "${CWD}/${SSL_CERT_BUNDLE}" ]; then
+  log "Installing certificate bundle..."
+  DEST_FILE="/etc/nginx/personalmasterclass.crt"
+  "${CP}" "${CWD}/${SSL_CERT_BUNDLE}" /etc/nginx/personalmasterclass.crt &&
+  "${CHOWN}" root:root "${DEST_FILE}"
+  "${CHMOD}" 600 "${DEST_FILE}"
+fi
+
+if [ -f "/etc/nginx/${SSL_CERT_KEY}" ] && [ -f "/etc/nginx/${SSL_CERT_BUNDLE}" ]; then
+  SSL_PRESENT=true
+fi
 
 log "Configuring nginx..."
 "${CHMOD}" 700 "${SECRET_KEY_FILE}"
@@ -241,58 +270,55 @@ http {
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
     include /etc/nginx/conf.d/*.conf;
-
     server {
-        listen       80 default_server;
-        server_name  localhost;
-        return       301 https://personalmasterclass.com/\$request_uri;
+      listen        80 default_server;" > /etc/nginx/nginx.conf
+if [ "${SSL_PRESENT}" = true ]; then
+  echo "return    301 https://personalmasterclass.com/\$request_uri;
     }
     server {
-        listen                       443 default_server;
-        server_name                  localhost;.
+      listen        443 default_server;
+      ssl                          on;
+      ssl_certificate              /etc/nginx/personalmasterclass.crt;
+      ssl_certificate_key          /etc/nginx/personalmasterclass.key;
+      ssl_protocols                TLSv1 TLSv1.1 TLSv1.2;
+      ssl_ciphers                  HIGH:MEDIUM;
+      ssl_prefer_server_ciphers    on;" >> /etc/nginx/nginx.conf
+fi
+echo "
+      server_name    localhost;
+      root           ${WEB_ROOT}/public;
 
-        root                         ${WEB_ROOT}/public;
+      charset utf-8;
 
-        charset utf-8;
-
-        access_log  /var/log/nginx/access.log  main;
-        
-        passenger_enabled on;
-        passenger_user \"${NGINX_USER}\";
-        passenger_group \"${NGINX_USER}\";
-        passenger_app_env \"production\";
-        passenger_env_var SECRET_KEY_BASE \"${SECRET_KEY_BASE}\";
-        passenger_env_var PMC_DB_NAME \"${POSTGRESQL_USER}\";
-        passenger_env_var PMC_DB_USER \"${POSTGRESQL_USER}\";
-        passenger_env_var PMC_DB_PASSWORD \"${POSTGRESQL_PASSWORD}\";
-        passenger_env_var PMC_DB_HOST \"localhost\";
-        passenger_env_var S3_KEY \"${S3_SECRET_KEY}\";
-        passenger_env_var S3_SECRET \"${S3_ACCESS_SECRET}\";
-
-        ssl                          on;
-        ssl_certificate              /etc/nginx/personalmasterclass.crt;
-        ssl_certificate_key          /etc/nginx/personalmasterclass.key;
-        ssl_protocols                TLSv1 TLSv1.1 TLSv1.2;
-        ssl_ciphers                  HIGH:MEDIUM;
-        ssl_prefer_server_ciphers    on;
+      access_log  /var/log/nginx/access.log  main;
+      
+      passenger_enabled on;
+      passenger_default_user \"${NGINX_USER}\";
+      passenger_user \"${NGINX_USER}\";
+      passenger_default_group \"${NGINX_USER}\";
+      passenger_group \"${NGINX_USER}\";
+      passenger_app_env \"production\";
+      passenger_env_var SECRET_KEY_BASE \"${SECRET_KEY_BASE}\";
+      passenger_env_var PMC_DB_NAME \"${POSTGRESQL_USER}\";
+      passenger_env_var PMC_DB_USER \"${POSTGRESQL_USER}\";
+      passenger_env_var PMC_DB_PASSWORD \"${PMC_DB_PASSWORD}\";
+      passenger_env_var PMC_DB_HOST \"localhost\";
+      passenger_env_var S3_KEY \"${S3_SECRET_KEY}\";
+      passenger_env_var S3_SECRET \"${S3_ACCESS_SECRET}\";
     }
-}
-" > /etc/nginx/nginx.conf
-
-if [ -f "${SSL_CERT_KEY}" ]; then
-  log "Installing certificate private key.."
-  cp "${SSL_CERT_KEY}" /etc/nginx/personalmasterclass.key
-fi
-if [ -f "${SSL_CERT_BUNDLE}" ]; then
-  log "Installing certificate bundle.."
-  cp "${SSL_CERT_BUNDLE}" /etc/nginx/personalmasterclass.crt
-fi
+}" >> /etc/nginx/nginx.conf
 
 # Set a few permissions things if they haven't been already
 PGPASS_FILE="/var/lib/nginx/.pgpass"
 if [ -f "${PGPASS_FILE}" ]; then
   "${CHMOD}" 600 "${PGPASS_FILE}"
 fi
+
+log "Compiling static assets..."
+"${SUDO}" -E -u "${APP_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec "${WEB_ROOT}/bin/rake" assets:precompile
+
+log "Running migrations..."
+"${SUDO}" -E -u "${APP_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec "${WEB_ROOT}/bin/rake" db:migrate
 
 log "Restarting nginx..."
 "${SYSTEMCTL}" restart nginx
