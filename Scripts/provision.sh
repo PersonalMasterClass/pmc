@@ -6,6 +6,7 @@ APP_USER="pmc" # System account, also used for database
 BRANCH="master"
 CWD="$(pwd)"
 NGINX_USER="nginx"
+NGINX_HOME="/var/lib/nginx"
 PASSENGER_CONFIG_FILE="/etc/nginx/conf.d/passenger.conf"
 PMC_DB_USER="${APP_USER}"
 PMC_DB_HOST="localhost"
@@ -27,6 +28,7 @@ LOG_FILE="/usr/local/pmc_provisioning.log"
 ADDUSER="/sbin/adduser"
 BUNDLE="${WEB_ROOT}/bin/bundle"
 CAT="/bin/cat"
+CHCON="/bin/chcon"
 CHMOD="/bin/chmod"
 CHOWN="/bin/chown"
 CP="/usr/bin/cp"
@@ -82,7 +84,6 @@ done
 
 # Export things for environment usage later down the track
 export RAILS_ENV="production"
-export HOME="/var/lib/nginx"
 export PMC_DB_PASSWORD="${POSTGRESQL_PASSWORD}"
 export PMC_DB_USER="${POSTGRESQL_USER}"
 export PMC_DB_NAME="${POSTGRESQL_USER}"
@@ -101,6 +102,21 @@ if ! rpm -q epel-release; then "${YUM_MGR}" --enable epel; fi
   https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
 # Install dependencies
+log "Installing Ruby via RVM..."
+GPG_DIR="${HOME}/.gnupg"
+if [ ! -d "${GPG_DIR}" ]; then
+  mkdir "${GPG_DIR}"
+  chown "${NGINX_USER}": "${GPG_DIR}"
+fi
+gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby="${RUBY_VERSION}"
+for i in "/bin/ruby" "/usr/bin/ruby"; do
+  if [ -f "${i}" ]; then rm "${i}"; fi
+  ln -s /usr/local/rvm/rubies/default/bin/ruby "${i}"
+done
+# source /usr/local/rvm/scripts/rvm
+/sbin/usermod -aG rvm "${NGINX_USER}"
+
 log "Installing other dependencies..."
 "${YUM}" -y install \
   postgresql postgresql-server postgresql-devel postgresql-contrib \
@@ -114,21 +130,6 @@ log "Installing other dependencies..."
   sudo \
   redis \
   v8 v8-devel
-
-log "Installing Ruby via RVM..."
-GPG_DIR="${HOME}/.gnupg"
-if [ ! -d "${GPG_DIR}" ]; then
-  mkdir "${GPG_DIR}"
-  chown "${NGINX_USER}": "${GPG_DIR}"
-fi
-gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-\curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby="${RUBY_VERSION}"
-for i in "/bin/ruby" "/usr/bin/ruby"; do
-  if [ -f "${i}" ]; then rm "${i}"; fi
-  ln -s /usr/local/rvm/rubies/default/bin/ruby "${i}"
-done
-source /usr/local/rvm/scripts/rvm
-/sbin/usermod -aG rvm "${NGINX_USER}"
 
 # Set up the system user
 log "Creating the '${APP_USER}' system user"
@@ -171,7 +172,7 @@ echo "localhost:5432:${POSTGRESQL_USER}:${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD
 log "Configuring Phusion Passenger..."
 echo "
 passenger_root /usr/share/ruby/vendor_ruby/phusion_passenger/locations.ini;
-passenger_ruby /usr/local/rvm/rubies/default/bin/ruby;
+passenger_ruby /usr/local/rvm/gems/ruby-"${RUBY_VERSION}"/wrappers/ruby;
 passenger_instance_registry_dir /var/run/passenger-instreg;" > "${PASSENGER_CONFIG_FILE}"
 
 if [ ! -d "${WEB_ROOT}" ]; then
@@ -188,6 +189,8 @@ cd "${WEB_ROOT}"
 "${GIT}" checkout -f "${BRANCH}"
 "${GIT}" pull
 
+"${CHCON}" -R -h -t httpd_sys_content_t "${WEB_ROOT}"
+
 # Set permissions
 log "Setting permissions for web root..."
 PARENT_DIR="$(${DIRNAME} ${WEB_ROOT})"
@@ -196,7 +199,8 @@ PARENT_DIR="$(${DIRNAME} ${WEB_ROOT})"
 "${FIND}" "${WEB_ROOT}" -type f -exec "${CHMOD}" 771 {} \;
 
 log "Installing rails dependencies..."
-"${RVM}" "${RUBY_VERSION}" do gem install bundle
+"${RVM}" "${RUBY_VERSION}" do gem update --system
+"${RVM}" "${RUBY_VERSION}" do gem install rails bundle bundler
 
 log "Ensuring that the secret key base exists..."
 if [ -f "${SECRET_KEY_FILE}" ]; then
@@ -211,7 +215,7 @@ BUNDLE="$(${RVM} which bundle)"
 echo "Using bundle located at ${BUNDLE}"
 
 log "Installing gems in Gemfile..."
-"${SUDO}" -E -u "${APP_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" install --deployment
+"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" install --deployment
 
 log "Configuring redis..."
 "${SYSTEMCTL}" enable redis
@@ -320,10 +324,12 @@ if [ -f "${PGPASS_FILE}" ]; then
 fi
 
 log "Compiling static assets..."
-"${SUDO}" -E -u "${APP_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec "${WEB_ROOT}/bin/rake" assets:precompile
+bundle exec rake assets:precompile
 
 log "Running migrations..."
-"${SUDO}" -E -u "${APP_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" exec "${WEB_ROOT}/bin/rake" db:migrate
+bundle exec rake db:migrate
+
+"${CHOWN}" -R "${NGINX_USER}:${NGINX_USER}" "${WEB_ROOT}"
 
 log "Restarting nginx..."
 "${SYSTEMCTL}" restart nginx
