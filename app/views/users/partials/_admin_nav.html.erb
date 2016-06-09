@@ -25,13 +25,20 @@
       </li>      
     </ul>
   </li>
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" id="system-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      System <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="system-dropdown">
+      <li role="presentation">
+        <%= link_to "Subjects", subjects_path %>
+      </li>
+      <li role="presentation">
+        <%= link_to "Content Management", page_contents_path %>
+      </li>
+    </ul>
+  </li>  
   
-  <li role="presentation">
-  	<%= link_to "Subjects", subjects_path %>
-  </li>
-  <li role="presentation">
-    <%= link_to "Content Management", page_contents_path %>
-  </li>
   <li role="presentation" >
     <%= link_to "Settings", edit_setting_path(current_user.setting)%>
   </li>

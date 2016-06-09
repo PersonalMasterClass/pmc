@@ -21,12 +21,16 @@ class Booking < ActiveRecord::Base
   	# @user = User.check_user(user)
   	date_today = DateTime.now
     booking = nil
+    # Refactored queries to not use select for possible performance improvements
   	if user.admin?
-  		return Booking.order(:booking_date).select{ |booking| booking.booking_date > date_today}
+  		# return Booking.order(:booking_date).select{ |booking| booking.booking_date > date_today}
+      return Booking.where('booking_date >= ?', date_today).order(:booking_date)
   	elsif user.presenter? # Add all booked then bids
-      return Booking.with_deleted.where(chosen_presenter: user.presenter).order(:booking_date).select{ |booking| booking.booking_date >= date_today}
+      # return Booking.with_deleted.where(chosen_presenter: user.presenter).order(:booking_date).select{ |booking| booking.booking_date >= date_today}
+      return Booking.with_deleted.where('booking_date >= ? AND chosen_presenter_id = ?', date_today, user.presenter).order(:booking_date)
     elsif user.customer?
-      return Booking.with_deleted.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
+      # return Booking.with_deleted.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
+      return Booking.with_deleted.where('booking_date >= ? AND creator_id = ?', date_today, user.customer).order(:booking_date)
   	end
   	return nil
   end
@@ -37,10 +41,9 @@ class Booking < ActiveRecord::Base
   	date_today = DateTime.now
     booking = nil
   	if user.presenter
-  		return Booking.with_deleted.where(chosen_presenter: user.presenter).order(:booking_date).select{ |booking| booking.booking_date < date_today}
+  		return Booking.with_deleted..where('booking_date < ? OR deleted_at IS NOT NULL',date_today).where(chosen_presenter: user.presenter).order(:booking_date)
   	elsif user.customer
-      # TODO: FIX THIS
-  		return Bookings.with_deleted.where(creator: user.customer).select{ |booking| booking.booking_date < date_today}
+      return Booking.with_deleted.where('booking_date < ? OR deleted_at IS NOT NULL', date_today).order(:booking_date).select{ |booking| booking.creator == user.customer || booking.customers.includes?(user.customer)}
     else
       return Booking.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
   	end
