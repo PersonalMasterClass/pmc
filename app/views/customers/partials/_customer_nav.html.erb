@@ -1,20 +1,26 @@
 <% if current_user.customer? %>
-<li>
-  <%= link_to "Subscriptions", subscriptions_path %>
-</li>
-<li>
-  <%= link_to "New Booking", new_booking_path %>
-</li>
-<li role="presentation">
-    <%= link_to "Past Bookings", past_bookings_path %>
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" id="bookings-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      Bookings <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="bookings-dropdown">
+      <li>
+        <%= link_to "New Booking", new_booking_path %>
+      </li>
+      <li role="presentation">
+        <%= link_to "Past Bookings", past_bookings_path %>
+      </li>
+    </ul>
   </li>
-<li role="presentation" >
-  <%= link_to "Enquiries", enquiries_path%>
-</li>
-
-<li role="presentation" >
-  <%= link_to "Settings", edit_setting_path(current_user.setting)%>
-</li>
+  <li role="presentation" >
+    <%= link_to "Enquiries", enquiries_path%>
+  </li>
+  <li role="presentation">
+    <%= link_to "Subscriptions", subscriptions_path %>
+  </li>  
+  <li role="presentation" >
+    <%= link_to "Settings", edit_setting_path(current_user.setting)%>
+  </li>
 <% end %>
 
 

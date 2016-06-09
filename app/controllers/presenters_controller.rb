@@ -19,6 +19,7 @@ class PresentersController < ApplicationController
 
   def rate
   end
+  # Action for presenter to set their default rate
   def set_rate
     @presenter = current_user.presenter
     @presenter.rate = params[:rate]
@@ -27,7 +28,7 @@ class PresentersController < ApplicationController
     redirect_to presenters_path
   end
 
-  # add a subject to the presenter's subject
+  # add a subject to the presenter's subjects
   def add_subject
   	@subject = Subject.find_by_name(params[:name])
   	unless current_user.presenter.subjects.include?(@subject)

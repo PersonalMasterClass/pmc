@@ -105,12 +105,12 @@ class Booking < ActiveRecord::Base
     return bookings
   end
 
-  #Removes chosen presenter from booking and notifies creator of that booking
+  # Removes chosen presenter from booking
   def remove_chosen_presenter
     self.chosen_presenter = nil
     self.save
   end
-
+  # Deletes all bids placed on a booking. 
   def remove_all_bids
     Bid.where(booking_id: self).delete_all
   end
@@ -162,11 +162,11 @@ class Booking < ActiveRecord::Base
     return self.cap - @count
   end
   private
-  def send_booking_reminder
-    @curr_date = Date.today
-    @end_date = self.booking_date - self.period.day
-    @end_date = Date.parse(@end_date.strftime("%d/%m/%Y"))
-    @period = (@end_date - @curr_date).to_i
-    Resque.enqueue_in @period.day, BookingReminder, self.id
-  end
+    def send_booking_reminder
+      @curr_date = Date.today
+      @end_date = self.booking_date - self.period.day
+      @end_date = Date.parse(@end_date.strftime("%d/%m/%Y"))
+      @period = (@end_date - @curr_date).to_i
+      Resque.enqueue_in @period.day, BookingReminder, self.id
+    end
 end

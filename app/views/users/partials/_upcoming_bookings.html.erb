@@ -1,6 +1,6 @@
 <% if @upcoming_bookings.present? %>
   
-  <table class = "table table-bordered upcoming-bookings">
+  <table class = "table table-bordered upcoming-bookings" >
     <tr>
       <th>School</th>
       <th>Subject</th>
@@ -11,7 +11,7 @@
     </tr>
     <% @upcoming_bookings.each do |b| %>
       <tr> 
-        <td> <%= b.creator.school_info.school_name %> </td>
+        <td> <%= link_to b.creator.school_info.school_name, school_info_path(b.creator.school_info) %></td>
         <td> <%= b.subject.name %> </td>
         <td> <%= b.booking_date.strftime("%d/%m/%Y") %> </td>
         <td> <%= b.booking_date.strftime("%H:%M %p") %> - <%= duration(b) %></td>

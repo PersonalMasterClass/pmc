@@ -1,16 +1,31 @@
 <% if current_user.admin? %>
-  <li role="presentation" >
-    <%= link_to "Presenters", admin_presenters_path %>
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" id="bookings-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      Bookings <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="bookings-dropdown">
+      <li role="presentation">
+        <%= link_to "All Bookings", bookings_path %>
+      </li>
+      <li role="presentation">
+        <%= link_to "Past Bookings", past_bookings_path %>
+      </li>
+    </ul>
   </li>
-  <li role="presentation">
-    <%= link_to "Bookings", bookings_path %>
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" id="users-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      Users <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="users-dropdown">
+      <li role="presentation" >
+        <%= link_to "Presenters", admin_presenters_path %>
+      </li>
+      <li role="presentation" >
+        <%= link_to "Schools", admin_customers_path %>
+      </li>      
+    </ul>
   </li>
-  <li role="presentation">
-    <%= link_to "Past Bookings", past_bookings_path %>
-  </li>
-  <li role="presentation" >
-    <%= link_to "Schools", admin_customers_path %>
-  </li>
+  
   <li role="presentation">
   	<%= link_to "Subjects", subjects_path %>
   </li>
