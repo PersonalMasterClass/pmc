@@ -2,7 +2,7 @@
   <%= render "presenters/info", object: @presenter %>
 </div>
 
-<div>
+<div class="col-md-12">
 	<% if !@profile.nil? && !@profile.bio.nil? %>
 	  <h2>Bio</h2>
     <div class = "panel panel-default">
@@ -10,23 +10,21 @@
         <%= sanitize @profile.bio %>
       </div>
     </div>
-    Subjects: <br>
+    <h3>Subjects</h3>
     <ul>
     	<% @presenter.subjects.each do |s| %>
-    		<li> <%= s.name %> </li>
+    		<li><%= s.name %></li>
     	<% end%>
     </ul>
   <% else %>
-	  <p> <%= @presenter.first_name %> has not filled out bio. </p>
+	  <p> <%= @presenter.first_name %> has not filled out their bio. </p>
   <% end %>
   <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
 	<%= render 'partials/admin_actions', object: @user %>
   <%= render 'presenter_profiles/availabilities' %>
-
-<!-- Fix vulnerablility -->
+  <!-- Fix vulnerablility -->
   <% if current_user.customer? && params[:booking_id].present? %>
       <%= render 'partials/customer_actions' %>
   <% end %>
-
-<%= render 'enquiries/partials/form' %>
+  <%= render 'enquiries/partials/form' %>
 </div>

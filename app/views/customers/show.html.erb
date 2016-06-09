@@ -1,15 +1,17 @@
-<div>
-	<% if @customer.present? %>
-		<h3><%= @customer.school_info.school_name %></h3>
-	  <p>First Name: <%= @customer.first_name %></p>
-	  <p>Last Name: <%= @customer.last_name %></p>
-	  <p>Email: <%= @customer.user.email %> </p>
-	  <p>Vit Number: <%= @customer.vit_number%></p>
-	  <p>ABN number: <%= @customer.abn_number%></p>
-	  <p>Phone Number: <%= @customer.phone_number%></p>
-	  <p>Vit Number: <%= @customer.vit_number%></p>
-	  <p>Contact Title: <%= @customer.contact_title%></p>
-	  <p>Department: <%= @customer.department%></p>
-  	<% end %>
-	<%= render 'partials/admin_actions', object: @user %>
-<div>
+<div class="row">
+  <% if @customer.present? %>
+    <div class="col-md-6">
+      <h3><%= @customer.school_info.school_name %></h3>
+      <p>First Name: <%= @customer.first_name %></p>
+      <p>Last Name: <%= @customer.last_name %></p>
+      <p>Email: <%= @customer.user.email %> </p>
+      <p>Vit Number: <%= @customer.vit_number%></p>
+      <p>ABN number: <%= @customer.abn_number%></p>
+      <p>Phone Number: <%= @customer.phone_number%></p>
+      <p>Vit Number: <%= @customer.vit_number%></p>
+      <p>Contact Title: <%= @customer.contact_title%></p>
+      <p>Department: <%= @customer.department%></p>
+    </div>
+    <% end %>
+    <div class="col-md-6"><%= render 'partials/admin_actions', object: @user %></div>
+</div>

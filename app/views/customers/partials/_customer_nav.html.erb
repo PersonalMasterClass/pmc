@@ -11,6 +11,10 @@
 <li role="presentation" >
   <%= link_to "Enquiries", enquiries_path%>
 </li>
+
+<li role="presentation" >
+  <%= link_to "Settings", edit_setting_path(current_user.setting)%>
+</li>
 <% end %>
 
 

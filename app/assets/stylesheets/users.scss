@@ -12,9 +12,9 @@ table.pending-user-registrations {
 }
 div.user-auth-dialog {
   $vPadding: 36px;
-  $textColour: #FFFFFF;
-  padding-top: 0;
-  padding-bottom: 0;
+  $textColour: darken($siteBlue, 90%);
+  padding-top: $vPadding;
+  padding-bottom: $vPadding;
   color: $textColour;
   .container {
     .user-auth-wrap {
@@ -23,7 +23,7 @@ div.user-auth-dialog {
       max-width: 360px;
       margin: 0 auto;
       padding: 18px;
-      background: darken($siteBlue, 15%);
+      background: white;
       border-radius: 2px;
       form {
         margin-bottom: 12px;
@@ -61,6 +61,18 @@ table.upcoming-bookings {
     > *:nth-child(5) {
       @media screen and (max-width: $screen-sm-min) {
         display: none;
+      }
+    }
+  }
+}
+#presenters_table_wrapper {
+  table#presenters_table {
+    tr {
+      > *:nth-child(1),
+      > *:nth-child(5) {
+        @media screen and (max-width: $screen-sm-min) {
+          display: none;
+        }
       }
     }
   }
