@@ -1,26 +1,26 @@
 <% if current_user.presenter? %>
   <li role="presentation" class="dropdown">
-  	<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+  	<a class="dropdown-toggle" data-toggle="dropdown" id="profile-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
       Profile <span class="caret"></span>
     </a>
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
       <li role="presentation">
-        <%= link_to "View", presenter_profile_path(current_user.presenter) %>
+        <%= link_to "View Profile", presenter_profile_path(current_user.presenter) %>
       </li>
       <li role="presentation">
-        <%= edit_presenter_profile_link(current_user.presenter,"", "Edit") %>
+        <%= edit_presenter_profile_link(current_user.presenter,"", "Edit Profile") %>
+      </li>
+      <li role="presentation" >
+        <%= link_to "Edit Subjects", presenter_edit_subjects_path(current_user.presenter) %>
+      </li>
+      <li role="presentation" >
+        <%= link_to "Edit Availabilities", presenter_availabilities_path(current_user.presenter) %>
       </li>
     </ul>
   </li>
   <li role="presentation">
     <%= link_to "Past Bookings", past_bookings_path %>
-  </li>
-  <li role="presentation" >
-    <%= link_to "Subjects", presenter_edit_subjects_path(current_user.presenter) %>
-  </li>
-  <li role="presentation" >
-    <%= link_to "Availabilities", presenter_availabilities_path(current_user.presenter) %>
-  </li>
+  </li>  
   <li role="presentation" >
     <%= link_to "Enquiries", enquiries_path%>
   </li>
