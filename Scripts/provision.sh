@@ -15,7 +15,7 @@ POSTGRESQL_HBA_FILE="${POSTGRESQL_DATA_DIR}/pg_hba.conf"
 POSTGRESQL_PASSWORD=""
 POSTGRESQL_USER="${APP_USER}"
 REPOSITORY_URL="https://github.com/PersonalMasterClass/pmc.git"
-RUBY_VERSION="2.3.1"
+RUBY_VERSION_STRING="2.3.1"
 S3_SECRET_KEY="s3_secret_key"
 S3_ACCESS_SECRET="s3_access_secret"
 SECRET_KEY_FILE="/usr/local/etc/pmc_secret_key"
@@ -26,7 +26,6 @@ WEB_ROOT="/var/www/html"
 LOG_FILE="/usr/local/pmc_provisioning.log"
 
 ADDUSER="/sbin/adduser"
-BUNDLE="${WEB_ROOT}/bin/bundle"
 CAT="/bin/cat"
 CHCON="/bin/chcon"
 CHMOD="/bin/chmod"
@@ -134,13 +133,13 @@ if [ ! -d "${GPG_DIR}" ]; then
   chown "${NGINX_USER}":"${NGINX_USER}" "${GPG_DIR}"
 fi
 gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-\curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby="${RUBY_VERSION}"
+\curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby="${RUBY_VERSION_STRING}"
 for i in "/bin/ruby" "/usr/bin/ruby"; do
   if [ -f "${i}" ]; then rm "${i}"; fi
   ln -s /usr/local/rvm/rubies/default/bin/ruby "${i}"
 done
 source /usr/local/rvm/scripts/rvm
-"${RVMSUDO}" "${RVM}" use "${RUBY_VERSION}" --default
+"${RVMSUDO}" "${RVM}" use "${RUBY_VERSION_STRING}" --default
 
 /sbin/usermod -aG rvm "${NGINX_USER}"
 /sbin/usermod -aG rvm "${APP_USER}"
@@ -193,7 +192,7 @@ echo "localhost:5432:${POSTGRESQL_USER}:${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD
 log "Configuring Phusion Passenger..."
 echo "
 passenger_root /usr/share/ruby/vendor_ruby/phusion_passenger/locations.ini;
-passenger_ruby /usr/local/rvm/gems/ruby-"${RUBY_VERSION}"/wrappers/ruby;
+passenger_ruby /usr/local/rvm/gems/ruby-"${RUBY_VERSION_STRING}"/wrappers/ruby;
 passenger_instance_registry_dir /var/run/passenger-instreg;" > "${PASSENGER_CONFIG_FILE}"
 
 if [ ! -d "${WEB_ROOT}" ]; then
@@ -221,19 +220,17 @@ PARENT_DIR="$(${DIRNAME} ${WEB_ROOT})"
 "${FIND}" "${WEB_ROOT}" -type f -exec "${CHMOD}" 664 {} \;
 
 log "Installing rails dependencies..."
-"${RVMSUDO}" "${RVM}" "${RUBY_VERSION}" do gem update --system
-"${RVMSUDO}" "${RVM}" "${RUBY_VERSION}" do gem install rails bundle bundler
-
-echo "Using bundle located at ${BUNDLE}"
+"${RVMSUDO}" "${RVM}" "${RUBY_VERSION_STRING}" do gem update --system
+"${RVMSUDO}" "${RVM}" "${RUBY_VERSION_STRING}" do gem install rails bundle bundler
 
 log "Installing gems in Gemfile..."
-"${RVMSUDO}" "${RVM}" "${RUBY_VERSION}" do bundle install --deployment
+"${RVMSUDO}" "${RVM}" "${RUBY_VERSION_STRING}" do bundle install --deployment
 
 log "Ensuring that the secret key base exists..."
 if [ -f "${SECRET_KEY_FILE}" ]; then
   SECRET_KEY_BASE="$(${CAT} ${SECRET_KEY_FILE})"
 else
-  export SECRET_KEY_BASE="$(${SUDO} -iu ${NGINX_USER} ${RVM} ${RUBY_VERSION} do bundle exec rake secret)"
+  export SECRET_KEY_BASE="$(${SUDO} -iu ${NGINX_USER} ${RVM} ${RUBY_VERSION_STRING} do bundle exec rake secret)"
   echo "${SECRET_KEY_BASE}" > "${SECRET_KEY_FILE}"
 fi
 export SECRET_KEY_BASE="${SECRET_KEY_BASE}"
@@ -345,10 +342,10 @@ if [ -f "${PGPASS_FILE}" ]; then
 fi
 
 log "Compiling static assets..."
-"${RVMSUDO}" -E "${RVM}" "${RUBY_VERSION}" do bundle exec rake assets:precompile
+"${RVMSUDO}" -E "${RVM}" "${RUBY_VERSION_STRING}" do bundle exec rake assets:precompile
 
 log "Running migrations..."
-"${RVMSUDO}" -E "${RVM}" "${RUBY_VERSION}" do bundle exec rake db:migrate
+"${RVMSUDO}" -E "${RVM}" "${RUBY_VERSION_STRING}" do bundle exec rake db:migrate
 
 "${CHOWN}" -R "${NGINX_USER}":"${NGINX_USER}" "${WEB_ROOT}"
 
