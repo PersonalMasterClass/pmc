@@ -12,7 +12,6 @@ Customer.delete_all
 Booking.delete_all
 Subject.delete_all
 Availability.delete_all
-PageContent.delete_all
 
 Rake::Task['import:school_info'].invoke
 
@@ -23,8 +22,6 @@ subs = ["English", "History", "Physical Education", "Japanese", "Geography", "Ar
 subs.each do |s|
   Subject.create(name: s)
 end
-
-PageContent.create(name: "legal", content: "Legal Content Placeholder")
 
 # 20.times do |f|
 #   word = (Faker::Hipster.words(2)* ' ').titleize
@@ -75,11 +72,13 @@ c = User.new(
              password_confirmation: "password",
              confirmed_at: Time.now)
 d = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
-                     first_name: 'Foo',
-                     last_name: 'Bar', 
-                     vit_number: Faker::Number.number(6),  
+                     first_name: 'Stacey',
+                     last_name: 'Lawler', 
+                     vit_number: '184539',  
                      abn_number: Faker::Number.number(11)) 
 d.school_info = SchoolInfo.all.sample
+setting = Setting.create!
+c.setting = setting
 c.customer = d
 c.save(:validate => false)
 
@@ -88,7 +87,7 @@ c.save(:validate => false)
 10.times do |f|
   a = User.new(
              user_type: :presenter,
-             status: :pending,
+             status: :approved,
              email: "example#{f+111}@gmail.com",
              password:              "password",
              password_confirmation: "password",
@@ -166,7 +165,7 @@ end
 end
 
 4.times do
-  booking = Booking.create(booking_date: Time.now+rand(170).days, creator: c.customer, duration_minutes: 60)  
+  booking = Booking.create(booking_date: Time.now+rand(170).days, creator: c.customer, duration_minutes: 60, period: 2)  
   booking.subject = Subject.all.sample
   booking.save
 end

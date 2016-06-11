@@ -1,0 +1,8 @@
+<div>
+  <%= link_to "Back", :back, class: "btn btn-default" %>
+  <%= link_to "Edit", edit_page_content_path(@content), class: "btn btn-default" %>
+</div>
+
+<div>
+  <%= @content.content.html_safe %>
+</div>

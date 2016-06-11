@@ -28,7 +28,19 @@ Thumbs.db
 # Ignore SASS/SCSS caches
 .sass-cache
 
+
+# Xero private key
+/config/privatekey.pem
+
+#gemfile lock
+Gemfile.lock
+
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Ignore any cert/key/csr files in the scripts directory
+/Scripts/*.key
+/Scripts/*.crt
+/Scripts/*.csr

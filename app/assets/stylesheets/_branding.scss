@@ -1,4 +1,21 @@
 //  Personal Masterclass logo colours
-$pmc_red: #DD1A21;
-$pmc_yellow: #D5A30E;
-$pmc_blue: #569BB0;
+$pmcRed: #DD1A21;
+$pmcYellow: #D5A30E;
+$pmcBlue: #569BB0;
+$accentBlue: saturate($pmcBlue, 50%);
+$accentCyan: #00D1C1;
+$accentOrange: #E87A3D;
+$tiffanyBlue: #81D8D0;
+
+$siteBlue: $accentCyan;
+$siteRed: $accentOrange;
+
+.btn.btn-pmcred {
+  // $buttonRed: lighten($pmcRed, 20%);
+  $buttonRed: $siteRed;
+  background-color: $buttonRed !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 8px;
+  &:hover { background-color: lighten($buttonRed, 10%); }
+}

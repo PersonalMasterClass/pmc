@@ -20,6 +20,7 @@
       <% if current_user %>
         <%= render 'users/partials/admin_nav'%>
         <%= render "presenters/partials/presenter_nav"%>
+        <%= render 'customers/partials/customer_nav' %>
         <li>
           <div class="dropdown">
               <span class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><%= fa_icon "bell-o" %><span class="badge"><%= current_user.display_notifications.count %></span></span>
@@ -32,11 +33,10 @@
             </ul>
           </div>
         </li>
-        <%= render 'customers/partials/customer_nav' %>
         <li><%= link_to 'Log Out', destroy_user_session_path, method: :delete %></li>
       <% else %>
         <li><%= link_to 'School Registration', registration_customers_path %></li>
-        <li><%= link_to 'Become a Presenter', registration_presenters_path %></li>
+        <li><%= link_to 'Become a Presenter', registration_presenters_path, class: 'btn btn-pmcred push-transition', id: 'presenter-register-call-to-action' %></li>
         <li><%= link_to 'Log In', new_user_session_path %></li>
       <% end %>
       </ul>

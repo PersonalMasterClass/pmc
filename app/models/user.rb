@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   
   has_one :presenter, inverse_of: :user
   has_one :customer, inverse_of: :user
+  has_one :setting
   has_many :notifications
 
   accepts_nested_attributes_for :presenter
@@ -52,6 +53,12 @@ class User < ActiveRecord::Base
   def display_notifications
     return self.notifications.where(is_read: :false).limit(5).order(created_at: :desc)
   end
+
+  # get all the invoices for user from Xero
+  def invoices
+    return Xero.get_invoices(self)
+  end
+
   
   private
 

@@ -1,0 +1,46 @@
+<% if current_user.customer? || (params[:action] == "show" && params[:controller] == "enquiries") %>
+<% if (params[:action] == "show" && params[:controller] == "presenter_profiles") %>
+	<p><i>Can't find a day, time or rate to suit your needs?</i></p>
+<% end %>
+	<!-- Button trigger modal -->
+	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#enquiry">
+		<%= enquiry_user(current_user) %>
+	</button>
+
+	<!-- Modal -->
+	<div class="modal fade" id="enquiry" tabindex="-1" role="dialog" aria-labelledby="enquiry">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel"><%= form_title(current_user)%></h4>
+	      </div>
+	      <div class="modal-body">
+					<%= form_for :enquiry, url: enquiries_path, method: "post" do |f| %>
+						<div class = "form-group">
+							<%= f.label "Rate" %><br>
+							<%= f.number_field :rate, class: "form-control" %>
+						</div>
+						<div class = "form-group">
+							<%= f.label "Date" %><br>
+							<%= f.date_field :date, class: "form-control" %>
+						</div>
+						<div class = "form-group">
+							<%= f.label "Time" %><br>
+							<%= f.time_field :time, class: "form-control"%>
+						</div>
+						<% if current_user.customer? %>
+							<%= f.hidden_field(:recipient_id, :value => form_variable(@enquiry, @presenter)) %>
+						<% elsif current_user.presenter? %>
+							<%= f.hidden_field(:recipient_id, :value => @enquiry.customer.id) %>
+						<% end %>
+	      </div>
+	      <div class="modal-footer">
+					<%= f.submit enquiry_submit(current_user), class: "btn btn-primary" %>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+				<% end %>
+	    </div>
+	  </div>
+	</div>
+<% end %>

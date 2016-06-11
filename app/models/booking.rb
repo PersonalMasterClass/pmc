@@ -8,6 +8,8 @@ class Booking < ActiveRecord::Base
   has_many :presenters, through: :bids, :dependent => :destroy
   belongs_to :subject, inverse_of: :bookings
 
+  after_create :send_booking_reminder
+
 
   def self.help_required
     Booking.where('help_required = ? AND booking_date > ?', true, DateTime.now)
@@ -63,8 +65,8 @@ class Booking < ActiveRecord::Base
     elsif user.customer?
       user.customer.subjects.each do |subject|
         subject.bookings.each do |booking|
-          if !booking.customers.include?(user.customer) && booking.creator != user.customer
-            if booking.booking_date > date_today && booking.shared?
+          if !booking.customers.include?(user.customer) && booking.creator != user.customer && booking.shared? 
+            if booking.booking_date > date_today && booking.remaining_slots != 0
               bookings << booking
             end
           end
@@ -110,6 +112,12 @@ class Booking < ActiveRecord::Base
     Bid.where(booking_id: self).delete_all
   end
 
+  def invoice!
+    if self.chosen_presenter && self.rate 
+      Xero.invoice_booking(self)
+    end
+  end
+
 
   #Returns a status message depending on the booking information
   def status_message
@@ -130,4 +138,28 @@ class Booking < ActiveRecord::Base
     end
   end
 
+  # Get the total number of students in the booking
+  def total_students
+    students = 0
+    self.booked_customers.each do |school|
+      students += school.number_students
+    end
+    return students
+  end
+
+  def remaining_slots
+    @count = 0
+    self.booked_customers.each do |booked_customer|
+      @count += booked_customer.number_students 
+    end
+    return self.cap - @count
+  end
+  private
+  def send_booking_reminder
+    @curr_date = Date.today
+    @end_date = self.booking_date - self.period.day
+    @end_date = Date.parse(@end_date.strftime("%d/%m/%Y"))
+    @period = (@end_date - @curr_date).to_i
+    Resque.enqueue_in @period.day, BookingReminder, self.id
+  end
 end

@@ -1,14 +1,15 @@
 <h1>Edit Page Content</h1>
 <%= form_for @page_contents do |f| %>
 
-<div class='form-group'>
-  <%= tinymce :cms_editor %>
-  <%= f.text_area :content, class: "tinymce" %>
+  <div class='actions'>
+    <%= link_to "Cancel", :back, class: "btn btn-default" %>
+    <%= f.submit "Submit", class:"btn btn-default" %>
+  </div>
 
-</div>
-<div class='actions'>
-  <%= f.submit "Submit", class:"btn btn-default" %>
-</div>
+  <div class='form-group content-editor'>
+    <%= tinymce :cms_editor %>
+    <%= f.text_area :content, class: "tinymce", height: 800 %>
+  </div>
 
 <% end %>
 

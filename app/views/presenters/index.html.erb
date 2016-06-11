@@ -1,6 +1,9 @@
-<% if current_user.presenter.rate.nil? %>
+<% if current_user.presenter.presenter_profile.nil?%>
+	<h3> Create your profile </h3>
+	<%= edit_presenter_profile_link(current_user.presenter, "btn btn-primary", "Create") %>
+<% else %>		
 	<%= render 'presenters/partials/rate'%>
-<% end %>		
+<% end %>
 <div class = "col-md-12">
 	<h2> Presenter Dashboard </h1>
 </div>

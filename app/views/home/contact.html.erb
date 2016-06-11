@@ -1,0 +1,8 @@
+<div>
+  <% if current_user %>
+    <% if current_user.admin? %>
+      <p><%= link_to "Update Content", edit_page_content_path(@contact), class: "btn btn-info"  %></p>
+    <% end %>
+  <% end %>
+  <%= @contact.content.html_safe %>  
+</div>

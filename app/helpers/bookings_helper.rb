@@ -7,15 +7,21 @@ module BookingsHelper
 	def booked_label(booking)
 		presenter = booking.chosen_presenter
 		if presenter.present?
-			link_to "Presented by #{presenter.first_name} #{presenter.last_name}",  presenter_profile_path(presenter), class: "btn btn-xs btn-info"
+			link_to "Presented by #{presenter.get_private_full_name(current_user)}",  presenter_profile_path(presenter), class: "btn btn-xs btn-info"
 		end
 	end
 
 	def rate_label(booking)
 		if current_user.customer?
 			if booking.creator == current_user.customer && booking.chosen_presenter.present?
-				content_tag(:span, "Rate at #{number_to_currency(booking.rate)}", class: "btn btn-xs btn-success")	
+				content_tag(:span, "Rate at #{number_to_currency(booking.rate)}", class: "btn btn-xs btn-info")	
 			end
+		end
+	end
+
+	def capacity_label(booking)
+		if booking.remaining_slots == 0
+			content_tag(:span, "Booking full", class: "btn btn-xs btn-danger")	
 		end
 	end
 
@@ -75,6 +81,12 @@ module BookingsHelper
 			end
 		else
 			"Not open for sharing"
+		end
+	end
+
+	def display_booking_slots(booking)
+		if @remaining != 0
+			return content_tag(:p, "Capacity: #{booking.cap - booking.remaining_slots}/30 students booked.")
 		end
 	end
 end

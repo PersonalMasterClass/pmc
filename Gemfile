@@ -17,17 +17,17 @@ gem "figaro"
 #image upload
 gem 'dragonfly', '~> 1.0.12'
 gem 'dragonfly-s3_data_store'
-#gem "mini_magick"
-
-
 gem "font-awesome-rails"
 #bio editor
 gem 'tinymce-rails'
-
+gem "bootstrap-switch-rails"
 # background jobs
 gem 'resque', :require => "resque/server"
 # schedule jobs
-gem 'resque-delayed'
+gem 'resque-scheduler'
+
+gem 'resque-scheduler-web'
+
 gem 'bootstrap-sass', '~> 3.3.6'
 # add Devise
 gem 'devise' 
@@ -63,6 +63,8 @@ gem 'best_in_place'
 
 gem 'jquery-turbolinks'
 
+gem 'xeroizer'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -85,7 +87,8 @@ group :development, :test do
 end
 
 group :production do
-	gem 'rails_12factor'
+  gem 'rails_12factor'
+  gem 'therubyracer'
 end
 
 group :development do

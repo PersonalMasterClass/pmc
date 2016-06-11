@@ -13,7 +13,7 @@ before_filter :configure_sign_up_params, only: [:create]
   def create_presenter
     build_resource(sign_up_params)
     resource.user_type = :presenter
-    resource.status = :pending
+    resource.status = :approved
     # Populate presenter obj
     presenter = Presenter.create(phone_number: params["presenter"]["phone_number"], 
                                  first_name: params["presenter"]["first_name"],
@@ -24,8 +24,12 @@ before_filter :configure_sign_up_params, only: [:create]
     # presenter.school_info:= SchoolInfo.find(params["s"])
     
     presenter.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
+    settings = Setting.create!
     resource.presenter = presenter
+    resource.setting = settings
     resource.save
+
+
 
     # customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school'])
     # resource.customer = customer
@@ -95,9 +99,11 @@ before_filter :configure_sign_up_params, only: [:create]
                                  department: params["customer"]["department"],
                                  contact_title: params["customer"]["contact_title"])
     customer.school_info = SchoolInfo.find_by(school_name: params['school_info']['school_name'])
+    settings = Setting.create!
     resource.customer = customer
+    resource.setting = settings
     resource.save
-
+    # Xero.add_school_account(customer)
    # #Code from devise
     yield resource if block_given?
     if resource.persisted?

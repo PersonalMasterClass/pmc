@@ -1,7 +1,12 @@
 <% if current_user.customer? && @booking.creator == current_user.customer  && @booking.cancellation_message.nil? %>
+<a class="btn btn-default" role="button" data-toggle="collapse" href="#collapseCancelForm" aria-expanded="false" aria-controls="collapseCancelForm">
+	  Cancel booking
+	</a>
+	<div class="collapse" id="collapseCancelForm">
 	<%= form_tag(bookings_cancel_path(@booking), method: "patch") do %>
 		<%= label_tag :cancellation_message %>
 		<%= text_area_tag :cancellation_message, nil,class: "form-control" %>
 		<%= submit_tag "Cancel booking", class: "btn btn-danger" %>
 	<% end %>
+</div>
 <% end %>
