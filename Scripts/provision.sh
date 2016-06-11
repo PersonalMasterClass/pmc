@@ -43,6 +43,7 @@ MKDIR="/bin/mkdir"
 POSTGRESQL_SETUP="/usr/bin/postgresql-setup"
 PSQL="/bin/psql"
 RVM="/usr/local/rvm/bin/rvm"
+RVMSUDO="${RVM}sudo"
 SUDO="/usr/bin/sudo"
 SYSTEMCTL="/usr/bin/systemctl"
 USERMOD="/sbin/usermod"
@@ -88,6 +89,19 @@ export PMC_DB_PASSWORD="${POSTGRESQL_PASSWORD}"
 export PMC_DB_USER="${POSTGRESQL_USER}"
 export PMC_DB_NAME="${POSTGRESQL_USER}"
 export PMC_DB_HOST
+export rvmsudo_secure_path=0
+
+# Load in the environment variables into /etc/profile.d, and lock it down
+VARFILE="/etc/profile.d/pmc.sh"
+echo "export SECRET_KEY_BASE=${SECRET_KEY_BASE}
+export PMC_DB_NAME=${POSTGRESQL_USER}
+export PMC_DB_USER=${POSTGRESQL_USER}
+export PMC_DB_PASSWORD=${POSTGRESQL_PASSWORD}
+export PMC_DB_HOST=localhost
+export S3_KEY=${S3_SECRET_KEY}
+export S3_SECRET=${S3_ACCESS_SECRET}" > "${VARFILE}"
+"${CHOWN}" root:root "${VARFILE}"
+"${CHMOD}" 711 "${VARFILE}"
 
 log "Beginning provisioning at $(date)"
 log "Installing updates..."
@@ -95,18 +109,29 @@ log "Installing updates..."
 "${YUM}" update -y
 "${YUM}" -y install yum-utils epel-release
 
+# Set up the system user
+log "Creating the '${APP_USER}' system user"
+"${ADDUSER}" -r "${APP_USER}"
+"${USERMOD}" -d "${WEB_ROOT}" -aG "${NGINX_USER}" "${APP_USER}"
+
 # Enable external repositories
 log "Enabling external repositories..."
 if ! rpm -q epel-release; then "${YUM_MGR}" --enable epel; fi
 "${CURL}" --fail -sSLo /etc/yum.repos.d/passenger.repo \
   https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
 
-# Install dependencies
+# Install the webserver environment first
+log "Installing webserver environment..."
+"${YUM}" -y install nginx
+
+# Install RVM so we can manage ruby versions
+log "Installing dependencies for RVM..."
+"${YUM}" -y install curl gpg gcc gcc-c++ make
 log "Installing Ruby via RVM..."
 GPG_DIR="${HOME}/.gnupg"
 if [ ! -d "${GPG_DIR}" ]; then
   mkdir "${GPG_DIR}"
-  chown "${NGINX_USER}": "${GPG_DIR}"
+  chown "${NGINX_USER}":"${NGINX_USER}" "${GPG_DIR}"
 fi
 gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 \curl https://raw.githubusercontent.com/rvm/rvm/master/binscripts/rvm-installer | bash -s stable --ruby="${RUBY_VERSION}"
@@ -114,27 +139,23 @@ for i in "/bin/ruby" "/usr/bin/ruby"; do
   if [ -f "${i}" ]; then rm "${i}"; fi
   ln -s /usr/local/rvm/rubies/default/bin/ruby "${i}"
 done
-# source /usr/local/rvm/scripts/rvm
+source /usr/local/rvm/scripts/rvm
+"${RVMSUDO}" "${RVM}" use "${RUBY_VERSION}" --default
+
 /sbin/usermod -aG rvm "${NGINX_USER}"
+/sbin/usermod -aG rvm "${APP_USER}"
 
 log "Installing other dependencies..."
 "${YUM}" -y install \
   postgresql postgresql-server postgresql-devel postgresql-contrib \
   git \
   pygpgme \
-  nginx \
   curl \
   passenger \
   zlib zlib-devel \
-  gcc gcc-c++ \
   sudo \
   redis \
   v8 v8-devel
-
-# Set up the system user
-log "Creating the '${APP_USER}' system user"
-"${ADDUSER}" -r "${APP_USER}"
-"${USERMOD}" -d "${WEB_ROOT}" -aG "${NGINX_USER}" "${APP_USER}"
 
 # Disable SELinux, as it causes issues with PostgreSQL
 echo "SELINUX=permissive
@@ -186,6 +207,7 @@ if [ ! -d "${WEB_ROOT}/.git" ]; then
 fi
 
 cd "${WEB_ROOT}"
+export HOME="${WEB_ROOT}"
 "${GIT}" checkout -f "${BRANCH}"
 "${GIT}" pull
 
@@ -194,28 +216,27 @@ cd "${WEB_ROOT}"
 # Set permissions
 log "Setting permissions for web root..."
 PARENT_DIR="$(${DIRNAME} ${WEB_ROOT})"
-"${CHOWN}" -R "${NGINX_USER}":"${NGINX_USER}" "${PARENT_DIR}"
+"${CHOWN}" -R "${NGINX_USER}": "${PARENT_DIR}"
 "${FIND}" "${WEB_ROOT}" -type d -exec "${CHMOD}" 775 {} \;
-"${FIND}" "${WEB_ROOT}" -type f -exec "${CHMOD}" 771 {} \;
+"${FIND}" "${WEB_ROOT}" -type f -exec "${CHMOD}" 664 {} \;
 
 log "Installing rails dependencies..."
-"${RVM}" "${RUBY_VERSION}" do gem update --system
-"${RVM}" "${RUBY_VERSION}" do gem install rails bundle bundler
+"${RVMSUDO}" "${RVM}" "${RUBY_VERSION}" do gem update --system
+"${RVMSUDO}" "${RVM}" "${RUBY_VERSION}" do gem install rails bundle bundler
+
+echo "Using bundle located at ${BUNDLE}"
+
+log "Installing gems in Gemfile..."
+"${RVMSUDO}" "${RVM}" "${RUBY_VERSION}" do bundle install --deployment
 
 log "Ensuring that the secret key base exists..."
 if [ -f "${SECRET_KEY_FILE}" ]; then
   SECRET_KEY_BASE="$(${CAT} ${SECRET_KEY_FILE})"
 else
-  export SECRET_KEY_BASE="$(${SUDO} -u ${NGINX_USER} ${RVM} ${RUBY_VERSION} do ${BUNDLE} exec rake secret)"
+  export SECRET_KEY_BASE="$(${SUDO} -iu ${NGINX_USER} ${RVM} ${RUBY_VERSION} do bundle exec rake secret)"
   echo "${SECRET_KEY_BASE}" > "${SECRET_KEY_FILE}"
 fi
 export SECRET_KEY_BASE="${SECRET_KEY_BASE}"
-
-BUNDLE="$(${RVM} which bundle)"
-echo "Using bundle located at ${BUNDLE}"
-
-log "Installing gems in Gemfile..."
-"${SUDO}" -E -u "${NGINX_USER}" "${RVM}" "${RUBY_VERSION}" do "${BUNDLE}" install --deployment
 
 log "Configuring redis..."
 "${SYSTEMCTL}" enable redis
@@ -324,12 +345,12 @@ if [ -f "${PGPASS_FILE}" ]; then
 fi
 
 log "Compiling static assets..."
-bundle exec rake assets:precompile
+"${RVMSUDO}" -E "${RVM}" "${RUBY_VERSION}" do bundle exec rake assets:precompile
 
 log "Running migrations..."
-bundle exec rake db:migrate
+"${RVMSUDO}" -E "${RVM}" "${RUBY_VERSION}" do bundle exec rake db:migrate
 
-"${CHOWN}" -R "${NGINX_USER}:${NGINX_USER}" "${WEB_ROOT}"
+"${CHOWN}" -R "${NGINX_USER}":"${NGINX_USER}" "${WEB_ROOT}"
 
 log "Restarting nginx..."
 "${SYSTEMCTL}" restart nginx
