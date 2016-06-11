@@ -107,6 +107,15 @@
     success = []
     usr = current_user
 
+    # verify current password
+    valid_password = current_user.valid_password? params[:old_password]
+
+    if !valid_password 
+      @errors << "Current password is invalid"
+      render 'edit_login_details'
+      return
+    end
+
     # update email
     if params[:email] != "" && params[:email] != current_user.email
       if current_user.update(email: params[:email])
@@ -117,7 +126,7 @@
     end
     
     # update password
-    if params[:password] != "" && params[:password_confirmation] != ""
+    if params[:password] != "" && params[:password_confirmation] != "" && valid_password
       if params[:password] == params[:password_confirmation]
         if current_user.update(password: params[:password])
            success << "Your password has been updated."
