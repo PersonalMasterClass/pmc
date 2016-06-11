@@ -68,7 +68,7 @@ class Presenter < ActiveRecord::Base
       bookings.each do  |booking|
         if booking.remove_chosen_presenter == self
           booking.remove_chosen_presenter
-          Notification.send_message(booking.creator.user, "The presenter for this booking are now unavailable", booking_path(booking))
+          Notification.send_message(booking.creator.user, "The presenter for this booking are now unavailable", booking_path(booking), :booking)
         end
       end
     end

@@ -9,10 +9,10 @@ class BookingReminder
     @booking = Booking.find(booking_id)
     @message = "Cut off to apply for a #{@booking.subject.name} booking is ending in #{@booking.period} days."
 		if @booking.shared?
-      Notification.notify_applicable_users(@booking.creator, @booking, "customer", booking_path(@booking), @message)
+      Notification.notify_applicable_users(@booking.creator, @booking, "customer", booking_path(@booking), @message, :booking)
     end
     if @booking.chosen_presenter.nil?
-    	Notification.notify_applicable_users(@booking.creator, @booking, "presenter", booking_path(@booking), @message)
+    	Notification.notify_applicable_users(@booking.creator, @booking, "presenter", booking_path(@booking), @message, :booking)
     end
 	end
 end

@@ -107,7 +107,7 @@ class PresenterProfilesController < ApplicationController
             if current_user.user_type == "admin"
               @presenter_profile.update_attribute(:status, :pending_presenter)
               flash[:info] = "Profile changes submitted to presenter for approval"
-              Notification.send_message(@presenter.user, "You have pending profile changes to review from an Admin", presenter_profile_path(@presenter))
+              Notification.send_message(@presenter.user, "You have pending profile changes to review from an Admin", presenter_profile_path(@presenter), :system)
               redirect_to admin_path
             else #current user is profile owner
               @presenter_profile.update_attribute(:status, :pending_admin)
@@ -158,7 +158,7 @@ class PresenterProfilesController < ApplicationController
       if current_user.user_type == "admin"
         if profile.approve
           flash[:info] = "This profile has been approved"
-          Notification.send_message(presenter.user, "Your profile changes have been approved.", presenter_profile_path(presenter))
+          Notification.send_message(presenter.user, "Your profile changes have been approved.", presenter_profile_path(presenter), :system)
           redirect_to presenter_profile_path(presenter)
         else
           flash[:danger] = "Something went wrong"
@@ -213,7 +213,7 @@ class PresenterProfilesController < ApplicationController
     end
 
     def notify_admin_profile_changes(presenter)
-      Notification.notify_admin("#{presenter.first_name} #{presenter.last_name} has submitted a profile for approval", presenter_profile_path(presenter))
+      Notification.notify_admin("#{presenter.first_name} #{presenter.last_name} has submitted a profile for approval", presenter_profile_path(presenter), :system)
     end
 
     #before filters

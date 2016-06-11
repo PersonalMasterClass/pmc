@@ -19,8 +19,10 @@ module EnquiriesHelper
 
 	end
 	def enquiry_user(user)
-		if Enquiry.find(params[:id]).status == "counteroffer" && user.customer?
+		if Enquiry.find(params[:id]).present?
+			if Enquiry.find(params[:id]).status == "counteroffer" 
 			"Counter offer"
+		end
 		elsif user.customer? 
 			"Enquiry now"
 		elsif user.presenter? 

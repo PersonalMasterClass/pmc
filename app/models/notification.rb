@@ -1,12 +1,17 @@
 class Notification < ActiveRecord::Base
 	# User notified and emailed upon account creation
-	def self.send_message(user, message, reference)
+	def self.send_message(user, message, reference, setting)
 		notification = Notification.create(message: message, reference: reference)
 		user.notifications << notification
+		if setting == :booking
+			# Send mail
+		elsif setting == :enquiry
+			# Send mail
+		end
 	end
 
   # Admin(s) are notified when a new account has been created
-	def self.notify_admin(message, reference)
+	def self.notify_admin(message, reference, setting)
 		notification = Notification.create(message: message, reference: reference)
 		# Add notification to all admins
 		admin_users = User.where(user_type: 2)
@@ -15,7 +20,7 @@ class Notification < ActiveRecord::Base
 		end
 	end
 
-  def self.notify_applicable_users(creator, booking, type, reference, message)
+  def self.notify_applicable_users(creator, booking, type, reference, message, setting)
   	if type == "presenter"
   		users = User.where(user_type: 1)
   		applicable_users = Presenter.joins(:subjects).where(subjects: {name: booking.subject.name})
@@ -32,7 +37,7 @@ class Notification < ActiveRecord::Base
   	end
 	end
 
-	def self.canceled_booking(booking, reference)
+	def self.canceled_booking(booking, reference, setting)
 		message = "One of your bookings have been cancelled"
 		notification = Notification.create(message: message, reference: reference)
 		booking.presenters.each do |presenter|
