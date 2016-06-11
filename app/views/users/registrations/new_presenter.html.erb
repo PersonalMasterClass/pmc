@@ -52,6 +52,7 @@
       <%= presenter_fields.text_field :vit_number, value: if_params_presenter?(:vit_number,params), autofocus: true, class: "form-control" %>
       <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
           <% end %>
+        </div>
           <!-- maybe add abn later -->
         <div class="actions">
           <%= f.submit "Sign up", class: "btn btn-default btn-lg push-transition" %>

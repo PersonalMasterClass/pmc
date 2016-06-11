@@ -1,10 +1,19 @@
 class PresentersController < ApplicationController
 
 	def index
-    @presenter = current_user.presenter
-    @upcoming = Booking.upcoming(current_user) 
-    @bookings = Booking.suggested(current_user)
-    @bids = current_user.presenter.bids
+    if current_user.nil?
+      redirect_to root_url
+      return
+    end
+    unless current_user.presenter?
+      @presenter = current_user.presenter
+      @upcoming = Booking.upcoming(current_user) 
+      @bookings = Booking.suggested(current_user)
+      @bids = current_user.presenter.bids
+    else
+      redirect_to root_url
+    end
+
 	end
 	
   def new

@@ -1,5 +1,13 @@
 <h1>Update your Email/Password</h1>
-
+<% unless @errors.nil? %>
+	<div class="alert alert-danger ">
+	  <ul>
+	    <% @errors.each do |err|%>
+	    <li><%= err %></li>
+	    <%end %>
+	  </ul>
+	  </div>
+<% end %>
 
 <%= form_tag user_update_login_details_path do %>
 

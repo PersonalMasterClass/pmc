@@ -103,19 +103,43 @@
   end
 
   def update_login_details
-
-    if ((params[:email] != "") && (params[:password] != ""  && params[:password_confirmation]!= "") && (params[:password] == params[:password_confirmation]))
-        if current_user.update(email: params[:email], password: params[:password])
-          flash[:info]= "Success"
-          redirect_to root_url
+    @errors = [] 
+    success = []
+    usr = current_user
+    # update email
+    if params[:email] != "" && params[:email] != current_user.email
+      if current_user.update(email: params[:email])
+        success << "Your email has been updated."
+      else
+        @errors << "Your email address is not valid"
+      end
+    end
+    
+    # update password
+    if params[:password] != "" && params[:password_confirmation] != ""
+      if params[:password] == params[:password_confirmation]
+        if current_user.update(password: params[:password])
+           success << "Your password has been updated."
         else
-          render 'edit_login_details'
+          @errors << "New password is not valid."
         end
-    else
-      flash[:danger] = "Error!"
+      else
+        @errors << "Password and password confirmation to not match"
+      end
+    end
+    
+    if !@errors.empty?
       render 'edit_login_details'
+      return
     end
 
+    if !success.empty?
+      sign_in usr, :bypass => true
+      flash[:success] = success.to_s.delete '[]"'
+      redirect_to root_url
+    else
+      render 'edit_login_details'
+    end
   end
 
   private
