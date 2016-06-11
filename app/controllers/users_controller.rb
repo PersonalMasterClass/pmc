@@ -106,6 +106,7 @@
     @errors = [] 
     success = []
     usr = current_user
+
     # update email
     if params[:email] != "" && params[:email] != current_user.email
       if current_user.update(email: params[:email])
@@ -121,11 +122,13 @@
         if current_user.update(password: params[:password])
            success << "Your password has been updated."
         else
-          @errors << "New password is not valid."
+          @errors << "New password is not valid"
         end
       else
-        @errors << "Password and password confirmation to not match"
+        @errors << "Password and password confirmation do not match"
       end
+    elsif params[:password] != "" || params[:password_confirmation] != ""
+      @errors << "Password and password confirmation do not match"
     end
     
     if !@errors.empty?

@@ -1,5 +1,6 @@
 <h1>Update your Email/Password</h1>
-<% unless @errors.nil? %>
+
+<% unless @errors.nil? || @errors.empty? %>
 	<div class="alert alert-danger ">
 	  <ul>
 	    <% @errors.each do |err|%>
