@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :booking do
     customer_id 1
     presenter_id 1
-    booking_date "2016-04-16 02:11:36"
+    booking_date DateTime.now
     duration_minutes 1
     cancellation_message "MyString"
     shared false
