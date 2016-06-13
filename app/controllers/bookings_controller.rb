@@ -46,6 +46,7 @@ class BookingsController < ApplicationController
     @booking.creator = current_user.customer
     @booking.customers << current_user.customer
     @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
+    @booking.period = 2
     if params[:rate].present?
       @booking.rate = params[:rate]
     end
@@ -177,7 +178,7 @@ class BookingsController < ApplicationController
 
   private
     def booking_params
-      params.require(:booking).permit(:duration_minutes, :presenter_paid, :period, :shared)
+      params.require(:booking).permit(:duration_minutes, :presenter_paid, :shared)
     end
 
     def admin_or_customer_logged_in

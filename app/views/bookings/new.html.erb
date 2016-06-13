@@ -25,11 +25,6 @@
   </div>
 
   <div class = "form-group">
-    <%= b.label "Days" %>
-    <%= b.number_field :period, :placeholder => "Duration to keep booking open", class: "form-control" %>  
-  </div>
-
-  <div class = "form-group">
     <%= b.label :subject_id %><br>
     <input type = "input" id="subject_select"  class = "form-control" value = "<%= is_empty?(@subject_select) %>"/>
   </div>
