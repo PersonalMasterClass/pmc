@@ -1,0 +1,2 @@
+class QueryMailer < ApplicationMailer
+end

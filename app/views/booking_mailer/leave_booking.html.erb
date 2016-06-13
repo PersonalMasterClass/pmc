@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi, <%= @user.customer.school_info.school_name %></h1>
+    <p>
+      A school has left one of your bookings.<br>
+    </p>
+    <p>
+      <%= link_to 'Click here to view more details about the booking',  @reference %>.
+    </p>
+  </body>
+</html>
