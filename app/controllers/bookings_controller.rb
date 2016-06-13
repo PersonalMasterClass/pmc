@@ -51,12 +51,15 @@ class BookingsController < ApplicationController
       @booking.rate = params[:rate]
     end
     if @booking.save
-      # Send messages to customers if booking is shared
+      # Only send messages to customers if booking is shared
       @message = "A new #{@booking.subject.name} booking has been created that you may be interested in."
       if @booking.shared?
         Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking), @message, :interested_booking)
       end
-      Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking), @message, :interested_booking)
+      # Only send messages to presenters if booking is open
+      if @booking.chosen_presenter.nil?
+        Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking), @message, :interested_booking)
+      end
       Notification.notify_admin("A new booking has been created", booking_path(@booking), :booking)
 
       # Add booking to booked customers

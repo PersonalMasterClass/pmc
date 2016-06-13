@@ -1,3 +1,13 @@
+<% if @booking.errors.any? %>
+  <div> 
+    <h2> Errors </h2>
+    <ul>
+    <% @booking.errors.full_messages.each do |msg| %>
+      <li> <%= msg %> </li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
 <%= form_for @booking, url:  bookings_path do |b| %>
 
   <div class = "form-group">
