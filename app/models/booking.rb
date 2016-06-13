@@ -41,7 +41,7 @@ class Booking < ActiveRecord::Base
   	date_today = DateTime.now
     booking = nil
   	if user.presenter
-  		return Booking.with_deleted..where('booking_date < ? OR deleted_at IS NOT NULL',date_today).where(chosen_presenter: user.presenter).order(:booking_date)
+  		return Booking.with_deleted.where('booking_date < ? OR deleted_at IS NOT NULL',date_today).where(chosen_presenter: user.presenter).order(:booking_date)
   	elsif user.customer
       return Booking.with_deleted.where('booking_date < ? OR deleted_at IS NOT NULL', date_today).order(:booking_date).select{ |booking| booking.creator == user.customer || booking.customers.includes?(user.customer)}
     else
