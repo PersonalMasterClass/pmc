@@ -6,7 +6,6 @@ APP_USER="pmc" # System account, also used for database
 BRANCH="master"
 CWD="$(pwd)"
 NGINX_USER="nginx"
-NGINX_HOME="/var/lib/nginx"
 PASSENGER_CONFIG_FILE="/etc/nginx/conf.d/passenger.conf"
 PMC_DB_USER="${APP_USER}"
 PMC_DB_HOST="localhost"
@@ -16,12 +15,16 @@ POSTGRESQL_PASSWORD=""
 POSTGRESQL_USER="${APP_USER}"
 REPOSITORY_URL="https://github.com/PersonalMasterClass/pmc.git"
 RUBY_VERSION_STRING="2.3.1"
-S3_SECRET_KEY="s3_secret_key"
-S3_ACCESS_SECRET="s3_access_secret"
+S3_SECRET_KEY=""
+S3_ACCESS_SECRET=""
+S3_BUCKET="personalmasterclass"
+S3_REGION="ap-southeast-2"
 SECRET_KEY_FILE="/usr/local/etc/pmc_secret_key"
 SSL_CERT_BUNDLE="personalmasterclass.crt"  # The certificate bundle file as it exists on the remote system.
 SSL_CERT_KEY="personalmasterclass.key"     # The certificate private key as it exists on the remote system.
 WEB_ROOT="/var/www/html"
+XERO_CONSUMER_KEY=""
+XERO_SECRET_KEY=""
 
 LOG_FILE="/usr/local/pmc_provisioning.log"
 
@@ -36,7 +39,6 @@ CREATEUSER="/usr/bin/createuser"
 CURL="/usr/bin/curl"
 DIRNAME="/usr/bin/dirname"
 FIND="/bin/find"
-GEM="/usr/bin/gem"
 GIT="/usr/bin/git"
 MKDIR="/bin/mkdir"
 POSTGRESQL_SETUP="/usr/bin/postgresql-setup"
@@ -70,15 +72,19 @@ if [ "${EUID}" != 0 ]; then
   exit 1
 fi
 
-while getopts "b:b h p:p u:u" flag
+while getopts "b:b h p:p s:s t:t u:u x:x y:y" flag
 do
   case $flag in
     b)  BRANCH="${OPTARG}";;
     h)  showHelp ; exit 0;;
     p)  POSTGRESQL_PASSWORD="${OPTARG}";;
+    q)  S3_BUCKET="${OPTARG}";;
+    r)  S3_REGION="${OPTARG}";;
     s)  S3_SECRET_KEY="${OPTARG}";;
     t)  S3_ACCESS_SECRET="${OPTARG}";;
     u)  POSTGRESQL_USER="${OPTARG}";;
+    x)  XERO_CONSUMER_KEY="${OPTARG}";;
+    y)  XERO_SECRET_KEY="${OPTARG}";;
   esac
 done
 
@@ -98,7 +104,9 @@ export PMC_DB_USER=${POSTGRESQL_USER}
 export PMC_DB_PASSWORD=${POSTGRESQL_PASSWORD}
 export PMC_DB_HOST=localhost
 export S3_KEY=${S3_SECRET_KEY}
-export S3_SECRET=${S3_ACCESS_SECRET}" > "${VARFILE}"
+export S3_SECRET=${S3_ACCESS_SECRET}
+XERO_CONSUMER_KEY=${XERO_CONSUMER_KEY}
+XERO_SECRET_KEY=${XERO_SECRET_KEY}" > "${VARFILE}"
 "${CHOWN}" root:root "${VARFILE}"
 "${CHMOD}" 711 "${VARFILE}"
 
@@ -330,8 +338,13 @@ echo "
       passenger_env_var PMC_DB_USER \"${POSTGRESQL_USER}\";
       passenger_env_var PMC_DB_PASSWORD \"${POSTGRESQL_PASSWORD}\";
       passenger_env_var PMC_DB_HOST \"localhost\";
+      passenger_env_var S3_REGION \"${S3_REGION}\";
+      passenger_env_var S3_BUCKET \"${S3_BUCKET}\";
       passenger_env_var S3_KEY \"${S3_SECRET_KEY}\";
       passenger_env_var S3_SECRET \"${S3_ACCESS_SECRET}\";
+      passenger_env_var xero_consumer \"${XERO_CONSUMER_KEY}\";
+      passenger_env_var xero_secret \"${XERO_SECRET_KEY}\";
+      passenger_env_var xero_cert_location \"config/xero_privatekey.pem\";
     }
 }" >> /etc/nginx/nginx.conf
 

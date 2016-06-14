@@ -16,8 +16,8 @@ Dragonfly.app.configure do
 
   else
     datastore :s3,
-      region: 'ap-southeast-2',
-      bucket_name: 'personalmasterclass-dev',
+      region: Figaro.env.s3_region,
+      bucket_name: Figaro.env.s3_bucket,
       access_key_id: Figaro.env.s3_key,
       secret_access_key: Figaro.env.s3_secret,
       url_scheme: 'https'
