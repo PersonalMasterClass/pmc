@@ -74,7 +74,11 @@ private
   end
 
   def presenter_logged_in
-    redirect_to root_url unless current_user.presenter
+    if !current_user
+      redirect_to root_url
+    elsif !current_user.presenter
+      redirect_to root_url
+    end
   end
 
 end
