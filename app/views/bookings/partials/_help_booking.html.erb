@@ -1,0 +1,13 @@
+<% if @booking.help_required && !current_user.presenter? %>
+  <span>
+    Help Required 
+    <!-- TODO: MAKE THIS PRETTY -->
+    <%= link_to fa_icon("times"), cancel_bookings_help_path(@booking), class:"btn btn-default btn-xs" %>
+  </span>
+<% end %>
+
+<% if current_user.customer? && !current_user.suspended? %>  
+  <% if !@booking.help_required %>
+      <%= link_to "Help me choose", bookings_help_path(@booking), class: 'btn btn-default' if @booking.presenters.count > 1 %>
+  <% end %>
+<% end %>

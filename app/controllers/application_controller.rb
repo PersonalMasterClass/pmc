@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_action :is_suspended?
-
+  before_action :profile_created?
   # protected
 
 #   def configure_permitted_parameters
@@ -29,6 +29,17 @@ class ApplicationController < ActionController::Base
         if current_user.suspended?
           flash[:danger] = "You have been suspended!"
           sign_out(current_user)
+        end
+      end
+    end
+
+    def profile_created?
+      if current_user
+        if current_user.presenter
+          if !current_user.presenter.presenter_profile
+            flash[:info] = "Before you can do this, you must create your profile"
+            redirect_to new_presenter_profile_path(current_user.presenter)
+          end
         end
       end
     end

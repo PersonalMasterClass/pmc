@@ -12,10 +12,11 @@ $(document).on('ready page:load', function(){
 						var array = data.error ? [] : $.map(data, function(m) {
 							return {
 								value: m.school_name,
-								// label: m.id
+								id: m.id
 							};
 						});
 						response(array);
+						
 					});
 				},
 				focus: function(event, ui) {
@@ -23,18 +24,27 @@ $(document).on('ready page:load', function(){
 					// event.preventDefault();
 				},
 				select: function(event, ui) {
-
+					$("#school_id").val(ui.item.id)
 					// prevent autocomplete from updating the textbox
 					// event.preventDefault();
 					// navigate to the selected item's url
 					// window.open(ui.item.url);
 				}
 			});
+			
+			// clear out the subject ID field if the search field is cleared
+			$("#school_search").blur(function() {
+				if(!$(this).val()) {
+					$("#school_id").val("");
+				}
+			});
 
 			$("#vit_load_pic").hide();
+			$("#failed_vit_validation_link").hide();
 
-			$("#customer_vit_number,#presenter_vit_number").change(function(){				
+			$("#customer_vit_number,#presenter_vit_number, #customer_first_name, #customer_last_name, #presenter_first_name, #presenter_last_name").change(function(){				
 				$("#vit_load_pic").show();
+				$("#failed_vit_validation_link").hide();
 			    $.ajax({
 						type: "GET",
 						url: "/registration/vit_validation",
@@ -43,14 +53,12 @@ $(document).on('ready page:load', function(){
 						success: function(data) {
 								if (data == true){
 									$("#customer_vit_number, #presenter_vit_number").css("background-color", "#55ff55");
-									$("#vit_load_pic").hide();
 								}
 								else{
 									$("#customer_vit_number, #presenter_vit_number").css("background-color", "pink");
-									$("#vit_load_pic").hide();
+									$("#failed_vit_validation_link").show();
 								}
-					    // for debug purposes
-						// console.log(data);
+								$("#vit_load_pic").hide();
 						}
 					});
 			});

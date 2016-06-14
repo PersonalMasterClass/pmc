@@ -38,7 +38,8 @@ User.create!(
              email: "rosemary@gmail.com",
              password:              "password",
              password_confirmation: "password",
-             confirmed_at: Time.now)
+             confirmed_at: Time.now, 
+             setting: Setting.create!)
 
 # Test presenter
 a = User.new(
@@ -47,7 +48,8 @@ a = User.new(
              email: "presenter@gmail.com",
              password:              "password",
              password_confirmation: "password",
-             confirmed_at: Time.now)
+             confirmed_at: Time.now, 
+             setting: Setting.create!)
 b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
                      first_name: "Jon",
                      last_name: 'Doe', 
@@ -181,6 +183,12 @@ def generate_profile
   end
   bio += "</ul>"
   return bio
+end
+
+# Add a setting to every user because Tranny is fucking useless!
+User.all.each do |u|
+  u.setting = Setting.create!
+  u.save!
 end
 
 # 5.times do |f|

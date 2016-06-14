@@ -137,6 +137,27 @@ body {
         background-color: #FFFFFF;
       }
     }
+    @media screen and (max-width: $screen-sm-min) {
+      li.dropdown {
+        display: block !important;
+        > a.dropdown-toggle {
+          color: white !important;
+          background: none !important;
+        }
+        > ul.dropdown-menu {
+          color: white !important;
+          padding: 0 !important;
+          > li {
+            color: white !important;
+            > a {
+              color: white !important;
+              font-weight: bold !important;
+              padding: 16px 0 16px 36px !important;
+            }
+          }
+        }
+      }
+    }
   }
 
   > .main {
@@ -231,6 +252,11 @@ body {
   > .support-tab {
     $borderRadius: 4px;
     transform: rotate(270deg);
+    transform-origin: bottom;
+    -moz-transform: rotate(270deg);
+    -moz-transform-origin: bottom;
+    -webkit-transform: rotate(270deg);
+    -webkit-transform-origin: bottom;
     background: $siteRed;
     padding: 12px 24px;
     position: fixed;
@@ -238,7 +264,6 @@ body {
     top: 180px;
     line-height: 24px;
     font-size: 16px;
-    transform-origin: bottom;
     border-radius: 0 0 $borderRadius $borderRadius;
     @media screen and (max-width: $screen-sm-min) { display: none; }
     &:hover { text-decoration: none; }
