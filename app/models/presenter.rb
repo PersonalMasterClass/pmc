@@ -13,6 +13,7 @@ class Presenter < ActiveRecord::Base
   validates :vit_number, format: /\A^\d{6}$\Z/
   validate :vit_number_must_be_valid
   validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
+#  validates :rate, numericality: true
 
   # validates :rate, numericality: true
   
@@ -22,7 +23,7 @@ class Presenter < ActiveRecord::Base
   # Validate presenter's VIT number
   def vit_number_must_be_valid
     unless VitValidation.check_vit(first_name, last_name, vit_number)
-      errors.add(:vit_number, "could not be found on the vit register.")
+      errors.add(:vit_number, "could not be found on the VIT register.")
     end
   end
 

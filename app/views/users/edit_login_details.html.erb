@@ -1,0 +1,33 @@
+<h1>Update your Email/Password</h1>
+
+<% unless @errors.nil? || @errors.empty? %>
+	<div class="alert alert-danger ">
+	  <ul>
+	    <% @errors.each do |err|%>
+	    <li><%= err %></li>
+	    <%end %>
+	  </ul>
+	  </div>
+<% end %>
+
+<%= form_tag user_update_login_details_path do %>
+<div class="form-group">
+      <%= label_tag :email %><br />
+      <%= text_field_tag :email, current_user.email, autofocus: true, class: "form-control" %>
+    </div>
+<div class="form-group">
+      <%= label_tag :old_password %><br />
+      <%= text_field_tag :old_password, nil, type: "password", autofocus: true, class: "form-control" %>
+    </div>
+<div class="form-group">
+      <%= label_tag :password %><br />
+      <%= text_field_tag :password, nil, type: "password", autofocus: true, class: "form-control" %>
+</div>
+<div class="form-group">
+      <%= label_tag :password_confirmation %><br />
+      <%= text_field_tag :password_confirmation, nil, type: "password", autofocus: true, class: "form-control" %>
+</div>
+<div class="actions">
+      <%= submit_tag "Save Changes", class: "btn btn-default" %>
+</div>
+<% end %>

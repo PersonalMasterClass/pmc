@@ -12,9 +12,15 @@
     <%= link_to "Availabilities", presenter_availabilities_path(current_user.presenter) %>
   </li>
   <li role="presentation" >
+    <%= link_to "Presenter Edit Details", presenter_edit_details_path(current_user.presenter) %>
+  </li>
+  <li role="presentation" class="<%= new_booking_active?%>">
+    <%= link_to "Change Email/Password", user_edit_login_details_path(current_user.id) %>
+  </li>
     <%= link_to "Enquiries", enquiries_path%>
   </li>
   <li role="presentation" >
     <%= link_to "Settings", edit_setting_path(current_user.setting)%>
   </li>
+</ul>
 <% end %>
