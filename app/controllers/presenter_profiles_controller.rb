@@ -117,7 +117,7 @@ class PresenterProfilesController < ApplicationController
               @presenter_profile.update_attribute(:status, :pending_admin)
               flash[:info] = "Profile changes submitted to admin for approval"
               notify_admin_profile_changes(@presenter)
-              redirect_to presenters_profile_path
+              redirect_to presenter_profile_path
             end
           else # No changes were made
             @presenter_profile.bio_edit = ''

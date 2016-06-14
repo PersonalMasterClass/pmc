@@ -51,7 +51,7 @@ class Notification < ActiveRecord::Base
 		notification = Notification.create(message: message, reference: reference)
 		booking.presenters.each do |presenter|
 			presenter.user.notifications << notification
-			BookingMailer.canceled_booking(presenter.user, message, reference).deliver_now
+			BookingMailer.cancel_booking(presenter.user, message, reference).deliver_now
 		end
 		booking.customers.each do |customer|
 			customer.user.notifications << notification
