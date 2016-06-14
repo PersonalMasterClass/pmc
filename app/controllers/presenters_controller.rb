@@ -1,19 +1,12 @@
 class PresentersController < ApplicationController
   skip_before_filter :profile_created?
-	def index
-    if current_user.nil?
-      redirect_to root_url
-      return
-    end
-    unless current_user.presenter?
-      @presenter = current_user.presenter
-      @upcoming = Booking.upcoming(current_user) 
-      @bookings = Booking.suggested(current_user)
-      @bids = current_user.presenter.bids
-    else
-      redirect_to root_url
-    end
+	before_filter :presenter_logged_in
 
+  def index
+    @presenter = current_user.presenter
+    @upcoming = Booking.upcoming(current_user) 
+    @bookings = Booking.suggested(current_user)
+    @bids = current_user.presenter.bids
 	end
 	
   def new
@@ -76,8 +69,12 @@ private
 
   end
 
-def has_access
-      redirect_to root_url unless (current_user.user_type == 'admin' || current_user.presenter == Presenter.find(params[:id]))
-    end
+  def has_access
+    redirect_to root_url unless (current_user.user_type == 'admin' || current_user.presenter == Presenter.find(params[:id]))
+  end
+
+  def presenter_logged_in
+    redirect_to root_url unless current_user.presenter
+  end
 
 end
