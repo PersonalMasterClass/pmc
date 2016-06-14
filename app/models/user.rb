@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   after_create :send_call_to_action_notification
   after_create :send_biannual_update_notification
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   validates :email, presence: true

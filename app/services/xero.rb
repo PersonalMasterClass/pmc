@@ -3,6 +3,11 @@
 	PRESENTER_RATE = "003"
 	SERVICE_FEE = "001"
 
+	# set an initial accounting ref to the user id.
+	def self.set_accounting_ref(user)
+		user.accounting_ref = user.id.to_s
+		user.save
+	end
 
 	# add school as Xero contact
 	def self.add_school_account(customer)
@@ -10,6 +15,10 @@
 			dept = ""
 			if customer.department
 				dept = customer.department 
+			end
+
+			if customer.user.accounting_ref.nil?
+				set_accounting_ref(customer.user)
 			end
 
 			contact = connect.Contact.build(:name => "#{customer.school_info.school_name} #{dept}")
@@ -21,10 +30,15 @@
 			contact.add_phone(:type => 'DEFAULT', :number => customer.phone_number)
 			contact.add_phone(:type => 'DDI', :number => customer.school_info.phone_number)
 			contact.email_address = customer.user.email
-			contact.account_number = customer.user.id
+			contact.account_number = customer.user.accounting_ref
 			contact.save
 		rescue Xeroizer::ApiException => e
-			return e.message
+			# Create a new accounting reference is there is a clash in the accounting system
+			if e.message.include? "ValidationException"
+				customer.user.accounting_ref = (rand customer.user.accounting_ref.to_i..customer.user.accounting_ref.to_i * customer.user.accounting_ref.to_i).to_s
+				customer.save
+				add_school_account(customer)
+			end
 		end
 	end
 
@@ -36,13 +50,17 @@
 				return false
 			end
 
+			if presenter.user.accounting_ref.nil?
+				set_accounting_ref(presenter.user)
+			end
+
 			contact = gateway.Contact.build(:name => "PRESENTER: #{presenter.first_name} #{presenter.last_name}" )
 
 
 			contact.first_name = presenter.first_name
 			contact.last_name = presenter.last_name
 			contact.email_address = presenter.user.email
-			contact.account_number = presenter.user.id
+			contact.account_number = presenter.user.accounting_ref
 			contact.add_phone(:type => 'DEFAULT', :number => presenter.phone_number)
 
 			if(presenter.abn_number)
@@ -50,7 +68,11 @@
 			end
 			contact.save
 		rescue Xeroizer::ApiException => e
-			return e.message
+			if e.message.include? "ValidationException"
+				presenter.user.accounting_ref = (rand presenter.user.accounting_ref.to_i..presenter.user.accounting_ref.to_i * presenter.user.accounting_ref.to_i).to_s
+				presenter.save
+				add_presenter_account(presenter)
+			end
 		end
 		return true
 	end
@@ -62,13 +84,13 @@
 			if !connect
 				return false
 			end
-			contact = connect.Contact.all(:where => {:account_number => presenter.user.id.to_s}).first
+			contact = connect.Contact.all(:where => {:account_number => presenter.user.accounting_ref}).first
 			
 			
 			contact.first_name = presenter.first_name
 			contact.last_name = presenter.last_name
 			contact.email_address = presenter.user.email
-			contact.account_number = presenter.user.id
+			contact.account_number = presenter.user.accounting_ref
 			contact.add_phone(:type => 'DEFAULT', :number => presenter.phone_number)
 
 			if(presenter.abn_number)
@@ -94,14 +116,14 @@
 				return false
 			end
 			
-			contact = gateway.Contact.all(:where => {:account_number => customer.user.id.to_s}).first
+			contact = gateway.Contact.all(:where => {:account_number => customer.user.accounting_ref.to_s}).first
 			
 			
 			contact.name = "#{customer.school_info.school_name} #{dept}"
 			contact.first_name = customer.first_name
 			contact.last_name = customer.last_name
 			contact.email_address = customer.user.email
-			contact.account_number = customer.user.id
+			contact.account_number = customer.user.accounting_ref
 			contact.add_phone(:type => 'DEFAULT', :number => customer.phone_number)
 
 			contact.save
@@ -118,7 +140,7 @@
 			return []
 		end
 		
-		account = gateway.Contact.all(:where =>{:account_number => user.id}).first
+		account = gateway.Contact.all(:where =>{:account_number => user.accounting_ref}).first
 		# 'Contact.ContactID.ToString()=="cd09aa49-134d-40fb-a52b-b63c6a91d712"'
 		search = 'Contact.ContactID.ToString() == "' + account.id + '"'
 		x=  gateway.Invoice.all(:where => search)
@@ -149,7 +171,7 @@
 	# Bill a school based on contribution
 	def self.charge_school(booking, gateway, customer, share)
 		billable_minutes = booking.duration_minutes.to_f / 100 * share
-		account = gateway.Contact.all(:where =>{:account_number => customer.user.id}).first
+		account = gateway.Contact.all(:where =>{:account_number => customer.user.accounting_ref}).first
 
 		inv = gateway.Invoice.build(:contact => account, :line_amount_types => "Exclusive")
 
@@ -175,7 +197,7 @@
 
 	# Create a Xero bill (Accounts Payable) to credit the presenter their rate
 	def self.pay_presenter(booking, gateway)
-		presenter_account = gateway.Contact.all(:where => {:account_number => booking.chosen_presenter.user.id.to_s}).first
+		presenter_account = gateway.Contact.all(:where => {:account_number => booking.chosen_presenter.user.accounting_ref.to_s}).first
 		p_inv = gateway.Invoice.build(:contact => presenter_account, :line_amount_types => "Exclusive")
 	
 		p_inv.type = "ACCPAY"
