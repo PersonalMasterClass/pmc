@@ -4,7 +4,7 @@
 		<%= edit_presenter_profile_link(current_user.presenter, "btn btn-primary", "Create") %>
 	</div>
 <% else %>		
-	<%= render 'presenters/partials/rate'%>
+	<%= render 'presenters/partials/rate' unless @presenter.rate.present? %>
 <% end %>
 <div class = "col-md-12">
 	<h2> Presenter Dashboard </h1>

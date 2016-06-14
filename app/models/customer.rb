@@ -36,7 +36,7 @@ class Customer < ActiveRecord::Base
     shared_bookings.each do |booking|
       #send notification to owner
       booking.customers.delete(self)
-      Notification.send_message(booking.creator.user, "Another school has been removed from your booking", "/bookings/#{booking}")
+      Notification.send_message(booking.creator.user, "Another school has been removed from your booking", "/bookings/#{booking}", :booking)
     end
   end
 

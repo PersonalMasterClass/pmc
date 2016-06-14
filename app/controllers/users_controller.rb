@@ -54,7 +54,7 @@
     previous_status = user.status
     user.status = "approved"
     user.save
-    Notification.send_message(user, "Your account has been approved!", "")
+    Notification.send_message(user, "Your account has been approved!", "", :system)
     if user.presenter.present?
       flash[:success] = "#{user.presenter.first_name} #{user.presenter.last_name}'s
                         account has been approved."
@@ -73,7 +73,7 @@
     user = User.find(params[:id])
     user.status = "suspended"
     user.save
-    Notification.send_message(user, "Your account has been suspended", "")
+    Notification.send_message(user, "Your account has been suspended", "", :system)
     if user.presenter.present?
       user.presenter.remove_upcoming_bookings
       user.presenter.remove_all_bids

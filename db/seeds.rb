@@ -73,10 +73,10 @@ c = User.new(
              password:              "password",
              password_confirmation: "password",
              confirmed_at: Time.now)
-d = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
-                     first_name: 'Stacey',
-                     last_name: 'Lawler', 
-                     vit_number: '184539',  
+d = Customer.create(phone_number: "0411111111", 
+                     first_name: "Stacey",
+                     last_name: "Lawler", 
+                     vit_number: "184539",  
                      abn_number: Faker::Number.number(11)) 
 d.school_info = SchoolInfo.all.sample
 setting = Setting.create!
