@@ -1,0 +1,19 @@
+<div align="center">
+  <h3>Send a message to Personal Master Class</h3>
+
+
+  <%= simple_form_for @contact, :url => "/registration/contact_form_create" do |f| %>
+    </
+    <%= f.input :name, :required => true %>
+    <%= f.input :email, :required => true %>
+    <%= f.input :message, :as => :text, :required => true %>
+
+    <div>
+      </br>
+      <%= f.button :submit, 'Send message', :class=> "btn btn-primary" %>
+      </br>
+      </br>
+
+    </div>
+  <% end %>
+</div>

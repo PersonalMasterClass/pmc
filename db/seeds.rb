@@ -185,6 +185,12 @@ def generate_profile
   return bio
 end
 
+# Add a setting to every user because Tranny is fucking useless!
+User.all.each do |u|
+  u.setting = Setting.create!
+  u.save!
+end
+
 # 5.times do |f|
 #   a = User.new(
 #              user_type: :customer,

@@ -100,6 +100,61 @@
     @presenters = Presenter.all
   end
 
+  def edit_login_details
+  end
+
+  def update_login_details
+    @errors = [] 
+    success = []
+    usr = current_user
+
+    # verify current password
+    valid_password = current_user.valid_password? params[:old_password]
+
+    if !valid_password 
+      @errors << "Current password is invalid"
+      render 'edit_login_details'
+      return
+    end
+
+    # update email
+    if params[:email] != "" && params[:email] != current_user.email
+      if current_user.update(email: params[:email])
+        success << "Your email has been updated."
+      else
+        @errors << "Your email address is not valid"
+      end
+    end
+    
+    # update password
+    if params[:password] != "" && params[:password_confirmation] != "" && valid_password
+      if params[:password] == params[:password_confirmation]
+        if current_user.update(password: params[:password])
+           success << "Your password has been updated."
+        else
+          @errors << "New password is not valid"
+        end
+      else
+        @errors << "Password and password confirmation do not match"
+      end
+    elsif params[:password] != "" || params[:password_confirmation] != ""
+      @errors << "Password and password confirmation do not match"
+    end
+    
+    if !@errors.empty?
+      render 'edit_login_details'
+      return
+    end
+
+    if !success.empty?
+      sign_in usr, :bypass => true
+      flash[:success] = success.to_s.delete '[]"'
+      redirect_to root_url
+    else
+      render 'edit_login_details'
+    end
+  end
+
   private
 
   def admin_only

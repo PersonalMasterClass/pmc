@@ -21,6 +21,8 @@ mount ResqueWeb::Engine => 'admin/resque'
     get 'admin/' => 'users#index'
     get 'admin/pending_registrations' => 'users#registrations'
     get 'users/:id' => 'users#show', as: "user"
+    get 'users/:id/edit_login_details' => 'users#edit_login_details', as: 'user_edit_login_details'
+    post 'users/update_login_details' => 'users#update_login_details', as: 'user_update_login_details'
   
   #resources :customers, only: [:index, :show], as: "schools" 
   get 'presenters' => 'presenters#index'
@@ -40,9 +42,18 @@ mount ResqueWeb::Engine => 'admin/resque'
     get 'registration/schools' => 'users/registrations#new_customer', as: "registration_customers"
     post 'registration/schools' => 'users/registrations#create_customer' #as: "registrations_customers"
     get 'registration/vit_validation' => 'users/registrations#vit_validation'
+    get 'registration/submit_form' => 'users/registrations#submit_form' 
+    get 'registration/contact_form' => 'users/registrations#contact_form'  
+    post 'registration/contact_form_create' => 'users/registrations#contact_form_create'
+
+    get 'customers/:id/edit' => 'customers#edit', as: "edit_customer"
+    patch 'customers/:id/update' => 'customers#update'
+
+    get 'customers/:id/edit/contact_form' => 'customers#contact_form'
+    post 'customers/:id/update/contact_form_create' => 'customers#contact_form_create'
   end
 
-
+  
   get "/school_info/find" => 'school_info#find'
 
   get "school_info/:id" => 'school_info#show', as: 'school_info'
@@ -79,6 +90,11 @@ mount ResqueWeb::Engine => 'admin/resque'
     get 'rate' => 'presenters#rate'
     
     post 'remove_subject' => 'presenters#remove_subject'
+
+    get 'edit_details' => 'presenters#edit_details', as: "edit_details"
+#    get 'presenters/:id/edit_details' => 'presenters#edit_details', as: "edit_details"
+    patch 'update_details' => 'presenters#update_details', as: "update_details"
+
   end
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
   

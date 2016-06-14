@@ -1,9 +1,19 @@
 class PresentersController < ApplicationController
   skip_before_filter :profile_created?
 	def index
-    @upcoming = Booking.upcoming(current_user) 
-    @bookings = Booking.suggested(current_user)
-    @bids = current_user.presenter.bids
+    if current_user.nil?
+      redirect_to root_url
+      return
+    end
+    unless current_user.presenter?
+      @presenter = current_user.presenter
+      @upcoming = Booking.upcoming(current_user) 
+      @bookings = Booking.suggested(current_user)
+      @bids = current_user.presenter.bids
+    else
+      redirect_to root_url
+    end
+
 	end
 	
   def new
@@ -43,5 +53,31 @@ class PresentersController < ApplicationController
     @subject.presenters.delete(current_user.presenter)
     redirect_to presenter_edit_subjects_path
   end
+
+  def edit_details 
+    @presenter_id = current_user.presenter
+    @presenter = Presenter.find(@presenter_id)
+  end
+
+  def update_details
+    @presenter = current_user.presenter
+    @presenter.school_info = SchoolInfo.find(params[:school_id])
+    if @presenter.update(presenter_update_params)
+      redirect_to root_url
+    else
+      render 'edit_details'
+    end
+  end
+
+private
+  def presenter_update_params
+    params.require(:presenter).permit(:first_name, :last_name, :phone_number, :vit_number, :department, :contact_title, 
+                                       :school_id)
+
+  end
+
+def has_access
+      redirect_to root_url unless (current_user.user_type == 'admin' || current_user.presenter == Presenter.find(params[:id]))
+    end
 
 end

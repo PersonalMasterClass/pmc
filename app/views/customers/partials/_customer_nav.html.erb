@@ -1,4 +1,5 @@
 <% if current_user.customer? %>
+
   <li role="presentation" class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" id="bookings-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
       Bookings <span class="caret"></span>
@@ -15,12 +16,29 @@
   <li role="presentation" >
     <%= link_to "Enquiries", enquiries_path%>
   </li>
-  <li role="presentation">
-    <%= link_to "Subscriptions", subscriptions_path %>
-  </li>  
-  <li role="presentation" >
-    <%= link_to "Settings", edit_setting_path(current_user.setting)%>
-  </li>
+  
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" id="bookings-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      Settings <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="bookings-dropdown">
+      <li role="presentation" >
+        <%= link_to "Notification Settings", edit_setting_path(current_user.setting)%>
+      </li>
+      <li>
+        <%= link_to "Update Details", edit_customer_path(current_user.customer) %>
+      </li>
+      <li role="presentation" class="<%= new_booking_active?%>">
+        <%= link_to "Change Email/Password", user_edit_login_details_path(current_user.id) %>
+      </li>
+      <li role="presentation">
+        <%= link_to "Subject Subscriptions", subscriptions_path %>
+      </li> 
+    </ul>
+  </li> 
+  
+  
+
 <% end %>
 
 
