@@ -17,7 +17,7 @@ class Customer < ActiveRecord::Base
 
   def vit_number_must_be_valid
     unless VitValidation.check_vit(first_name, last_name, vit_number)
-      errors.add(:vit_number, "could not be found on the vit register.")
+      errors.add(:vit_number, "could not be found on the VIT register.")
     end
   end
 
@@ -27,7 +27,7 @@ class Customer < ActiveRecord::Base
     #remove created bookings
       #send notifications
     created_bookings.each do |booking|
-      Notification.canceled_booking(booking, "/bookings/#{booking}")
+      Notification.cancelled_booking(booking, "/bookings/#{booking}")
       booking.destroy
     end 
     #remove shared bookings
@@ -36,7 +36,7 @@ class Customer < ActiveRecord::Base
     shared_bookings.each do |booking|
       #send notification to owner
       booking.customers.delete(self)
-      Notification.send_message(booking.creator.user, "Another school has been removed from your booking", "/bookings/#{booking}")
+      Notification.send_message(booking.creator.user, "Another school has been removed from your booking", "/bookings/#{booking}", :booking)
     end
   end
 

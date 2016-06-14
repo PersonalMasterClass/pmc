@@ -1,12 +1,14 @@
 include ActionView::Helpers::SanitizeHelper
 
 class PresenterProfilesController < ApplicationController
+    skip_before_filter :profile_created?
     before_filter :correct_user, :only => [:new, :create]
     before_filter :admin_or_presenter_logged_in, :only => [:edit, :update]
     before_filter :logged_in_user, :only => [:show]
     before_filter :is_admin, :only => [:pending]
     after_filter :display_creator_actions, :only => [:show]
 
+  # View Presenter Profile 
   def show
     @presenter = find_presenter
     @profile = @presenter.presenter_profile
@@ -21,6 +23,7 @@ class PresenterProfilesController < ApplicationController
     end
   end
 
+  # Admin only view for all profile changes requiring approval
   def pending
     @unapproved_profiles = PresenterProfile.unapproved_profiles
     @draft_profiles = PresenterProfile.admin_drafts
@@ -28,7 +31,7 @@ class PresenterProfilesController < ApplicationController
   end
 
   def new
-    @help = PageContent.find_by_name("profile-help")
+    @help = PageContent.find_by_name("profile-help") # "What to include in profile" Content
     @presenter = find_presenter
     if @presenter.presenter_profile.nil?
       @presenter_profile = @presenter.build_presenter_profile(status: :new_profile)
@@ -68,8 +71,9 @@ class PresenterProfilesController < ApplicationController
     end 
   end
 
+  # Edit profile action for both presenters and admin
   def edit
-    @help = PageContent.find_by_name("profile-help")
+    @help = PageContent.find_by_name("profile-help") # "What to include in profile" Content
     @presenter = find_presenter
     @presenter_profile = @presenter.presenter_profile
     if @presenter_profile.nil?
@@ -86,7 +90,8 @@ class PresenterProfilesController < ApplicationController
       end
     end
   end
-
+  
+  # Update profile action for both presenters and admin
   def update
     @presenter = find_presenter
     @presenter_profile = @presenter.presenter_profile
@@ -94,7 +99,6 @@ class PresenterProfilesController < ApplicationController
     if @presenter_profile.nil?
       redirect_to new_presenter_profile_path(@presenter)
     else
-
       new_profile = profile_params
       new_profile[:bio_edit] = sanitize_bio(new_profile[:bio_edit])
       if !new_profile.has_key?(:picture_edit)
@@ -108,15 +112,15 @@ class PresenterProfilesController < ApplicationController
             if current_user.user_type == "admin"
               @presenter_profile.update_attribute(:status, :pending_presenter)
               flash[:info] = "Profile changes submitted to presenter for approval"
-              Notification.send_message(@presenter.user, "You have pending profile changes to review from an Admin", presenter_profile_path(@presenter))
+              Notification.send_message(@presenter.user, "You have pending profile changes to review from an Admin", presenter_profile_path(@presenter), :system)
               redirect_to admin_path
             else #current user is profile owner
               @presenter_profile.update_attribute(:status, :pending_admin)
               flash[:info] = "Profile changes submitted to admin for approval"
               notify_admin_profile_changes(@presenter)
-              redirect_to presenters_profile_path
+              redirect_to presenter_profile_path
             end
-          else
+          else # No changes were made
             @presenter_profile.bio_edit = ''
             @presenter_profile.picture_edit = nil
             flash[:warning] = 'No changes were made, please make changes before pressing submit'
@@ -134,7 +138,7 @@ class PresenterProfilesController < ApplicationController
             redirect_to presenters_path
           else #current_user.admin?
             @presenter_profile.update_attribute(:status, :draft_admin)
-            flash[:info] = "Profile draft saved for #{@presenter.first_name}'s profile. Go to pending profile changes to continue editing."
+            flash[:info] = "Profile draft saved for #{@presenter.first_name}'s profile."
             redirect_to admin_path
           end
         else
@@ -147,6 +151,8 @@ class PresenterProfilesController < ApplicationController
   def destroy
   end
 
+  # Action to approve changes to a presenters profile
+  # Used by both presenters and admin
   def approve
     #get profile, and profile owner
     presenter = find_presenter
@@ -159,14 +165,14 @@ class PresenterProfilesController < ApplicationController
       if current_user.user_type == "admin"
         if profile.approve
           flash[:info] = "This profile has been approved"
-          Notification.send_message(presenter.user, "Your profile changes have been approved.", presenter_profile_path(presenter))
+          Notification.send_message(presenter.user, "Your profile changes have been approved.", presenter_profile_path(presenter), :system)
           redirect_to presenter_profile_path(presenter)
         else
           flash[:danger] = "Something went wrong"
           redirect_to presenter_profile_path(presenter)
         end
         
-      else
+      else #Incorrect user
         flash[:info] = "Profile changes are waiting for approval from admin."
         redirect_to root_url
       end
@@ -191,7 +197,6 @@ class PresenterProfilesController < ApplicationController
       flash[:warning] = "Profile is already approved"
       redirect_to root_url
     end
-
   end
 
  
@@ -212,9 +217,9 @@ class PresenterProfilesController < ApplicationController
     def find_presenter
       Presenter.find(params[:presenter_id])
     end
-
+    # Sends Admin notification of a changed profile. 
     def notify_admin_profile_changes(presenter)
-      Notification.notify_admin("#{presenter.first_name} #{presenter.last_name} has submitted a profile for approval", presenter_profile_path(presenter))
+      Notification.notify_admin("#{presenter.first_name} #{presenter.last_name} has submitted a profile for approval", presenter_profile_path(presenter), :system)
     end
 
     #before filters

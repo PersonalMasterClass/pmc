@@ -7,6 +7,7 @@
       <%= form_for resource, as: resource_name, url: registration_customers_path do |f| %>
         <%= devise_error_messages! %>
 
+
         <div class="form-group">
           <%= f.label :email %><br />
           <%= f.email_field :email, autofocus: true, class: "form-control" %>
@@ -43,17 +44,21 @@
             <%= customer_fields.text_field :last_name, value: if_params_customer?(:last_name,params), autofocus: true, class: "form-control" %>
           </div>
 
+    <div class="form-group">
+      <%= customer_fields.label :vit_number, "VIT number" %><br />
+      <%= customer_fields.text_field :vit_number,  value: if_params_customer?(:vit_number,params), autofocus: true, :size =>"10", :maxlength=>"10", class: "form-control control-label" %>
+      <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
+      <span id="failed_vit_validation_link"><%= link_to("Contact Form", "contact_form", target: "new") %></span>
+    </div>
+ 
+    <div class="form-group">
+      <%= customer_fields.label :department %><br />
+      <%= customer_fields.text_field :department,  value: if_params_customer?(:department,params), autofocus: true, class: "form-control" %>
+    </div>
           <div class="form-group">
             <%= customer_fields.label :phone_number %><br />
             <%= customer_fields.text_field :phone_number, value: if_params_customer?(:phone_number,params), autofocus: true, class: "form-control" %>
           </div>
-
-          <div class="form-group">
-            <%= customer_fields.label :vit_number %><br />
-            <%= customer_fields.text_field :vit_number,  value: if_params_customer?(:vit_number,params), autofocus: true, :size =>"10", :maxlength=>"10", class: "form-control control-label" %>
-            <%= image_tag("progressanimation_mini.gif", :id=>'vit_load_pic') %>
-          </div>
-       
 
           <div class="form-group">
             <%= customer_fields.label :department %><br />

@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  skip_before_filter :profile_created?
   def index
     if current_user 
       if current_user.admin?

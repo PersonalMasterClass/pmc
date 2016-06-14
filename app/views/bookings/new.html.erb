@@ -1,3 +1,13 @@
+<% if @booking.errors.any? %>
+  <div> 
+    <h2> Errors </h2>
+    <ul>
+    <% @booking.errors.full_messages.each do |msg| %>
+      <li> <%= msg %> </li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
 <%= form_for @booking, url:  bookings_path do |b| %>
 
   <div class = "form-group">
@@ -22,11 +32,6 @@
   <div class = "form-group">
     <%= b.label :shared %>
     <%= check_box_tag :shared  %>    
-  </div>
-
-  <div class = "form-group">
-    <%= b.label "Days" %>
-    <%= b.number_field :period, :placeholder => "Duration to keep booking open", class: "form-control" %>  
   </div>
 
   <div class = "form-group">

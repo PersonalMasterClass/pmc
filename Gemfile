@@ -1,7 +1,14 @@
 source 'https://rubygems.org'
 
+# simple form
+gem 'simple_form'
+
+# mail form
+gem 'mail_form'
+
 # soft delete model
 gem "paranoia", "~> 2.0"
+
 # page scraper
 gem 'nokogiri'
 # enviroment variables
@@ -13,7 +20,7 @@ gem 'dragonfly-s3_data_store'
 gem "font-awesome-rails"
 #bio editor
 gem 'tinymce-rails'
-gem "bootstrap-switch-rails"
+gem 'bootstrap-switch-rails'
 # background jobs
 gem 'resque', :require => "resque/server"
 # schedule jobs

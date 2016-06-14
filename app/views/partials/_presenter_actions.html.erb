@@ -2,9 +2,12 @@
  <% unless @booking.presenters.include?(current_user.presenter) || @booking.chosen_presenter.present?%>
 	<div class = "container">
 		<%= form_tag(:controller => "bookings", :action => "set_bid", method: "post") do %>
-			<%= text_field_tag :rate %>
+			<div class="form-group">
+				<%= label_tag "Specify a rate($) per hour" %>
+				<%= number_field_tag :rate, nil, placeholder: "$/hour", class: "form-control" %>
+			</div>
 			<%= hidden_field_tag "id", params[:id]  %>
-			<%= submit_tag "Express interest", class: "btn btn-success" %>
+			<%= submit_tag "Place bid", class: "btn btn-success" %>
 		<% end %>
 	</div>
 	<% end %>

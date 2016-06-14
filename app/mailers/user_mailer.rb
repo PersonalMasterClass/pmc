@@ -6,4 +6,5 @@ class UserMailer < ApplicationMailer
     @url  = '/admin/pending_registrations'
 		mail(to: admin.email, subject: 'Presenter Registration Requires Approval.')
   end
+
 end

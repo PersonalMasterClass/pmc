@@ -6,6 +6,7 @@
                                     :customers,
                                     :presenters,
                                     :index]
+                                    
   
   # given a user, will redirect to the relevant profile
   # either presenter profile, or customer profile
@@ -20,7 +21,7 @@
     end
   end
   
-
+  # Admin Dashboard Action
   def index
     @pending_user_count = User.unapproved_customers.count
     @pending_profile_count = PresenterProfile.drafts_and_unapproved.count
@@ -36,7 +37,7 @@
     @profiles = PresenterProfile.drafts_and_unapproved.first(5)
 
     @upcoming_bookings = Booking.upcoming(current_user).first(5)
-    @help_bookings = Booking.upcoming(current_user).where(help_required: true).first(5)
+    @help_bookings = Booking.help_required.first(5)
 
   end
 
@@ -47,13 +48,13 @@
     @presenters = User.unapproved_presenters
     @customers = User.unapproved_customers
   end
-
+  # Action for admin to approve a user(both schools and presenters)
   def approve_user
     user = User.find(params["id"])
     previous_status = user.status
     user.status = "approved"
     user.save
-    Notification.send_message(user, "Your account has been approved!", "")
+    Notification.send_message(user, "Your account has been approved!", "", :system)
     if user.presenter.present?
       flash[:success] = "#{user.presenter.first_name} #{user.presenter.last_name}'s
                         account has been approved."
@@ -67,12 +68,12 @@
       redirect_to user_path(user)
     end
   end
-
+  # Action for admin to suspend a user(schools and presenters)
   def suspend_user
     user = User.find(params[:id])
     user.status = "suspended"
     user.save
-    Notification.send_message(user, "Your account has been suspended", "")
+    Notification.send_message(user, "Your account has been suspended", "", :system)
     if user.presenter.present?
       user.presenter.remove_upcoming_bookings
       user.presenter.remove_all_bids
@@ -85,7 +86,7 @@
     end
     redirect_to user_path(user)
   end
-
+  
   def suspended_users
     @customers = User.suspended_customers
     @presenters = User.suspended_presenters
@@ -97,6 +98,61 @@
 
   def presenters
     @presenters = Presenter.all
+  end
+
+  def edit_login_details
+  end
+
+  def update_login_details
+    @errors = [] 
+    success = []
+    usr = current_user
+
+    # verify current password
+    valid_password = current_user.valid_password? params[:old_password]
+
+    if !valid_password 
+      @errors << "Current password is invalid"
+      render 'edit_login_details'
+      return
+    end
+
+    # update email
+    if params[:email] != "" && params[:email] != current_user.email
+      if current_user.update(email: params[:email])
+        success << "Your email has been updated."
+      else
+        @errors << "Your email address is not valid"
+      end
+    end
+    
+    # update password
+    if params[:password] != "" && params[:password_confirmation] != "" && valid_password
+      if params[:password] == params[:password_confirmation]
+        if current_user.update(password: params[:password])
+           success << "Your password has been updated."
+        else
+          @errors << "New password is not valid"
+        end
+      else
+        @errors << "Password and password confirmation do not match"
+      end
+    elsif params[:password] != "" || params[:password_confirmation] != ""
+      @errors << "Password and password confirmation do not match"
+    end
+    
+    if !@errors.empty?
+      render 'edit_login_details'
+      return
+    end
+
+    if !success.empty?
+      sign_in usr, :bypass => true
+      flash[:success] = success.to_s.delete '[]"'
+      redirect_to root_url
+    else
+      render 'edit_login_details'
+    end
   end
 
   private

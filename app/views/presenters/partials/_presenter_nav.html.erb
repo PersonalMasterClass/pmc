@@ -1,20 +1,46 @@
 <% if current_user.presenter? %>
-  <li role="presentation" >
-  	<%= link_to "View Profile", presenter_profile_path(current_user.presenter) %>
+  <li role="presentation" class="dropdown">
+  	<a class="dropdown-toggle" data-toggle="dropdown" id="profile-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      Profile <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
+      <li role="presentation">
+        <%= link_to "View Profile", presenter_profile_path(current_user.presenter) %>
+      </li>
+      <li role="presentation">
+        <%= edit_presenter_profile_link(current_user.presenter,"", "Edit Profile") %>
+      </li>
+      <li role="presentation" >
+        <%= link_to "Edit Subjects", presenter_edit_subjects_path(current_user.presenter) %>
+      </li>
+      <li role="presentation" >
+        <%= link_to "Edit Availabilities", presenter_availabilities_path(current_user.presenter) %>
+      </li>
+      <li role="presentation" >
+        <%= link_to "Update Personal Details", presenter_edit_details_path(current_user.presenter) %>
+      </li>
+    </ul>
   </li>
-  <li role="presentation" >
-    <%= edit_presenter_profile_link(current_user.presenter) %>
-  </li>
-  <li role="presentation" >
-    <%= link_to "Subjects", presenter_edit_subjects_path(current_user.presenter) %>
-  </li>
-  <li role="presentation" >
-    <%= link_to "Availabilities", presenter_availabilities_path(current_user.presenter) %>
-  </li>
-  <li role="presentation" >
+
+  <li role="presentation">
+    <%= link_to "Past Bookings", past_bookings_path %>
+  </li>  
+  <li role="presentation">
     <%= link_to "Enquiries", enquiries_path%>
   </li>
-  <li role="presentation" >
-    <%= link_to "Settings", edit_setting_path(current_user.setting)%>
-  </li>
+
+
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" id="bookings-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      Settings <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="bookings-dropdown">
+      <li role="presentation" >
+        <%= link_to "Notification Settings", edit_setting_path(current_user.setting)%>
+      </li>
+      <li role="presentation" class="<%= new_booking_active?%>">
+        <%= link_to "Change Email/Password", user_edit_login_details_path(current_user) %>
+      </li>
+    </ul>
+  </li> 
 <% end %>
