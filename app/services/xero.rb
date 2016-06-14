@@ -14,7 +14,6 @@
 		if customer.nil?
 			return false
 		end
-		binding.pry
 		begin
 			dept = ""
 			if customer.department
