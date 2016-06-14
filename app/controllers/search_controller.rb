@@ -1,4 +1,4 @@
-require 'will_paginate/array'
+# require 'will_paginate/array'
 class SearchController < ApplicationController
 	before_filter :authorise_search, only: :index
 	
@@ -33,13 +33,14 @@ class SearchController < ApplicationController
 		    	if(!current_user.admin?)
 		    		@presenter = remove_non_profiles(@presenter)
 		    	end
-	    	else
-	    		@presenter = remove_non_profiles(@presenter)
-	    	end
-	    	@presenter = @presenter.paginate(:page => params[:page], :per_page => 3)
-	    	
+	    	end 
+	    	# @presenter = @presenter.paginate(:page => params[:page], :per_page => 3)
+	    	@presenter = Presenter.all.paginate(:page => params[:page], :per_page => 3)
 	
-  	end	
+	  	end	
+	  	
+
+	  	# @presenter = @presenter.paginate(:page => [:params], :per_page => 3)
 	  	
   end
   private
@@ -52,10 +53,9 @@ class SearchController < ApplicationController
   			session[:profile_count] = 0
   			return
   		elsif cookies.permanent[:unregistered] == session.id
-  			if session[:profile_count].to_i >= MAX_PROFILE_VIEWS 
+  			if session[:profile_count].to_i > MAX_PROFILE_VIEWS 
   				redirect_to registration_customers_path
 				end
-			else
   			redirect_to registration_customers_path
   		end
   	elsif current_user.presenter? 

@@ -1,7 +1,7 @@
 <div>
-  <% unless current_user.nil? %>
-    <%= render "presenters/info", object: @presenter %>
-  <% end %>
+  
+  <%= render "presenters/info", object: @presenter %>
+  
 </div>
 
 <div class="col-md-12">
@@ -31,8 +31,8 @@
   <% unless current_user.nil? %>
     <% if current_user.customer? && params[:booking_id].present? %>
       <%= render 'partials/customer_actions' %>
-      <%= render 'enquiries/partials/form' %>
     <%  end %>
   <% end %>
 
+<%= render 'enquiries/partials/form' %>
 </div>

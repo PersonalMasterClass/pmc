@@ -12,10 +12,8 @@
 
 		<div class="form-group">
 		  <%= text_field_tag :date_part, @search_params[:date_part], :placeholder => "Date", class: "form-control" %>
-		  <% unless current_user.nil? %>
-			  <% if current_user.admin? %>
-			  	<%= text_field_tag :time_part, @search_params[:time_part], :placeholder => "Time", class: "form-control" %>
-			  <% end %>
+		  <% if current_user.admin? %>
+		  	<%= text_field_tag :time_part, @search_params[:time_part], :placeholder => "Time", class: "form-control" %>
 		  <% end %>
 		</div>
 
