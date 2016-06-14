@@ -27,7 +27,7 @@ class Customer < ActiveRecord::Base
     #remove created bookings
       #send notifications
     created_bookings.each do |booking|
-      Notification.canceled_booking(booking, "/bookings/#{booking}")
+      Notification.cancelled_booking(booking, "/bookings/#{booking}")
       booking.destroy
     end 
     #remove shared bookings

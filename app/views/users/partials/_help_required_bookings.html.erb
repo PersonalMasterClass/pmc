@@ -16,7 +16,7 @@
     <% end %>
   </table>
   
-  <%= link_to "See all", bookings_path, class: "btn btn-primary" %>
+  <%= link_to "See all", bookings_path, class: "btn btn-primary" if @help_count > 5 %>
     
  
 <% end %>

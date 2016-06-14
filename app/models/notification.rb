@@ -32,7 +32,7 @@ class Notification < ActiveRecord::Base
   	end
 	end
 
-	def self.canceled_booking(booking, reference)
+	def self.cancelled_booking(booking, reference)
 		message = "One of your bookings have been cancelled"
 		notification = Notification.create(message: message, reference: reference)
 		booking.presenters.each do |presenter|

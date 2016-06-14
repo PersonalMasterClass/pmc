@@ -6,6 +6,7 @@
                                     :customers,
                                     :presenters,
                                     :index]
+                                    
   
   # given a user, will redirect to the relevant profile
   # either presenter profile, or customer profile
@@ -20,7 +21,7 @@
     end
   end
   
-
+  # Admin Dashboard Action
   def index
     @pending_user_count = User.unapproved_customers.count
     @pending_profile_count = PresenterProfile.drafts_and_unapproved.count
@@ -36,7 +37,7 @@
     @profiles = PresenterProfile.drafts_and_unapproved.first(5)
 
     @upcoming_bookings = Booking.upcoming(current_user).first(5)
-    @help_bookings = Booking.upcoming(current_user).where(help_required: true).first(5)
+    @help_bookings = Booking.help_required.first(5)
 
   end
 
@@ -47,7 +48,7 @@
     @presenters = User.unapproved_presenters
     @customers = User.unapproved_customers
   end
-
+  # Action for admin to approve a user(both schools and presenters)
   def approve_user
     user = User.find(params["id"])
     previous_status = user.status
@@ -67,7 +68,7 @@
       redirect_to user_path(user)
     end
   end
-
+  # Action for admin to suspend a user(schools and presenters)
   def suspend_user
     user = User.find(params[:id])
     user.status = "suspended"
@@ -85,7 +86,7 @@
     end
     redirect_to user_path(user)
   end
-
+  
   def suspended_users
     @customers = User.suspended_customers
     @presenters = User.suspended_presenters

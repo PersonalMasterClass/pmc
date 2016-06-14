@@ -11,7 +11,7 @@ class PageContentsController < ApplicationController
       flash[:success] = "Content updated"
       redirect_to @page_contents.url
     else
-      flash[:danger] = "invalid"
+      flash[:danger] = "Invalid"
       render 'edit'
     end
   end

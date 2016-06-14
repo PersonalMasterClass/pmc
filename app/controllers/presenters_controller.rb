@@ -1,19 +1,12 @@
 class PresentersController < ApplicationController
+  skip_before_filter :profile_created?
+	before_filter :presenter_logged_in
 
-	def index
-    if current_user.nil?
-      redirect_to root_url
-      return
-    end
-    unless current_user.presenter?
-      @presenter = current_user.presenter
-      @upcoming = Booking.upcoming(current_user) 
-      @bookings = Booking.suggested(current_user)
-      @bids = current_user.presenter.bids
-    else
-      redirect_to root_url
-    end
-
+  def index
+    @presenter = current_user.presenter
+    @upcoming = Booking.upcoming(current_user) 
+    @bookings = Booking.suggested(current_user)
+    @bids = current_user.presenter.bids
 	end
 	
   def new
@@ -29,15 +22,17 @@ class PresentersController < ApplicationController
 
   def rate
   end
+  # Action for presenter to set their default rate
   def set_rate
     @presenter = current_user.presenter
     @presenter.rate = params[:rate]
+    # TODO: Turn validation back on?
     @presenter.save(:validate => false)
     flash[:success] = "You have set your base rate to $#{@presenter.rate}"
     redirect_to presenters_path
   end
 
-  # add a subject to the presenter's subject
+  # add a subject to the presenter's subjects
   def add_subject
   	@subject = Subject.find_by_name(params[:name])
   	unless current_user.presenter.subjects.include?(@subject)
@@ -74,8 +69,12 @@ private
 
   end
 
-def has_access
-      redirect_to root_url unless (current_user.user_type == 'admin' || current_user.presenter == Presenter.find(params[:id]))
-    end
+  def has_access
+    redirect_to root_url unless (current_user.user_type == 'admin' || current_user.presenter == Presenter.find(params[:id]))
+  end
+
+  def presenter_logged_in
+    redirect_to root_url unless current_user.presenter
+  end
 
 end

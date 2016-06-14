@@ -1,4 +1,5 @@
 class AvailabilitiesController < ApplicationController
+	skip_before_filter :profile_created? 
 	def index
 		@availabilities = Availability.for_presenter(current_user.presenter)
 		# .find_each
