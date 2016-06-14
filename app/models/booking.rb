@@ -161,9 +161,10 @@ class Booking < ActiveRecord::Base
   def remaining_slots
     @count = 0
     self.booked_customers.each do |booked_customer|
-      @count += booked_customer.number_students 
+      @count += booked_customer.number_students.to_i
     end
     return self.cap - @count
+
   end
   private
   

@@ -95,9 +95,9 @@ c.save(:validate => false)
              password_confirmation: "password",
              confirmed_at: Time.now)
   presenter = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
-                               first_name: Faker::Name.first_name,
-                               last_name: Faker::Name.last_name, 
-                               vit_number: Faker::Number.number(6), 
+                               first_name: "Stacey",
+                               last_name: "Lawler", 
+                               vit_number: 184539, 
                                abn_number: Faker::Number.number(11) )
 
   presenter.school_info = SchoolInfo.all.sample
@@ -157,9 +157,9 @@ end
              password_confirmation: "password",
              confirmed_at: Time.now )
   customer = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
-                               first_name: Faker::Name.first_name,
-                               last_name: Faker::Name.last_name, 
-                               vit_number: Faker::Code.ean, 
+                               first_name: "Stacey",
+                               last_name: "Lawler", 
+                               vit_number: 184539, 
                                abn_number: Faker::Code.ean )
   customer.school_info = SchoolInfo.all.sample
   a.customer = customer
@@ -185,11 +185,6 @@ def generate_profile
   return bio
 end
 
-# Add a setting to every user because Tranny is fucking useless!
-User.all.each do |u|
-  u.setting = Setting.create!
-  u.save!
-end
 
 # 5.times do |f|
 #   a = User.new(
