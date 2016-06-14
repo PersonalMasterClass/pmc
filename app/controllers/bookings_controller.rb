@@ -19,7 +19,23 @@ class BookingsController < ApplicationController
       @subject_id = session[:search_params]["subject_id"]
       @date_part = session[:search_params]["date_part"]
       @time_part = session[:search_params]["time_part"]
+
       @presenter_id = params[:presenter_id]
+      
+      if (@date_part.nil? || @date_part.empty?) && !params[:day].empty?
+        begin
+          @date_part = Date.parse(params[:day])
+        rescue ArgumentError
+        end
+      end
+
+      if (@time_part.nil? || @time_part.empty?) && !params[:availability].empty?
+        hr = (Availability.find(params[:availability]).start_time/60).to_s.rjust(2,'0')
+        min = (Availability.find(params[:availability]).start_time%60).to_s.rjust(2,'0')
+        @time_part = "#{hr}:#{min}"
+        
+      end
+
       @booking = Booking.new(subject_id: @subject_id) 
     else
       @booking = Booking.new
