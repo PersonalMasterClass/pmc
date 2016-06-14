@@ -55,7 +55,7 @@ class Booking < ActiveRecord::Base
     if user.presenter?
       user.presenter.subjects.each do |subject|
         subject.bookings.each do |booking|
-          if user.presenter.bids.empty? || booking.bids.empty?
+          if booking.chosen_presenter_id.nil? && (user.presenter.bids.empty? || booking.bids.empty?)
             bookings << booking
           else
             booking.bids.each do |bid|
