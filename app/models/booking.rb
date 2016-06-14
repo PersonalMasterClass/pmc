@@ -21,25 +21,31 @@ class Booking < ActiveRecord::Base
   	# @user = User.check_user(user)
   	date_today = DateTime.now
     booking = nil
+    # Refactored queries to not use select for possible performance improvements
   	if user.admin?
-  		return Booking.order(created_at: :desc)
+  		# return Booking.order(:booking_date).select{ |booking| booking.booking_date > date_today}
+      return Booking.where('booking_date >= ?', date_today).order(:booking_date)
   	elsif user.presenter? # Add all booked then bids
-      return booking = Booking.where(chosen_presenter_id: user.id).select{ |booking| booking.booking_date > date_today}
+      # return Booking.with_deleted.where(chosen_presenter: user.presenter).order(:booking_date).select{ |booking| booking.booking_date >= date_today}
+      return Booking.with_deleted.where('booking_date >= ? AND chosen_presenter_id = ?', date_today, user.presenter).order(:booking_date)
     elsif user.customer?
-      return Booking.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
+      # return Booking.with_deleted.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
+      return Booking.with_deleted.where('booking_date >= ? AND creator_id = ?', date_today, user.customer).order(:booking_date)
   	end
   	return nil
   end
 
-  # Return completed bookings for a customer or presenter
-  # Return all completed bookings for an admin
+  # Return past bookings for a customer or presenter
+  # Return all past bookings for an admin
   def self.completed(user)
   	date_today = DateTime.now
     booking = nil
-  	if @user.presenter?
-  		return @user.presenter.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
-  	elsif @user.customer?
-  		return @user.customer.bookings.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
+  	if user.presenter
+  		return Booking.with_deleted.where('booking_date < ? OR deleted_at IS NOT NULL',date_today).where(chosen_presenter: user.presenter).order(:booking_date)
+  	elsif user.customer
+      return Booking.with_deleted.where('booking_date < ? OR deleted_at IS NOT NULL', date_today).order(:booking_date).select{ |booking| booking.creator == user.customer || booking.customers.includes?(user.customer)}
+    else
+      return Booking.with_deleted.order(created_at: :desc).select{ |booking| booking.booking_date < date_today}
   	end
   end
 
@@ -65,9 +71,11 @@ class Booking < ActiveRecord::Base
     elsif user.customer?
       user.customer.subjects.each do |subject|
         subject.bookings.each do |booking|
-          if !booking.customers.include?(user.customer) && booking.creator != user.customer && booking.shared? 
-            if booking.booking_date > date_today && booking.remaining_slots != 0
-              bookings << booking
+          if booking.chosen_presenter_id.nil?
+            if !booking.customers.include?(user.customer) && booking.creator != user.customer && booking.shared? 
+              if booking.booking_date > date_today && booking.remaining_slots != 0
+                bookings << booking
+              end
             end
           end
         end
@@ -102,12 +110,12 @@ class Booking < ActiveRecord::Base
     return bookings
   end
 
-  #Removes chosen presenter from booking and notifies creator of that booking
+  # Removes chosen presenter from booking
   def remove_chosen_presenter
     self.chosen_presenter = nil
     self.save
   end
-
+  # Deletes all bids placed on a booking. 
   def remove_all_bids
     Bid.where(booking_id: self).delete_all
   end
@@ -133,7 +141,11 @@ class Booking < ActiveRecord::Base
           return "Awaiting Bids"
         end
       else
-        return "Locked in"
+        if self.booking_date < Time.now
+          return "Completed"
+        else
+          return "Locked in"
+        end
       end
     end
   end
@@ -157,7 +169,7 @@ class Booking < ActiveRecord::Base
   private
   def send_booking_reminder
     @curr_date = Date.today
-    @end_date = self.booking_date - self.period.day
+    @end_date = self.booking_date - 2.day
     @end_date = Date.parse(@end_date.strftime("%d/%m/%Y"))
     @period = (@end_date - @curr_date).to_i
     Resque.enqueue_in @period.day, BookingReminder, self.id

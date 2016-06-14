@@ -1,6 +1,8 @@
 <% if current_user.presenter.presenter_profile.nil?%>
-	<h3> Create your profile </h3>
-	<%= edit_presenter_profile_link(current_user.presenter, "btn btn-primary", "Create") %>
+	<div class ="alert alert-info text-center">
+		<h3> Create your profile </h3>
+		<%= edit_presenter_profile_link(current_user.presenter, "btn btn-primary", "Create") %>
+	</div>
 <% else %>		
 	<%= render 'presenters/partials/rate'%>
 <% end %>

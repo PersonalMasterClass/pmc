@@ -137,6 +137,27 @@ body {
         background-color: #FFFFFF;
       }
     }
+    @media screen and (max-width: $screen-sm-min) {
+      li.dropdown {
+        display: block !important;
+        > a.dropdown-toggle {
+          color: white !important;
+          background: none !important;
+        }
+        > ul.dropdown-menu {
+          color: white !important;
+          padding: 0 !important;
+          > li {
+            color: white !important;
+            > a {
+              color: white !important;
+              font-weight: bold !important;
+              padding: 16px 0 16px 36px !important;
+            }
+          }
+        }
+      }
+    }
   }
 
   > .main {

@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   after_create :send_call_to_action_notification
   after_create :send_biannual_update_notification
+  after_create :create_settings
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   validates :email, presence: true
@@ -68,5 +69,11 @@ class User < ActiveRecord::Base
 
   def send_biannual_update_notification
     Resque.enqueue_in 6.months, BiannualUpdate, self.id
+  end
+
+  def create_settings
+    settings = Setting.create!
+    self.setting = settings
+    self.save
   end
 end
