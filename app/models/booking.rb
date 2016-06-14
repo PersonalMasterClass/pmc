@@ -9,8 +9,7 @@ class Booking < ActiveRecord::Base
   belongs_to :subject, inverse_of: :bookings
 
   # after_create :send_booking_reminder
-
-
+  
   def self.help_required
     Booking.where('help_required = ? AND booking_date > ?', true, DateTime.now)
   end
@@ -155,6 +154,7 @@ class Booking < ActiveRecord::Base
     return self.cap - @count
   end
   private
+  
   def send_booking_reminder
     @curr_date = Date.today
     @end_date = self.booking_date - self.period.day

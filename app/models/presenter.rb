@@ -63,6 +63,17 @@ class Presenter < ActiveRecord::Base
     Xero.add_presenter_account(self)
   end
 
+  # Check presenter availabilities and bookings for clashes 
+  def available?(date_time, duration=0)
+    day = date_time.strftime("%A").downcase
+    time = (date_time.strftime("%k").to_i * 60) + date_time.strftime("%M").to_i
+    all_avals = Availability.where("#{day} = true AND start_time <= #{time} AND end_time >= #{time} AND presenter_id = #{self.id}")
+    all_avals = all_avals.reject{|a| a.presenter != self}
+
+    bkgs = Booking.where("chosen_presenter_id = #{self.id} AND booking_date >= '#{date_time.to_s(:db)}' AND booking_date <= '#{(date_time+duration.minutes).to_s(:db)}'")
+    return !all_avals.empty? && bkgs.empty?
+  end
+
   #removes all upcoming bookings for a presenter. 
   def remove_upcoming_bookings
     bookings = Booking.upcoming(self.user)

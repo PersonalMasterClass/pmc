@@ -21,36 +21,28 @@ class BookingsController < ApplicationController
       @time_part = session[:search_params]["time_part"]
 
       @presenter_id = params[:presenter_id]
-      
-      if (@date_part.nil? || @date_part.empty?) && !params[:day].empty?
-        begin
-          @date_part = Date.parse(params[:day])
-        rescue ArgumentError
-        end
-      end
-
-      if (@time_part.nil? || @time_part.empty?) && !params[:availability].empty?
-        hr = (Availability.find(params[:availability]).start_time/60).to_s.rjust(2,'0')
-        min = (Availability.find(params[:availability]).start_time%60).to_s.rjust(2,'0')
-        @time_part = "#{hr}:#{min}"
-        
-      end
 
       @booking = Booking.new(subject_id: @subject_id) 
     else
       @booking = Booking.new
     end
+    if (@date_part.nil? || @date_part.empty?) && !params[:day].empty?
+      begin
+        @date_part = Date.parse(params[:day])
+      rescue ArgumentError
+      end
+    end
+    if (@time_part.nil? || @time_part.empty?) && !params[:availability].empty?
+      hr = (Availability.find(params[:availability]).start_time/60).to_s.rjust(2,'0')
+      min = (Availability.find(params[:availability]).start_time%60).to_s.rjust(2,'0')
+      @time_part = "#{hr}:#{min}"
+    end
   end
 
   def create
     @booking = Booking.new(booking_params)
-    # Create closed booking if customer came from searching or enquiring.
-    if session[:search_params].present? || params[:presenter_id].present?
-      @booking.chosen_presenter = Presenter.find(params[:presenter_id])
-      @booking.creator = current_user.customer
-    end
-
-      
+    
+    
     @subject = Subject.find(params[:subject_id])
     # TODO date and time validation
     date = (params['date_part'] + " " + params['time_part']).to_datetime
@@ -65,14 +57,26 @@ class BookingsController < ApplicationController
     if params[:rate].present?
       @booking.rate = params[:rate]
     end
+
+    # Create closed booking if customer came from searching or enquiring.
+    if session[:search_params].present? || params[:presenter_id].present?
+      presenter = Presenter.find(params[:presenter_id])
+      if presenter.available? @booking.booking_date, @booking.duration_minutes
+        @booking.chosen_presenter = Presenter.find(params[:presenter_id])
+        @booking.creator = current_user.customer
+      else
+        flash[:danger] = "Presenter is not available at this time."
+        render :new
+      end
+    end   
     @booking.save
     # Send messages to customers if booking is shared
     @message = "A new #{@booking.subject.name} booking has been created that you may be interested in."
-    if @booking.shared?
-      Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking), @message)
-    end
-    Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking), @message)
-    Notification.notify_admin("A new booking has been created", booking_path(@booking))
+    # if @booking.shared?
+    #   Notification.notify_applicable_users(current_user, @booking, "customer", booking_path(@booking), @message)
+    # end
+    # Notification.notify_applicable_users(current_user, @booking, "presenter", booking_path(@booking), @message)
+    # Notification.notify_admin("A new booking has been created", booking_path(@booking))
 
     # Add booking to booked customers
     current_user.customer.created_bookings << @booking
