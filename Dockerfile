@@ -4,8 +4,13 @@ FROM rails:4.2
 ENV RAILS_ENV 'development'
 ENV REDIS_URL 'redis://pmc_redis'
 ENV SECRET_KEY_BASE 'youshouldreallyoverridethiswhenrunningthecontainerorwhendeployed'
+ENV S3_REGION ''
+ENV S3_BUCKET ''
 ENV S3_KEY ''
 ENV S3_SECRET ''
+ENV xero_consumer ''
+ENV xero_secret ''
+ENV xero_cert_location ''
 
 # (Default) Database Environment Variables
 ENV PMC_DB_HOST 'pmc_postgres'
