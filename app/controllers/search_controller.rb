@@ -53,9 +53,11 @@ class SearchController < ApplicationController
   			return
   		elsif cookies.permanent[:unregistered] == session.id
   			if session[:profile_count].to_i >= MAX_PROFILE_VIEWS 
+  				flash[:info] = "Please register for an account to view more profiles"
   				redirect_to registration_customers_path
 				end
 			else
+				flash[:info] = "Please register for an account to view more profiles"
   			redirect_to registration_customers_path
   		end
   	elsif current_user.presenter? 
