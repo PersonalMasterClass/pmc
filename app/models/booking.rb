@@ -71,9 +71,11 @@ class Booking < ActiveRecord::Base
     elsif user.customer?
       user.customer.subjects.each do |subject|
         subject.bookings.each do |booking|
-          if !booking.customers.include?(user.customer) && booking.creator != user.customer && booking.shared? 
-            if booking.booking_date > date_today && booking.remaining_slots != 0
-              bookings << booking
+          if booking.chosen_presenter_id.nil?
+            if !booking.customers.include?(user.customer) && booking.creator != user.customer && booking.shared? 
+              if booking.booking_date > date_today && booking.remaining_slots != 0
+                bookings << booking
+              end
             end
           end
         end
