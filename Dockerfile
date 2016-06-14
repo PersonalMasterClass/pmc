@@ -11,6 +11,10 @@ ENV S3_SECRET ''
 ENV xero_consumer ''
 ENV xero_secret ''
 ENV xero_cert_location ''
+ENV SMTP_ADDRESS "email-smtp.us-west-2.amazonaws.com"
+ENV SMTP_PORT "587"
+ENV SMTP_USERNAME ""
+ENV SMTP_PASSWORD ""
 
 # (Default) Database Environment Variables
 ENV PMC_DB_HOST 'pmc_postgres'
