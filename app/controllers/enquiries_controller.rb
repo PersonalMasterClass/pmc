@@ -23,7 +23,7 @@ class EnquiriesController < ApplicationController
 			@enquiry.presenter = @presenter
 			@enquiry.save
 			@message = "New enquiry from #{current_user.customer.school_info.school_name}."
-			Notification.send_message(@presenter.user, @message, enquiry_path(@enquiry), :enquiry)
+			Notification.send_message(@presenter.user, @message, enquiry_path(@enquiry), :new_enquiry)
 			redirect_to customers_path
 		elsif current_user.presenter?
 			@customer = Customer.find(params[:enquiry][:recipient_id])
@@ -33,7 +33,7 @@ class EnquiriesController < ApplicationController
 			@enquiry.status = :counteroffer
 			@enquiry.save
 			@message = "#{current_user.presenter.get_private_full_name(@customer.user)} has responded with a counter offer."
-			Notification.send_message(@customer.user, @message, enquiry_path(@enquiry), :enquiry)
+			Notification.send_message(@customer.user, @message, enquiry_path(@enquiry), :counter_enquiry)
 			redirect_to customers_path
 		end
 	end
@@ -46,7 +46,7 @@ class EnquiriesController < ApplicationController
 		elsif current_user.presenter?
 			@message = "#{@enquiry.customer.school_info.school_name} has accepted the request, please confirm the booking."
 		end
-		Notification.send_message(@enquiry.customer.user, @message, enquiry_path(@enquiry), :enquiry)
+		Notification.send_message(@enquiry.customer.user, @message, enquiry_path(@enquiry), :accept_enquiry)
 		flash[:success] = "Enquiry sent and accepted."
 		redirect_to root_path
 	end
@@ -57,7 +57,6 @@ class EnquiriesController < ApplicationController
 		@enquiry.save
 		redirect_to new_booking_path(rate: @enquiry.rate, date: @enquiry.date.strftime("%d/%m/%Y"),
 										 time: @enquiry.time.strftime("%H:%M %p"), presenter_id: @enquiry.presenter.id)
-
 	end
 	def decline
 		@enquiry.status = :declined
@@ -67,7 +66,7 @@ class EnquiriesController < ApplicationController
 		elsif current_user.presenter?
 			@message = "#{@enquiry.customer.school_info.school_name} has declined your enquiry."
 		end
-		Notification.send_message(@enquiry.customer.user, @message, enquiry_path(@enquiry), :enquiry)
+		Notification.send_message(@enquiry.customer.user, @message, enquiry_path(@enquiry), :declined_enquiry)
 		redirect_to root_path
 	end
 
