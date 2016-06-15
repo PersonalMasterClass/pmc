@@ -13,11 +13,12 @@ class PresenterProfilesController < ApplicationController
     @presenter = find_presenter
     @profile = @presenter.presenter_profile
     @user = @presenter.user
-    @availability = @presenter.availabilitys.order('availabilities.start_time ASC')
-    
-    if !session[:search_params].nil?
-      if current_user.customer? && session[:search_params].any?
-        session[:presenter_id] = params["presenter_id"]
+    unless current_user.nil?
+      @availability = @presenter.availabilitys.order('availabilities.start_time ASC')
+      if !session[:search_params].nil?
+        if current_user.customer? && session[:search_params].any?
+          session[:presenter_id] = params["presenter_id"]
+        end
       end
     end
   end
@@ -256,9 +257,13 @@ class PresenterProfilesController < ApplicationController
     end
 
     def logged_in_user
-      if current_user.nil?
-       flash[:danger] = "You must be logged in to view profiles"
-       redirect_to root_url
+      if current_user.nil? #&& !cookies[:profie_views].nil?
+        if session[:profile_count].to_i < 3 && session[:profile_count].to_i >= 0
+          session[:profile_count] = (session[:profile_count].to_i) +1
+        else
+          flash[:info] = "Register now as a school to enjoy the full expierence"
+          redirect_to registration_customers_path
+        end
       end
     end
 
@@ -267,6 +272,8 @@ class PresenterProfilesController < ApplicationController
     end
 
     def display_creator_actions
-      @display_creator_actions = Booking.check_creator(@presenter, current_user.customer)
+      unless current_user.nil?
+        @display_creator_actions = Booking.check_creator(@presenter, current_user.customer)
+      end
     end
 end

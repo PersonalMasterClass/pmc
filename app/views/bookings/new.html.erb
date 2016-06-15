@@ -12,10 +12,10 @@
 
   <div class = "form-group">
     <%= b.label "date" %><br>
-    <input type= "input" name = "date_part" id="date_part" class="form-control" value = <%= @date_part || params[:date] %> /><br>
+    <input type= "input" name = "date_part" id="date_part" class="form-control" value = <%= @date_part %> /><br>
     <%= b.label "time" %><br>
 
-    <input type = "time" name = "time_part" id="time_part" value = <%= @time_part || params[:time] %> step = "300" class="form-control" />
+    <input type = "time" name = "time_part" id="time_part" value = <%= @time_part  %> step = "300" class="form-control" />
   </div>
   <div class = "form-group">
     <%= b.label :duration_minutes %><br>

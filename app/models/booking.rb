@@ -8,9 +8,8 @@ class Booking < ActiveRecord::Base
   has_many :presenters, through: :bids, :dependent => :destroy
   belongs_to :subject, inverse_of: :bookings
 
-  after_create :send_booking_reminder
-
-
+  # after_create :send_booking_reminder
+  
   def self.help_required
     Booking.where('help_required = ? AND booking_date > ?', true, DateTime.now)
   end
@@ -160,11 +159,13 @@ class Booking < ActiveRecord::Base
   def remaining_slots
     @count = 0
     self.booked_customers.each do |booked_customer|
-      @count += booked_customer.number_students 
+      @count += booked_customer.number_students.to_i
     end
     return self.cap - @count
+
   end
   private
+  
   def send_booking_reminder
     @curr_date = Date.today
     @end_date = self.booking_date - 2.day

@@ -15,7 +15,7 @@ class Presenter < ActiveRecord::Base
   validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
   validates :rate, numericality: true
   
-  after_create :add_to_xero
+  # after_create :add_to_xero
   after_update :update_xero
 
   # Validate presenter's VIT number
@@ -44,7 +44,9 @@ class Presenter < ActiveRecord::Base
   #for a given user, returns the name of the presenter, if the user is a customer, then
   #the the last name is initialized for privacy.
   def get_private_full_name(user)
-    if user.admin? || user == self.user
+    if user.nil?
+      return "#{self.first_name} #{self.last_name.at(0)}"
+    elsif user.admin? || user == self.user
       return "#{self.first_name} #{self.last_name}"
     else
       return "#{self.first_name} #{self.last_name.at(0)}"
@@ -58,6 +60,17 @@ class Presenter < ActiveRecord::Base
   # add new presenter to Xero
   def add_to_xero
     Xero.add_presenter_account(self)
+  end
+
+  # Check presenter availabilities and bookings for clashes 
+  def available?(date_time, duration=0)
+    day = date_time.strftime("%A").downcase
+    time = (date_time.strftime("%k").to_i * 60) + date_time.strftime("%M").to_i
+    all_avals = Availability.where("#{day} = true AND start_time <= #{time} AND end_time >= #{time} AND presenter_id = #{self.id}")
+    all_avals = all_avals.reject{|a| a.presenter != self}
+
+    bkgs = Booking.where("chosen_presenter_id = #{self.id} AND booking_date >= '#{date_time.to_s(:db)}' AND booking_date <= '#{(date_time+duration.minutes).to_s(:db)}'")
+    return !all_avals.empty? && bkgs.empty?
   end
 
   #removes all upcoming bookings for a presenter. 
