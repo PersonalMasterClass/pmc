@@ -3,7 +3,10 @@
 		<h3>Booking for <%= @booking.subject.name %></h3>
     <%= cancellation_message(@booking) %>
     <div class="booking-labels">
-      <%= booked_label(@booking) %> <%= rate_label(@booking) %> <%= capacity_label(@booking) %>
+      <%= booked_label(@booking) %> 
+      <%= rate_label(@booking) %> 
+      <%= capacity_label(@booking) %>
+      <%= bid_label(@booking) %>
     </div>
     
     <% if current_user.admin? %>

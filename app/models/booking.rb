@@ -55,7 +55,7 @@ class Booking < ActiveRecord::Base
     if user.presenter?
       user.presenter.subjects.each do |subject|
         subject.bookings.each do |booking|
-          if user.presenter.bids.empty? || booking.bids.empty?
+          if booking.chosen_presenter_id.nil? && (user.presenter.bids.empty? || booking.bids.empty?)
             bookings << booking
           else
             booking.bids.each do |bid|
@@ -71,11 +71,9 @@ class Booking < ActiveRecord::Base
     elsif user.customer?
       user.customer.subjects.each do |subject|
         subject.bookings.each do |booking|
-          if booking.chosen_presenter_id.nil?
-            if !booking.customers.include?(user.customer) && booking.creator != user.customer && booking.shared? 
-              if booking.booking_date > date_today && booking.remaining_slots != 0
-                bookings << booking
-              end
+          if !booking.customers.include?(user.customer) && booking.creator != user.customer && booking.shared? 
+            if booking.booking_date > date_today && booking.remaining_slots != 0
+              bookings << booking
             end
           end
         end
