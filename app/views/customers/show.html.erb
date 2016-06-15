@@ -2,15 +2,14 @@
   <% if @customer.present? %>
     <div class="col-md-6">
       <h3><%= @customer.school_info.school_name %></h3>
-      <p>First Name: <%= @customer.first_name %></p>
-      <p>Last Name: <%= @customer.last_name %></p>
-      <p>Email: <%= @customer.user.email %> </p>
-      <p>Vit Number: <%= @customer.vit_number%></p>
-      <p>ABN number: <%= @customer.abn_number%></p>
-      <p>Phone Number: <%= @customer.phone_number%></p>
-      <p>Vit Number: <%= @customer.vit_number%></p>
-      <p>Contact Title: <%= @customer.contact_title%></p>
-      <p>Department: <%= @customer.department%></p>
+      <p><b>First Name:</b> <%= @customer.first_name %></p>
+      <p><b>Last Name:</b> <%= @customer.last_name %></p>
+      <p><b>Email:</b> <%= mail_to @customer.user.email %> </p>
+      <p><b>Vit Number:</b> <%= @customer.vit_number%></p>
+      <p><b>ABN number:</b> <%= @customer.abn_number%></p>
+      <p><b>Phone Number:</b> <%= @customer.phone_number%></p>
+      <p><b>Contact Title:</b> <%= @customer.contact_title%></p>
+      <p><b>Department:</b> <%= @customer.department%></p>
     </div>
     <% end %>
     <div class="col-md-6"><%= render 'partials/admin_actions', object: @user %></div>
