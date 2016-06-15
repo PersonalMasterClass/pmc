@@ -19,6 +19,14 @@ module BookingsHelper
 		end
 	end
 
+	def bid_label(booking)
+		if current_user.presenter?
+			if booking.presenters.include? current_user.presenter
+				content_tag(:span, "Your bid is: #{number_to_currency(current_user.presenter.bids.find_by(booking: booking).rate)}", class: "btn btn-xs btn-info")	
+			end
+		end
+	end
+
 	def capacity_label(booking)
 		if booking.remaining_slots == 0
 			content_tag(:span, "Booking full", class: "btn btn-xs btn-danger")	

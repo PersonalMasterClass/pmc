@@ -9,6 +9,9 @@
 
 .p-container{
 	margin: 0px 0px 0px 50px;
+	overflow-x: hidden;
+	overflow-y: visible;
+  max-height: 300px;
 
 }
 .s-container{
@@ -16,4 +19,23 @@
 }
 .img-circle {
     border-radius: 50%;
+}
+table.table {
+  width: 100% !important; //  Override the jQuery weirdness that is messing with the width.
+  tr {
+    > *:nth-child(4) {
+      @media screen and (max-width: 720px) {
+        display: none;
+      }
+    }
+  }
+}
+@media screen and (max-width: 720px) {
+	.p-container{
+		overflow-x: visible;
+		overflow-y: hidden;
+	  max-height: none;
+	  margin-left: 0px;
+	}
+
 }
