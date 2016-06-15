@@ -16,6 +16,41 @@ class BookingsController < ApplicationController
     @booking = Booking.with_deleted.find(params["id"])
     @creator = @booking.creator
   end
+  def new_from_enquiry
+    @enquiry = Enquiry.find(params[:id])
+    if @enquiry.nil?
+      redirect_to root_path
+    end
+
+    if @enquiry.accepted?
+      @booking = Booking.new
+ 
+    else
+      redirect_to enquiry_path(enq)
+    end
+  end
+
+  def create_from_enquiry
+    @booking = Booking.new(booking_params)
+    enq = Enquiry.find(params[:enquiry])
+
+    if enq.nil?
+      redirect_to root_path
+    end
+
+    if enq.accepted?
+      @booking.creator = enq.customer
+      @booking.chosen_presenter = enq.presenter
+      @booking.booking_date = DateTime.new(enq.date.year, enq.date.month, enq.date.day, enq.time.hour, enq.time.min)
+      @booking.rate = enq.rate
+      @booking.customers << current_user.customer
+      @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
+      @booking.subject = Subject.find(params[:subject_id])
+      if @booking.save
+        redirect_to @booking
+      end
+    end
+  end
 
   def new
     # Booking form is populated if visited via search form.
@@ -32,7 +67,7 @@ class BookingsController < ApplicationController
       @booking = Booking.new
     end
     unless @date_part.nil?
-      if @date_part.empty? && !params[:day].empty?
+      if @date_part.empty? && !params[:day].nil?
         begin
           @date_part = Date.parse(params[:day])
         rescue ArgumentError
@@ -40,7 +75,7 @@ class BookingsController < ApplicationController
       end
     end
     unless @time_part.nil?
-      if (@time_part.nil? || @time_part.empty?) && !params[:availability].empty?
+      if (@time_part.nil? || @time_part.empty?) && !params[:availability].nil?
         hr = (Availability.find(params[:availability]).start_time/60).to_s.rjust(2,'0')
         min = (Availability.find(params[:availability]).start_time%60).to_s.rjust(2,'0')
         @time_part = "#{hr}:#{min}"

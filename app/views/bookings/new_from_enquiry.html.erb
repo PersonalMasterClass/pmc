@@ -1,0 +1,27 @@
+<%= form_for @booking, url:  create_from_enquiry_path do |b| %>
+	<div class = "form-group">
+    <%= b.label :duration_minutes %><br>
+    <%= b.number_field :duration_minutes, step: 15, min: 60, value: 60, class: "form-control" %>
+  </div>
+  <div class = "form-group">
+    <%= b.fields_for :booked_customers do |booked_customer| %>
+      <%= booked_customer.label "Number of students (Maximum: 30)" %>
+      <%= booked_customer.number_field :number_students, min: 1, max: 30, class: "form-control" %>
+    <% end %>
+  </div>
+   <div class = "form-group">
+    <%= b.label :shared %>
+    <%= check_box_tag :shared  %>    
+  </div>
+	<div class = "form-group">
+    <%= b.label :subject_id %><br>
+    <input type = "input" id="subject_select"  class = "form-control" value = "<%= is_empty?(@subject_select) %>"/>
+  </div>
+  <%= hidden_field_tag :enquiry, @enquiry.id %>
+
+ 
+  <%= hidden_field_tag :subject_id %>
+  <div class = "form-group">
+    <%= b.submit "Create Booking", class: "btn btn-default"%>
+  </div>
+<% end %>
