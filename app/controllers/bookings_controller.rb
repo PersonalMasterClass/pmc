@@ -31,16 +31,20 @@ class BookingsController < ApplicationController
     else
       @booking = Booking.new
     end
-    if (@date_part.nil? || @date_part.empty?) && !params[:day].empty?
-      begin
-        @date_part = Date.parse(params[:day])
-      rescue ArgumentError
+    unless @date_part.nil?
+      if @date_part.empty? && !params[:day].empty?
+        begin
+          @date_part = Date.parse(params[:day])
+        rescue ArgumentError
+        end
       end
     end
-    if (@time_part.nil? || @time_part.empty?) && !params[:availability].empty?
-      hr = (Availability.find(params[:availability]).start_time/60).to_s.rjust(2,'0')
-      min = (Availability.find(params[:availability]).start_time%60).to_s.rjust(2,'0')
-      @time_part = "#{hr}:#{min}"
+    unless @time_part.nil?
+      if (@time_part.nil? || @time_part.empty?) && !params[:availability].empty?
+        hr = (Availability.find(params[:availability]).start_time/60).to_s.rjust(2,'0')
+        min = (Availability.find(params[:availability]).start_time%60).to_s.rjust(2,'0')
+        @time_part = "#{hr}:#{min}"
+      end
     end
   end
 

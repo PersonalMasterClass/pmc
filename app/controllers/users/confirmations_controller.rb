@@ -8,10 +8,12 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   def create
     super 
       usr = User.find_by_email(params[:user][:email])
-      if usr.customer?
-        usr.customer.save_to_xero
-      else
-        usr.presenter.add_to_xero
+      unless usr.nil?
+        if usr.customer?
+          usr.customer.save_to_xero
+        else
+          usr.presenter.add_to_xero
+        end
       end
   end
 

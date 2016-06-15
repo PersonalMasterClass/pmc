@@ -147,6 +147,7 @@
 		return true
 	end
 
+	# Get invoices from the accounting system for view. 
 	def self.get_invoices(user)
 		gateway = connect
 		
@@ -160,6 +161,11 @@
 			else
 			 add_presenter_account(user.presenter)
 			end
+
+			# if it is still nil, there is a xero issue. 
+			if user.accounting_ref.nil?
+				return []
+			end
 		end
 		
 		account = gateway.Contact.all(:where =>{:contact_id => user.accounting_ref}).first
@@ -171,6 +177,7 @@
 		
 	end
 
+	# Generate invoices for all parties involved in a booking.
 	def self.invoice_booking(booking)
 		gateway = connect
 		if !gateway
