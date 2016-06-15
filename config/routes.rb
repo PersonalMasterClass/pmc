@@ -22,6 +22,7 @@ mount ResqueWeb::Engine => 'admin/resque'
     get 'admin/pending_registrations' => 'users#registrations'
     get 'users/:id' => 'users#show', as: "user"
     get 'users/:id/edit_login_details' => 'users#edit_login_details', as: 'user_edit_login_details'
+    get 'users/:id/enquiries' => 'users#enquiries', as: "user_enquiries"
     post 'users/update_login_details' => 'users#update_login_details', as: 'user_update_login_details'
   
   #resources :customers, only: [:index, :show], as: "schools" 

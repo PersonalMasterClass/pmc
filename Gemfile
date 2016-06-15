@@ -14,6 +14,9 @@ gem 'nokogiri'
 # enviroment variables
 gem "figaro"
 
+# pagination 
+gem 'will_paginate', '~> 3.1.0'
+
 #image upload
 gem 'dragonfly', '~> 1.0.12'
 gem 'dragonfly-s3_data_store'
