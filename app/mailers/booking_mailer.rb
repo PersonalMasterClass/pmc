@@ -57,7 +57,7 @@ class BookingMailer < ApplicationMailer
 	end
 
 	# Booking creator is emailed regarding a school leaving their booking
-	def leave_bid(user, message, reference)
+	def leave_booking(user, message, reference)
 		@user = user
 		@reference = "#{root_url}#{reference}"
 		mail(to: user.email, subject: message)
