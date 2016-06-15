@@ -1,10 +1,13 @@
 class EnquiriesController < ApplicationController
 	before_filter :get_enquiry, :only => [:accept, :decline]
+
+	# Enquiry index for schools and presenters
 	def index
 		@users = Enquiry.from(current_user)
 		@conversation = Enquiry.conversation(current_user, params[:id])
 	end
 
+	# Display a particular enquiry
 	def show
 		@enquiry = Enquiry.find(params[:id])
 	end
@@ -13,6 +16,8 @@ class EnquiriesController < ApplicationController
 		@enquiry = Enquiry.new
 	end
 
+	# Creates an enquiry from the perspective of a school or presenter
+	# Facilitates back and forth enquirying
 	def create
 		@enquiry = Enquiry.new(enquiry_params)
 		flash[:success] = "Success! You've sent you're enquiry"
@@ -40,6 +45,7 @@ class EnquiriesController < ApplicationController
 		end
 	end
 
+	# Enquiry is accepted, state of booking is changed, recipient and admin(s) are notified
 	def accept
 		@enquiry.status = :accepted
 		@enquiry.save
@@ -54,6 +60,8 @@ class EnquiriesController < ApplicationController
 		redirect_to root_path
 	end
 
+	# Only available if an enquiry's status is :accepted
+	# Change enquiry's status to :booked and redirected to booking controller
 	def booked
 		@enquiry = Enquiry.find(params[:enquiry_id])
 		@enquiry.status = :booked
@@ -62,6 +70,7 @@ class EnquiriesController < ApplicationController
 										 time: @enquiry.time.strftime("%H:%M %p"), presenter_id: @enquiry.presenter.id)
 	end
 
+	# Decline an enquiry
 	def decline
 		@enquiry.status = :declined
 		@enquiry.save
