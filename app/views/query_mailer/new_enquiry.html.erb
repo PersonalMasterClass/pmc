@@ -6,7 +6,11 @@
   <body>
     <h1>Hi, <%= @name%></h1>
     <p>
-      You have received a new enquiry.<br>
+      <% if @user.nil? %>
+        You've received enquiry.<br>
+      <% else %>
+        An enquiry has been created.<br>
+      <% end %>
     </p>
     <p>
       <%= link_to 'Click here to view the enquiry',  @reference %>.

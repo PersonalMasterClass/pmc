@@ -4,7 +4,10 @@ class QueryMailer < ApplicationMailer
   		@name = user.customer.school_info.school_name
   	elsif user.presenter?
   		@name = user.presenter.first_name
-  	end
+  	else
+      @name = "Admin"
+      @user = user
+    end
   	@reference = "#{root_url}#{reference}"
 		mail(to: user.email, subject: message)
 	end
@@ -14,6 +17,9 @@ class QueryMailer < ApplicationMailer
       @name = user.customer.school_info.school_name
     elsif user.presenter?
       @name = user.presenter.first_name
+    else
+      @name = "Admin"
+      @user = user
     end
     @reference = "#{root_url}#{reference}"
     mail(to: user.email, subject: message)
@@ -24,7 +30,10 @@ class QueryMailer < ApplicationMailer
   		@name = user.customer.school_info.school_name
   	elsif user.presenter?
   		@name = user.presenter.first_name
-  	end
+    else
+      @name = "Admin"
+      @user = user
+    end
   	@user = user
   	@reference = "#{root_url}#{reference}"
 		mail(to: user.email, subject: message)
@@ -35,7 +44,10 @@ class QueryMailer < ApplicationMailer
   		@name = user.customer.school_info.school_name
   	elsif user.presenter?
   		@name = user.presenter.first_name
-  	end
+    else
+      @name = "Admin"
+      @user = user
+    end
   	@user = user
   	@reference = "#{root_url}#{reference}"
 		mail(to: user.email, subject: message)
