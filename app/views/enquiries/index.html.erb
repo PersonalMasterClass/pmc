@@ -21,7 +21,7 @@
 </div>
 <div class="col-md-8">
 	<% if @conversation.present? %>
-	<h3><i> Current enquiry: </i></h3>
+	<h3> Current enquiry: </h3>
 		<div class= "list-group-item list-group-item-<%=enquiry_panel_color(@conversation.first)%>">
 	    <h4 class="list-group-item-heading"><%= "#{from(@conversation.first)} #{@conversation.first.created_at.strftime("%d/%m/%Y")}" %></h4><%= enquiry_status(@conversation.first) %>
 	    <p class="list-group-item-text"> Rate: <%= number_to_currency(@conversation.first.rate) %> </p>
@@ -31,7 +31,7 @@
 	    	<%= link_to "View", enquiry_path(@conversation.first), class: "btn btn-default"%>
 	    </p>
   </div>
-	<h3><i> Previous enquiries: </i></h3>
+	<h3> Previous enquiries: </h3>
 	<% @conversation.each_with_index do |enquiry, index| %>
 		<div class="list-group">
 			<% unless index == 0 %>

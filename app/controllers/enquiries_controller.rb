@@ -72,7 +72,7 @@ class EnquiriesController < ApplicationController
 
   private
     def enquiry_params
-      params.require(:enquiry).permit(:rate, :date, :time)
+      params.require(:enquiry).permit(:rate, :date, :time, :duration)
     end
 
     def get_enquiry
