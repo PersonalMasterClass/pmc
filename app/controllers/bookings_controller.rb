@@ -106,6 +106,7 @@ class BookingsController < ApplicationController
   end
 
   def create
+
     @booking = Booking.new(booking_params)
     
     unless params[:subject_id].empty?
@@ -122,15 +123,13 @@ class BookingsController < ApplicationController
     @booking.customers << current_user.customer
     @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
     @booking.period = 2
-    if params[:rate].present?
-      @booking.rate = params[:rate]
-    end
-
+    
     # Create closed booking if customer came from searching or enquiring.
     if session[:search_params].present? || params[:presenter_id].present?
       presenter = Presenter.find(params[:presenter_id])
       if presenter.available? @booking.booking_date, @booking.duration_minutes
         @booking.chosen_presenter = Presenter.find(params[:presenter_id])
+        @booking.rate = presenter.rate
         @booking.creator = current_user.customer
       else
         @booking.errors.add(:presenter, "is not available at this time")
@@ -156,6 +155,7 @@ class BookingsController < ApplicationController
       session[:search_params] = nil
       redirect_to @booking
     else
+      binding.pry
       render :new
     end
 

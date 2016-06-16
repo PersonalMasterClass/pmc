@@ -54,6 +54,7 @@ b = Presenter.create(phone_number:Faker::PhoneNumber.phone_number,
                      first_name: "Jon",
                      last_name: 'Doe', 
                      vit_number: Faker::Number.number(6), 
+                     rate: Faker::Number.decimal(2).to_f,
                      abn_number: Faker::Number.number(11) )
 b.school_info = SchoolInfo.all.sample
 b.subjects << Subject.first
@@ -98,6 +99,7 @@ c.save(:validate => false)
                                first_name: Faker::Name.first_name  ,
                                last_name: Faker::Name.last_name , 
                                vit_number: Faker::Number.number(6), 
+                               rate: Faker::Number.decimal(2).to_f,
                                abn_number: Faker::Number.number(11) )
 
   presenter.school_info = SchoolInfo.all.sample
