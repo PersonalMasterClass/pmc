@@ -28,7 +28,7 @@ class PresenterProfilesController < ApplicationController
     @draft_profiles = PresenterProfile.admin_drafts
     @profile_count = PresenterProfile.unapproved_profiles.count + PresenterProfile.admin_drafts.count
   end
-
+  # Action for presenters to fill in their bio and upload profile pictures
   def new
     @help = PageContent.find_by_name("profile-help") # "What to include in profile" Content
     @presenter = find_presenter
@@ -117,7 +117,7 @@ class PresenterProfilesController < ApplicationController
               @presenter_profile.update_attribute(:status, :pending_admin)
               flash[:info] = "Profile changes submitted to admin for approval"
               notify_admin_profile_changes(@presenter)
-              redirect_to presenter_profile_path
+              redirect_to root_url
             end
           else # No changes were made
             @presenter_profile.bio_edit = ''
@@ -242,7 +242,7 @@ class PresenterProfilesController < ApplicationController
       profile = presenter.presenter_profile
 
       if current_user.nil? || (!current_user.admin? && Presenter.find_by(user_id: current_user) != presenter)
-        flash[:danger] = "Unauthorized Access HERE"
+        flash[:danger] = "Unauthorized Access"
         redirect_to root_url
       #presenter has already submitted to admin for approval
       elsif Presenter.find_by(user_id: current_user) == presenter && profile.pending_admin?
@@ -254,11 +254,15 @@ class PresenterProfilesController < ApplicationController
         redirect_to presenter_profile_path(presenter)
       end
     end
-
+    
     def logged_in_user
       if current_user.nil?
        flash[:danger] = "You must be logged in to view profiles"
        redirect_to root_url
+      else
+        if current_user.presenter?
+          redirect_to root_url unless current_user.presenter == find_presenter
+        end
       end
     end
 

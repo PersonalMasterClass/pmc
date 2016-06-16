@@ -143,7 +143,7 @@ class BookingsController < ApplicationController
     Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(@booking), :choose_presenter)
     flash[:success] = "#{@presenter.get_private_full_name(current_user)} has been assigned to this booking."
     
-    redirect_to root_path
+    redirect_to booking_path(@booking)
   end
   # get_help allows a school to request help choosing a presenter for a booking
   # This action notifies the admin that a school has requested help, and updates the help_required flag.

@@ -98,7 +98,7 @@ mount ResqueWeb::Engine => 'admin/resque'
 
   end
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
-  
+
   get 'profiles/search' => 'search#index'
 
   resource :availability

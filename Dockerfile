@@ -4,8 +4,17 @@ FROM rails:4.2
 ENV RAILS_ENV 'development'
 ENV REDIS_URL 'redis://pmc_redis'
 ENV SECRET_KEY_BASE 'youshouldreallyoverridethiswhenrunningthecontainerorwhendeployed'
+ENV S3_REGION ''
+ENV S3_BUCKET ''
 ENV S3_KEY ''
 ENV S3_SECRET ''
+ENV xero_consumer ''
+ENV xero_secret ''
+ENV xero_cert_location ''
+ENV SMTP_ADDRESS "email-smtp.us-west-2.amazonaws.com"
+ENV SMTP_PORT "587"
+ENV SMTP_USERNAME ""
+ENV SMTP_PASSWORD ""
 
 # (Default) Database Environment Variables
 ENV PMC_DB_HOST 'pmc_postgres'
@@ -30,7 +39,3 @@ RUN apt-get update && apt-get install -y postgresql-client --no-install-recommen
 
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
-
-# Post-build commands
-# The line below is only required for production environments.
-#RUN rake assets:precompile
