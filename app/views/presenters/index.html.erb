@@ -3,11 +3,13 @@
 		<h3> Create your profile </h3>
 		<%= edit_presenter_profile_link(current_user.presenter, "btn btn-primary", "Create") %>
 	</div>
-<% else %>		
-	<%= render 'presenters/partials/rate' unless @presenter.rate.present? %>
+<% elsif @presenter.rate.nil? %>
+	<div class = "alert alert-info text-center">		
+		<%= render 'presenters/partials/rate'%>
+	</div>
 <% end %>
 <div class = "col-md-12">
-	<h2> Presenter Dashboard </h1>
+	<h2>Welcome, <%= current_user.presenter.first_name %></h2>
 </div>
 <div class = "row">
 		<div class = "col-md-12">

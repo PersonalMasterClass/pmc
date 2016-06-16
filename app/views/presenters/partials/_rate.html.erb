@@ -1,7 +1,7 @@
 <div class = "container">
 	<h3> Set your base rate </h3>
 	<%= form_tag("set_rate", method: "post", class: "form-inline") do %>
-		<%= number_field_tag :rate, nil,class: "form-control" %>
+		<%= number_field_tag :rate, nil,class: "form-control", placeholder: "$/hour", min: 0 %>
 		<%= submit_tag "Set rate", class: "btn btn-success" %>
 	<% end %>
 </div>

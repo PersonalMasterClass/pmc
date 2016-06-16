@@ -20,14 +20,15 @@ class PresentersController < ApplicationController
   	@presenter = current_user.presenter
   end
 
+  # View for presenter to update rate
   def rate
   end
+
   # Action for presenter to set their default rate
   def set_rate
     @presenter = current_user.presenter
     @presenter.rate = params[:rate]
-    # TODO: Turn validation back on?
-    @presenter.save(:validate => false)
+    @presenter.save
     flash[:success] = "You have set your base rate to $#{@presenter.rate}"
     redirect_to presenters_path
   end
