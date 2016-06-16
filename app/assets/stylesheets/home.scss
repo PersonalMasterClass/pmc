@@ -50,11 +50,14 @@ div.landing-page-sections {
     }
     .underbutton {
       display: inline-block;
-      margin-top: 12px;
       color: #EEEEEE;
+      font-size: 19px;
+      font-weight: bold;
+      margin-top: 18px;
     }
     $ctaButtonWidth: 480px;
     &#leader {
+      background: rgba(0,0,0,0.2);
       padding: 128px 0;
       @media screen and (max-width: $screen-sm-min) {
         padding: 36px 0;
@@ -142,7 +145,7 @@ div.landing-page-sections {
               margin: 8px 0;
             }
             .underbutton {
-              color: #ffffff;
+              color: darken($siteBlue, 50%);
             }
           }
         }

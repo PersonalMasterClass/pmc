@@ -171,11 +171,20 @@ body {
     > .alert {
       width: auto;
       text-align: center;
-      background: $siteRed;
+      background: #777777;
       padding: 8px 18px;
       margin: 0;
       width: 100%;
       color: white;
+      border: none;
+      border-radius: 0;
+      &.alert-success { background-color: #00bd00; }
+      &.alert-info { background-color: $siteRed; }
+      &.alert-warning {
+        background-color: #FFFF00;
+        color: black;
+      }
+      &.alert-danger { background-color: #FF0000; }
     }
   }
 

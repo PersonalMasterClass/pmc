@@ -15,7 +15,7 @@ class EnquiriesController < ApplicationController
 
 	def create
 		@enquiry = Enquiry.new(enquiry_params)
-		flash[:success] = "Success! You've sent you're enquiry"
+		flash[:success] = "Success! You've sent your enquiry."
 		if current_user.customer?
 			@presenter = Presenter.find(params[:enquiry][:recipient_id])
 			@enquiry.customer = current_user.customer
@@ -62,9 +62,9 @@ class EnquiriesController < ApplicationController
 		@enquiry.status = :declined
 		@enquiry.save
 		if current_user.customer?
-			@message = "#{@enquiry.presenter.get_private_full_name(current_user)} has declined your enquiry."
+			@message = "#{@enquiry.presenter.get_private_full_name(current_user)} has declined your offer."
 		elsif current_user.presenter?
-			@message = "#{@enquiry.customer.school_info.school_name} has declined your enquiry."
+			@message = "#{@enquiry.customer.school_info.school_name} has declined your offer."
 		end
 		Notification.send_message(@enquiry.customer.user, @message, enquiry_path(@enquiry), :declined_enquiry)
 		redirect_to root_path

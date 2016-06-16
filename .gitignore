@@ -28,6 +28,8 @@ Thumbs.db
 # Ignore SASS/SCSS caches
 .sass-cache
 
+# Ignore the test Dockerfile
+/Dockerfile_test
 
 # Xero private key
 /config/privatekey.pem
