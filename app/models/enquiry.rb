@@ -2,6 +2,8 @@ class Enquiry < ActiveRecord::Base
 	belongs_to :presenter
 	belongs_to :customer
 
+	validates :date, :time, :rate, :duration, presence: true
+
 	enum from: [:presenter, :customer]
 	enum status: [:pending, :declined, :accepted, :booked, :counteroffer]
 

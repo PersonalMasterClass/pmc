@@ -6,7 +6,11 @@
   <body>
     <h1>Hi, <%= @name%></h1>
     <p>
-      One of your enquiries has been declined.<br>
+      <% if @user.nil? %>
+        One of your enquiries has been declined.<br>
+      <% else %>
+        An enquiry has been declined.<br>
+      <% end %>
     </p>
     <p>
       <%= link_to 'Click here to view the enquiry',  @reference %>.

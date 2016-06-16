@@ -17,7 +17,9 @@
         <td> <%= link_to customer.school_info.school_name, school_info_path(customer.school_info) %></td>
         <td> <%= "#{customer.first_name} #{customer.last_name}" %></td>
         <td> <%= user.status %> </td>
-        <td> <%= link_to "View", customer_path(customer), class: "btn btn-primary" %> </td>
+        <td> <%= link_to "View", customer_path(customer), class: "btn btn-primary" %> 
+             <%= link_to "View Enquiries", user_enquiries_path(customer.user), class: "btn btn-info" %> 
+        </td>
       </tr>  
     <% end %>
     </tbody>

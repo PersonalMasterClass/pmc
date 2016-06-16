@@ -4,6 +4,7 @@
   </div>
   <div class="panel-body">
     <p> Rate: <%= number_to_currency(@enquiry.rate) %> </p>
+    <p> Duration: <%= @enquiry.duration %> minutes </p>
     <p> Date: <%= @enquiry.date.strftime("%d/%m/%Y") %></p>
     <p> Time: <%= @enquiry.time.strftime("%H:%M %p") %></p>
   </div>

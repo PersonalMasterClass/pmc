@@ -2,21 +2,24 @@ class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :past, :show, :open, :set_bid, :cancel_bid]
   before_filter :admin_logged_in, :only => [:index]
   before_filter :logged_in, :only => [:past]
-  #admin view for all bookings
+
+  # Admin view for all bookings
   def index  
     @bookings = Booking.with_deleted
   end
 
-  #shows all previous bookings for a user
+  # Shows all previous bookings for a user
   def past
     @bookings = Booking.completed(current_user)
   end
 
+  # Display a particular booking
   def show
     @booking = Booking.with_deleted.find(params["id"])
     @creator = @booking.creator
   end
 
+  # View for booking form
   def new
     # Booking form is populated if visited via search form.
     if session[:search_params].present?
@@ -31,6 +34,10 @@ class BookingsController < ApplicationController
     end
   end
 
+  # Creates booking for multiple cases:
+  # 1. School creates an open booking
+  # 2. School creates a closed booking via search form
+  # 3. School creates a closed booking via enquiries form
   def create
     @booking = Booking.new(booking_params)
     # Create closed booking if customer came from searching or enquiring.
@@ -88,10 +95,12 @@ class BookingsController < ApplicationController
   def destroy
   end
 
+
   def open
     @bookings = Booking.where(chosen_presenter_id: nil)
   end
 
+  # Creates bid on a booking objects
   def set_bid
     @booking = Booking.find(params[:id])
     @presenter = current_user.presenter
@@ -120,6 +129,7 @@ class BookingsController < ApplicationController
     redirect_to root_url
   end
 
+  # Select presenter for a booking
   def choose_presenter
     @presenter = Presenter.find(params[:presenter_id])
     @booking = Booking.find(params[:booking_id])
@@ -146,7 +156,8 @@ class BookingsController < ApplicationController
     @booking.save
     redirect_to booking_path(@booking)
   end
-  # cancel_help allows a school or admin to dismiss the help requested flag for a booking. 
+
+  # Allows a school or admin to dismiss the help requested flag for a booking. 
   def cancel_help
     booking = Booking.find(params[:id])
     flash[:info] = "Help no longer required"
@@ -155,6 +166,7 @@ class BookingsController < ApplicationController
     redirect_to booking_path(booking)
   end
 
+  # Allow schools to join a booking
   def join
     @booking = Booking.find(params[:id])
     if params[:num_students].to_i > @booking.remaining_slots
@@ -172,6 +184,8 @@ class BookingsController < ApplicationController
     end
   end
 
+  # Creator of a booking can cancel their booking.
+  # Notifications will be sent out to all stakeholders involved.
   def cancel_booking
     @booking = Booking.find(params[:id])
     if @booking.booking_date > Time.now
@@ -192,6 +206,7 @@ class BookingsController < ApplicationController
     end
   end
 
+  # Presenters who've bid on a booking and withdraw it
   def cancel_bid
     @booking = Booking.find(params[:id])
     @booking.presenters.delete(current_user.presenter)
@@ -204,6 +219,7 @@ class BookingsController < ApplicationController
     redirect_to root_url
   end
 
+  # Schools who've joined a shared booking may leave
   def leave_booking
     @booking = Booking.find(params[:id])
     @booking.customers.delete(current_user.customer)
