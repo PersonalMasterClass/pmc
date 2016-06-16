@@ -113,7 +113,12 @@ class BookingsController < ApplicationController
       @subject = Subject.find(params[:subject_id])
     end
     # TODO date and time validation
-    date = (params['date_part'] + " " + params['time_part']).to_datetime
+    begin
+      date = (params['date_part'] + " " + params['time_part']).to_datetime
+    rescue ArgumentError
+      @booking.errors.add(:date, "is invalid")
+      date = Date.new
+    end
     @booking.booking_date = date
     # TODO: Refactor for admin booking creation
     @booking.shared = params["shared"]
@@ -155,7 +160,8 @@ class BookingsController < ApplicationController
       session[:search_params] = nil
       redirect_to @booking
     else
-      binding.pry
+      @date_part = params['date_part']
+      @time_part = params['time_part']
       render :new
     end
 
