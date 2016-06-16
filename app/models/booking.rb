@@ -7,8 +7,16 @@ class Booking < ActiveRecord::Base
   has_many :bids, :dependent => :destroy
   has_many :presenters, through: :bids, :dependent => :destroy
   belongs_to :subject, inverse_of: :bookings
+  validates :booking_date, :presence => true
+  validates :subject, :presence => true
+  validates :rate, numericality: true, :presence => true
+  validates :duration_minutes, numericality: true, :presence => true
+  validate :booking_validation
 
   # after_create :send_booking_reminder
+  
+ 
+
   
   def self.help_required
     Booking.where('help_required = ? AND booking_date > ?', true, DateTime.now)
@@ -165,7 +173,23 @@ class Booking < ActiveRecord::Base
 
   end
   private
-  
+  def booking_validation
+    unless chosen_presenter.nil?
+      # check presenter teaches subject
+      unless chosen_presenter.teaches? subject
+        errors.add(:presenter, "does not teach this subject.")
+      end
+    end
+    # check that booking date is in the future. 
+    unless booking_date >= DateTime.now
+      errors.add(:booking_date, "must be in the future.")
+    end
+    
+    unless duration_minutes >= 0 
+      errors.add(:duration, "must be greater than 0")
+    end
+  end
+
   def send_booking_reminder
     @curr_date = Date.today
     @end_date = self.booking_date - 2.day

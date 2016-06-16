@@ -22,33 +22,44 @@ class BookingsController < ApplicationController
       redirect_to root_path
     end
 
-    if @enquiry.accepted?
-      @booking = Booking.new
- 
+    if @enquiry.accepted? && @enquiry.customer == current_user.customer
+      @booking = Booking.new 
     else
-      redirect_to enquiry_path(enq)
+      redirect_to enquiry_path(@enquiry)
     end
   end
 
+  # Creates a new booking from an accepted enquiry
   def create_from_enquiry
-    @booking = Booking.new(booking_params)
-    enq = Enquiry.find(params[:enquiry])
 
-    if enq.nil?
+    @booking = Booking.new(booking_params)
+    @enquiry = Enquiry.find(params[:enquiry])
+    unless params[:subject_id].empty?
+      @subject = Subject.find(params[:subject_id].to_i) 
+    end
+    
+    if @enquiry.nil?
       redirect_to root_path
     end
-
-    if enq.accepted?
-      @booking.creator = enq.customer
-      @booking.chosen_presenter = enq.presenter
-      @booking.booking_date = DateTime.new(enq.date.year, enq.date.month, enq.date.day, enq.time.hour, enq.time.min)
-      @booking.rate = enq.rate
+    
+    if @enquiry.accepted? && current_user.customer == @enquiry.customer
+      @booking.creator = @enquiry.customer
+      @booking.chosen_presenter = @enquiry.presenter
+      @booking.booking_date = DateTime.new(@enquiry.date.year, @enquiry.date.month, @enquiry.date.day, @enquiry.time.hour, @enquiry.time.min)
+      @booking.rate = @enquiry.rate
       @booking.customers << current_user.customer
       @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
-      @booking.subject = Subject.find(params[:subject_id])
+      @booking.subject = @subject
       if @booking.save
+        @enquiry.update(:status => "booked")
         redirect_to @booking
+        return
+      else
+        render action: 'new_from_enquiry'
       end
+    else
+      redirect_to root_path
+      return
     end
   end
 

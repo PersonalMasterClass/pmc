@@ -52,6 +52,10 @@ class Presenter < ActiveRecord::Base
       return "#{self.first_name} #{self.last_name.at(0)}"
     end      
   end
+  # check if a presenter teaches a subject
+  def teaches? (subject)
+    return self.subjects.exists? subject
+  end
   # send updated peresnter details to Xero
   def update_xero
     Xero.update_presenter_account(self)

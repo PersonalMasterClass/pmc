@@ -1,3 +1,12 @@
+<% unless @booking.errors.empty? %>
+  <div class="alert alert-danger ">
+  <ul>
+    <% @booking.errors.full_messages.each do |err|%>
+    <li><%= err %></li>
+    <%end %>
+  </ul>
+  </div>
+<%end %>
 <%= form_for @booking, url:  create_from_enquiry_path do |b| %>
 	<div class = "form-group">
     <%= b.label :duration_minutes %><br>
