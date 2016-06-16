@@ -20,28 +20,35 @@ class EnquiriesController < ApplicationController
 	# Facilitates back and forth enquirying
 	def create
 		@enquiry = Enquiry.new(enquiry_params)
-		flash[:success] = "Success! You've sent you're enquiry"
 		if current_user.customer?
 			@presenter = Presenter.find(params[:enquiry][:recipient_id])
 			@enquiry.customer = current_user.customer
 			@enquiry.from = :customer
 			@enquiry.presenter = @presenter
-			@enquiry.save
-			@message = "New enquiry from #{current_user.customer.school_info.school_name}."
-			Notification.send_message(@presenter.user, @message, enquiry_path(@enquiry), :new_enquiry)
-			Notification.notify_admin(@message, enquiry_path(@enquiry), :new_enquiry)
-			redirect_to customers_path
+			if @enquiry.save
+				@message = "New enquiry from #{current_user.customer.school_info.school_name}."
+				Notification.send_message(@presenter.user, @message, enquiry_path(@enquiry), :new_enquiry)
+				Notification.notify_admin(@message, enquiry_path(@enquiry), :new_enquiry)
+				flash[:success] = "Success! You've sent you're enquiry"
+				redirect_to customers_path
+			else 
+				render :new
+			end
 		elsif current_user.presenter?
 			@customer = Customer.find(params[:enquiry][:recipient_id])
 			@enquiry.presenter = current_user.presenter
 			@enquiry.from = :presenter
 			@enquiry.customer = @customer
 			@enquiry.status = :counteroffer
-			@enquiry.save
-			@message = "#{current_user.presenter.get_private_full_name(@customer.user)} has responded with a counter offer."
-			Notification.send_message(@customer.user, @message, enquiry_path(@enquiry), :counter_enquiry)
-			Notification.notify_admin(@message, enquiry_path(@enquiry), :counter_enquiry)
-			redirect_to customers_path
+			if @enquiry.save
+				@message = "#{current_user.presenter.get_private_full_name(@customer.user)} has responded with a counter offer."
+				Notification.send_message(@customer.user, @message, enquiry_path(@enquiry), :counter_enquiry)
+				Notification.notify_admin(@message, enquiry_path(@enquiry), :counter_enquiry)
+				flash[:success] = "Success! You've sent you're enquiry"
+				redirect_to customers_path
+			else
+				render :new
+			end
 		end
 	end
 

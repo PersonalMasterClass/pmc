@@ -55,6 +55,8 @@ module EnquiriesHelper
 			elsif presenter.present?
 				return enquiry.customer.id
 			end
+		elsif params[:action] == "create" && params[:controller] == "enquiries"
+			return params[:enquiry][:recipient_id]
 		end
 	end		
 
