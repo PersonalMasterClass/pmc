@@ -57,6 +57,7 @@ div.landing-page-sections {
     }
     $ctaButtonWidth: 480px;
     &#leader {
+      background: rgba(0,0,0,0.2);
       padding: 128px 0;
       @media screen and (max-width: $screen-sm-min) {
         padding: 36px 0;
