@@ -39,7 +39,3 @@ RUN apt-get update && apt-get install -y postgresql-client --no-install-recommen
 
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
-
-# Post-build commands
-# The line below is only required for production environments.
-#RUN rake assets:precompile
