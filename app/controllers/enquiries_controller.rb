@@ -8,8 +8,22 @@ class EnquiriesController < ApplicationController
 	end
 
 	# Display a particular enquiry
+	# Only authorised users are allowed to see their enquiries.
 	def show
 		@enquiry = Enquiry.find(params[:id])
+		if current_user.presenter?
+			if @enquiry.presenter != current_user.presenter 
+				flash[:danger] = "Unauthorised access."
+				redirect to root_url
+			end
+		elsif current_user.customer?
+			if @enquiry.customer != current_user.customer
+				flash[:danger] = "Unauthorised access."
+				redirect_to root_url
+			end
+		end
+
+
 	end
 
 	def new
