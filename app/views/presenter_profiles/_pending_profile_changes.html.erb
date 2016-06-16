@@ -1,4 +1,4 @@
-<% if (@presenter == Presenter.find_by(user_id: current_user)  && !@profile.approved?) ||  (@current_user.admin? && !@profile.approved?)%>
+<% if (@presenter == Presenter.find_by(user_id: current_user)  && (@profile.pending_presenter? || @profile.draft_presenter?)) || (@current_user.admin? && (@profile.pending_admin? || @profile.draft_admin?)) %>
   <div class="alert alert-info" role="alert">
     <h3>Pending Profile Changes</h3>
 
@@ -15,7 +15,7 @@
       <p>Picture: <%= image_tag @profile.picture_edit.thumb('100x100#').url, class: "img-circle" %></p>   
     <% end %>
     
-    <% if (current_user.presenter? && !@profile.pending_admin?) || (current_user.admin? && !@profile.pending_presenter?) %>
+    <% if (current_user.presenter? && (@profile.pending_presenter? || @profile.draft_presenter?)) || (current_user.admin? && (@profile.pending_admin? || @profile.draft_admin?)) %>
       <%= edit_presenter_profile_link(@presenter, "btn btn-default") %>
     <% end %>
 
