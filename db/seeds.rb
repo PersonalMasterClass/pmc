@@ -73,10 +73,10 @@ c = User.new(
              password:              "password",
              password_confirmation: "password",
              confirmed_at: Time.now)
-d = Customer.create(phone_number: "0411111111", 
-                     first_name: "Stacey",
-                     last_name: "Lawler", 
-                     vit_number: "184539",  
+d = Customer.create(phone_number:Faker::PhoneNumber.phone_number, 
+                     first_name: Faker::Name.first_name,
+                     last_name: Faker::Name.last_name , 
+                     vit_number: Faker::Number.number(6), 
                      abn_number: Faker::Number.number(11)) 
 d.school_info = SchoolInfo.all.sample
 setting = Setting.create!
@@ -95,9 +95,9 @@ c.save(:validate => false)
              password_confirmation: "password",
              confirmed_at: Time.now)
   presenter = Presenter.create(phone_number:Faker::PhoneNumber.phone_number, 
-                               first_name: "Stacey",
-                               last_name: "Lawler", 
-                               vit_number: 184539, 
+                               first_name: Faker::Name.first_name  ,
+                               last_name: Faker::Name.last_name , 
+                               vit_number: Faker::Number.number(6), 
                                abn_number: Faker::Number.number(11) )
 
   presenter.school_info = SchoolInfo.all.sample

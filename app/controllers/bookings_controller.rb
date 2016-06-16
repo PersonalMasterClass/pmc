@@ -73,6 +73,17 @@ class BookingsController < ApplicationController
 
       @presenter_id = params[:presenter_id]
 
+      unless @presenter_id.nil?
+        presenter = Presenter.find(@presenter_id)
+        unless presenter.nil?
+          if presenter.rate.nil? || presenter.rate == 0
+            flash[:info] = "Presenter has not set a rate. Please click enquire to negotiate a rate."
+            redirect_to presenter_profile_path presenter
+            return
+          end
+        end
+      end
+
       @booking = Booking.new(subject_id: @subject_id) 
     else
       @booking = Booking.new
@@ -97,8 +108,9 @@ class BookingsController < ApplicationController
   def create
     @booking = Booking.new(booking_params)
     
-    
-    @subject = Subject.find(params[:subject_id])
+    unless params[:subject_id].empty?
+      @subject = Subject.find(params[:subject_id])
+    end
     # TODO date and time validation
     date = (params['date_part'] + " " + params['time_part']).to_datetime
     @booking.booking_date = date
@@ -121,8 +133,7 @@ class BookingsController < ApplicationController
         @booking.chosen_presenter = Presenter.find(params[:presenter_id])
         @booking.creator = current_user.customer
       else
-        flash[:danger] = "Presenter is not available at this time."
-        render :new
+        @booking.errors.add(:presenter, "is not available at this time")
       end
     end   
     
