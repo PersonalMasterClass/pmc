@@ -26,9 +26,11 @@ SMTP_PASSWORD=""
 SECRET_KEY_FILE="/usr/local/etc/pmc_secret_key"
 SSL_CERT_BUNDLE="personalmasterclass.crt"  # The certificate bundle file as it exists relative to this provisioning script
 SSL_CERT_KEY="personalmasterclass.key"     # The certificate private key as it exists relative to this provisioning script
+XERO_PRIVATE_KEY="privatekey.pem"          # The XERO private key as it exists relative to this provsioning script
 WEB_ROOT="/var/www/html"
 XERO_CONSUMER_KEY=""
 XERO_SECRET_KEY=""
+MAILER_SENDER=""
 
 LOG_FILE="/usr/local/pmc_provisioning.log"
 
@@ -76,11 +78,12 @@ if [ "${EUID}" != 0 ]; then
   exit 1
 fi
 
-while getopts "b:b h p:p s:s t:t u:u x:x y:y" flag
+while getopts "b:b h m:m p:p q:q r:r s:s t:t u:u x:x y:y" flag
 do
   case $flag in
     b)  BRANCH="${OPTARG}";;
     h)  showHelp ; exit 0;;
+    m)  MAILER_SENDER="${OPTARG}";;
     p)  POSTGRESQL_PASSWORD="${OPTARG}";;
     q)  S3_BUCKET="${OPTARG}";;
     r)  S3_REGION="${OPTARG}";;
@@ -265,6 +268,9 @@ if [ -f "${CWD}/${SSL_CERT_BUNDLE}" ]; then
   "${CHOWN}" root:root "${DEST_FILE}"
   "${CHMOD}" 600 "${DEST_FILE}"
 fi
+if [ -f "${CWD}/${XERO_PRIVATE_KEY}" ] && [ -d "${WEB_ROOT}/config" ]; then
+  "${CP}" "${CWD}/${XERO_PRIVATE_KEY}" "${WEB_ROOT}/config/privatekey.pem"
+fi
 
 if [ -f "/etc/nginx/${SSL_CERT_KEY}" ] && [ -f "/etc/nginx/${SSL_CERT_BUNDLE}" ]; then
   SSL_PRESENT=true
@@ -349,6 +355,7 @@ echo "
       passenger_env_var xero_consumer \"${XERO_CONSUMER_KEY}\";
       passenger_env_var xero_secret \"${XERO_SECRET_KEY}\";
       passenger_env_var xero_cert_location \"config/xero_privatekey.pem\";
+      passenger_env_var MAILER_SENDER \"${MAILER_SENDER}\";
     }
 }" >> /etc/nginx/nginx.conf
 
