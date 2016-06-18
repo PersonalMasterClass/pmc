@@ -34,6 +34,9 @@ class BookingsController < ApplicationController
   # Creates a new booking from an accepted enquiry
   def create_from_enquiry
 
+    #clear search session 
+    session[:search_params] = nil
+
     @booking = Booking.new(booking_params)
     @enquiry = Enquiry.find(params[:enquiry])
     unless params[:subject_id].empty?
