@@ -44,7 +44,7 @@ class EnquiriesController < ApplicationController
 				Notification.send_message(@presenter.user, @message, enquiry_path(@enquiry), :new_enquiry)
 				Notification.notify_admin(@message, enquiry_path(@enquiry), :new_enquiry)
 				flash[:success] = "Success! You've sent you're enquiry"
-				redirect_to customers_path
+				redirect_to enquiry_path(@enquiry)
 			else 
 				render :new
 			end
@@ -59,7 +59,7 @@ class EnquiriesController < ApplicationController
 				Notification.send_message(@customer.user, @message, enquiry_path(@enquiry), :counter_enquiry)
 				Notification.notify_admin(@message, enquiry_path(@enquiry), :counter_enquiry)
 				flash[:success] = "Success! You've sent you're enquiry"
-				redirect_to customers_path
+				redirect_to enquiry_path(@enquiry)
 			else
 				render :new
 			end
@@ -72,13 +72,14 @@ class EnquiriesController < ApplicationController
 		@enquiry.save
 		if current_user.customer?
 			@message = "#{@enquiry.presenter.get_private_full_name(current_user)} has accepted the request, please confirm the booking."
+			flash[:success] = "Please confirm the booking."
 		elsif current_user.presenter?
 			@message = "#{@enquiry.customer.school_info.school_name} has accepted the request, please confirm the booking."
+		flash[:success] = "Enquiry sent and accepted."
 		end
 		Notification.send_message(@enquiry.customer.user, @message, enquiry_path(@enquiry), :accept_enquiry)
 		Notification.notify_admin(@message, enquiry_path(@enquiry), :accept_enquiry)
-		flash[:success] = "Enquiry sent and accepted."
-		redirect_to root_path
+		redirect_to enquiry_path(@enquiry)
 	end
 
 	# Only available if an enquiry's status is :accepted
@@ -102,7 +103,7 @@ class EnquiriesController < ApplicationController
 		end
 		Notification.send_message(@enquiry.customer.user, @message, enquiry_path(@enquiry), :declined_enquiry)
 		Notification.notify_admin(@message, enquiry_path(@enquiry), :declined_enquiry)
-		redirect_to root_path
+		redirect_to enquiry_path(@enquiry)
 	end
 
   private
