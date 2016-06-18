@@ -2,6 +2,9 @@ class Enquiry < ActiveRecord::Base
 	belongs_to :presenter
 	belongs_to :customer
 
+	validates :date, :time, :rate, :duration, presence: true
+	validate :validate_current_date
+
 	enum from: [:presenter, :customer]
 	enum status: [:pending, :declined, :accepted, :booked, :counteroffer]
 
@@ -31,5 +34,15 @@ class Enquiry < ActiveRecord::Base
 			end
 		end
 		return @conversation
+	end
+
+	private
+
+	def validate_current_date
+		if self.date
+			if self.date < Date.today
+				errors.add(:date, "cannot be set before today's date.")
+			end
+		end
 	end
 end

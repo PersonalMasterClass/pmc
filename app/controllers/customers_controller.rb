@@ -1,6 +1,6 @@
 class CustomersController < ApplicationController
 	before_filter :has_access?, :only => [:show]
-  before_filter :is_customer?, :only => [:index]
+  before_filter :is_customer?, :only => [:index, :edit, :update]
 
   def index
     @customer = current_user.customer

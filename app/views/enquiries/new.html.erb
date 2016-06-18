@@ -1,0 +1,41 @@
+<% if @enquiry.errors.any? %>
+	<div class = "alert alert-danger">
+		<h3> Errors </h3>
+		<ul>
+		<% @enquiry.errors.full_messages.each do |msg| %>
+			<li> <%= msg %> </li>
+		<% end %>
+		</ul>
+	</div>
+<% end %>
+<div class="modal-body">
+	<%= form_for :enquiry, url: enquiries_path, method: "post" do |f| %>
+			<div class = "form-group">
+				<%= f.label "Rate (per hour)" %><br>
+				<%= f.number_field :rate, class: "form-control" %>
+			</div>
+			<div class = "form-group">
+				<%= f.label "Duration (in minutes)" %><br>
+				<%= f.number_field :duration, step: 15, min: 60, value: 60, class: "form-control" %>
+			</div>
+			<div class = "form-group">
+				<%= f.label "Date" %><br>
+				<%= f.date_field :date, class: "form-control" %>
+			</div>
+			<div class = "form-group">
+				<%= f.label "Time" %><br>
+				<%= f.time_field :time, class: "form-control"%>
+			</div>
+			<% if current_user.customer? %>
+				<%= f.hidden_field(:recipient_id, :value => form_variable(@enquiry, @presenter)) %>
+			<% elsif current_user.presenter? %>
+				<%= f.hidden_field(:recipient_id, :value => @enquiry.customer.id) %>
+			<% end %>
+</div>
+
+<div class="modal-footer">
+	<%= f.submit enquiry_submit(current_user), class: "btn btn-primary" %>
+	<%= link_to "Back", request.referer.present? ? request.referer : default_path, class: "btn btn-default" %>
+</div>
+	<% end %>
+</div>

@@ -27,7 +27,9 @@
             <% end %>
           </td>
           <td> <%= user.status %></td>
-          <td> <%= link_to "View", presenter_profile_path(presenter), class: "btn btn-primary" %> </td>
+          <td> <%= link_to "View Profile", presenter_profile_path(presenter), class: "btn btn-primary" %> 
+               <%= link_to "View Enquiries", user_enquiries_path(presenter.user), class: "btn btn-info" %> 
+          </td>
         </tr>  
       <% end %>
     </tbody>

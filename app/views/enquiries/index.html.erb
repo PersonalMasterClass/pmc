@@ -2,27 +2,29 @@
 	<h3> Conversations </h3>
 </div>
 <div class="col-md-4">
-	<% if @users.present? %>
 	<div class="list-group enquiry-users">
-	<% @users.each do |user| %>
-		<% if current_user.presenter? %>
-			<%= link_to user.school_info.school_name, enquiries_path(id: user), class: "list-group-item", id: user.id %>
-		<% elsif current_user.customer? %>
-			<%= link_to enquiries_path(id: user), class: "list-group-item", id: user.id do %>
-				<%= image_tag user.profile_picture_path('50x50#'), class: "img-circle" %> 
-			    <h4 class="list-group-item-heading bid-item-h4">
-			      <%= user.get_private_full_name(current_user) %>
-			    </h4>
+		<% if @users.present? %>
+			<% @users.each do |user| %>
+				<% if current_user.presenter? %>
+					<%= link_to user.school_info.school_name, enquiries_path(id: user), class: "list-group-item", id: user.id %>
+				<% elsif current_user.customer? %>
+					<%= link_to enquiries_path(id: user), class: "list-group-item", id: user.id do %>
+						<%= image_tag user.profile_picture_path('50x50#'), class: "img-circle" %> 
+				    <h4 class="list-group-item-heading bid-item-h4">
+				      <%= user.get_private_full_name(current_user) %>
+				    </h4>
+					<% end %>
+				<% end %>
 			<% end %>
+		<% else %>
+		<p><i>There is currently no enquiries.</i></p>
 		<% end %>
-	<% end %>
 	</div>
-	<% end %>
 </div>
 <div class="col-md-8">
 	<% if @conversation.present? %>
-	<h3><i> Current enquiry: </i></h3>
-	<div class= "list-group-item list-group-item-<%=enquiry_panel_color(@conversation.first)%>">
+	<h3> Current enquiry: </h3>
+		<div class= "list-group-item list-group-item-<%=enquiry_panel_color(@conversation.first)%>">
 	    <h4 class="list-group-item-heading"><%= "#{from(@conversation.first)} #{@conversation.first.created_at.strftime("%d/%m/%Y")}" %></h4><%= enquiry_status(@conversation.first) %>
 	    <p class="list-group-item-text"> Rate: <%= number_to_currency(@conversation.first.rate) %> </p>
 	    <p class="list-group-item-text"> Date: <%= @conversation.first.date.strftime("%d/%m/%Y") %></p>
@@ -30,8 +32,8 @@
 	    <p class="list-group-item-footer">
 	    	<%= link_to "View", enquiry_path(@conversation.first), class: "btn btn-default"%>
 	    </p>
-    </div>
-	<h3><i> Previous enquiries: </i></h3>
+  </div>
+	<h3> Previous enquiries: </h3>
 	<% @conversation.each_with_index do |enquiry, index| %>
 		<div class="list-group">
 			<% unless index == 0 %>

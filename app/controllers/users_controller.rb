@@ -100,6 +100,15 @@
     @presenters = Presenter.all
   end
 
+  def enquiries
+    @user = User.find(params[:id])
+    if @user.customer?
+      @enquiries = @user.customer.enquiries.order(created_at: :desc).paginate(:page => params[:page], :per_page => 5)
+    elsif @user.presenter?
+      @enquiries = @user.presenter.enquiries.order(created_at: :desc).paginate(:page => params[:page], :per_page => 5)
+    end
+  end
+
   def edit_login_details
   end
 

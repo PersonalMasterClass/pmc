@@ -6,12 +6,14 @@
   <div class="row">
     <div class="col-md-3 image-wrap"><%= image_tag @presenter.profile_picture_path('225x225#'), class: "img-responsive img-circle" %></div>
     <div class="col-md-9">
-      <!-- <p>Name: <%= @presenter.get_private_full_name(current_user) %></p> -->
+      <% if current_user.nil? %>
+        <%= link_to "Sign up now", registration_customers_path, :class => "btn btn-info btn-lg"%>
+      
       <% #hide personal information from everyone but admin and owner of profile 
-      if current_user.user_type == "admin" || current_user == User.find(@presenter.user_id) %>
-      <p><strong>VIT Number:</strong> <%= @presenter.vit_number%></p>
-      <p><strong>ABN number:</strong> <%= @presenter.abn_number%></p>
-      <p><strong>Phone Number:</strong> <%= @presenter.phone_number%></p>
+      elsif current_user.user_type == "admin" || current_user == User.find(@presenter.user_id) %>
+        <p><strong>VIT Number:</strong> <%= @presenter.vit_number%></p>
+        <p><strong>ABN number:</strong> <%= @presenter.abn_number%></p>
+        <p><strong>Phone Number:</strong> <%= @presenter.phone_number%></p>
       <% end %>
     </div>
   </div>

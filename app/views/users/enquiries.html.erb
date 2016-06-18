@@ -1,0 +1,16 @@
+	<h3> Enquiries: </h3>
+	<% if @enquiries.any? %>
+		<% @enquiries.each do |enquiry| %>
+			<div class="list-group">
+	  		<div class= "list-group-item list-group-item-<%=enquiry_panel_color(enquiry)%>">
+		      <h4 class="list-group-item-heading"><%= "#{from(enquiry)} #{enquiry.created_at.strftime("%d/%m/%Y")}" %></h4><%= enquiry_status(enquiry) %>
+			    <p class="list-group-item-text"> Rate: <%= number_to_currency(enquiry.rate) %> </p>
+			    <p class="list-group-item-text"> Date: <%= enquiry.date.strftime("%d/%m/%Y") %></p>
+			    <p class="list-group-item-text"> Time: <%= enquiry.time.strftime("%H:%M %p") %></p>
+			  </div>
+			</div>
+	  <% end %>
+	<%= will_paginate @enquiries, class: "pagination" %>
+	<% else %>
+	<p><i> There are currently no enquiries for this user. </i></p>
+	<% end %>

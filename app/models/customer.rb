@@ -10,7 +10,7 @@ class Customer < ActiveRecord::Base
 	validates :first_name, :last_name, :school_info, presence: true
   validates :vit_number, format: /\A^\d{6}$\Z/
   validate :vit_number_must_be_valid
-  validates :phone_number, format: /\A^(?:\+?61|0)[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
+  validates :phone_number, format: /\A^(?:\+?61|0)\s?[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
 
   after_create :save_to_xero
   after_update :update_xero

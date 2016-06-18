@@ -22,6 +22,7 @@ mount ResqueWeb::Engine => 'admin/resque'
     get 'admin/pending_registrations' => 'users#registrations'
     get 'users/:id' => 'users#show', as: "user"
     get 'users/:id/edit_login_details' => 'users#edit_login_details', as: 'user_edit_login_details'
+    get 'users/:id/enquiries' => 'users#enquiries', as: "user_enquiries"
     post 'users/update_login_details' => 'users#update_login_details', as: 'user_update_login_details'
   
   #resources :customers, only: [:index, :show], as: "schools" 
@@ -53,6 +54,7 @@ mount ResqueWeb::Engine => 'admin/resque'
     post 'customers/:id/update/contact_form_create' => 'customers#contact_form_create'
   end
 
+
   
   get "/school_info/find" => 'school_info#find'
 
@@ -81,6 +83,10 @@ mount ResqueWeb::Engine => 'admin/resque'
   patch 'booking/:id/leave_booking/' => "bookings#leave_booking", as: "bookings_leave"
   get 'bookings/past' => "bookings#past", as: "past_bookings"
   resources :bookings
+
+  get 'booking/new_from_enquiry/:id' => 'bookings#new_from_enquiry', as: "new_from_enquiry"
+  post 'booking/create_from_enquiry' => 'bookings#create_from_enquiry', as: "create_from_enquiry"
+
   resources :presenters, :only =>[:create, :edit, :update, :destroy, :index] do
     resource :presenter_profile, as: 'profile'
     resources :availabilities
@@ -97,7 +103,7 @@ mount ResqueWeb::Engine => 'admin/resque'
 
   end
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
-  
+
   get 'profiles/search' => 'search#index'
 
   resource :availability

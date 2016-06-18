@@ -2,21 +2,73 @@ class BookingsController < ApplicationController
   before_filter :admin_or_customer_logged_in, :except => [:index, :past, :show, :open, :set_bid, :cancel_bid]
   before_filter :admin_logged_in, :only => [:index]
   before_filter :logged_in, :only => [:past]
-  #admin view for all bookings
+
+  # Admin view for all bookings
   def index  
     @bookings = Booking.with_deleted
   end
 
-  #shows all previous bookings for a user
+  # Shows all previous bookings for a user
   def past
     @bookings = Booking.completed(current_user)
   end
 
+  # Display a particular booking
   def show
     @booking = Booking.with_deleted.find(params["id"])
     @creator = @booking.creator
   end
+  def new_from_enquiry
+    @enquiry = Enquiry.find(params[:id])
+    if @enquiry.nil?
+      redirect_to root_path
+    end
 
+    if @enquiry.accepted? && @enquiry.customer == current_user.customer
+      @booking = Booking.new 
+    else
+      redirect_to enquiry_path(@enquiry)
+    end
+  end
+
+  # Creates a new booking from an accepted enquiry
+  def create_from_enquiry
+
+    #clear search session 
+    session[:search_params] = nil
+
+    @booking = Booking.new(booking_params)
+    @enquiry = Enquiry.find(params[:enquiry])
+    unless params[:subject_id].empty?
+      @subject = Subject.find(params[:subject_id].to_i) 
+    end
+    
+    if @enquiry.nil?
+      redirect_to root_path
+    end
+    
+    if @enquiry.accepted? && current_user.customer == @enquiry.customer
+      @booking.creator = @enquiry.customer
+      @booking.chosen_presenter = @enquiry.presenter
+      @booking.booking_date = DateTime.new(@enquiry.date.year, @enquiry.date.month, @enquiry.date.day, @enquiry.time.hour, @enquiry.time.min)
+      @booking.rate = @enquiry.rate
+      @booking.customers << current_user.customer
+      @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
+      @booking.subject = @subject
+      if @booking.save
+        @enquiry.update(:status => "booked")
+        redirect_to @booking
+        return
+      else
+        render action: 'new_from_enquiry'
+      end
+    else
+      redirect_to root_path
+      return
+    end
+  end
+
+  # View for booking form
   def new
     # Booking form is populated if visited via search form.
     if session[:search_params].present?
@@ -24,25 +76,59 @@ class BookingsController < ApplicationController
       @subject_id = session[:search_params]["subject_id"]
       @date_part = session[:search_params]["date_part"]
       @time_part = session[:search_params]["time_part"]
+
       @presenter_id = params[:presenter_id]
+
+      unless @presenter_id.nil?
+        presenter = Presenter.find(@presenter_id)
+        unless presenter.nil?
+          if presenter.rate.nil? || presenter.rate == 0
+            flash[:info] = "Presenter has not set a rate. Please click enquire to negotiate a rate."
+            redirect_to presenter_profile_path presenter
+            return
+          end
+        end
+      end
+
       @booking = Booking.new(subject_id: @subject_id) 
     else
       @booking = Booking.new
     end
+    unless @date_part.nil?
+      if @date_part.empty? && !params[:day].nil?
+        begin
+          @date_part = Date.parse(params[:day])
+        rescue ArgumentError
+        end
+      end
+    end
+    unless @time_part.nil?
+      if (@time_part.nil? || @time_part.empty?) && !params[:availability].nil?
+        hr = (Availability.find(params[:availability]).start_time/60).to_s.rjust(2,'0')
+        min = (Availability.find(params[:availability]).start_time%60).to_s.rjust(2,'0')
+        @time_part = "#{hr}:#{min}"
+      end
+    end
   end
 
+  # Creates booking for multiple cases:
+  # 1. School creates an open booking
+  # 2. School creates a closed booking via search form
+  # 3. School creates a closed booking via enquiries form
   def create
-    @booking = Booking.new(booking_params)
-    # Create closed booking if customer came from searching or enquiring.
-    if session[:search_params].present? || params[:presenter_id].present?
-      @booking.chosen_presenter = Presenter.find(params[:presenter_id])
-      @booking.creator = current_user.customer
-    end
 
-      
-    @subject = Subject.find(params[:subject_id])
+    @booking = Booking.new(booking_params)
+    
+    unless params[:subject_id].empty?
+      @subject = Subject.find(params[:subject_id])
+    end
     # TODO date and time validation
-    date = (params['date_part'] + " " + params['time_part']).to_datetime
+    begin
+      date = (params['date_part'] + " " + params['time_part']).to_datetime
+    rescue ArgumentError
+      @booking.errors.add(:date, "is invalid")
+      date = Date.new
+    end
     @booking.booking_date = date
     # TODO: Refactor for admin booking creation
     @booking.shared = params["shared"]
@@ -52,9 +138,19 @@ class BookingsController < ApplicationController
     @booking.customers << current_user.customer
     @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
     @booking.period = 2
-    if params[:rate].present?
-      @booking.rate = params[:rate]
-    end
+    
+    # Create closed booking if customer came from searching or enquiring.
+    if session[:search_params].present? || params[:presenter_id].present?
+      presenter = Presenter.find(params[:presenter_id])
+      if presenter.available? @booking.booking_date, @booking.duration_minutes
+        @booking.chosen_presenter = Presenter.find(params[:presenter_id])
+        @booking.rate = presenter.rate
+        @booking.creator = current_user.customer
+      else
+        @booking.errors.add(:presenter, "is not available at this time")
+      end
+    end   
+    
     if @booking.save
       # Only send messages to customers if booking is shared
       @message = "A new #{@booking.subject.name} booking has been created that you may be interested in."
@@ -74,6 +170,8 @@ class BookingsController < ApplicationController
       session[:search_params] = nil
       redirect_to @booking
     else
+      @date_part = params['date_part']
+      @time_part = params['time_part']
       render :new
     end
 
@@ -88,10 +186,12 @@ class BookingsController < ApplicationController
   def destroy
   end
 
+
   def open
     @bookings = Booking.where(chosen_presenter_id: nil)
   end
 
+  # Creates bid on a booking objects
   def set_bid
     @booking = Booking.find(params[:id])
     @presenter = current_user.presenter
@@ -120,6 +220,7 @@ class BookingsController < ApplicationController
     redirect_to root_url
   end
 
+  # Select presenter for a booking
   def choose_presenter
     @presenter = Presenter.find(params[:presenter_id])
     @booking = Booking.find(params[:booking_id])
@@ -133,7 +234,7 @@ class BookingsController < ApplicationController
     Notification.send_message(@presenter.user, "You've been locked in for a booking!", booking_path(@booking), :choose_presenter)
     flash[:success] = "#{@presenter.get_private_full_name(current_user)} has been assigned to this booking."
     
-    redirect_to root_path
+    redirect_to booking_path(@booking)
   end
   # get_help allows a school to request help choosing a presenter for a booking
   # This action notifies the admin that a school has requested help, and updates the help_required flag.
@@ -146,7 +247,8 @@ class BookingsController < ApplicationController
     @booking.save
     redirect_to booking_path(@booking)
   end
-  # cancel_help allows a school or admin to dismiss the help requested flag for a booking. 
+
+  # Allows a school or admin to dismiss the help requested flag for a booking. 
   def cancel_help
     booking = Booking.find(params[:id])
     flash[:info] = "Help no longer required"
@@ -155,6 +257,7 @@ class BookingsController < ApplicationController
     redirect_to booking_path(booking)
   end
 
+  # Allow schools to join a booking
   def join
     @booking = Booking.find(params[:id])
     if params[:num_students].to_i > @booking.remaining_slots
@@ -172,6 +275,8 @@ class BookingsController < ApplicationController
     end
   end
 
+  # Creator of a booking can cancel their booking.
+  # Notifications will be sent out to all stakeholders involved.
   def cancel_booking
     @booking = Booking.find(params[:id])
     if @booking.booking_date > Time.now
@@ -192,6 +297,7 @@ class BookingsController < ApplicationController
     end
   end
 
+  # Presenters who've bid on a booking and withdraw it
   def cancel_bid
     @booking = Booking.find(params[:id])
     @booking.presenters.delete(current_user.presenter)
@@ -204,6 +310,7 @@ class BookingsController < ApplicationController
     redirect_to root_url
   end
 
+  # Schools who've joined a shared booking may leave
   def leave_booking
     @booking = Booking.find(params[:id])
     @booking.customers.delete(current_user.customer)

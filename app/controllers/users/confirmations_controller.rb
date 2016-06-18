@@ -5,9 +5,17 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   # end
 
   # POST /resource/confirmation
-  # def create
-  #   super
-  # end
+  def create
+    super 
+      usr = User.find_by_email(params[:user][:email])
+      unless usr.nil?
+        if usr.customer?
+          usr.customer.save_to_xero
+        else
+          usr.presenter.add_to_xero
+        end
+      end
+  end
 
   # GET /resource/confirmation?confirmation_token=abcdef
   # def show
