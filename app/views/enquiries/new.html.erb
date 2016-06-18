@@ -35,7 +35,7 @@
 
 <div class="modal-footer">
 	<%= f.submit enquiry_submit(current_user), class: "btn btn-primary" %>
-  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	<%= link_to "Back", request.referer.present? ? request.referer : default_path, class: "btn btn-default" %>
 </div>
 	<% end %>
 </div>

@@ -26,7 +26,7 @@ class InvoicesController < ApplicationController
 
   def show
   	invoice = Xero.connect.Invoice.find(params['id'])
-  	if invoice.contact.account_number.to_i == current_user.id || current_user.admin?
+  	if invoice.contact.contact_id == current_user.accounting_ref || current_user.admin?
   		send_data invoice.pdf, filename: "#{params['id']}.pdf", type: :pdf 
   	else
   		redirect_to invoices_path
@@ -35,7 +35,7 @@ class InvoicesController < ApplicationController
 
   private
   def check_if_user
-  	if !current_user
+  	if current_user.nil?
   		redirect_to root_path
   	end
   end

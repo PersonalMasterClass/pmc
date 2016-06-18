@@ -46,5 +46,10 @@
 	</div>
 	<hr />
 <% end %>
+<% unless current_user.nil? %>
+	<div class = "row">
+		<%= will_paginate @presenter %>
+	</div>	
+<% end %>
 </div>
 </div>

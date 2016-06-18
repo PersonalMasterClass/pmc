@@ -1,5 +1,7 @@
 <div>
-  <%= render "presenters/info", object: @presenter %>
+  
+<%= render "presenters/info", object: @presenter %>
+  
 </div>
 
 <div class="col-md-12">
@@ -19,8 +21,18 @@
   <% else %>
 	  <p> <%= @presenter.first_name %> has not filled out their bio. </p>
   <% end %>
-  <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
-  <%= render 'partials/admin_actions', object: @user %>
-  <%= render 'presenter_profiles/availabilities' %>
-  <%= render 'enquiries/partials/form' %>
+  <% unless current_user.nil? %>
+    <%= render 'presenter_profiles/pending_profile_changes' unless @profile.nil? %>
+  	<%= render 'partials/admin_actions', object: @user %>
+    <%= render 'presenter_profiles/availabilities' %>
+  <% end %>
+
+<!-- Fix vulnerablility -->  
+  <% unless current_user.nil? %>
+    <% if current_user.customer? && params[:booking_id].present? %>
+      <%= render 'partials/customer_actions' %>
+    <%  end %>
+    <%= render 'enquiries/partials/form' %>
+  <% end %>
+
 </div>

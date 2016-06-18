@@ -86,10 +86,10 @@ class EnquiriesController < ApplicationController
 	# Change enquiry's status to :booked and redirected to booking controller
 	def booked
 		@enquiry = Enquiry.find(params[:enquiry_id])
-		@enquiry.status = :booked
 		@enquiry.save
-		redirect_to new_booking_path(rate: @enquiry.rate, date: @enquiry.date.strftime("%d/%m/%Y"),
-										 time: @enquiry.time.strftime("%H:%M %p"), presenter_id: @enquiry.presenter.id)
+		# redirect_to new_booking_path(rate: @enquiry.rate, date: @enquiry.date.strftime("%d/%m/%Y"),
+		# 								 time: @enquiry.time.strftime("%H:%M %p"), presenter_id: @enquiry.presenter.id)
+		redirect_to new_from_enquiry_path(@enquiry)
 	end
 
 	# Decline an enquiry

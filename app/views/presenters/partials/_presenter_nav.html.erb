@@ -24,10 +24,19 @@
       </li>
     </ul>
   </li>
-
-  <li role="presentation">
-    <%= link_to "Past Bookings", past_bookings_path %>
-  </li>  
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" id="profile-dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+      Bookings <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="profile-dropdown">
+      <li role="presentation">
+        <%= link_to "Past Bookings", past_bookings_path %>
+      </li>  
+      <li role="presentation">
+        <%= link_to "Invoices", invoices_path %>
+      </li> 
+    </ul>
+  </li>
   <li role="presentation">
     <%= link_to "Enquiries", enquiries_path%>
   </li>
