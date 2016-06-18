@@ -15,6 +15,7 @@ ENV SMTP_ADDRESS "email-smtp.us-west-2.amazonaws.com"
 ENV SMTP_PORT "587"
 ENV SMTP_USERNAME ""
 ENV SMTP_PASSWORD ""
+ENV MAILER_SENDER "please-change-me-at-config-initializers-devise@example.com"
 
 # (Default) Database Environment Variables
 ENV PMC_DB_HOST 'pmc_postgres'
