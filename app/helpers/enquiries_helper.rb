@@ -1,4 +1,5 @@
 module EnquiriesHelper
+	# Selective label depending on who sent a booking
 	def from(enquiry)
 		if current_user.customer?
 			if enquiry.from == "presenter"
@@ -18,6 +19,7 @@ module EnquiriesHelper
 		end
 
 	end
+	# Selective enquiry btn text
 	def enquiry_user(user)
 		if params[:id].present?
 			status = Enquiry.find(params[:id]).status
@@ -31,6 +33,7 @@ module EnquiriesHelper
 		end
 	end
 
+	# Selective enquiry form title text
 	def form_title(user)
 		if user.customer?
 			"Make enquiry"
@@ -38,6 +41,8 @@ module EnquiriesHelper
 			"Make counter offer"
 		end
 	end
+
+	# Selective enquiry submit button text
 	def enquiry_submit(user)
 		if user.customer?
 			"Send enquiry"
@@ -46,6 +51,7 @@ module EnquiriesHelper
 		end
 	end
 
+	# Selective variable for recipient_id booking variable
 	def form_variable(enquiry, presenter)
 		if params[:action] == "show" && params[:controller] == "presenter_profiles"
 			return presenter.id
@@ -60,6 +66,7 @@ module EnquiriesHelper
 		end
 	end		
 
+	# Display text based on user type
 	def name_or_school(user)
 		if current_user.customer?
 			user.get_private_full_name(current_user)
@@ -67,6 +74,8 @@ module EnquiriesHelper
 			user.school_info.school_name
 		end
 	end
+
+	# Enquiry#show view logic
 	def enquiry_panel_color(enquiry) 
 		if enquiry.accepted? || enquiry.booked?
 			"success"
@@ -77,6 +86,7 @@ module EnquiriesHelper
 		end
 	end
 
+	# Display enquiry status
 	def enquiry_status(enquiry)
 		if enquiry.accepted?
 			content_tag(:span, "ACCEPTED", class: "btn btn-xs btn-success")	
@@ -91,6 +101,7 @@ module EnquiriesHelper
 		end
 	end
 
+	# Display logic for current enquiry
 	def current_enquiry(index)
 		if index == 0
 			return "list-group-item-success"
@@ -99,6 +110,7 @@ module EnquiriesHelper
 		end
 	end
 
+	# Enquiry btn actions
 	def enquiry_actions(enquiry)
 		selection = nil
 		if enquiry.pending?
@@ -132,12 +144,20 @@ module EnquiriesHelper
 			concat render "enquiries/partials/form"
 			link_to "Decline", enquiry_decline_path(enquiry), method: :patch, class: "btn btn-danger" 
 		elsif selection == :decline_btn
-			link_to "Decline", enquiry_decline_path(enquiry), method: :patch, class: "btn btn-danger" 
+			if current_user.presenter
+				link_to "Decline", enquiry_decline_path(enquiry), method: :patch, class: "btn btn-danger" 
+			elsif current_user.customer	
+				link_to "Cancel", enquiry_decline_path(enquiry), method: :patch, class: "btn btn-danger" 
+			end
 		elsif selection == :back
 			link_to "Back", :back, class: "btn btn-default" 
 		elsif selection == :create_decline_btn
 			concat link_to "Create Booking", enquiry_booked_path(enquiry), method: :get, class: 'btn btn-success' 
-			link_to "Decline", enquiry_decline_path(enquiry), method: :patch, class: "btn btn-danger" 
+			if current_user.presenter?
+				link_to "Decline", enquiry_decline_path(enquiry), method: :patch, class: "btn btn-danger" 
+			elsif current_user.customer?
+				link_to "Cancel", enquiry_decline_path(enquiry), method: :patch, class: "btn btn-danger" 
+			end
 		end	
 	end
 end

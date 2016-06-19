@@ -1,9 +1,12 @@
 module BookingsHelper
+
+	# Display booking duration
 	def duration(booking)
 	 duration = booking.booking_date + booking.duration_minutes.minutes 
 	 duration.strftime("%H:%M %p")
 	end
 
+	# Display booked label
 	def booked_label(booking)
 		presenter = booking.chosen_presenter
 		if presenter.present?
@@ -11,6 +14,7 @@ module BookingsHelper
 		end
 	end
 
+	# Display rate label
 	def rate_label(booking)
 		if current_user.customer?
 			if booking.creator == current_user.customer && booking.chosen_presenter.present?
@@ -19,6 +23,7 @@ module BookingsHelper
 		end
 	end
 
+	# Display bid label
 	def bid_label(booking)
 		if current_user.presenter?
 			if booking.presenters.include? current_user.presenter
@@ -27,12 +32,14 @@ module BookingsHelper
 		end
 	end
 
+	# Display booking capacity label
 	def capacity_label(booking)
 		if booking.remaining_slots == 0
 			content_tag(:span, "Booking full", class: "btn btn-xs btn-danger")	
 		end
 	end
 
+	# Selective display for a shared booking
 	def view_schools(booking)
 		if booking.shared? && booking.customers.any?
 			if booking.creator == current_user.customer || current_user.customer?
@@ -43,11 +50,14 @@ module BookingsHelper
 		end
 	end
 
+	# Display cancellation message
 	def cancellation_message(booking)
 		if booking.cancellation_message.present?
 				content_tag(:p, "Cancellation message: <i>\"#{booking.cancellation_message}\"</i>".html_safe)
 		end
 	end
+
+	# Booking tag to display state of a booking
 	def is_booked(booking,user)
 		if user.presenter? 
 			if booking.chosen_presenter == user.presenter 
@@ -72,6 +82,7 @@ module BookingsHelper
 		end
 	end
 
+	# Display presenter details of closed booking or a presenter is chosen for an open booking
 	def chosen_presenter(booking) 
 		if booking.chosen_presenter == nil
 			"none"
@@ -80,6 +91,7 @@ module BookingsHelper
 		end
 	end
 
+	# Shared booking message
 	def shared_message(booking)
 		if booking.shared
 			if booking.customers.count > 1
@@ -92,6 +104,7 @@ module BookingsHelper
 		end
 	end
 
+	# Display remaining capacity of a booking
 	def display_booking_slots(booking)
 		if @remaining != 0
 			return content_tag(:p, "Capacity: #{booking.cap - booking.remaining_slots}/30 students booked.")
