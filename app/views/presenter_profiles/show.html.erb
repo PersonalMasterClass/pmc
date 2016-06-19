@@ -10,6 +10,7 @@
     <div class = "panel panel-default">
       <div class = "panel-body" id="profile_bio">
         <%= sanitize @profile.bio %>
+        <p><b>Rate</b>: <%= number_to_currency(@presenter.rate) %>/hour</p>
       </div>
     </div>
     <h3>Subjects</h3>
@@ -27,7 +28,6 @@
     <%= render 'presenter_profiles/availabilities' %>
   <% end %>
 
-<!-- Fix vulnerablility -->  
   <% unless current_user.nil? %>
     <% if current_user.customer? && params[:booking_id].present? %>
       <%= render 'partials/customer_actions' %>
