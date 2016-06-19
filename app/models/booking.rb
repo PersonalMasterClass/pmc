@@ -9,12 +9,13 @@ class Booking < ActiveRecord::Base
   belongs_to :subject, inverse_of: :bookings
   validates :booking_date, :presence => true
   validates :subject, :presence => true
+  validates :cap, :presence => true
   validates :rate, numericality: true, :presence => true, :if => :booking_confirmed?
   validates :duration_minutes, numericality: true, :presence => true
   validate :booking_validation
 
-  # after_create :send_booking_reminder
-  
+  after_create :send_booking_reminder
+  after_create :create_invoice  
  
 
   
@@ -200,5 +201,12 @@ class Booking < ActiveRecord::Base
     @end_date = Date.parse(@end_date.strftime("%d/%m/%Y"))
     @period = (@end_date - @curr_date).to_i
     Resque.enqueue_in @period.day, BookingReminder, self.id
+  end
+
+  def create_invoice
+    @curr_date = Date.today
+    @end_date = Date.parse(self.booking_date.strftime("%d/%m/%Y"))
+    @period = (@end_date - @curr_date).to_i
+    Resque.enqueue_in @period.day, CreateInvoice, self.id
   end
 end
