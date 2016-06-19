@@ -1,8 +1,10 @@
 class PresenterProfile < ActiveRecord::Base
+
+  # Associations
   belongs_to :presenter
 
+  # Validations
   validates :bio_edit, length: { maximum: 5000 }
-
   validates_size_of :picture_edit, maximum: 10.megabytes
   validates_property :format, of: :picture_edit, in: ['jpeg', 'png',]
   validates_property :ext, of: :picture_edit, in: ['jpeg', 'png', 'JPEG', 'jpg', 'JPG', 'PNG']
@@ -32,7 +34,7 @@ class PresenterProfile < ActiveRecord::Base
     PresenterProfile.joins(presenter: :user).where.not(:users => {:status => 2}, :presenter_profiles => {:status => [0,2,3,5]})
   end
 
-  #This method takes care of the process of updating the live profile with the new profile changes. 
+  # This method takes care of the process of updating the live profile with the new profile changes. 
   def approve
     if self.status == "pending_presenter" || self.status == "pending_admin"
       

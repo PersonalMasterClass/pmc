@@ -1,5 +1,7 @@
 class Booking < ActiveRecord::Base
   acts_as_paranoid
+
+  # Assoications
   has_many :booked_customers, :dependent => :destroy
   has_many :customers, through: :booked_customers, :dependent => :destroy
   belongs_to :chosen_presenter, class_name: "Presenter"
@@ -14,11 +16,12 @@ class Booking < ActiveRecord::Base
   validates :duration_minutes, numericality: true, :presence => true
   validate :booking_validation
 
+  # Call backs
   after_create :send_booking_reminder
   after_create :create_invoice  
  
 
-  
+  # Return all bookings where the :help_required attribute is true
   def self.help_required
     Booking.where('help_required = ? AND booking_date > ?', true, DateTime.now)
   end
@@ -26,18 +29,13 @@ class Booking < ActiveRecord::Base
   # Return upcoming booking for a customer or presenter
 	# Return all upcoming bookings for an admin
   def self.upcoming(user)
-  	# @user = User.check_user(user)
   	date_today = DateTime.now
     booking = nil
-    # Refactored queries to not use select for possible performance improvements
   	if user.admin?
-  		# return Booking.order(:booking_date).select{ |booking| booking.booking_date > date_today}
       return Booking.where('booking_date >= ?', date_today).order(:booking_date)
-  	elsif user.presenter? # Add all booked then bids
-      # return Booking.with_deleted.where(chosen_presenter: user.presenter).order(:booking_date).select{ |booking| booking.booking_date >= date_today}
+  	elsif user.presenter? 
       return Booking.with_deleted.where('booking_date >= ? AND chosen_presenter_id = ?', date_today, user.presenter).order(:booking_date)
     elsif user.customer?
-      # return Booking.with_deleted.where(creator: user.customer).select{ |booking| booking.booking_date > date_today}
       return Booking.with_deleted.where('booking_date >= ? AND creator_id = ?', date_today, user.customer).order(:booking_date)
   	end
   	return nil
@@ -57,6 +55,13 @@ class Booking < ActiveRecord::Base
   	end
   end
 
+  # Returns all future bookings related to a user
+  # Presenter: 
+  # => Open bookings (:chosen_presenter is nil)
+  # => Bookings where the current presenter hasn't placed a bid
+  # School:
+  # => Shared bookings (:shared is true)
+  # => Shared bookings where the current presenter hasn't joined
   def self.suggested(user)
     date_today = DateTime.now
     bookings = []
@@ -89,6 +94,8 @@ class Booking < ActiveRecord::Base
     end
     return bookings
   end
+
+  # Verify the the creator of the booking
   def self.check_creator(presenter, creator)
     if presenter.bookings.present?
       presenter.bookings.each do |booking|
@@ -121,11 +128,13 @@ class Booking < ActiveRecord::Base
     self.chosen_presenter = nil
     self.save
   end
-  # Deletes all bids placed on a booking. 
+
+  # Deletes all bids placed on a booking
   def remove_all_bids
     Bid.where(booking_id: self).delete_all
   end
 
+  # Creates an invoice on XERO for a booking
   def invoice!
     if self.chosen_presenter && self.rate 
       Xero.invoice_booking(self)
@@ -133,7 +142,7 @@ class Booking < ActiveRecord::Base
   end
 
 
-  #Returns a status message depending on the booking information
+  # Returns a status message depending on the booking information
   def status_message
     if self.deleted_at
       return "Cancelled"
@@ -165,6 +174,7 @@ class Booking < ActiveRecord::Base
     return students
   end
 
+  # Get remaining slots of capicity from cap
   def remaining_slots
     @count = 0
     self.booked_customers.each do |booked_customer|
@@ -173,7 +183,10 @@ class Booking < ActiveRecord::Base
     return self.cap - @count
 
   end
+
   private
+  
+  # Booking validation
   def booking_validation
     unless chosen_presenter.nil?
       # check presenter teaches subject

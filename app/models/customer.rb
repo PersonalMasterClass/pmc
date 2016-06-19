@@ -1,4 +1,6 @@
 class Customer < ActiveRecord::Base
+
+  # Associations
   has_many :booked_customers
   has_many :bookings, through: :booked_customers
   has_and_belongs_to_many :subjects
@@ -12,9 +14,11 @@ class Customer < ActiveRecord::Base
   validate :vit_number_must_be_valid
   validates :phone_number, format: /\A^(?:\+?61|0)\s?[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
 
-  after_create :save_to_xero
+  # Call backs
+  # after_create :save_to_xero
   after_update :update_xero
 
+  # Validate VIT number
   def vit_number_must_be_valid
     unless VitValidation.check_vit(first_name, last_name, vit_number)
       errors.add(:vit_number, "could not be found on the VIT register.")
@@ -22,7 +26,7 @@ class Customer < ActiveRecord::Base
   end
 
   # Removes cancels all upcoming bookings for a customer, and removes customer from all joined bookings. 
-  def cancel_upcoming_bookings()
+  def cancel_upcoming_bookings
     created_bookings = Booking.upcoming(self.user)
     #remove created bookings
       #send notifications

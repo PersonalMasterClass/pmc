@@ -27,6 +27,7 @@ class Notification < ActiveRecord::Base
 		end
 	end
 
+	# Send a notification to all admin(s)
   def self.notify_applicable_users(creator, booking, type, reference, message, setting)
   	if type == "presenter"
   		users = User.where(user_type: 1)
@@ -34,7 +35,6 @@ class Notification < ActiveRecord::Base
   	elsif type == "customer"
   		applicable_users = Customer.joins(:subjects).where(subjects: {name: booking.subject.name})
   	end
-  			
 		reference = reference
   	applicable_users.each do |applicable_user|
   		unless applicable_user.user == creator
@@ -45,24 +45,26 @@ class Notification < ActiveRecord::Base
   	end
 	end
 
-
+	# Send notification to all stakeholders when a booking is cancelled
 	def self.cancelled_booking(booking, reference)
 		message = "One of your bookings have been cancelled"
 		notification = Notification.create(message: message, reference: reference)
+		# Notifiy presenters
 		booking.presenters.each do |presenter|
 			presenter.user.notifications << notification
 			BookingMailer.cancel_booking(presenter.user, message, reference).deliver_now
 		end
+		# Notify customers
 		booking.customers.each do |customer|
 			customer.user.notifications << notification
 			BookingMailer.cancel_booking(customer.user, message, reference).deliver_now
 		end
-
+		# Notifiy chosen presenter
 		if booking.chosen_presenter.present?
 			booking.chosen_presenter.user.notifications << notification
 			BookingMailer.cancel_booking(booking.chosen_presenter.user, message, reference).deliver_now
 		end
-
+		# Notify admins
 		admin_users = User.where(user_type: 2)
 		admin_users.each do |admin|
 			admin.notifications << notification

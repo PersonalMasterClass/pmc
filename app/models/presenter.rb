@@ -1,4 +1,6 @@
 class Presenter < ActiveRecord::Base
+
+  # Associations
 	belongs_to :school_info
   belongs_to :user, inverse_of: :presenter
   has_one :presenter_profile, dependent: :destroy
@@ -9,11 +11,11 @@ class Presenter < ActiveRecord::Base
   has_many :enquiries
   has_many :customers, through: :enquiries
 
+  # Validations
 	validates :first_name, :last_name, :school_info, presence: true
   validates :vit_number, format: /\A^\d{6}$\Z/
   validate :vit_number_must_be_valid
   validates :phone_number, format: /\A^(?:\+?61|0)\s?[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
-  validates :rate, numericality: true
   
   # after_create :add_to_xero
   after_update :update_xero

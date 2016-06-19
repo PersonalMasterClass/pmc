@@ -1,13 +1,17 @@
 class Enquiry < ActiveRecord::Base
+
+	# Associations
 	belongs_to :presenter
 	belongs_to :customer
 
+	# Validations
 	validates :date, :time, :rate, :duration, presence: true
 	validate :validate_current_date
 
 	enum from: [:presenter, :customer]
 	enum status: [:pending, :declined, :accepted, :booked, :counteroffer]
 
+	# Retrieve creator of enquiry
 	def self.from(current_user)
 		@users = []
 		if current_user.presenter?
@@ -24,6 +28,7 @@ class Enquiry < ActiveRecord::Base
 		return @users.uniq!
 	end
 
+	# Return all enquiries between two users
 	def self.conversation(current_user, id)
 		@conversation = nil
 		if id.present?
@@ -38,6 +43,7 @@ class Enquiry < ActiveRecord::Base
 
 	private
 
+	# Validation for date in enquiry form
 	def validate_current_date
 		if self.date
 			if self.date < Date.today
