@@ -25,7 +25,7 @@ module EnquiriesHelper
 			"Counter offer"
 			end
 		elsif user.customer? 
-			"Enquiry now"
+			"Enquire now"
 		elsif user.presenter? 
 			"Counter offer"
 		end

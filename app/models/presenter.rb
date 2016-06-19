@@ -13,9 +13,9 @@ class Presenter < ActiveRecord::Base
   validates :vit_number, format: /\A^\d{6}$\Z/
   validate :vit_number_must_be_valid
   validates :phone_number, format: /\A^(?:\+?61|0)\s?[2-4578](?:[ -]?[0-9]){8}$\Z/, presence: true
-  validates :rate, numericality: true
+  validates :rate, numericality: true, allow_nil: true
   
-  # after_create :add_to_xero
+  after_create :add_to_xero
   after_update :update_xero
 
   # Validate presenter's VIT number

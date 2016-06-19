@@ -49,6 +49,10 @@ class Notification < ActiveRecord::Base
 	def self.cancelled_booking(booking, reference)
 		message = "One of your bookings have been cancelled"
 		notification = Notification.create(message: message, reference: reference)
+
+    booking.creator.user.notifications << notification
+    BookingMailer.cancel_booking(booking.creator.user, message, reference).deliver_now
+
 		booking.presenters.each do |presenter|
 			presenter.user.notifications << notification
 			BookingMailer.cancel_booking(presenter.user, message, reference).deliver_now
