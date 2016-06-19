@@ -1,72 +1,52 @@
 source 'https://rubygems.org'
 
-# simple form
+
+# Core 
+#--------------------------------------------------------------------
+gem 'rails', '4.2.5'
+gem 'pg', '~> 0.15'
+
+gem 'devise' 
 gem 'simple_form'
-
-# mail form
 gem 'mail_form'
-
-# soft delete model
 gem "paranoia", "~> 2.0"
-
-# page scraper
 gem 'nokogiri'
-# enviroment variables
 gem "figaro"
-
-# pagination 
-gem 'will_paginate', '~> 3.1.0'
-
-#image upload
 gem 'dragonfly', '~> 1.0.12'
 gem 'dragonfly-s3_data_store'
+gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'xeroizer'
+
+# CSS/Layouts
+#--------------------------------------------------------------------
+gem 'sass-rails', '~> 5.0'
+gem 'will_paginate', '~> 3.1.0'
 gem "font-awesome-rails"
-#bio editor
 gem 'tinymce-rails'
 gem 'bootstrap-switch-rails'
-# background jobs
-gem 'resque', :require => "resque/server"
-# schedule jobs
-gem 'resque-scheduler'
-
-gem 'resque-scheduler-web'
-
 gem 'bootstrap-sass', '~> 3.3.6'
-# add Devise
-gem 'devise' 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5'
-# Use postgresql as the database for Active Record
-gem 'pg', '~> 0.15'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
+
+# Javascript
+#--------------------------------------------------------------------
 gem 'uglifier', '>= 1.3.0'
-# Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-# jquery auto complete
-
-
-# Jquery UI required for autocomplete
 gem 'jquery-ui-rails' 
-# Use jquery as the JavaScript library
 gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
-
-# TODO check if we need v 2.0, or ui-rails (above) fixes issue.
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
-# bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
-# in-line editor
 gem 'best_in_place'
-
 gem 'jquery-turbolinks'
 
-gem 'xeroizer'
+# Background Processing
+#--------------------------------------------------------------------
+gem 'resque', :require => "resque/server"
+gem 'resque-scheduler'
+gem 'resque-scheduler-web'
+
+
+
+# Deploy
+#--------------------------------------------------------------------
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -78,7 +58,6 @@ gem 'xeroizer'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem "letter_opener"
   gem 'byebug'
   gem 'pry'
@@ -95,10 +74,7 @@ group :production do
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
-
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
 

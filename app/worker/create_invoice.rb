@@ -1,5 +1,6 @@
 class CreateInvoice
   @queue = :invoice_queue
+  # Background job for invoicing a booking
   def self.perform(booking_id)
     booking = Booking.find(booking_id)
     unless booking.invoice!
