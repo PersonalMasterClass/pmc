@@ -9,19 +9,27 @@ There are three classes of User:
 *Administrator - User for managing the system. 
 
 ===Notification
+The notifications modal deal with system notifications. At times, this model would interact with
+Setting and various Mailer models to also send an email upon sendinging a notification
+
 ===Customer (School)
 The Customer model represents a school User.
 
 ===BookedCustomer
+The BookedCustomer model represents the association between Booking and Customer. When a booking is shared, this model acts as the bridge for the two models.
+
 ===Booking
 Calling invoice! on a Booking model will send booking information to Xero in the form of a accounts payable bill to the presenter as well as an invoice for each Customer (school) in the booking. 
+
 
 ===PageContent
 The PageContent model stores the content for the CMS. The inital content for the static pages is loaded into the database via a migration. 
 
 Editing the page content is done via the TinyMCE gem. This gem is a WYSIWYG editior which is configurable by modifying +config/tinymce.yml+. 
 https://www.tinymce.com/  
+
 ===Presenter_Bids
+PresenterBids is the associative model between Booking and Presenter. It represents open bookings.
 ===PresenterProfile
 The PresenterProfile model represents each presenters profile. Due to the requirement for administrators to approve profiles, this model contains a "live" profile and "editing" profile, once the profile has been approved, the editing profile overwrites the live to be displayed to system users.
 
@@ -31,11 +39,20 @@ https://www.tinymce.com/
 Image upload for the presenters is done via the Dragonfly gem. When in development, all images are stored locally, but in production, the images are uploaded to a s3 bucket.
 http://markevans.github.io/dragonfly/ 
 ===Presenter
+Presenter model represents a presenter User.
 ===Availability
+This model is heavily interwined 
 ===SchoolInfo
 Information about each school is obtained from http://data.gov.au/storage/f/2013-05-12T190731/tmpo4Hjs2all-schools-list.csv a dataset of information about ever school in Victoria. The data is populated by running the `import:school_info` rake task. Should the location of this dataset change in the future, the URL can be updated using the `dat` variable in import.rake .
 
 Both the Customer (school) and Presenter model use the SchoolInfo model to provide static contact information. 
 
 ===Subject
+The Subject model:
+*Tells us what a Presenter teaches. 
+*Tells us what a school User is subscribed to.
 ===Subscription
+The subscription model allows school Users to subscribe to a Subject. This allows the user to recieve notifications for all things related to that subject.
+
+==Enquiry
+The Enquiry model represents an alternative method of creating a booking. A school User can create an enquiry to a presenter User. The presenter User can accept, send a counter offer or decline. This process goes back and forth until a party is happy with the enquiry.
