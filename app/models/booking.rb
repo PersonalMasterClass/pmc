@@ -9,6 +9,7 @@ class Booking < ActiveRecord::Base
   belongs_to :subject, inverse_of: :bookings
   validates :booking_date, :presence => true
   validates :subject, :presence => true
+  validates :cap, :presence => true
   validates :rate, numericality: true, :presence => true, :if => :booking_confirmed?
   validates :duration_minutes, numericality: true, :presence => true
   validate :booking_validation

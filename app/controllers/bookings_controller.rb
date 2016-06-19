@@ -94,21 +94,22 @@ class BookingsController < ApplicationController
     else
       @booking = Booking.new
     end
-    unless @date_part.nil?
-      if @date_part.empty? && !params[:day].nil?
+    # binding.pry
+    # if @date_part.nil?
+      if !@date_part.present? && params[:day].present?
         begin
-          @date_part = Date.parse(params[:day])
+          @date_part = Date.parse(params[:day]).strftime("%d/%m/%Y")
         rescue ArgumentError
         end
       end
-    end
-    unless @time_part.nil?
+    # end
+    # unless @time_part.nil?
       if (@time_part.nil? || @time_part.empty?) && !params[:availability].nil?
         hr = (Availability.find(params[:availability]).start_time/60).to_s.rjust(2,'0')
         min = (Availability.find(params[:availability]).start_time%60).to_s.rjust(2,'0')
         @time_part = "#{hr}:#{min}"
       end
-    end
+    # end
   end
 
   # Creates booking for multiple cases:

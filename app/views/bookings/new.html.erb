@@ -26,7 +26,7 @@
   <div class = "form-group">
     <%= b.fields_for :booked_customers do |booked_customer| %>
       <%= booked_customer.label "Number of students (Maximum: 30)" %>
-      <%= booked_customer.number_field :number_students, min: 1, max: 30, class: "form-control" %>
+      <%= booked_customer.number_field :number_students, value: 0, min: 1, max: 30, class: "form-control" %>
     <% end %>
   </div>
 

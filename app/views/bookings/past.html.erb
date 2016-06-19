@@ -1,4 +1,4 @@
-<h1>Past/Cancelled Bookings</h1>
+  <h1>Past/Cancelled Bookings</h1>
 <%= render "bookings/partials/bookings_table" if current_user.admin? %>
 
 <% if !current_user.admin? %>
@@ -20,7 +20,7 @@
         <% @bookings.each do |b| %>
           <tr> 
             <td><%= b.subject.name %> </td>
-            <td><%= "#{chosen_presenter(b)}" if current_user.customer %>
+            <td><%= chosen_presenter(b) if current_user.customer %>
             <%= "#{b.creator.school_info.school_name}" if current_user.presenter %></td>
             <td><%= shared_message(b) %></td> 
             <td> <%= b.booking_date.strftime("%d/%m/%Y") %> </td>
