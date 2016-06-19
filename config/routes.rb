@@ -74,7 +74,7 @@ mount ResqueWeb::Engine => 'admin/resque'
   get 'bookings/open' => 'bookings#open'
   get 'bookings/bid/:id' => 'bookings#bid', as: "bookings_bid"
   post 'bookings/set_bid/' => 'bookings#set_bid', as: "bookings_set_bid"
-  get 'bookings/choose_presenter/:presenter_id' => 'bookings#choose_presenter', as: "bookings_choose"
+  get 'bookings/choose_presenter/:presenter_id/:booking_id' => 'bookings#choose_presenter', as: "bookings_choose"
   get 'bookings/:id/gethelp' =>'bookings#get_help', as: 'bookings_help'
   get 'bookings/:id/cancelhelp' => 'bookings#cancel_help', as:"cancel_bookings_help"
   post 'booking/:id/join' => "bookings#join", as: "bookings_join" 
@@ -93,7 +93,7 @@ mount ResqueWeb::Engine => 'admin/resque'
     resources :subjects
     get 'edit_subjects' => 'presenters#edit_subjects'
     post 'edit_subjects/' => 'presenters#add_subject'
-    get 'rate' => 'presenters#rate'
+    
     
     post 'remove_subject' => 'presenters#remove_subject'
 
@@ -102,6 +102,7 @@ mount ResqueWeb::Engine => 'admin/resque'
     patch 'update_details' => 'presenters#update_details', as: "update_details"
 
   end
+  # get 'rate' => 'presenters#rate'
   get 'presenter/:presenter_id/presenter_profile/approve' => 'presenter_profiles#approve',  as: 'approve_presenter_profile'
 
   get 'profiles/search' => 'search#index'
