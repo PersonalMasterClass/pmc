@@ -75,4 +75,9 @@ class BookingMailer < ApplicationMailer
   	@reference = "#{root_url}#{reference}"
 		mail(to: user.email, subject: message)
 	end
+
+	def invoice_fail(user, message, reference)
+		@reference = "#{root_url}#{reference}"
+		mail(to: user.email, subject: message)
+	end
 end
