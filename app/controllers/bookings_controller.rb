@@ -286,9 +286,9 @@ class BookingsController < ApplicationController
         redirect_to booking_path(@booking)
       else
         @booking.cancellation_message = params[:cancellation_message]
+        @booking.destroy 
         @booking.save
         Notification.cancelled_booking(@booking, booking_path(@booking))
-        @booking.destroy 
         flash[:success] = "Booking has been cancelled and potential participants notified!"
         redirect_to booking_path(@booking)
       end
