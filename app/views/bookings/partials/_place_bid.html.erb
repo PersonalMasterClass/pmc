@@ -1,26 +1,28 @@
-<div class="col-md-8">
-  <h3> Bids </h3>
-  <div class="panel panel-default">
-    <% @booking.presenters.each do |presenter| %>
-      
-      <div class="row panel-body booking-bids">
-        <div class = "col-md-1 text-center">
-          <%= link_to presenter_profile_path(presenter,:booking_id => params[:id]) do %>
-            <%= image_tag presenter.profile_picture_path('50x50#'), class: "img-circle" %>
-          <% end %>
+<% if (current_user.customer == @booking.creator || current_user.admin?) && @booking.presenters.present? && @booking.chosen_presenter.nil? %>
+  <div class="col-md-8">
+    <h3> Bids </h3>
+    <div class="panel panel-default">
+      <% @booking.presenters.each do |presenter| %>
+        
+        <div class="row panel-body booking-bids">
+          <div class = "col-md-1 text-center">
+            <%= link_to presenter_profile_path(presenter,:booking_id => params[:id]) do %>
+              <%= image_tag presenter.profile_picture_path('50x50#'), class: "img-circle" %>
+            <% end %>
+          </div>
+          <div class="col-md-4 text-center">
+            <h4>
+              <%= link_to presenter.get_private_full_name(current_user), presenter_profile_path(presenter,:booking_id => params[:id]) %>
+            </h4>
+          </div>
+          <div class="col-md-3 text-center">
+            <h4>Bid: <%= number_to_currency(presenter.bids.find_by(booking: @booking).rate) %>/hour</h4>
+          </div>
+          <div class="col-md-4 text-center">
+            <%= link_to "Choose Presenter",  bookings_choose_path(presenter, @booking), class: "btn btn-success navbar-btn btn-block", :data => {:confirm => 'Are you sure you want to choose this presenter?'} %>
+          </div>
         </div>
-        <div class="col-md-4 text-center">
-          <h4>
-            <%= link_to presenter.get_private_full_name(current_user), presenter_profile_path(presenter,:booking_id => params[:id]) %>
-          </h4>
-        </div>
-        <div class="col-md-3 text-center">
-          <h4>Bid: <%= number_to_currency(presenter.bids.find_by(booking: @booking).rate) %>/hour</h4>
-        </div>
-        <div class="col-md-4 text-center">
-          <%= link_to "Choose Presenter",  bookings_choose_path(presenter, @booking), class: "btn btn-success navbar-btn btn-block", :data => {:confirm => 'Are you sure you want to choose this presenter?'} %>
-        </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
