@@ -1,10 +1,12 @@
 class PageContentsController < ApplicationController
   before_filter :is_admin, :only => [:edit, :update, :index, :show] 
 
+  # Edit form for a static page
   def edit
     @page_contents = PageContent.find(params[:id])
   end
 
+  # Update static page
   def update
     @page_contents = PageContent.find(params[:id])
     if @page_contents.update(content_params)
@@ -27,6 +29,7 @@ class PageContentsController < ApplicationController
     @help = PageContent.find_by_name("profile-help")
   end
 
+  # Display a static page
   def show
     @content = PageContent.find(params[:id])
   end

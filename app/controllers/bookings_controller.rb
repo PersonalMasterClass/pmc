@@ -18,6 +18,8 @@ class BookingsController < ApplicationController
     @booking = Booking.with_deleted.find(params["id"])
     @creator = @booking.creator
   end
+
+  # Booking form from enquiry
   def new_from_enquiry
     @enquiry = Enquiry.find(params[:id])
     if @enquiry.nil?
@@ -94,7 +96,7 @@ class BookingsController < ApplicationController
     else
       @booking = Booking.new
     end
-    # binding.pry
+
     # if @date_part.nil?
       if !@date_part.present? && params[:day].present?
         begin
@@ -113,11 +115,10 @@ class BookingsController < ApplicationController
   end
 
   # Creates booking for multiple cases:
-  # 1. School creates an open booking
-  # 2. School creates a closed booking via search form
-  # 3. School creates a closed booking via enquiries form
+  # => School creates an open booking
+  # => School creates a closed booking via search form
+  # => School creates a closed booking via enquiries form
   def create
-
     @booking = Booking.new(booking_params)
     
     unless params[:subject_id].empty?
@@ -177,16 +178,6 @@ class BookingsController < ApplicationController
     end
 
   end
-
-  def edit
-  end
-
-  def update
-  end
-
-  def destroy
-  end
-
 
   def open
     @bookings = Booking.where(chosen_presenter_id: nil)
@@ -325,6 +316,7 @@ class BookingsController < ApplicationController
       params.require(:booking).permit(:duration_minutes, :presenter_paid, :shared)
     end
 
+    # User authorisation
     def admin_or_customer_logged_in
       if current_user.nil? || (current_user.user_type == "presenter") 
         flash[:danger] = "Only admin and customer are allowed to create a booking."

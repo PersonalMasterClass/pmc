@@ -2,7 +2,7 @@ require 'will_paginate/array'
 class SearchController < ApplicationController
 	before_filter :authorise_search, only: :index
 	
-
+	# Search logic
 	 def index 
   	@search_params = params
   	# for use in booking

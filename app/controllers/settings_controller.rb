@@ -1,7 +1,11 @@
 class SettingsController < ApplicationController
 	before_filter :find_setting, :only => [:edit, :update]
+
+	# Settings form
 	def edit
 	end
+
+	# Update settings
 	def update
 		@setting.update!(setting_params)
 		flash[:success] = "Settings saved."

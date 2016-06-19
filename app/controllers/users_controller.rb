@@ -48,6 +48,7 @@
     @presenters = User.unapproved_presenters
     @customers = User.unapproved_customers
   end
+
   # Action for admin to approve a user(both schools and presenters)
   def approve_user
     user = User.find(params["id"])
@@ -68,6 +69,7 @@
       redirect_to user_path(user)
     end
   end
+
   # Action for admin to suspend a user(schools and presenters)
   def suspend_user
     user = User.find(params[:id])
@@ -87,19 +89,23 @@
     redirect_to user_path(user)
   end
   
+  # Display all suspended users
   def suspended_users
     @customers = User.suspended_customers
     @presenters = User.suspended_presenters
   end
 
+  # Display all users
   def customers
     @customers = Customer.all
   end
 
+  # Display all presenters
   def presenters
     @presenters = Presenter.all
   end
 
+  # Display all enqurieise for a customer or presenter
   def enquiries
     @user = User.find(params[:id])
     if @user.customer?
@@ -109,9 +115,11 @@
     end
   end
 
+  # Edit log in details form
   def edit_login_details
   end
 
+  # Update log in details
   def update_login_details
     @errors = [] 
     success = []

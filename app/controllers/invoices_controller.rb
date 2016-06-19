@@ -1,5 +1,7 @@
 class InvoicesController < ApplicationController
 	before_filter :check_if_user
+
+  # invoice index
   def index
   	all_data = []
   	all_invoices = current_user.invoices
@@ -24,6 +26,7 @@ class InvoicesController < ApplicationController
     
   end
 
+  # display an invoice
   def show
   	invoice = Xero.connect.Invoice.find(params['id'])
   	if invoice.contact.contact_id == current_user.accounting_ref || current_user.admin?
@@ -34,6 +37,8 @@ class InvoicesController < ApplicationController
   end
 
   private
+
+  # User authorisation
   def check_if_user
   	if current_user.nil?
   		redirect_to root_path

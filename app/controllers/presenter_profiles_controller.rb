@@ -29,6 +29,7 @@ class PresenterProfilesController < ApplicationController
     @draft_profiles = PresenterProfile.admin_drafts
     @profile_count = PresenterProfile.unapproved_profiles.count + PresenterProfile.admin_drafts.count
   end
+  
   # Action for presenters to fill in their bio and upload profile pictures
   def new
     @help = PageContent.find_by_name("profile-help") # "What to include in profile" Content
@@ -40,6 +41,7 @@ class PresenterProfilesController < ApplicationController
     end
   end
 
+  # Create a profile for a presenter
   def create
     @presenter = find_presenter
     if @presenter.presenter_profile.nil?

@@ -2,6 +2,7 @@ class PresentersController < ApplicationController
   skip_before_filter :profile_created?
 	before_filter :presenter_logged_in
 
+  # Presenter dashboard
   def index
     @presenter = current_user.presenter
     @upcoming = Booking.upcoming(current_user) 
@@ -42,17 +43,20 @@ class PresentersController < ApplicationController
   	redirect_to presenter_edit_subjects_path
   end
 
+  # Remove subject from a presenter
   def remove_subject
     @subject = Subject.find(params[:subject])
     @subject.presenters.delete(current_user.presenter)
     redirect_to presenter_edit_subjects_path
   end
 
+  # Edit presenter details
   def edit_details 
     @presenter_id = current_user.presenter
     @presenter = Presenter.find(@presenter_id)
   end
 
+  # Update presenter details
   def update_details
     @presenter = current_user.presenter
     @presenter.school_info = SchoolInfo.find(params[:school_id])

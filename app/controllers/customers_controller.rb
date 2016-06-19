@@ -2,6 +2,7 @@ class CustomersController < ApplicationController
 	before_filter :has_access?, :only => [:show]
   before_filter :is_customer?, :only => [:index, :edit, :update]
 
+  # Customer dashboard
   def index
     @customer = current_user.customer
   	@search_params = params();
@@ -10,17 +11,19 @@ class CustomersController < ApplicationController
     @joined_bookings = current_user.customer.bookings.where.not(creator: current_user.customer)
 	end
 
+  # Display a customer
 	def show
 		@customer = Customer.find(params[:id])
 		@user = @customer.user
 	end
 
+  # Edit a customer
   def edit  
     @customer_id = current_user.customer
     @customer = Customer.find(@customer_id)
   end
 
-
+  # Update a customer
   def update
     @customer = current_user.customer
     @customer.school_info = SchoolInfo.find(params[:school_id])
@@ -39,6 +42,7 @@ class CustomersController < ApplicationController
 
   end
 
+    # Customer authorisation
     def has_access?
       redirect_to root_url unless (current_user.user_type == 'admin' || current_user.customer == Customer.find(params[:id]))
     end

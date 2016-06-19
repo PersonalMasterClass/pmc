@@ -13,9 +13,9 @@ class HomeController < ApplicationController
       end
     end
 
-    #TODO: Homepage content??
   end
 
+  ## Static pages ##
   def about
      @aboutPMC = PageContent.find_by_name("aboutPMC")
   end

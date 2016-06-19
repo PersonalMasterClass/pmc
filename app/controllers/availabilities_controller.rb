@@ -1,19 +1,22 @@
 class AvailabilitiesController < ApplicationController
 	skip_before_filter :profile_created? 
+
+	# Availability index
 	def index
 		@availabilities = Availability.for_presenter(current_user.presenter)
-		# .find_each
 	end
-	# form
+
+	# New availability form
 	def new 
 		@availability = Availability.new 
 	end
 
+	# Display an availability
 	def show
 		@availabilities = Availability.find(params [:id])
 	end
 
-	# submit form
+	# Create an availability
 	def create
 		availability = Availability.new(availability_params)
 		availability.start_time = set_time(params['start_time'])
@@ -29,10 +32,12 @@ class AvailabilitiesController < ApplicationController
 		end
 	end
 
+	# Edit availability form
 	def edit
 		@availability = Availability.find(params[:id])
 	end
 
+	# Update an availability
 	def update 
 		@availability = Availability.find(params[:availability][:id])
 			new_start_time = set_time(params[:start_time])
@@ -44,6 +49,7 @@ class AvailabilitiesController < ApplicationController
     redirect_to presenter_availabilities_path(@availability)
    	end
 
+  # Delete an availability
 	def destroy
 		# if @availability.presenter == current_user.presenter || current_user == admin
 			@availability = Availability.find(params[:id])

@@ -16,6 +16,8 @@ class ApplicationController < ActionController::Base
 #     # end
 #     devise_parameter_sanitizer.permit(:sign_up, keys: [:username])
 #   end
+
+  # Set notification as read on click 
   def notif_read
     notification = Notification.find(params[:id])
     notification.is_read = true
@@ -24,6 +26,8 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  # Check if current_user is suspended
     def is_suspended?
       if current_user
         if current_user.suspended?
@@ -32,7 +36,8 @@ class ApplicationController < ActionController::Base
         end
       end
     end
-
+    
+  # Check if current user has a profile
     def profile_created?
       if current_user
         if current_user.presenter
