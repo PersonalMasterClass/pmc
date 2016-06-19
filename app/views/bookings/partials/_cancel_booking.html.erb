@@ -1,4 +1,4 @@
-<% if current_user.customer? && @booking.creator == current_user.customer  && @booking.cancellation_message.nil? && @booking.booking_date > Time.now %>
+<% if ((current_user.customer? && @booking.creator == current_user.customer) || (current_user.presenter? && @booking.chosen_presenter == current_user.presenter) || current_user.admin?)  && @booking.cancellation_message.nil? && @booking.booking_date > Time.now %>
 <a class="btn btn-default" role="button" data-toggle="collapse" href="#collapseCancelForm" aria-expanded="false" aria-controls="collapseCancelForm">
 	  Cancel booking
 	</a>

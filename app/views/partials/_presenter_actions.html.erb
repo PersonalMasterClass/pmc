@@ -1,4 +1,4 @@
-<% if current_user.presenter? %>
+<% if current_user.presenter?  %>
  <% unless @booking.presenters.include?(current_user.presenter) || @booking.chosen_presenter.present?%>
 	<div class = "container">
 		<%= form_tag(:controller => "bookings", :action => "set_bid", method: "post") do %>
@@ -10,7 +10,7 @@
 			<%= submit_tag "Place bid", class: "btn btn-success" %>
 		<% end %>
 	</div>
+	<%= link_to "Back to open bookings",  :back, class: "btn btn-default" %>
 	<% end %>
 
-	<%= link_to "Back to open bookings",  :back, class: "btn btn-default" %>
 <% end %>

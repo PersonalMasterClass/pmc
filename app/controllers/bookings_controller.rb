@@ -1,5 +1,5 @@
 class BookingsController < ApplicationController
-  before_filter :admin_or_customer_logged_in, :except => [:index, :past, :show, :open, :set_bid, :cancel_bid]
+  before_filter :admin_or_customer_logged_in, :except => [:index, :past, :show, :open, :set_bid, :cancel_bid, :cancel_booking]
   before_filter :admin_logged_in, :only => [:index]
   before_filter :logged_in, :only => [:past]
 
@@ -267,7 +267,7 @@ class BookingsController < ApplicationController
     end
   end
 
-  # Creator of a booking can cancel their booking.
+  # Creator/chosen presenter of a booking can cancel their booking.
   # Notifications will be sent out to all stakeholders involved.
   def cancel_booking
     @booking = Booking.find(params[:id])
@@ -276,12 +276,17 @@ class BookingsController < ApplicationController
         flash[:danger] = "Message needs to be specified before cancelling a booking."
         redirect_to booking_path(@booking)
       else
-        @booking.cancellation_message = params[:cancellation_message]
-        @booking.destroy 
-        @booking.save
-        Notification.cancelled_booking(@booking, booking_path(@booking))
-        flash[:success] = "Booking has been cancelled and potential participants notified!"
-        redirect_to booking_path(@booking)
+        if current_user.customer == @booking.creator || current_user.presenter == @booking.chosen_presenter || current_user.admin?
+          @booking.cancellation_message = params[:cancellation_message]
+          @booking.destroy
+          # TODO: Notifications dont appear to be sent 
+          Notification.cancelled_booking(@booking, booking_path(@booking))
+          @booking.save
+          flash[:success] = "Booking has been cancelled and potential participants notified!"
+          redirect_to booking_path(@booking)
+        else
+          redirect_to root_url
+        end
       end
     else
       flash[:danger] = "Booking cannot be cancelled as it has already been completed"
@@ -330,7 +335,7 @@ class BookingsController < ApplicationController
 
     def logged_in
       redirect_to root_url unless current_user
-    end 
+    end
 end
 
 
