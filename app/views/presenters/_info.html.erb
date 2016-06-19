@@ -1,7 +1,7 @@
 <% if @presenter.present? %>
 <div id="presenter-profile-info">
   <div class="row">
-    <h2><%= @presenter.get_private_full_name(current_user) %>'s Profile </h2>
+    <h2><%= @presenter.get_private_full_name(current_user) %></h2>
   </div>
   <div class="row">
     <div class="col-md-3 image-wrap"><%= image_tag @presenter.profile_picture_path('225x225#'), class: "img-responsive img-circle" %></div>
