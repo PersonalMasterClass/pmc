@@ -133,13 +133,14 @@
 
         <div class="method-description">
           
-          
+          <p>Action to approve changes to a presenters profile Used by both presenters
+and admin</p>
           
           
 
           
           <div class="method-source-code" id="approve-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 143</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 158</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">approve</span>
   <span class="ruby-comment">#get profile, and profile owner</span>
   <span class="ruby-identifier">presenter</span> = <span class="ruby-identifier">find_presenter</span>
@@ -152,14 +153,14 @@
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">user_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;admin&quot;</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">profile</span>.<span class="ruby-identifier">approve</span>
         <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;This profile has been approved&quot;</span>
-        <span class="ruby-comment">#TODO: send notification to presenter</span>
+        <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;Your profile changes have been approved.&quot;</span>, <span class="ruby-identifier">presenter_profile_path</span>(<span class="ruby-identifier">presenter</span>), <span class="ruby-value">:system</span>)
         <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenter_profile_path</span>(<span class="ruby-identifier">presenter</span>)
       <span class="ruby-keyword">else</span>
         <span class="ruby-identifier">flash</span>[<span class="ruby-value">:danger</span>] = <span class="ruby-string">&quot;Something went wrong&quot;</span>
         <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenter_profile_path</span>(<span class="ruby-identifier">presenter</span>)
       <span class="ruby-keyword">end</span>
       
-    <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">else</span> <span class="ruby-comment">#Incorrect user</span>
       <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;Profile changes are waiting for approval from admin.&quot;</span>
       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
     <span class="ruby-keyword">end</span>
@@ -167,7 +168,7 @@
   <span class="ruby-comment">#if waiting for profile owner approval</span>
   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">profile</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;pending_presenter&quot;</span>
     <span class="ruby-comment">#check if logged in presenter is profile owner</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">presenter</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">user_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">presenter</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">profile</span>.<span class="ruby-identifier">approve</span>
         <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;Your profile has been approved&quot;</span>
         <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenter_profile_path</span>(<span class="ruby-identifier">presenter</span>)
@@ -184,7 +185,6 @@
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:warning</span>] = <span class="ruby-string">&quot;Profile is already approved&quot;</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
   <span class="ruby-keyword">end</span>
-
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -209,13 +209,13 @@
 
         <div class="method-description">
           
-          
+          <p>Create a profile for a presenter</p>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 38</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 45</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">find_presenter</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">presenter_profile</span>.<span class="ruby-identifier">nil?</span>
@@ -227,7 +227,8 @@
       <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">status</span> = <span class="ruby-value">:pending_admin</span>
       <span class="ruby-keyword">if</span> <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">save</span>
         <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;Profile submitted to admin for approval&quot;</span>
-        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenters_path</span>
+        <span class="ruby-identifier">notify_admin_profile_changes</span>(<span class="ruby-ivar">@presenter</span>)
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
       <span class="ruby-keyword">else</span>
         <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;new&#39;</span>
       <span class="ruby-keyword">end</span>
@@ -236,7 +237,7 @@
       <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">status</span> = <span class="ruby-value">:new_profile</span>
       <span class="ruby-keyword">if</span> <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">save</span>
         <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;Profile draft saved. Go to edit profile to continue editing.&quot;</span>
-        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenters_path</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
       <span class="ruby-keyword">else</span>
         <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;new&#39;</span>
       <span class="ruby-keyword">end</span>
@@ -274,7 +275,7 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 140</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 153</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -300,14 +301,15 @@
 
         <div class="method-description">
           
-          
+          <p>Edit profile action for both presenters and admin</p>
           
           
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 68</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 77</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+  <span class="ruby-ivar">@help</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;profile-help&quot;</span>) <span class="ruby-comment"># &quot;What to include in profile&quot; Content</span>
   <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">find_presenter</span>
   <span class="ruby-ivar">@presenter_profile</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">presenter_profile</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">nil?</span>
@@ -347,14 +349,15 @@
 
         <div class="method-description">
           
-          
+          <p>Action for presenters to fill in their bio and upload profile pictures</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 29</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+  <span class="ruby-ivar">@help</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;profile-help&quot;</span>) <span class="ruby-comment"># &quot;What to include in profile&quot; Content</span>
   <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">find_presenter</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">presenter_profile</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-ivar">@presenter_profile</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">build_presenter_profile</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:new_profile</span>)
@@ -385,13 +388,13 @@
 
         <div class="method-description">
           
-          
+          <p>Admin only view for all profile changes requiring approval</p>
           
           
 
           
           <div class="method-source-code" id="pending-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 23</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">pending</span>
   <span class="ruby-ivar">@unapproved_profiles</span> = <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">unapproved_profiles</span>
   <span class="ruby-ivar">@draft_profiles</span> = <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">admin_drafts</span>
@@ -420,22 +423,23 @@
 
         <div class="method-description">
           
-          
+          <p>View <a href="Presenter.html">Presenter</a> Profile</p>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 10</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 12</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">find_presenter</span>
   <span class="ruby-ivar">@profile</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">presenter_profile</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">user</span>
-  <span class="ruby-ivar">@availability</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">availabilitys</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;availabilities.start_time ASC&#39;</span>)
-  
-  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">nil?</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">any?</span>
-      <span class="ruby-identifier">session</span>[<span class="ruby-value">:presenter_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;presenter_id&quot;</span>]
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-ivar">@availability</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">availabilitys</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">&#39;availabilities.start_time ASC&#39;</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">any?</span>
+        <span class="ruby-identifier">session</span>[<span class="ruby-value">:presenter_id</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;presenter_id&quot;</span>]
+      <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
@@ -462,13 +466,13 @@
 
         <div class="method-description">
           
-          
+          <p>Update profile action for both presenters and admin</p>
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 86</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenter_profiles_controller.rb, line 97</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">find_presenter</span>
   <span class="ruby-ivar">@presenter_profile</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">presenter_profile</span>
@@ -476,7 +480,6 @@
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">new_presenter_profile_path</span>(<span class="ruby-ivar">@presenter</span>)
   <span class="ruby-keyword">else</span>
-
     <span class="ruby-identifier">new_profile</span> = <span class="ruby-identifier">profile_params</span>
     <span class="ruby-identifier">new_profile</span>[<span class="ruby-value">:bio_edit</span>] = <span class="ruby-identifier">sanitize_bio</span>(<span class="ruby-identifier">new_profile</span>[<span class="ruby-value">:bio_edit</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">new_profile</span>.<span class="ruby-identifier">has_key?</span>(<span class="ruby-value">:picture_edit</span>)
@@ -490,12 +493,15 @@
           <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">user_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;admin&quot;</span>
             <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-value">:status</span>, <span class="ruby-value">:pending_presenter</span>)
             <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;Profile changes submitted to presenter for approval&quot;</span>
+            <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;You have pending profile changes to review from an Admin&quot;</span>, <span class="ruby-identifier">presenter_profile_path</span>(<span class="ruby-ivar">@presenter</span>), <span class="ruby-value">:system</span>)
+            <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">admin_path</span>
           <span class="ruby-keyword">else</span> <span class="ruby-comment">#current user is profile owner</span>
             <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-value">:status</span>, <span class="ruby-value">:pending_admin</span>)
             <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;Profile changes submitted to admin for approval&quot;</span>
+            <span class="ruby-identifier">notify_admin_profile_changes</span>(<span class="ruby-ivar">@presenter</span>)
+            <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
           <span class="ruby-keyword">end</span>
-          <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenters_path</span>
-        <span class="ruby-keyword">else</span>
+        <span class="ruby-keyword">else</span> <span class="ruby-comment"># No changes were made</span>
           <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">bio_edit</span> = <span class="ruby-string">&#39;&#39;</span>
           <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">picture_edit</span> = <span class="ruby-keyword">nil</span>
           <span class="ruby-identifier">flash</span>[<span class="ruby-value">:warning</span>] = <span class="ruby-string">&#39;No changes were made, please make changes before pressing submit&#39;</span>
@@ -513,8 +519,8 @@
           <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenters_path</span>
         <span class="ruby-keyword">else</span> <span class="ruby-comment">#current_user.admin?</span>
           <span class="ruby-ivar">@presenter_profile</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-value">:status</span>, <span class="ruby-value">:draft_admin</span>)
-          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-node">&quot;Profile draft saved for #{@presenter.first_name}&#39;s profile. Go to pending profile changes to continue editing.&quot;</span>
-          <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">admin_pending_profiles_path</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-node">&quot;Profile draft saved for #{@presenter.first_name}&#39;s profile.&quot;</span>
+          <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">admin_path</span>
         <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">else</span>
         <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;edit&#39;</span>

@@ -70,6 +70,12 @@
 
   <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-cancel_upcoming_bookings">#cancel_upcoming_bookings</a>
+    
+    <li ><a href="#method-i-save_to_xero">#save_to_xero</a>
+    
+    <li ><a href="#method-i-update_xero">#update_xero</a>
+    
     <li ><a href="#method-i-vit_number_must_be_valid">#vit_number_must_be_valid</a>
     
   </ul>
@@ -106,10 +112,58 @@
        </header>
 
     
-      <div id="method-i-vit_number_must_be_valid" class="method-detail ">
+      <div id="method-i-cancel_upcoming_bookings" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">vit_number_must_be_valid</span><span
+          <span class="method-name">cancel_upcoming_bookings</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Removes cancels all upcoming bookings for a customer, and removes customer
+from all joined bookings.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="cancel_upcoming_bookings-source">
+            <pre><span class="ruby-comment"># File app/models/customer.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_upcoming_bookings</span>
+  <span class="ruby-identifier">created_bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">upcoming</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">user</span>)
+  <span class="ruby-comment">#remove created bookings</span>
+    <span class="ruby-comment">#send notifications</span>
+  <span class="ruby-identifier">created_bookings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">booking</span><span class="ruby-operator">|</span>
+    <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">cancelled_booking</span>(<span class="ruby-identifier">booking</span>, <span class="ruby-node">&quot;/bookings/#{booking}&quot;</span>)
+    <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">destroy</span>
+  <span class="ruby-keyword">end</span> 
+  <span class="ruby-comment">#remove shared bookings</span>
+  <span class="ruby-identifier">shared_bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">joined_bookings</span>(<span class="ruby-keyword">self</span>)
+  
+  <span class="ruby-identifier">shared_bookings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">booking</span><span class="ruby-operator">|</span>
+    <span class="ruby-comment">#send notification to owner</span>
+    <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-keyword">self</span>)
+    <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;Another school has been removed from your booking&quot;</span>, <span class="ruby-node">&quot;/bookings/#{booking}&quot;</span>, <span class="ruby-value">:booking</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-save_to_xero" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">save_to_xero</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -124,11 +178,77 @@
           
 
           
+          <div class="method-source-code" id="save_to_xero-source">
+            <pre><span class="ruby-comment"># File app/models/customer.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">save_to_xero</span>
+  <span class="ruby-constant">Xero</span>.<span class="ruby-identifier">add_school_account</span>(<span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update_xero" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_xero</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="update_xero-source">
+            <pre><span class="ruby-comment"># File app/models/customer.rb, line 51</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_xero</span>
+  <span class="ruby-constant">Xero</span>.<span class="ruby-identifier">update_school_account</span>(<span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-vit_number_must_be_valid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">vit_number_must_be_valid</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Validate VIT number</p>
+          
+          
+
+          
           <div class="method-source-code" id="vit_number_must_be_valid-source">
-            <pre><span class="ruby-comment"># File app/models/customer.rb, line 12</span>
+            <pre><span class="ruby-comment"># File app/models/customer.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">vit_number_must_be_valid</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-constant">VitValidation</span>.<span class="ruby-identifier">check_vit</span>(<span class="ruby-identifier">first_name</span>, <span class="ruby-identifier">last_name</span>, <span class="ruby-identifier">vit_number</span>)
-    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:vit_number</span>, <span class="ruby-string">&quot;could not be found on the vit register.&quot;</span>)
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:vit_number</span>, <span class="ruby-string">&quot;could not be found on the VIT register.&quot;</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>

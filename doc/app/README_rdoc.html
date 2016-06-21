@@ -59,15 +59,17 @@
     <li><a href="#label-User">User</a>
     <li><a href="#label-Notification">Notification</a>
     <li><a href="#label-Customer+-28School-29">Customer (School)</a>
-    <li><a href="#label-Booked_Customers">Booked_Customers</a>
+    <li><a href="#label-BookedCustomer">BookedCustomer</a>
     <li><a href="#label-Booking">Booking</a>
+    <li><a href="#label-PageContent">PageContent</a>
     <li><a href="#label-Presenter_Bids">Presenter_Bids</a>
-    <li><a href="#label-Presenter_Profile">Presenter_Profile</a>
+    <li><a href="#label-PresenterProfile">PresenterProfile</a>
     <li><a href="#label-Presenter">Presenter</a>
-    <li><a href="#label-Presenter_Availability">Presenter_Availability</a>
-    <li><a href="#label-School_Info">School_Info</a>
+    <li><a href="#label-Availability">Availability</a>
+    <li><a href="#label-SchoolInfo">SchoolInfo</a>
     <li><a href="#label-Subject">Subject</a>
     <li><a href="#label-Subscription">Subscription</a>
+    <li><a href="#label-Enquiry">Enquiry</a>
   </ul>
 </div>
 
@@ -97,27 +99,112 @@ presenters who are typically highly credentialed VCE teachers in Melbourne.</p>
 
 <h3 id="label-User"><a href="User.html">User</a><span><a href="#label-User">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
+<p>There are three classes of User:  *Customer - a school (or department of a
+school) that books presenters for VCE revision sessions.  *Presenter - a
+VCE teacher who can be booked for revision sessions.  *Administrator - <a
+href="User.html">User</a> for managing the system.</p>
+
 <h3 id="label-Notification"><a href="Notification.html">Notification</a><span><a href="#label-Notification">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The notifications modal deal with system notifications. At times, this
+model would interact with <a href="Setting.html">Setting</a> and various
+Mailer models to also send an email upon sendinging a notification</p>
 
 <h3 id="label-Customer+-28School-29"><a href="Customer.html">Customer</a> (School)<span><a href="#label-Customer+-28School-29">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<h3 id="label-Booked_Customers">Booked_Customers<span><a href="#label-Booked_Customers">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<p>The <a href="Customer.html">Customer</a> model represents a school <a
+href="User.html">User</a>.</p>
+
+<h3 id="label-BookedCustomer"><a href="BookedCustomer.html">BookedCustomer</a><span><a href="#label-BookedCustomer">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <a href="BookedCustomer.html">BookedCustomer</a> model represents the
+association between <a href="Booking.html">Booking</a> and <a
+href="Customer.html">Customer</a>. When a booking is shared, this model
+acts as the bridge for the two models.</p>
 
 <h3 id="label-Booking"><a href="Booking.html">Booking</a><span><a href="#label-Booking">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
+<p>Calling invoice! on a <a href="Booking.html">Booking</a> model will send
+booking information to <a href="Xero.html">Xero</a> in the form of a
+accounts payable bill to the presenter as well as an invoice for each <a
+href="Customer.html">Customer</a> (school) in the booking.</p>
+
+<h3 id="label-PageContent"><a href="PageContent.html">PageContent</a><span><a href="#label-PageContent">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <a href="PageContent.html">PageContent</a> model stores the content for
+the CMS. The inital content for the static pages is loaded into the
+database via a migration.</p>
+
+<p>Editing the page content is done via the TinyMCE gem. This gem is a WYSIWYG
+editior which is configurable by modifying <code>config/tinymce.yml</code>.
+<a href="https://www.tinymce.com">www.tinymce.com</a>/</p>
+
 <h3 id="label-Presenter_Bids">Presenter_Bids<span><a href="#label-Presenter_Bids">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<h3 id="label-Presenter_Profile">Presenter_Profile<span><a href="#label-Presenter_Profile">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<p>PresenterBids is the associative model between <a
+href="Booking.html">Booking</a> and <a href="Presenter.html">Presenter</a>.
+It represents open bookings.</p>
+
+<h3 id="label-PresenterProfile"><a href="PresenterProfile.html">PresenterProfile</a><span><a href="#label-PresenterProfile">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The <a href="PresenterProfile.html">PresenterProfile</a> model represents
+each presenters profile. Due to the requirement for administrators to
+approve profiles, this model contains a “live” profile and “editing”
+profile, once the profile has been approved, the editing profile overwrites
+the live to be displayed to system users.</p>
+
+<p>Editing the biography is done via the TinyMCE gem. This gem is a WYSIWYG
+editior which is configurable by modifying <code>config/tinymce.yml</code>.
+<a href="https://www.tinymce.com">www.tinymce.com</a>/</p>
+
+<p>Image upload for the presenters is done via the Dragonfly gem. When in
+development, all images are stored locally, but in production, the images
+are uploaded to a s3 bucket. <a
+href="http://markevans.github.io/dragonfly">markevans.github.io/dragonfly</a>/</p>
 
 <h3 id="label-Presenter"><a href="Presenter.html">Presenter</a><span><a href="#label-Presenter">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
-<h3 id="label-Presenter_Availability">Presenter_Availability<span><a href="#label-Presenter_Availability">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<p><a href="Presenter.html">Presenter</a> model represents a presenter <a
+href="User.html">User</a>.</p>
 
-<h3 id="label-School_Info">School_Info<span><a href="#label-School_Info">&para;</a> <a href="#top">&uarr;</a></span></h3>
+<h3 id="label-Availability"><a href="Availability.html">Availability</a><span><a href="#label-Availability">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>This model is heavily interwined</p>
+
+<h3 id="label-SchoolInfo"><a href="SchoolInfo.html">SchoolInfo</a><span><a href="#label-SchoolInfo">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>Information about each school is obtained from <a
+href="http://data.gov.au/storage/f/2013-05-12T190731/tmpo4Hjs2all-schools-list.csv">data.gov.au/storage/f/2013-05-12T190731/tmpo4Hjs2all-schools-list.csv</a>
+a dataset of information about ever school in Victoria. The data is
+populated by running the `import:school_info` rake task. Should the
+location of this dataset change in the future, the URL can be updated using
+the `dat` variable in import.rake .</p>
+
+<p>Both the <a href="Customer.html">Customer</a> (school) and <a
+href="Presenter.html">Presenter</a> model use the <a
+href="SchoolInfo.html">SchoolInfo</a> model to provide static contact
+information.</p>
 
 <h3 id="label-Subject"><a href="Subject.html">Subject</a><span><a href="#label-Subject">&para;</a> <a href="#top">&uarr;</a></span></h3>
 
+<p>The <a href="Subject.html">Subject</a> model: *Tells us what a <a
+href="Presenter.html">Presenter</a> teaches.  *Tells us what a school <a
+href="User.html">User</a> is subscribed to.</p>
+
 <h3 id="label-Subscription">Subscription<span><a href="#label-Subscription">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<p>The subscription model allows school <a href="Users.html">Users</a> to
+subscribe to a <a href="Subject.html">Subject</a>. This allows the user to
+recieve notifications for all things related to that subject.</p>
+
+<h2 id="label-Enquiry"><a href="Enquiry.html">Enquiry</a><span><a href="#label-Enquiry">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>The <a href="Enquiry.html">Enquiry</a> model represents an alternative
+method of creating a booking. A school <a href="User.html">User</a> can
+create an enquiry to a presenter <a href="User.html">User</a>. The
+presenter <a href="User.html">User</a> can accept, send a counter offer or
+decline. This process goes back and forth until a party is happy with the
+enquiry.</p>
 </main>
 
 

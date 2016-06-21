@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>class SchoolInfoController - Rails Application Documentation</title>
+<title>class Contact_Form - Rails Application Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -58,7 +58,7 @@
   <h3>Parent</h3>
 
   
-  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  <p class="link">MailForm::Base
   
 </div>
 
@@ -70,9 +70,7 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-find">#find</a>
-    
-    <li ><a href="#method-i-show">#show</a>
+    <li ><a href="#method-i-headers">#headers</a>
     
   </ul>
 </div>
@@ -80,9 +78,9 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-SchoolInfoController">
-  <h1 id="class-SchoolInfoController" class="class">
-    class SchoolInfoController
+<main role="main" aria-labelledby="class-Contact_Form">
+  <h1 id="class-Contact_Form" class="class">
+    class Contact_Form
   </h1>
 
   <section class="description">
@@ -108,10 +106,10 @@
        </header>
 
     
-      <div id="method-i-find" class="method-detail ">
+      <div id="method-i-headers" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">find</span><span
+          <span class="method-name">headers</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -121,49 +119,20 @@
 
         <div class="method-description">
           
-          <p>Find all School infos based on search term</p>
+          <p>Declare the e-mail headers. It accepts anything the mail method in
+ActionMailer accepts.</p>
           
           
 
           
-          <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File app/controllers/school_info_controller.rb, line 3</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">find</span>
-        <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;school_name LIKE ?&quot;</span>, <span class="ruby-node">&quot;%#{params[:term].titlecase}%&quot;</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-show" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">show</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Display School info</p>
-          
-          
-
-          
-          <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/school_info_controller.rb, line 8</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
-        <span class="ruby-ivar">@school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-        <span class="ruby-ivar">@accounts</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">school_info</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+          <div class="method-source-code" id="headers-source">
+            <pre><span class="ruby-comment"># File app/models/contact_form.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">headers</span>
+  {
+    <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Personal Master Class contact form message&quot;</span>,
+    <span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;frank@hosensoftware.com.au&quot;</span>,
+    <span class="ruby-value">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">%Q(&quot;#{name}&quot; &lt;#{email}&gt;)</span>
+  }
 <span class="ruby-keyword">end</span></pre>
           </div>
           

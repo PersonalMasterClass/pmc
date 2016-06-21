@@ -70,9 +70,13 @@
 
   <ul class="link-list" role="directory">
     
+    <li ><a href="#method-c-cancelled_booking">::cancelled_booking</a>
+    
     <li ><a href="#method-c-notify_admin">::notify_admin</a>
     
     <li ><a href="#method-c-notify_applicable_users">::notify_applicable_users</a>
+    
+    <li ><a href="#method-c-send_email">::send_email</a>
     
     <li ><a href="#method-c-send_message">::send_message</a>
     
@@ -110,11 +114,69 @@
        </header>
 
     
+      <div id="method-c-cancelled_booking" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cancelled_booking</span><span
+            class="method-args">(booking, reference)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Send notification to all stakeholders when a booking is cancelled</p>
+          
+          
+
+          
+          <div class="method-source-code" id="cancelled_booking-source">
+            <pre><span class="ruby-comment"># File app/models/notification.rb, line 49</span>
+    <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">cancelled_booking</span>(<span class="ruby-identifier">booking</span>, <span class="ruby-identifier">reference</span>)
+            <span class="ruby-identifier">message</span> = <span class="ruby-string">&quot;One of your bookings have been cancelled&quot;</span>
+            <span class="ruby-identifier">notification</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">message</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span><span class="ruby-operator">:</span> <span class="ruby-identifier">reference</span>)
+
+<span class="ruby-identifier">booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+<span class="ruby-constant">BookingMailer</span>.<span class="ruby-identifier">cancel_booking</span>(<span class="ruby-identifier">booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>).<span class="ruby-identifier">deliver_now</span>
+
+            <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">presenters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">presenter</span><span class="ruby-operator">|</span>
+                    <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+                    <span class="ruby-constant">BookingMailer</span>.<span class="ruby-identifier">cancel_booking</span>(<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>).<span class="ruby-identifier">deliver_now</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-comment"># Notify customers</span>
+            <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">customer</span><span class="ruby-operator">|</span>
+                    <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+                    <span class="ruby-constant">BookingMailer</span>.<span class="ruby-identifier">cancel_booking</span>(<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>).<span class="ruby-identifier">deliver_now</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-comment"># Notifiy chosen presenter</span>
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">chosen_presenter</span>.<span class="ruby-identifier">present?</span>
+                    <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">chosen_presenter</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+                    <span class="ruby-constant">BookingMailer</span>.<span class="ruby-identifier">cancel_booking</span>(<span class="ruby-identifier">booking</span>.<span class="ruby-identifier">chosen_presenter</span>.<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>).<span class="ruby-identifier">deliver_now</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-comment"># Notify admins</span>
+            <span class="ruby-identifier">admin_users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">user_type</span><span class="ruby-operator">:</span> <span class="ruby-value">2</span>)
+            <span class="ruby-identifier">admin_users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">admin</span><span class="ruby-operator">|</span>
+                    <span class="ruby-identifier">admin</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+                    <span class="ruby-constant">BookingMailer</span>.<span class="ruby-identifier">cancel_booking</span>(<span class="ruby-identifier">admin</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>).<span class="ruby-identifier">deliver_now</span>
+            <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-c-notify_admin" class="method-detail ">
         
         <div class="method-heading">
           <span class="method-name">notify_admin</span><span
-            class="method-args">(message, reference)</span>
+            class="method-args">(message, reference, setting)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -129,13 +191,14 @@
 
           
           <div class="method-source-code" id="notify_admin-source">
-            <pre><span class="ruby-comment"># File app/models/notification.rb, line 9</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>)
+            <pre><span class="ruby-comment"># File app/models/notification.rb, line 20</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>, <span class="ruby-identifier">setting</span>)
         <span class="ruby-identifier">notification</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">message</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span><span class="ruby-operator">:</span> <span class="ruby-identifier">reference</span>)
         <span class="ruby-comment"># Add notification to all admins</span>
         <span class="ruby-identifier">admin_users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">user_type</span><span class="ruby-operator">:</span> <span class="ruby-value">2</span>)
         <span class="ruby-identifier">admin_users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">admin</span><span class="ruby-operator">|</span>
                 <span class="ruby-identifier">admin</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+                <span class="ruby-identifier">send_email</span>(<span class="ruby-identifier">admin</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>, <span class="ruby-identifier">setting</span>)
         <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -152,7 +215,7 @@
         
         <div class="method-heading">
           <span class="method-name">notify_applicable_users</span><span
-            class="method-args">(creator, booking, type, reference)</span>
+            class="method-args">(creator, booking, type, reference, message, setting)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -161,29 +224,66 @@
 
         <div class="method-description">
           
-          
+          <p>Send a notification to all admin(s)</p>
           
           
 
           
           <div class="method-source-code" id="notify_applicable_users-source">
-            <pre><span class="ruby-comment"># File app/models/notification.rb, line 18</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">notify_applicable_users</span>(<span class="ruby-identifier">creator</span>, <span class="ruby-identifier">booking</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">reference</span>)
+            <pre><span class="ruby-comment"># File app/models/notification.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">notify_applicable_users</span>(<span class="ruby-identifier">creator</span>, <span class="ruby-identifier">booking</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">reference</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">setting</span>)
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;presenter&quot;</span>
               <span class="ruby-identifier">users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">user_type</span><span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
+              <span class="ruby-identifier">applicable_users</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:subjects</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">subjects</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">subject</span>.<span class="ruby-identifier">name</span>})
       <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;customer&quot;</span>
-              <span class="ruby-identifier">users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">user_type</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span>)
+              <span class="ruby-identifier">applicable_users</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:subjects</span>).<span class="ruby-identifier">where</span>(<span class="ruby-identifier">subjects</span><span class="ruby-operator">:</span> {<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">subject</span>.<span class="ruby-identifier">name</span>})
       <span class="ruby-keyword">end</span>
-                      
-              <span class="ruby-identifier">message</span> = <span class="ruby-node">&quot;A new #{booking.subject.name} booking has been created that you may be interested in.&quot;</span>
               <span class="ruby-identifier">reference</span> = <span class="ruby-identifier">reference</span>
-      <span class="ruby-identifier">users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">user</span><span class="ruby-operator">|</span>
-              <span class="ruby-keyword">unless</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">creator</span>
+      <span class="ruby-identifier">applicable_users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">applicable_user</span><span class="ruby-operator">|</span>
+              <span class="ruby-keyword">unless</span> <span class="ruby-identifier">applicable_user</span>.<span class="ruby-identifier">user</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">creator</span>
                       <span class="ruby-identifier">notification</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">message</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span><span class="ruby-operator">:</span> <span class="ruby-identifier">reference</span>)
-                      <span class="ruby-identifier">user</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+                      <span class="ruby-identifier">applicable_user</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+                      <span class="ruby-identifier">send_email</span>(<span class="ruby-identifier">applicable_user</span>.<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>, <span class="ruby-identifier">setting</span>)
               <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-send_email" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">send_email</span><span
+            class="method-args">(user, message, reference, setting)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Check user settings and decide what type of email to send</p>
+          
+          
+
+          
+          <div class="method-source-code" id="send_email-source">
+            <pre><span class="ruby-comment"># File app/models/notification.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send_email</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>, <span class="ruby-identifier">setting</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-constant">BookingMailer</span>.<span class="ruby-identifier">instance_methods</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-identifier">setting</span>).<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">setting</span>.<span class="ruby-identifier">booking?</span>
+                <span class="ruby-constant">BookingMailer</span>.<span class="ruby-identifier">public_send</span>(<span class="ruby-identifier">setting</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>).<span class="ruby-identifier">deliver_now</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-constant">QueryMailer</span>.<span class="ruby-identifier">instance_methods</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-identifier">setting</span>).<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">setting</span>.<span class="ruby-identifier">enquiry?</span>
+                <span class="ruby-constant">QueryMailer</span>.<span class="ruby-identifier">public_send</span>(<span class="ruby-identifier">setting</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>).<span class="ruby-identifier">deliver_now</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -198,7 +298,7 @@
         
         <div class="method-heading">
           <span class="method-name">send_message</span><span
-            class="method-args">(user, message, reference)</span>
+            class="method-args">(user, message, reference, setting)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -213,10 +313,11 @@
 
           
           <div class="method-source-code" id="send_message-source">
-            <pre><span class="ruby-comment"># File app/models/notification.rb, line 3</span>
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>)
+            <pre><span class="ruby-comment"># File app/models/notification.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>, <span class="ruby-identifier">setting</span>)
         <span class="ruby-identifier">notification</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">message</span><span class="ruby-operator">:</span> <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span><span class="ruby-operator">:</span> <span class="ruby-identifier">reference</span>)
         <span class="ruby-identifier">user</span>.<span class="ruby-identifier">notifications</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">notification</span>
+        <span class="ruby-identifier">send_email</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">reference</span>, <span class="ruby-identifier">setting</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           

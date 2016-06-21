@@ -72,6 +72,8 @@
     
     <li ><a href="#method-c-admin_drafts">::admin_drafts</a>
     
+    <li ><a href="#method-c-drafts_and_unapproved">::drafts_and_unapproved</a>
+    
     <li ><a href="#method-c-unapproved_profiles">::unapproved_profiles</a>
     
     <li ><a href="#method-i-approve">#approve</a>
@@ -123,15 +125,50 @@
 
         <div class="method-description">
           
-          
+          <p>Returns all profiles drafts saved by an admin that do not belong to a
+suspended user.</p>
           
           
 
           
           <div class="method-source-code" id="admin_drafts-source">
-            <pre><span class="ruby-comment"># File app/models/presenter_profile.rb, line 27</span>
+            <pre><span class="ruby-comment"># File app/models/presenter_profile.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">admin_drafts</span>
-  <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;status= ?&#39;</span>, <span class="ruby-value">4</span>)
+  <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-identifier">presenter</span><span class="ruby-operator">:</span> <span class="ruby-value">:user</span>).<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-value">:users</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>}, <span class="ruby-value">:presenter_profiles</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">0</span>,<span class="ruby-value">1</span>,<span class="ruby-value">2</span>,<span class="ruby-value">3</span>,<span class="ruby-value">5</span>]})
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-drafts_and_unapproved" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">drafts_and_unapproved</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Gets profiles awaiting admin approval or submission as long as the
+presenter is not suspended</p>
+          
+          
+
+          
+          <div class="method-source-code" id="drafts_and_unapproved-source">
+            <pre><span class="ruby-comment"># File app/models/presenter_profile.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">drafts_and_unapproved</span>
+  <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-identifier">presenter</span><span class="ruby-operator">:</span> <span class="ruby-value">:user</span>).<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-value">:users</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>}, <span class="ruby-value">:presenter_profiles</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">0</span>,<span class="ruby-value">2</span>,<span class="ruby-value">3</span>,<span class="ruby-value">5</span>]})
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -156,15 +193,16 @@
 
         <div class="method-description">
           
-          
+          <p>Returns all profiles awaiting admin approval that do not belong to a
+suspended user.</p>
           
           
 
           
           <div class="method-source-code" id="unapproved_profiles-source">
-            <pre><span class="ruby-comment"># File app/models/presenter_profile.rb, line 23</span>
+            <pre><span class="ruby-comment"># File app/models/presenter_profile.rb, line 24</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">unapproved_profiles</span>
-  <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&#39;status= ?&#39;</span>, <span class="ruby-value">1</span>)
+  <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-identifier">presenter</span><span class="ruby-operator">:</span> <span class="ruby-value">:user</span>).<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-value">:users</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span>}, <span class="ruby-value">:presenter_profiles</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value">0</span>,<span class="ruby-value">2</span>,<span class="ruby-value">3</span>,<span class="ruby-value">4</span>,<span class="ruby-value">5</span>]})
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -197,13 +235,14 @@
 
         <div class="method-description">
           
-          
+          <p>This method takes care of the process of updating the live profile with the
+new profile changes.</p>
           
           
 
           
           <div class="method-source-code" id="approve-source">
-            <pre><span class="ruby-comment"># File app/models/presenter_profile.rb, line 31</span>
+            <pre><span class="ruby-comment"># File app/models/presenter_profile.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">approve</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;pending_presenter&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;pending_admin&quot;</span>
     

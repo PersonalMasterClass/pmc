@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>module EnquiriesHelper - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-current_enquiry">#current_enquiry</a>
+    
+    <li ><a href="#method-i-enquiry_actions">#enquiry_actions</a>
+    
+    <li ><a href="#method-i-enquiry_panel_color">#enquiry_panel_color</a>
+    
+    <li ><a href="#method-i-enquiry_status">#enquiry_status</a>
+    
+    <li ><a href="#method-i-enquiry_submit">#enquiry_submit</a>
+    
+    <li ><a href="#method-i-enquiry_user">#enquiry_user</a>
+    
+    <li ><a href="#method-i-form_title">#form_title</a>
+    
+    <li ><a href="#method-i-form_variable">#form_variable</a>
+    
+    <li ><a href="#method-i-from">#from</a>
+    
+    <li ><a href="#method-i-name_or_school">#name_or_school</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-EnquiriesHelper">
+  <h1 id="module-EnquiriesHelper" class="module">
+    module EnquiriesHelper
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-current_enquiry" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_enquiry</span><span
+            class="method-args">(index)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Display logic for current enquiry</p>
+          
+          
+
+          
+          <div class="method-source-code" id="current_enquiry-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 105</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">current_enquiry</span>(<span class="ruby-identifier">index</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">index</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;list-group-item-success&quot;</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;disabled&quot;</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-enquiry_actions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enquiry_actions</span><span
+            class="method-args">(enquiry)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p><a href="Enquiry.html">Enquiry</a> btn actions</p>
+          
+          
+
+          
+          <div class="method-source-code" id="enquiry_actions-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 114</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enquiry_actions</span>(<span class="ruby-identifier">enquiry</span>)
+        <span class="ruby-identifier">selection</span> = <span class="ruby-keyword">nil</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">pending?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter?</span>
+                        <span class="ruby-identifier">selection</span> = <span class="ruby-value">:all_btns</span>
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                        <span class="ruby-identifier">selection</span> = <span class="ruby-value">:decline_btn</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">accepted?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter?</span>
+                        <span class="ruby-identifier">selection</span> = <span class="ruby-value">:decline_btn</span>
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                        <span class="ruby-identifier">selection</span> = <span class="ruby-value">:create_decline_btn</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">counteroffer?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter?</span>
+                        <span class="ruby-identifier">selection</span> = <span class="ruby-value">:decline_btn</span>
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                        <span class="ruby-identifier">selection</span> = <span class="ruby-value">:all_btns</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">booked?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter?</span>
+                        <span class="ruby-identifier">selection</span> = <span class="ruby-value">:back</span>
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                        <span class="ruby-identifier">selection</span> = <span class="ruby-value">:back</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">selection</span> <span class="ruby-operator">==</span> <span class="ruby-value">:all_btns</span>
+                <span class="ruby-identifier">concat</span> <span class="ruby-identifier">link_to</span> <span class="ruby-string">&quot;Accept&quot;</span>, <span class="ruby-identifier">enquiry_accept_path</span>(<span class="ruby-identifier">enquiry</span>), <span class="ruby-identifier">method</span><span class="ruby-operator">:</span> <span class="ruby-value">:patch</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-success&quot;</span>
+                <span class="ruby-identifier">concat</span> <span class="ruby-identifier">render</span> <span class="ruby-string">&quot;enquiries/partials/form&quot;</span>
+                <span class="ruby-identifier">link_to</span> <span class="ruby-string">&quot;Decline&quot;</span>, <span class="ruby-identifier">enquiry_decline_path</span>(<span class="ruby-identifier">enquiry</span>), <span class="ruby-identifier">method</span><span class="ruby-operator">:</span> <span class="ruby-value">:patch</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-danger&quot;</span> 
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">selection</span> <span class="ruby-operator">==</span> <span class="ruby-value">:decline_btn</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
+                        <span class="ruby-identifier">link_to</span> <span class="ruby-string">&quot;Decline&quot;</span>, <span class="ruby-identifier">enquiry_decline_path</span>(<span class="ruby-identifier">enquiry</span>), <span class="ruby-identifier">method</span><span class="ruby-operator">:</span> <span class="ruby-value">:patch</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-danger&quot;</span> 
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>  
+                        <span class="ruby-identifier">link_to</span> <span class="ruby-string">&quot;Cancel&quot;</span>, <span class="ruby-identifier">enquiry_decline_path</span>(<span class="ruby-identifier">enquiry</span>), <span class="ruby-identifier">method</span><span class="ruby-operator">:</span> <span class="ruby-value">:patch</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-danger&quot;</span> 
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">selection</span> <span class="ruby-operator">==</span> <span class="ruby-value">:back</span>
+                <span class="ruby-identifier">link_to</span> <span class="ruby-string">&quot;Back&quot;</span>, <span class="ruby-value">:back</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-default&quot;</span> 
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">selection</span> <span class="ruby-operator">==</span> <span class="ruby-value">:create_decline_btn</span>
+                <span class="ruby-identifier">concat</span> <span class="ruby-identifier">link_to</span> <span class="ruby-string">&quot;Create Booking&quot;</span>, <span class="ruby-identifier">enquiry_booked_path</span>(<span class="ruby-identifier">enquiry</span>), <span class="ruby-identifier">method</span><span class="ruby-operator">:</span> <span class="ruby-value">:get</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;btn btn-success&#39;</span> 
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter?</span>
+                        <span class="ruby-identifier">link_to</span> <span class="ruby-string">&quot;Decline&quot;</span>, <span class="ruby-identifier">enquiry_decline_path</span>(<span class="ruby-identifier">enquiry</span>), <span class="ruby-identifier">method</span><span class="ruby-operator">:</span> <span class="ruby-value">:patch</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-danger&quot;</span> 
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                        <span class="ruby-identifier">link_to</span> <span class="ruby-string">&quot;Cancel&quot;</span>, <span class="ruby-identifier">enquiry_decline_path</span>(<span class="ruby-identifier">enquiry</span>), <span class="ruby-identifier">method</span><span class="ruby-operator">:</span> <span class="ruby-value">:patch</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-danger&quot;</span> 
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>   
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-enquiry_panel_color" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enquiry_panel_color</span><span
+            class="method-args">(enquiry)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Enquiry#show view logic</p>
+          
+          
+
+          
+          <div class="method-source-code" id="enquiry_panel_color-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 79</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enquiry_panel_color</span>(<span class="ruby-identifier">enquiry</span>) 
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">accepted?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">booked?</span>
+                <span class="ruby-string">&quot;success&quot;</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">declined?</span>
+                <span class="ruby-string">&quot;danger&quot;</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-string">&quot;primary&quot;</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-enquiry_status" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enquiry_status</span><span
+            class="method-args">(enquiry)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Display enquiry status</p>
+          
+          
+
+          
+          <div class="method-source-code" id="enquiry_status-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enquiry_status</span>(<span class="ruby-identifier">enquiry</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">accepted?</span>
+                <span class="ruby-identifier">content_tag</span>(<span class="ruby-value">:span</span>, <span class="ruby-string">&quot;ACCEPTED&quot;</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-xs btn-success&quot;</span>)      
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">declined?</span>
+                <span class="ruby-identifier">content_tag</span>(<span class="ruby-value">:span</span>, <span class="ruby-string">&quot;DECLINED&quot;</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-xs btn-danger&quot;</span>)       
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">counteroffer?</span>
+                <span class="ruby-identifier">content_tag</span>(<span class="ruby-value">:span</span>, <span class="ruby-string">&quot;COUNTER OFFER&quot;</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-xs btn-primary&quot;</span>) 
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">booked?</span>
+                <span class="ruby-identifier">content_tag</span>(<span class="ruby-value">:span</span>, <span class="ruby-string">&quot;BOOKED&quot;</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-xs btn-success&quot;</span>)        
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">content_tag</span>(<span class="ruby-value">:span</span>, <span class="ruby-string">&quot;PENDING&quot;</span>, <span class="ruby-identifier">class</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;btn btn-xs btn-primary&quot;</span>)       
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-enquiry_submit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enquiry_submit</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Selective enquiry submit button text</p>
+          
+          
+
+          
+          <div class="method-source-code" id="enquiry_submit-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enquiry_submit</span>(<span class="ruby-identifier">user</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">customer?</span>
+                <span class="ruby-string">&quot;Send enquiry&quot;</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter?</span>
+                <span class="ruby-string">&quot;Send counter offer&quot;</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-enquiry_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enquiry_user</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Selective enquiry btn text</p>
+          
+          
+
+          
+          <div class="method-source-code" id="enquiry_user-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enquiry_user</span>(<span class="ruby-identifier">user</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">present?</span>
+                <span class="ruby-identifier">status</span> = <span class="ruby-constant">Enquiry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]).<span class="ruby-identifier">status</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;pending&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;counteroffer&quot;</span> 
+                <span class="ruby-string">&quot;Counter offer&quot;</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">customer?</span> 
+                <span class="ruby-string">&quot;Enquire now&quot;</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter?</span> 
+                <span class="ruby-string">&quot;Counter offer&quot;</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-form_title" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">form_title</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Selective enquiry form title text</p>
+          
+          
+
+          
+          <div class="method-source-code" id="form_title-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">form_title</span>(<span class="ruby-identifier">user</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">customer?</span>
+                <span class="ruby-string">&quot;Make enquiry&quot;</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter?</span>
+                <span class="ruby-string">&quot;Make counter offer&quot;</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-form_variable" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">form_variable</span><span
+            class="method-args">(enquiry, presenter)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Selective variable for recipient_id booking variable</p>
+          
+          
+
+          
+          <div class="method-source-code" id="form_variable-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">form_variable</span>(<span class="ruby-identifier">enquiry</span>, <span class="ruby-identifier">presenter</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;show&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;presenter_profiles&quot;</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">id</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;show&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;enquiries&quot;</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">id</span>
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">present?</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">id</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;create&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&quot;enquiries&quot;</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:enquiry</span>][<span class="ruby-value">:recipient_id</span>]
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-from" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">from</span><span
+            class="method-args">(enquiry)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Selective label depending on who sent a booking</p>
+          
+          
+
+          
+          <div class="method-source-code" id="from-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">from</span>(<span class="ruby-identifier">enquiry</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">from</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;presenter&quot;</span>
+                        <span class="ruby-node">&quot;Enquiry from: #{enquiry.presenter.get_private_full_name(current_user)}&quot;</span>
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">from</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;customer&quot;</span>
+                        <span class="ruby-string">&quot;Your enquiry&quot;</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">from</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;presenter&quot;</span>
+                        <span class="ruby-string">&quot;Your enquiry&quot;</span>
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">enquiry</span>.<span class="ruby-identifier">from</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;customer&quot;</span>
+                        <span class="ruby-node">&quot;Enquiry from: #{enquiry.customer.school_info.school_name}&quot;</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">else</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin?</span>
+                <span class="ruby-node">&quot;Enquiry between: #{enquiry.presenter.get_private_full_name(current_user)}
+                                                        #{enquiry.customer.school_info.school_name}&quot;</span>
+        <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-name_or_school" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">name_or_school</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Display text based on user type</p>
+          
+          
+
+          
+          <div class="method-source-code" id="name_or_school-source">
+            <pre><span class="ruby-comment"># File app/helpers/enquiries_helper.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">name_or_school</span>(<span class="ruby-identifier">user</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                <span class="ruby-identifier">user</span>.<span class="ruby-identifier">get_private_full_name</span>(<span class="ruby-identifier">current_user</span>)
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter?</span>
+                <span class="ruby-identifier">user</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">school_name</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

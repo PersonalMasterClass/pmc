@@ -76,6 +76,10 @@
     
     <li ><a href="#method-i-configure_sign_up_params">#configure_sign_up_params</a>
     
+    <li ><a href="#method-i-contact_form">#contact_form</a>
+    
+    <li ><a href="#method-i-contact_form_create">#contact_form_create</a>
+    
     <li ><a href="#method-i-create_customer">#create_customer</a>
     
     <li ><a href="#method-i-create_presenter">#create_presenter</a>
@@ -144,7 +148,7 @@
 
           
           <div class="method-source-code" id="after_sign_up_path_for-source">
-            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 152</span>
+            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 171</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">after_sign_up_path_for</span>(<span class="ruby-identifier">resource</span>)
   <span class="ruby-identifier">admin_index_path</span>
 <span class="ruby-keyword">end</span></pre>
@@ -177,7 +181,7 @@
 
           
           <div class="method-source-code" id="approve_registration-source">
-            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 125</span>
+            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 144</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">approve_registration</span>
 
 <span class="ruby-keyword">end</span></pre>
@@ -210,7 +214,7 @@
 
           
           <div class="method-source-code" id="configure_sign_up_params-source">
-            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 167</span>
+            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 186</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">configure_sign_up_params</span>
   <span class="ruby-identifier">devise_parameter_sanitizer</span>.<span class="ruby-identifier">for</span>(<span class="ruby-value">:sign_up</span>, <span class="ruby-identifier">presenter</span><span class="ruby-operator">:</span> [<span class="ruby-value">:user_id</span>, <span class="ruby-value">:phone_number</span>, <span class="ruby-value">:first_name</span>, 
                                                        <span class="ruby-value">:last_name</span>, <span class="ruby-value">:vit_number</span>, <span class="ruby-value">:abn_number</span>],
@@ -218,6 +222,81 @@
                                                       <span class="ruby-value">:last_name</span>, <span class="ruby-value">:vit_number</span>, <span class="ruby-value">:abn_number</span>,
                                                       <span class="ruby-value">:department</span>, <span class="ruby-value">:contact_title</span>],
                                         <span class="ruby-identifier">school_info</span><span class="ruby-operator">:</span>  [<span class="ruby-value">:school_name</span>])
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-contact_form" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">contact_form</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="contact_form-source">
+            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">contact_form</span>
+    <span class="ruby-ivar">@contact</span> = <span class="ruby-constant">Contact_Form</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">action</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;contact_form&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-contact_form_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">contact_form_create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="contact_form_create-source">
+            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 132</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">contact_form_create</span>
+  <span class="ruby-ivar">@contact</span> = <span class="ruby-constant">Contact_Form</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:contact</span>])
+  <span class="ruby-ivar">@contact</span>.<span class="ruby-identifier">request</span> = <span class="ruby-identifier">request</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@contact</span>.<span class="ruby-identifier">deliver</span>
+    <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:notice</span>] = <span class="ruby-string">&#39;Thank you for your message. We will contact you soon!&#39;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&#39;Cannot send message.&#39;</span>
+  <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-identifier">action</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;contact_form&quot;</span>
+
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -248,7 +327,7 @@
 
           
           <div class="method-source-code" id="create_customer-source">
-            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 84</span>
+            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_customer</span>
   <span class="ruby-identifier">build_resource</span>(<span class="ruby-identifier">sign_up_params</span>)
   <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">user_type</span> = <span class="ruby-value">:customer</span>
@@ -264,7 +343,7 @@
   <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">school_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;school_info&#39;</span>][<span class="ruby-string">&#39;school_name&#39;</span>])
   <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">customer</span> = <span class="ruby-identifier">customer</span>
   <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">save</span>
-
+  <span class="ruby-comment"># Xero.add_school_account(customer)</span>
  <span class="ruby-comment"># #Code from devise</span>
   <span class="ruby-keyword">yield</span> <span class="ruby-identifier">resource</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">persisted?</span>
@@ -278,7 +357,7 @@
       <span class="ruby-identifier">set_flash_message</span> <span class="ruby-value">:notice</span>, <span class="ruby-value">:&quot;signed_up_but_#{resource.inactive_message}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_flashing_format?</span>
       <span class="ruby-identifier">expire_data_after_sign_in!</span>
       <span class="ruby-comment"># Send notification to admin</span>
-      <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-string">&quot;A new registration has been submitted for approval.&quot;</span>, <span class="ruby-identifier">admin_pending_profiles_path</span>)
+      <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-string">&quot;A new registration has been submitted for approval.&quot;</span>, <span class="ruby-identifier">admin_pending_profiles_path</span>, <span class="ruby-value">:system</span>)
       <span class="ruby-identifier">flash</span>[<span class="ruby-value">:warning</span>] = <span class="ruby-string">&quot;Your application has been submitted for approval. 
                          Please check your email to confirm your email.&quot;</span>
       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
@@ -322,7 +401,7 @@
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create_presenter</span>
   <span class="ruby-identifier">build_resource</span>(<span class="ruby-identifier">sign_up_params</span>)
   <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">user_type</span> = <span class="ruby-value">:presenter</span>
-  <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">status</span> = <span class="ruby-value">:pending</span>
+  <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">status</span> = <span class="ruby-value">:approved</span>
   <span class="ruby-comment"># Populate presenter obj</span>
   <span class="ruby-identifier">presenter</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">phone_number</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;presenter&quot;</span>][<span class="ruby-string">&quot;phone_number&quot;</span>], 
                                <span class="ruby-identifier">first_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;presenter&quot;</span>][<span class="ruby-string">&quot;first_name&quot;</span>],
@@ -335,6 +414,8 @@
   <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">school_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;school_info&#39;</span>][<span class="ruby-string">&#39;school_name&#39;</span>])
   <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">presenter</span> = <span class="ruby-identifier">presenter</span>
   <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">save</span>
+
+
 
   <span class="ruby-comment"># customer.school_info = SchoolInfo.find_by(school_name: params[&#39;school_info&#39;][&#39;school&#39;])</span>
   <span class="ruby-comment"># resource.customer = customer</span>
@@ -353,7 +434,7 @@
       <span class="ruby-identifier">set_flash_message</span> <span class="ruby-value">:notice</span>, <span class="ruby-value">:&quot;signed_up_but_#{resource.inactive_message}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">is_flashing_format?</span>
       <span class="ruby-identifier">expire_data_after_sign_in!</span>
       <span class="ruby-comment"># Send notification to admin</span>
-      <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-string">&quot;A new registration has been submitted for approval.&quot;</span>, <span class="ruby-identifier">admin_pending_profiles_path</span>)
+      <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-string">&quot;A new registration has been submitted for approval.&quot;</span>, <span class="ruby-identifier">admin_pending_registrations_path</span>, <span class="ruby-value">:system</span>)
       <span class="ruby-comment"># redirect_to new_presenter_presenter_profile_path(presenter), notice: &quot;Whilst your account is pending approval, you can continue to complete your profile.&quot;</span>
       <span class="ruby-identifier">flash</span>[<span class="ruby-value">:warning</span>] = <span class="ruby-string">&quot;Your application has been submitted for approval. 
                          Please check your email to confirm your email.&quot;</span>
@@ -394,7 +475,7 @@
 
           
           <div class="method-source-code" id="new_customer-source">
-            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 68</span>
+            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 70</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new_customer</span>
   <span class="ruby-comment"># Code from Devise </span>
   <span class="ruby-comment"># Params by default have two hashes; controller and action</span>
@@ -477,7 +558,7 @@
 
           
           <div class="method-source-code" id="vit_validation-source">
-            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 60</span>
+            <pre><span class="ruby-comment"># File app/controllers/users/registrations_controller.rb, line 62</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">vit_validation</span>
   <span class="ruby-comment"># first check to see if the three parameters we use are populated</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:first_name</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:last_name</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:vit_number</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span>
