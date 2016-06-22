@@ -19,7 +19,6 @@
 //= require jquery-ui/autocomplete
 //= require best_in_place
 //= require best_in_place.jquery-ui
-//= require datatables-lib
 //= require turbolinks
 //= require_tree .
 $(document).on('ready page:load', function(){
