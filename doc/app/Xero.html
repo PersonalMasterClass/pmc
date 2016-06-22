@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class Xero - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="Object.html">Object</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-add_presenter_account">::add_presenter_account</a>
+    
+    <li ><a href="#method-c-add_school_account">::add_school_account</a>
+    
+    <li ><a href="#method-c-charge_school">::charge_school</a>
+    
+    <li ><a href="#method-c-connect">::connect</a>
+    
+    <li ><a href="#method-c-get_invoices">::get_invoices</a>
+    
+    <li ><a href="#method-c-invoice_booking">::invoice_booking</a>
+    
+    <li ><a href="#method-c-pay_presenter">::pay_presenter</a>
+    
+    <li ><a href="#method-c-set_accounting_ref">::set_accounting_ref</a>
+    
+    <li ><a href="#method-c-update_presenter_account">::update_presenter_account</a>
+    
+    <li ><a href="#method-c-update_school_account">::update_school_account</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Xero">
+  <h1 id="class-Xero" class="class">
+    class Xero
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="PRESENTER_RATE">PRESENTER_RATE
+        
+        <dd><p>invoice item codes</p>
+        
+      
+        <dt id="SERVICE_FEE">SERVICE_FEE
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
+
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-add_presenter_account" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_presenter_account</span><span
+            class="method-args">(presenter)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>add presenter as <a href="Xero.html">Xero</a> contact</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_presenter_account-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_presenter_account</span>(<span class="ruby-identifier">presenter</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+        
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">gateway</span> = <span class="ruby-identifier">connect</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">gateway</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-identifier">contact</span> = <span class="ruby-identifier">gateway</span>.<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">build</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;PRESENTER: #{presenter.first_name} #{presenter.last_name} #{presenter.vit_number}&quot;</span> )
+
+
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">first_name</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">first_name</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">last_name</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">last_name</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">email_address</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+                <span class="ruby-comment"># contact.account_number = presenter.user.accounting_ref</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">add_phone</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;DEFAULT&#39;</span>, <span class="ruby-value">:number</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">phone_number</span>)
+
+                <span class="ruby-keyword">if</span>(<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">abn_number</span>)
+                        <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">tax_number</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">abn_number</span>
+                <span class="ruby-keyword">end</span>
+                
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">set_accounting_ref</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">user</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Xeroizer</span><span class="ruby-operator">::</span><span class="ruby-constant">ApiException</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&quot;ValidationException&quot;</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-add_school_account" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_school_account</span><span
+            class="method-args">(customer)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>add school as <a href="Xero.html">Xero</a> contact</p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_school_account-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 13</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">add_school_account</span>(<span class="ruby-identifier">customer</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">dept</span> = <span class="ruby-string">&quot;&quot;</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">department</span>
+                        <span class="ruby-identifier">dept</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">department</span> 
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-identifier">contact</span> = <span class="ruby-identifier">connect</span>.<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">build</span>(<span class="ruby-value">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{customer.school_info.school_name} #{dept}&quot;</span>)
+
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">first_name</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">first_name</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">last_name</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">last_name</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">add_address</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;STREET&#39;</span>, <span class="ruby-value">:line1</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">address</span>, <span class="ruby-value">:city</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">town</span>, <span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">state</span>, <span class="ruby-value">:postal_code</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">postcode</span>)
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">add_address</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;POBOX&#39;</span>, <span class="ruby-value">:line1</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">postal_address</span>, <span class="ruby-value">:city</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">postal_town</span>, <span class="ruby-value">:region</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">postal_state</span>, <span class="ruby-value">:postal_code</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">postal_postcode</span>)
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">add_phone</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;DEFAULT&#39;</span>, <span class="ruby-value">:number</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">phone_number</span>)
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">add_phone</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;DDI&#39;</span>, <span class="ruby-value">:number</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">school_info</span>.<span class="ruby-identifier">phone_number</span>)
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">email_address</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+                
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">save</span>
+                        <span class="ruby-identifier">set_accounting_ref</span>(<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">user</span>)
+                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-comment"># contact.account_number = customer.user.accounting_ref</span>
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Xeroizer</span><span class="ruby-operator">::</span><span class="ruby-constant">ApiException</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+                <span class="ruby-comment"># Create a new accounting reference is there is a clash in the accounting system</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>.<span class="ruby-identifier">include?</span> <span class="ruby-string">&quot;ValidationException&quot;</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-charge_school" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">charge_school</span><span
+            class="method-args">(booking, gateway, customer, share)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Bill a school based on contribution</p>
+          
+          
+
+          
+          <div class="method-source-code" id="charge_school-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 202</span>
+    <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">charge_school</span>(<span class="ruby-identifier">booking</span>, <span class="ruby-identifier">gateway</span>, <span class="ruby-identifier">customer</span>, <span class="ruby-identifier">share</span>)
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>.<span class="ruby-identifier">nil?</span>
+                    <span class="ruby-identifier">add_school_account</span>(<span class="ruby-identifier">customer</span>)
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">billable_minutes</span> = <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">duration_minutes</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-value">100</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">share</span>
+            <span class="ruby-identifier">account</span> = <span class="ruby-identifier">gateway</span>.<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">all</span>(<span class="ruby-value">:where</span> =<span class="ruby-operator">&gt;</span>{<span class="ruby-value">:contact_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>}).<span class="ruby-identifier">first</span>
+
+            <span class="ruby-identifier">inv</span> = <span class="ruby-identifier">gateway</span>.<span class="ruby-constant">Invoice</span>.<span class="ruby-identifier">build</span>(<span class="ruby-value">:contact</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">account</span>, <span class="ruby-value">:line_amount_types</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Exclusive&quot;</span>)
+
+            <span class="ruby-identifier">inv</span>.<span class="ruby-identifier">type</span> = <span class="ruby-string">&quot;ACCREC&quot;</span>
+            <span class="ruby-identifier">inv</span>.<span class="ruby-identifier">date</span> = <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">booking_date</span>
+            <span class="ruby-identifier">inv</span>.<span class="ruby-identifier">reference</span> = <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+            <span class="ruby-identifier">inv</span>.<span class="ruby-identifier">status</span> = <span class="ruby-string">&quot;DRAFT&quot;</span>
+
+            <span class="ruby-identifier">inv</span>.<span class="ruby-identifier">add_line_item</span>({
+  <span class="ruby-value">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{booking.subject.name} revision session&quot;</span>,
+  <span class="ruby-value">:item_code</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">PRESENTER_RATE</span>,
+  <span class="ruby-value">:unit_amount</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_f</span>,
+  <span class="ruby-value">:quantity</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">billable_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">to_f</span>,
+  <span class="ruby-comment"># :tax_type =&gt; &quot;INPUT&quot;</span>
+})
+
+<span class="ruby-identifier">inv</span>.<span class="ruby-identifier">add_line_item</span>({
+    <span class="ruby-value">:item_code</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">SERVICE_FEE</span>,
+    <span class="ruby-value">:quantity</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+    })
+<span class="ruby-identifier">inv</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-connect" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">connect</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="connect-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 257</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">connect</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-constant">Figaro</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">xero_consumer</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Figaro</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">xero_secret</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Figaro</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">xero_cert_location</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-constant">Xeroizer</span><span class="ruby-operator">::</span><span class="ruby-constant">PrivateApplication</span>.<span class="ruby-identifier">new</span>(<span class="ruby-constant">Figaro</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">xero_consumer</span>, <span class="ruby-constant">Figaro</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">xero_secret</span>, <span class="ruby-constant">Figaro</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">xero_cert_location</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-get_invoices" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">get_invoices</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Get invoices from the accounting system for view.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="get_invoices-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 151</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">get_invoices</span>(<span class="ruby-identifier">user</span>)
+        <span class="ruby-identifier">gateway</span> = <span class="ruby-identifier">connect</span>
+        
+        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">gateway</span>
+                <span class="ruby-keyword">return</span> []
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">customer?</span> 
+                        <span class="ruby-identifier">add_school_account</span>(<span class="ruby-identifier">user</span>.<span class="ruby-identifier">customer</span>)
+                <span class="ruby-keyword">else</span>
+                 <span class="ruby-identifier">add_presenter_account</span>(<span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter</span>)
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-comment"># if it is still nil, there is a xero issue. </span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>.<span class="ruby-identifier">nil?</span>
+                        <span class="ruby-keyword">return</span> []
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        
+        <span class="ruby-identifier">account</span> = <span class="ruby-identifier">gateway</span>.<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">all</span>(<span class="ruby-value">:where</span> =<span class="ruby-operator">&gt;</span>{<span class="ruby-value">:contact_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>}).<span class="ruby-identifier">first</span>
+        <span class="ruby-comment"># &#39;Contact.ContactID.ToString()==&quot;cd09aa49-134d-40fb-a52b-b63c6a91d712&quot;&#39;</span>
+        <span class="ruby-identifier">search</span> = <span class="ruby-string">&#39;Contact.ContactID.ToString() == &quot;&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span> <span class="ruby-operator">+</span> <span class="ruby-string">&#39;&quot;&#39;</span>
+        <span class="ruby-identifier">x</span>=  <span class="ruby-identifier">gateway</span>.<span class="ruby-constant">Invoice</span>.<span class="ruby-identifier">all</span>(<span class="ruby-value">:where</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">search</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">x</span>
+        <span class="ruby-comment"># return x.reject{|i| i.status != &quot;AUTHORISED&quot;  || i.status != &quot;PAID&quot;}</span>
+        
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-invoice_booking" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">invoice_booking</span><span
+            class="method-args">(booking)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Generate invoices for all parties involved in a booking.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="invoice_booking-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 181</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">invoice_booking</span>(<span class="ruby-identifier">booking</span>)
+        <span class="ruby-identifier">gateway</span> = <span class="ruby-identifier">connect</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">gateway</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">pay_presenter</span>(<span class="ruby-identifier">booking</span>, <span class="ruby-identifier">gateway</span>)
+
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">shared?</span>
+                <span class="ruby-identifier">charge_school</span>(<span class="ruby-identifier">booking</span>, <span class="ruby-identifier">gateway</span>, <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">creator</span>, <span class="ruby-value">100</span>)
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-comment"># Calculate each schools share and bill them</span>
+                <span class="ruby-identifier">total</span> = <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">total_students</span>.<span class="ruby-identifier">to_f</span>
+                <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">booked_customers</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">school</span><span class="ruby-operator">|</span>
+                        <span class="ruby-identifier">charge_school</span>(<span class="ruby-identifier">booking</span>, <span class="ruby-identifier">gateway</span>, <span class="ruby-identifier">school</span>.<span class="ruby-identifier">customer</span>, (<span class="ruby-identifier">school</span>.<span class="ruby-identifier">number_students</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">*</span> <span class="ruby-value">100</span>).<span class="ruby-identifier">ceil</span>)
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-pay_presenter" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">pay_presenter</span><span
+            class="method-args">(booking, gateway)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Create a <a href="Xero.html">Xero</a> bill (Accounts Payable) to credit the
+presenter their rate</p>
+          
+          
+
+          
+          <div class="method-source-code" id="pay_presenter-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 232</span>
+    <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">pay_presenter</span>(<span class="ruby-identifier">booking</span>, <span class="ruby-identifier">gateway</span>)
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">chosen_presenter</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>.<span class="ruby-identifier">nil?</span>
+                    <span class="ruby-identifier">add_presenter_account</span>(<span class="ruby-identifier">booking</span>.<span class="ruby-identifier">chosen_presenter</span>)
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">presenter_account</span> = <span class="ruby-identifier">gateway</span>.<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">all</span>(<span class="ruby-value">:where</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:contact_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">chosen_presenter</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>.<span class="ruby-identifier">to_s</span>}).<span class="ruby-identifier">first</span>
+
+            <span class="ruby-identifier">p_inv</span> = <span class="ruby-identifier">gateway</span>.<span class="ruby-constant">Invoice</span>.<span class="ruby-identifier">build</span>(<span class="ruby-value">:contact</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">presenter_account</span>, <span class="ruby-value">:line_amount_types</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Exclusive&quot;</span>)
+    
+            <span class="ruby-identifier">p_inv</span>.<span class="ruby-identifier">type</span> = <span class="ruby-string">&quot;ACCPAY&quot;</span>
+            <span class="ruby-identifier">p_inv</span>.<span class="ruby-identifier">date</span> = <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">booking_date</span>
+            <span class="ruby-identifier">p_inv</span>.<span class="ruby-identifier">invoice_number</span> = <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+            <span class="ruby-identifier">p_inv</span>.<span class="ruby-identifier">status</span> = <span class="ruby-string">&quot;DRAFT&quot;</span>
+
+            <span class="ruby-identifier">p_inv</span>.<span class="ruby-identifier">contact</span> = <span class="ruby-identifier">presenter_account</span>
+            <span class="ruby-identifier">p_inv</span>.<span class="ruby-identifier">add_line_item</span>({
+  <span class="ruby-value">:description</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{booking.subject.name} revision session&quot;</span>,
+  <span class="ruby-value">:item_code</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">PRESENTER_RATE</span>,
+  <span class="ruby-value">:unit_amount</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">rate</span>.<span class="ruby-identifier">to_f</span>,
+  <span class="ruby-value">:quantity</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">booking</span>.<span class="ruby-identifier">duration_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">to_f</span>,
+  <span class="ruby-value">:tax_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;INPUT&quot;</span>
+})
+            <span class="ruby-identifier">p_inv</span>.<span class="ruby-identifier">save</span>
+<span class="ruby-keyword">return</span> <span class="ruby-identifier">p_inv</span>
+    <span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-set_accounting_ref" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_accounting_ref</span><span
+            class="method-args">(user)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>set an initial accounting ref to the user id.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="set_accounting_ref-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 7</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">set_accounting_ref</span>(<span class="ruby-identifier">user</span>)
+        <span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span> = <span class="ruby-identifier">connect</span>.<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">contact_id</span>
+        <span class="ruby-identifier">user</span>.<span class="ruby-identifier">save</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-update_presenter_account" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_presenter_account</span><span
+            class="method-args">(presenter)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>update a presenter <a href="Xero.html">Xero</a> contact</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update_presenter_account-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 82</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">update_presenter_account</span>(<span class="ruby-identifier">presenter</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-keyword">begin</span>
+                
+                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">connect</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-identifier">contact</span> = <span class="ruby-identifier">connect</span>.<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">all</span>(<span class="ruby-value">:where</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:contact_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>}).<span class="ruby-identifier">first</span>
+                
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">nil?</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-identifier">add_presenter_account</span>(<span class="ruby-identifier">presenter</span>)
+                <span class="ruby-keyword">end</span>
+                
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">first_name</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">first_name</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">last_name</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">last_name</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">email_address</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+                <span class="ruby-comment"># contact.account_number = presenter.user.accounting_ref</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">add_phone</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;DEFAULT&#39;</span>, <span class="ruby-value">:number</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">phone_number</span>)
+
+                <span class="ruby-keyword">if</span>(<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">abn_number</span>)
+                        <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">tax_number</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">abn_number</span>
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">save</span>
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Xeroizer</span><span class="ruby-operator">::</span><span class="ruby-constant">ApiException</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-update_school_account" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_school_account</span><span
+            class="method-args">(customer)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>update a school <a href="Xero.html">Xero</a> contact</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update_school_account-source">
+            <pre><span class="ruby-comment"># File app/services/xero.rb, line 115</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">update_school_account</span>(<span class="ruby-identifier">customer</span>)
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">nil?</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">begin</span>
+                <span class="ruby-identifier">dept</span> = <span class="ruby-string">&quot;&quot;</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">department</span>
+                        <span class="ruby-identifier">dept</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">department</span> 
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-identifier">gateway</span> = <span class="ruby-identifier">connect</span>
+
+                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">gateway</span>
+                        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+                <span class="ruby-keyword">end</span>
+                
+                <span class="ruby-identifier">contact</span> = <span class="ruby-identifier">gateway</span>.<span class="ruby-constant">Contact</span>.<span class="ruby-identifier">all</span>(<span class="ruby-value">:where</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:contact_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">accounting_ref</span>.<span class="ruby-identifier">to_s</span>}).<span class="ruby-identifier">first</span>
+
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">nil?</span>
+                        <span class="ruby-identifier">add_school_account</span>(<span class="ruby-identifier">customer</span>)
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">name</span> = <span class="ruby-node">&quot;#{customer.school_info.school_name} #{dept}&quot;</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">first_name</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">first_name</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">last_name</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">last_name</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">email_address</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+                <span class="ruby-comment"># contact.account_number = customer.user.accounting_ref</span>
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">add_phone</span>(<span class="ruby-value">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;DEFAULT&#39;</span>, <span class="ruby-value">:number</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">phone_number</span>)
+
+                <span class="ruby-identifier">contact</span>.<span class="ruby-identifier">save</span>
+        <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Xeroizer</span><span class="ruby-operator">::</span><span class="ruby-constant">ApiException</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.2.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

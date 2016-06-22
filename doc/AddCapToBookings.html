@@ -72,6 +72,8 @@
     
     <li ><a href="#method-i-change">#change</a>
     
+    <li ><a href="#method-i-show">#show</a>
+    
   </ul>
 </div>
 
@@ -119,15 +121,56 @@
 
         <div class="method-description">
           
-          
+          <p>Find all School infos based on search term</p>
           
           
 
           
+<<<<<<< HEAD:doc/AddCapToBookings.html
           <div class="method-source-code" id="change-source">
             <pre><span class="ruby-comment"># File db/migrate/20160530030659_add_cap_to_bookings.rb, line 2</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">change</span>
   <span class="ruby-identifier">add_column</span> <span class="ruby-value">:bookings</span>, <span class="ruby-value">:cap</span>, <span class="ruby-value">:integer</span>, <span class="ruby-value">:default</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">30</span>
+=======
+          <div class="method-source-code" id="find-source">
+            <pre><span class="ruby-comment"># File app/controllers/school_info_controller.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;school_name LIKE ?&quot;</span>, <span class="ruby-node">&quot;%#{params[:term].titlecase}%&quot;</span>)
+>>>>>>> 3dcb77188157bd8d4aeb2f19fef6922eecc03d2f:doc/app/SchoolInfoController.html
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Display School info</p>
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/school_info_controller.rb, line 8</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+        <span class="ruby-ivar">@school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+        <span class="ruby-ivar">@accounts</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">school_info</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 <span class="ruby-keyword">end</span></pre>
           </div>
           

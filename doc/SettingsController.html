@@ -71,6 +71,13 @@
   <ul class="link-list" role="directory">
     
     <li ><a href="#method-i-edit">#edit</a>
+<<<<<<< HEAD:doc/SettingsController.html
+=======
+    
+    <li ><a href="#method-i-index">#index</a>
+>>>>>>> 3dcb77188157bd8d4aeb2f19fef6922eecc03d2f:doc/app/CustomersController.html
+    
+    <li ><a href="#method-i-update">#update</a>
     
     <li ><a href="#method-i-update">#update</a>
     
@@ -109,6 +116,8 @@
 
     
       <div id="method-i-edit" class="method-detail ">
+<<<<<<< HEAD:doc/SettingsController.html
+=======
         
         <div class="method-heading">
           <span class="method-name">edit</span><span
@@ -121,14 +130,112 @@
 
         <div class="method-description">
           
-          <p>Settings form</p>
+          <p>Edit a customer</p>
           
           
 
           
           <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/customers_controller.rb, line 21</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>  
+  <span class="ruby-ivar">@customer_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+  <span class="ruby-ivar">@customer</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@customer_id</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+>>>>>>> 3dcb77188157bd8d4aeb2f19fef6922eecc03d2f:doc/app/CustomersController.html
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+<<<<<<< HEAD:doc/SettingsController.html
+          <p>Settings form</p>
+=======
+          <p><a href="Customer.html">Customer</a> dashboard</p>
+>>>>>>> 3dcb77188157bd8d4aeb2f19fef6922eecc03d2f:doc/app/CustomersController.html
+          
+          
+
+          
+<<<<<<< HEAD:doc/SettingsController.html
+          <div class="method-source-code" id="edit-source">
             <pre><span class="ruby-comment"># File app/controllers/settings_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+<span class="ruby-keyword">end</span></pre>
+=======
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/customers_controller.rb, line 6</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@customer</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+      <span class="ruby-ivar">@search_params</span> = <span class="ruby-identifier">params</span>();
+      <span class="ruby-ivar">@upcoming</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">upcoming</span>(<span class="ruby-identifier">current_user</span>) 
+      <span class="ruby-ivar">@bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">suggested</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-ivar">@joined_bookings</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">bookings</span>.<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-identifier">creator</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>)
+      <span class="ruby-keyword">end</span></pre>
+>>>>>>> 3dcb77188157bd8d4aeb2f19fef6922eecc03d2f:doc/app/CustomersController.html
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+<<<<<<< HEAD:doc/SettingsController.html
+          <p>Update settings</p>
+=======
+          <p>Display a customer</p>
+>>>>>>> 3dcb77188157bd8d4aeb2f19fef6922eecc03d2f:doc/app/CustomersController.html
+          
+          
+
+          
+<<<<<<< HEAD:doc/SettingsController.html
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/settings_controller.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+        <span class="ruby-ivar">@setting</span>.<span class="ruby-identifier">update!</span>(<span class="ruby-identifier">setting_params</span>)
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Settings saved.&quot;</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
+=======
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/customers_controller.rb, line 15</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+        <span class="ruby-ivar">@customer</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+        <span class="ruby-ivar">@user</span> = <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">user</span>
+>>>>>>> 3dcb77188157bd8d4aeb2f19fef6922eecc03d2f:doc/app/CustomersController.html
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -153,17 +260,22 @@
 
         <div class="method-description">
           
-          <p>Update settings</p>
+          <p>Update a customer</p>
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/settings_controller.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/controllers/customers_controller.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
-        <span class="ruby-ivar">@setting</span>.<span class="ruby-identifier">update!</span>(<span class="ruby-identifier">setting_params</span>)
-        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Settings saved.&quot;</span>
-        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
+  <span class="ruby-ivar">@customer</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+  <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:school_id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">customer_update_params</span>)
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:danger</span>]= <span class="ruby-string">&quot;Success&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;edit&#39;</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
