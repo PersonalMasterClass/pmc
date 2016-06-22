@@ -74,13 +74,21 @@
     
     <li ><a href="#method-i-create">#create</a>
     
+    <li ><a href="#method-i-edit_details">#edit_details</a>
+    
     <li ><a href="#method-i-edit_subjects">#edit_subjects</a>
     
     <li ><a href="#method-i-index">#index</a>
     
     <li ><a href="#method-i-new">#new</a>
     
+    <li ><a href="#method-i-rate">#rate</a>
+    
     <li ><a href="#method-i-remove_subject">#remove_subject</a>
+    
+    <li ><a href="#method-i-set_rate">#set_rate</a>
+    
+    <li ><a href="#method-i-update_details">#update_details</a>
     
   </ul>
 </div>
@@ -129,15 +137,15 @@
 
         <div class="method-description">
           
-          <p>add a subject to the presenter&#39;s subject</p>
+          <p>add a subject to the presenter&#39;s subjects</p>
           
           
 
           
           <div class="method-source-code" id="add_subject-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 18</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 38</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">add_subject</span>
-      <span class="ruby-ivar">@subject</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:subjects</span>][<span class="ruby-value">:name</span>])
+      <span class="ruby-ivar">@subject</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:name</span>])
       <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">subjects</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@subject</span>)
     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">subjects</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@subject</span> 
   <span class="ruby-keyword">end</span>
@@ -172,8 +180,42 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 9</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 16</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit_details" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit_details</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Edit presenter details</p>
+          
+          
+
+          
+          <div class="method-source-code" id="edit_details-source">
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit_details</span> 
+  <span class="ruby-ivar">@presenter_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
+  <span class="ruby-ivar">@presenter</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@presenter_id</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -204,7 +246,7 @@
 
           
           <div class="method-source-code" id="edit_subjects-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 13</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit_subjects</span>
       <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
 <span class="ruby-keyword">end</span></pre>
@@ -231,15 +273,19 @@
 
         <div class="method-description">
           
-          
+          <p><a href="Presenter.html">Presenter</a> dashboard</p>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 3</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 6</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-<span class="ruby-keyword">end</span></pre>
+  <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
+  <span class="ruby-ivar">@upcoming</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">upcoming</span>(<span class="ruby-identifier">current_user</span>) 
+  <span class="ruby-ivar">@bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">suggested</span>(<span class="ruby-identifier">current_user</span>)
+  <span class="ruby-ivar">@bids</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">bids</span>
+      <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -269,8 +315,40 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 6</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-rate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rate</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>View for presenter to update rate</p>
+          
+          
+
+          
+          <div class="method-source-code" id="rate-source">
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 25</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rate</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -295,17 +373,94 @@
 
         <div class="method-description">
           
-          
+          <p>Remove subject from a presenter</p>
           
           
 
           
           <div class="method-source-code" id="remove_subject-source">
-            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 26</span>
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_subject</span>
   <span class="ruby-ivar">@subject</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:subject</span>])
   <span class="ruby-ivar">@subject</span>.<span class="ruby-identifier">presenters</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>)
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenter_edit_subjects_path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_rate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_rate</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Action for presenter to set their default rate</p>
+          
+          
+
+          
+          <div class="method-source-code" id="set_rate-source">
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_rate</span>
+  <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
+  <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">rate</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:rate</span>]
+  <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-node">&quot;You have set your base rate to $#{@presenter.rate}&quot;</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenters_path</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update_details" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_details</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Update presenter details</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update_details-source">
+            <pre><span class="ruby-comment"># File app/controllers/presenters_controller.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_details</span>
+  <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
+  <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:school_id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">presenter_update_params</span>)
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Your details have been updated.&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;edit_details&#39;</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

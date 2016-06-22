@@ -70,9 +70,23 @@
 
   <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-add_to_xero">#add_to_xero</a>
+    
+    <li ><a href="#method-i-available-3F">#available?</a>
+    
     <li ><a href="#method-i-get_private_full_name">#get_private_full_name</a>
     
     <li ><a href="#method-i-profile_picture_path">#profile_picture_path</a>
+    
+    <li ><a href="#method-i-profile_status_message">#profile_status_message</a>
+    
+    <li ><a href="#method-i-remove_all_bids">#remove_all_bids</a>
+    
+    <li ><a href="#method-i-remove_upcoming_bookings">#remove_upcoming_bookings</a>
+    
+    <li ><a href="#method-i-teaches-3F">#teaches?</a>
+    
+    <li ><a href="#method-i-update_xero">#update_xero</a>
     
     <li ><a href="#method-i-vit_number_must_be_valid">#vit_number_must_be_valid</a>
     
@@ -110,6 +124,78 @@
        </header>
 
     
+      <div id="method-i-add_to_xero" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">add_to_xero</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>add new presenter to <a href="Xero.html">Xero</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="add_to_xero-source">
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">add_to_xero</span>
+  <span class="ruby-constant">Xero</span>.<span class="ruby-identifier">add_presenter_account</span>(<span class="ruby-keyword">self</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-available-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">available?</span><span
+            class="method-args">(date_time, duration=0)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Check presenter availabilities and bookings for clashes</p>
+          
+          
+
+          
+          <div class="method-source-code" id="available-3F-source">
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">available?</span>(<span class="ruby-identifier">date_time</span>, <span class="ruby-identifier">duration</span>=<span class="ruby-value">0</span>)
+  <span class="ruby-identifier">day</span> = <span class="ruby-identifier">date_time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%A&quot;</span>).<span class="ruby-identifier">downcase</span>
+  <span class="ruby-identifier">time</span> = (<span class="ruby-identifier">date_time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%k&quot;</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">date_time</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%M&quot;</span>).<span class="ruby-identifier">to_i</span>
+  <span class="ruby-identifier">all_avals</span> = <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;#{day} = true AND start_time &lt;= #{time} AND end_time &gt;= #{time} AND presenter_id = #{self.id}&quot;</span>)
+  <span class="ruby-identifier">all_avals</span> = <span class="ruby-identifier">all_avals</span>.<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">presenter</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">self</span>}
+
+  <span class="ruby-identifier">bkgs</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">where</span>(<span class="ruby-node">&quot;chosen_presenter_id = #{self.id} AND booking_date &gt;= &#39;#{date_time.to_s(:db)}&#39; AND booking_date &lt;= &#39;#{(date_time+duration.minutes).to_s(:db)}&#39;&quot;</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-operator">!</span><span class="ruby-identifier">all_avals</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">bkgs</span>.<span class="ruby-identifier">empty?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-get_private_full_name" class="method-detail ">
         
         <div class="method-heading">
@@ -123,15 +209,18 @@
 
         <div class="method-description">
           
-          
+          <p>for a given user, returns the name of the presenter, if the user is a
+customer, then the the last name is initialized for privacy.</p>
           
           
 
           
           <div class="method-source-code" id="get_private_full_name-source">
-            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 34</span>
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 49</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">get_private_full_name</span>(<span class="ruby-identifier">user</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">user</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{self.first_name} #{self.last_name.at(0)}&quot;</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">user</span>
     <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{self.first_name} #{self.last_name}&quot;</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{self.first_name} #{self.last_name.at(0)}&quot;</span>
@@ -160,13 +249,14 @@
 
         <div class="method-description">
           
-          
+          <p>returns the path of a users profile picture depending on whether a profile
+has been created and what enviroment the application is running on</p>
           
           
 
           
           <div class="method-source-code" id="profile_picture_path-source">
-            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 34</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">profile_picture_path</span>(<span class="ruby-identifier">size</span> = <span class="ruby-string">&#39;100x100#&#39;</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">presenter_profile</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-keyword">return</span> <span class="ruby-constant">Dragonfly</span>.<span class="ruby-identifier">app</span>.<span class="ruby-identifier">fetch_file</span>(<span class="ruby-string">&#39;public/images/default-user-display.png&#39;</span>).<span class="ruby-identifier">thumb</span>(<span class="ruby-identifier">size</span>).<span class="ruby-identifier">url</span>
@@ -177,6 +267,194 @@
       <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">presenter_profile</span>.<span class="ruby-identifier">picture</span>.<span class="ruby-identifier">thumb</span>(<span class="ruby-identifier">size</span>).<span class="ruby-identifier">remote_url</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-profile_status_message" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">profile_status_message</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Returns string for view depending on status</p>
+          
+          
+
+          
+          <div class="method-source-code" id="profile_status_message-source">
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">profile_status_message</span>
+  <span class="ruby-identifier">profile</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">presenter_profile</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">profile</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-string">&quot;No profile created&quot;</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">profile</span>.<span class="ruby-identifier">pending_admin?</span>
+      <span class="ruby-string">&quot;Pending Approval&quot;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">profile</span>.<span class="ruby-identifier">draft_admin?</span>
+      <span class="ruby-string">&quot;Draft Saved&quot;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">profile</span>.<span class="ruby-identifier">pending_presenter?</span>
+      <span class="ruby-string">&quot;Pending Approval&quot;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">profile</span>.<span class="ruby-identifier">draft_presenter?</span>
+      <span class="ruby-string">&quot;Draft Saved&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-remove_all_bids" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">remove_all_bids</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Removes all booking bids the presenter has submitted</p>
+          
+          
+
+          
+          <div class="method-source-code" id="remove_all_bids-source">
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_all_bids</span>
+  <span class="ruby-constant">Bid</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">presenter_id</span><span class="ruby-operator">:</span> <span class="ruby-keyword">self</span>).<span class="ruby-identifier">delete_all</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-remove_upcoming_bookings" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">remove_upcoming_bookings</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>removes all upcoming bookings for a presenter.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="remove_upcoming_bookings-source">
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">remove_upcoming_bookings</span>
+  <span class="ruby-identifier">bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">upcoming</span>(<span class="ruby-keyword">self</span>.<span class="ruby-identifier">user</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">bookings</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">bookings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span>  <span class="ruby-operator">|</span><span class="ruby-identifier">booking</span><span class="ruby-operator">|</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">remove_chosen_presenter</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">self</span>
+        <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">remove_chosen_presenter</span>
+        <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;The presenter for this booking are now unavailable&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-identifier">booking</span>), <span class="ruby-value">:booking</span>)
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-teaches-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">teaches?</span><span
+            class="method-args">(subject)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>check if a presenter teaches a subject</p>
+          
+          
+
+          
+          <div class="method-source-code" id="teaches-3F-source">
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 59</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">teaches?</span> (<span class="ruby-identifier">subject</span>)
+  <span class="ruby-keyword">return</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">subjects</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">subject</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update_xero" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_xero</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>send updated peresnter details to <a href="Xero.html">Xero</a></p>
+          
+          
+
+          
+          <div class="method-source-code" id="update_xero-source">
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 63</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_xero</span>
+  <span class="ruby-constant">Xero</span>.<span class="ruby-identifier">update_presenter_account</span>(<span class="ruby-keyword">self</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -201,16 +479,16 @@
 
         <div class="method-description">
           
-          
+          <p>Validate presenter&#39;s VIT number</p>
           
           
 
           
           <div class="method-source-code" id="vit_number_must_be_valid-source">
-            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/models/presenter.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">vit_number_must_be_valid</span>
   <span class="ruby-keyword">unless</span> <span class="ruby-constant">VitValidation</span>.<span class="ruby-identifier">check_vit</span>(<span class="ruby-identifier">first_name</span>, <span class="ruby-identifier">last_name</span>, <span class="ruby-identifier">vit_number</span>)
-    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:vit_number</span>, <span class="ruby-string">&quot;could not be found on the vit register.&quot;</span>)
+    <span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:vit_number</span>, <span class="ruby-string">&quot;could not be found on the VIT register.&quot;</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>class CustomersController - Rails Application Documentation</title>
+<title>class PageContentsController - Rails Application Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -84,9 +84,9 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-CustomersController">
-  <h1 id="class-CustomersController" class="class">
-    class CustomersController
+<main role="main" aria-labelledby="class-PageContentsController">
+  <h1 id="class-PageContentsController" class="class">
+    class PageContentsController
   </h1>
 
   <section class="description">
@@ -125,16 +125,15 @@
 
         <div class="method-description">
           
-          <p>Edit a customer</p>
+          <p>Edit form for a static page</p>
           
           
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/customers_controller.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>  
-  <span class="ruby-ivar">@customer_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
-  <span class="ruby-ivar">@customer</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@customer_id</span>)
+            <pre><span class="ruby-comment"># File app/controllers/page_contents_controller.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+  <span class="ruby-ivar">@page_contents</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -159,20 +158,22 @@
 
         <div class="method-description">
           
-          <p><a href="Customer.html">Customer</a> dashboard</p>
+          <p>Show all editable page content</p>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/customers_controller.rb, line 6</span>
+            <pre><span class="ruby-comment"># File app/controllers/page_contents_controller.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-  <span class="ruby-ivar">@customer</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
-      <span class="ruby-ivar">@search_params</span> = <span class="ruby-identifier">params</span>();
-      <span class="ruby-ivar">@upcoming</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">upcoming</span>(<span class="ruby-identifier">current_user</span>) 
-      <span class="ruby-ivar">@bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">suggested</span>(<span class="ruby-identifier">current_user</span>)
-  <span class="ruby-ivar">@joined_bookings</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">bookings</span>.<span class="ruby-identifier">where</span>.<span class="ruby-identifier">not</span>(<span class="ruby-identifier">creator</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>)
-      <span class="ruby-keyword">end</span></pre>
+  <span class="ruby-ivar">@about</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;aboutPMC&quot;</span>)
+  <span class="ruby-ivar">@contact</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;contact&quot;</span>)
+  <span class="ruby-ivar">@dmca</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;dmca&quot;</span>)
+  <span class="ruby-ivar">@earnings</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;earnings&quot;</span>)
+  <span class="ruby-ivar">@privacy</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;privacy&quot;</span>)
+  <span class="ruby-ivar">@terms</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;terms&quot;</span>)
+  <span class="ruby-ivar">@help</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;profile-help&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>
@@ -196,16 +197,15 @@
 
         <div class="method-description">
           
-          <p>Display a customer</p>
+          <p>Display a static page</p>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/customers_controller.rb, line 15</span>
+            <pre><span class="ruby-comment"># File app/controllers/page_contents_controller.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
-        <span class="ruby-ivar">@customer</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-        <span class="ruby-ivar">@user</span> = <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">user</span>
+  <span class="ruby-ivar">@content</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -230,20 +230,20 @@
 
         <div class="method-description">
           
-          <p>Update a customer</p>
+          <p>Update static page</p>
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/customers_controller.rb, line 27</span>
+            <pre><span class="ruby-comment"># File app/controllers/page_contents_controller.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
-  <span class="ruby-ivar">@customer</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
-  <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:school_id</span>])
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">customer_update_params</span>)
-    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:danger</span>]= <span class="ruby-string">&quot;Success&quot;</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
+  <span class="ruby-ivar">@page_contents</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@page_contents</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">content_params</span>)
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Content updated&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@page_contents</span>.<span class="ruby-identifier">url</span>
   <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:danger</span>] = <span class="ruby-string">&quot;Invalid&quot;</span>
     <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;edit&#39;</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>

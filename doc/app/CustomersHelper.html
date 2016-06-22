@@ -118,13 +118,13 @@
 
         <div class="method-description">
           
-          
+          <p>Depreciated method for display active navs</p>
           
           
 
           
           <div class="method-source-code" id="c_dashboard_active-3F-source">
-            <pre><span class="ruby-comment"># File app/helpers/customers_helper.rb, line 14</span>
+            <pre><span class="ruby-comment"># File app/helpers/customers_helper.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">c_dashboard_active?</span>
         <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;customers&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;index&#39;</span> 
                 <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>
@@ -154,13 +154,13 @@
 
         <div class="method-description">
           
-          
+          <p>Select render of nav</p>
           
           
 
           
           <div class="method-source-code" id="display_admin_or_customer_nav-source">
-            <pre><span class="ruby-comment"># File app/helpers/customers_helper.rb, line 6</span>
+            <pre><span class="ruby-comment"># File app/helpers/customers_helper.rb, line 8</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">display_admin_or_customer_nav</span>
         <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">user_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;customer&quot;</span>
                 <span class="ruby-identifier">render</span> <span class="ruby-string">&quot;customers/partials/customer_nav&quot;</span>
@@ -191,13 +191,13 @@
 
         <div class="method-description">
           
-          
+          <p>Display the full name of a customer</p>
           
           
 
           
           <div class="method-source-code" id="fullname-source">
-            <pre><span class="ruby-comment"># File app/helpers/customers_helper.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/helpers/customers_helper.rb, line 3</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">fullname</span>(<span class="ruby-identifier">customer</span>)
         <span class="ruby-node">&quot;#{customer.first_name} #{customer.last_name}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
@@ -224,13 +224,13 @@
 
         <div class="method-description">
           
-          
+          <p>Depreciated method for display active navs</p>
           
           
 
           
           <div class="method-source-code" id="new_booking_active-3F-source">
-            <pre><span class="ruby-comment"># File app/helpers/customers_helper.rb, line 21</span>
+            <pre><span class="ruby-comment"># File app/helpers/customers_helper.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new_booking_active?</span>
         <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:controller</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;bookings&#39;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:action</span>] <span class="ruby-operator">==</span> <span class="ruby-string">&#39;new&#39;</span>
                 <span class="ruby-keyword">return</span> <span class="ruby-string">&#39;&#39;</span>

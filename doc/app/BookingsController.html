@@ -70,25 +70,37 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-bid">#bid</a>
+    <li ><a href="#method-i-cancel_bid">#cancel_bid</a>
+    
+    <li ><a href="#method-i-cancel_booking">#cancel_booking</a>
+    
+    <li ><a href="#method-i-cancel_help">#cancel_help</a>
     
     <li ><a href="#method-i-choose_presenter">#choose_presenter</a>
     
     <li ><a href="#method-i-create">#create</a>
     
-    <li ><a href="#method-i-destroy">#destroy</a>
+    <li ><a href="#method-i-create_from_enquiry">#create_from_enquiry</a>
     
-    <li ><a href="#method-i-edit">#edit</a>
+    <li ><a href="#method-i-get_help">#get_help</a>
     
     <li ><a href="#method-i-index">#index</a>
     
+    <li ><a href="#method-i-join">#join</a>
+    
+    <li ><a href="#method-i-leave_booking">#leave_booking</a>
+    
     <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-new_from_enquiry">#new_from_enquiry</a>
     
     <li ><a href="#method-i-open">#open</a>
     
-    <li ><a href="#method-i-show">#show</a>
+    <li ><a href="#method-i-past">#past</a>
     
-    <li ><a href="#method-i-update">#update</a>
+    <li ><a href="#method-i-set_bid">#set_bid</a>
+    
+    <li ><a href="#method-i-show">#show</a>
     
   </ul>
 </div>
@@ -124,10 +136,10 @@
        </header>
 
     
-      <div id="method-i-bid" class="method-detail ">
+      <div id="method-i-cancel_bid" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">bid</span><span
+          <span class="method-name">cancel_bid</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -137,28 +149,115 @@
 
         <div class="method-description">
           
-          
+          <p>Presenters who&#39;ve bid on a booking and withdraw it</p>
           
           
 
           
-          <div class="method-source-code" id="bid-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 79</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">bid</span>
+          <div class="method-source-code" id="cancel_bid-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 298</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_bid</span>
   <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-  <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
-  <span class="ruby-comment"># This will create a bi directional association, @booking will contain @presenter as well.</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">presenters</span>.<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@presenter</span>
-    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;You have already expressed interest in this booking&quot;</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">bookings_open_path</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">bookings</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@booking</span>
-    <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">bids</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">bid_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">presenters</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>)
+  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Success! You&#39;ve withdrawn your bid.&quot;</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">presenters</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">help_required</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">save</span>
   <span class="ruby-keyword">end</span>
+  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>, <span class="ruby-node">&quot;#{current_user.presenter.get_private_full_name(current_user)} has withdrawn their bid.&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:cancel_bid</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
 
-  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>, <span class="ruby-node">&quot;#{@presenter.first_name} has expressed an interest in this booking.&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>))
-  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;You have successfully placed a bid on this booking.&quot;</span>
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">bookings_open_path</span>
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-cancel_booking" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cancel_booking</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creator/chosen presenter of a booking can cancel their booking.
+Notifications will be sent out to all stakeholders involved.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="cancel_booking-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 272</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_booking</span>
+  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">booking_date</span> <span class="ruby-operator">&gt;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:cancellation_message</span>].<span class="ruby-identifier">strip</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:cancellation_message</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">flash</span>[<span class="ruby-value">:danger</span>] = <span class="ruby-string">&quot;Message needs to be specified before cancelling a booking.&quot;</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>)
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">chosen_presenter</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin?</span>
+        <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">cancellation_message</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:cancellation_message</span>]
+        <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">destroy</span>
+        <span class="ruby-comment"># TODO: Notifications dont appear to be sent </span>
+        <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">cancelled_booking</span>(<span class="ruby-ivar">@booking</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>))
+        <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">save</span>
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Booking has been cancelled and potential participants notified!&quot;</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:danger</span>] = <span class="ruby-string">&quot;Booking cannot be cancelled as it has already been completed&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-cancel_help" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">cancel_help</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Allows a school or admin to dismiss the help requested flag for a booking.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="cancel_help-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 244</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_help</span>
+  <span class="ruby-identifier">booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;Help no longer required&quot;</span>
+  <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">help_required</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">booking_path</span>(<span class="ruby-identifier">booking</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -183,25 +282,27 @@
 
         <div class="method-description">
           
-          
+          <p>Select presenter for a booking</p>
           
           
 
           
           <div class="method-source-code" id="choose_presenter-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 96</span>
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 216</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">choose_presenter</span>
   <span class="ruby-ivar">@presenter</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter_id</span>])
-  <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">bookings</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">booking</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">creator</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
-      <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">chosen_presenter</span> = <span class="ruby-ivar">@presenter</span>
-      <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">save</span>
-      <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;You&#39;ve been locked in for a booking!&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>))
-    <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-node">&quot;#{@presenter.first_name} #{@presenter.last_name} has been assigned to this booking.&quot;</span>
+  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:booking_id</span>])
   
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">bookings_path</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">chosen_presenter</span> = <span class="ruby-ivar">@presenter</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">rate</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">bids</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">booking</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@booking</span>).<span class="ruby-identifier">rate</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">help_required</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">remove_all_bids</span>
+
+  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;You&#39;ve been locked in for a booking!&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:choose_presenter</span>)
+  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-node">&quot;#{@presenter.get_private_full_name(current_user)} has been assigned to this booking.&quot;</span>
+  
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -226,47 +327,143 @@
 
         <div class="method-description">
           
-          
+          <p>Creates booking for multiple cases:</p>
+
+<h1 id="method-i-create-label-3E+School+creates+an+open+booking">&gt; School creates an open booking<span><a href="#method-i-create-label-3E+School+creates+an+open+booking">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<h1 id="method-i-create-label-3E+School+creates+a+closed+booking+via+search+form">&gt; School creates a closed booking via search form<span><a href="#method-i-create-label-3E+School+creates+a+closed+booking+via+search+form">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<h1 id="method-i-create-label-3E+School+creates+a+closed+booking+via+enquiries+form">&gt; School creates a closed booking via enquiries form<span><a href="#method-i-create-label-3E+School+creates+a+closed+booking+via+enquiries+form">&para;</a> <a href="#top">&uarr;</a></span></h1>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 121</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">booking_params</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">present?</span>
-    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">chosen_presenter</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter_id</span>])
-    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+  
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:subject_id</span>].<span class="ruby-identifier">empty?</span>
+    <span class="ruby-ivar">@subject</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:subject_id</span>])
   <span class="ruby-keyword">end</span>
-
-  <span class="ruby-ivar">@subject</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:subject_id</span>])
   <span class="ruby-comment"># TODO date and time validation</span>
-  <span class="ruby-identifier">date</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;date_part&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;time_part&#39;</span>]).<span class="ruby-identifier">to_datetime</span>
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">date</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;date_part&#39;</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;time_part&#39;</span>]).<span class="ruby-identifier">to_datetime</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:date</span>, <span class="ruby-string">&quot;is invalid&quot;</span>)
+    <span class="ruby-identifier">date</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">end</span>
   <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">booking_date</span> = <span class="ruby-identifier">date</span>
   <span class="ruby-comment"># TODO: Refactor for admin booking creation</span>
-  
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">shared</span> = <span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;shared&quot;</span>]
   <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">subject</span> = <span class="ruby-ivar">@subject</span>
   <span class="ruby-comment"># Add this customer as owner. </span>
   <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">customers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">booked_customers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">number_students</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:booking</span>][<span class="ruby-value">:booked_customers</span>][<span class="ruby-value">:number_students</span>]
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">period</span> = <span class="ruby-value">2</span>
+  
+  <span class="ruby-comment"># Create closed booking if customer came from searching or enquiring.</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">present?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter_id</span>].<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">presenter</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter_id</span>])
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">available?</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">booking_date</span>, <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">duration_minutes</span>
+      <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">chosen_presenter</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter_id</span>])
+      <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">rate</span> = <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">rate</span>
+      <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:presenter</span>, <span class="ruby-string">&quot;is not available at this time&quot;</span>)
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>   
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-comment"># Only send messages to customers if booking is shared</span>
+    <span class="ruby-ivar">@message</span> = <span class="ruby-node">&quot;A new #{@booking.subject.name} booking has been created that you may be interested in.&quot;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">shared?</span>
+      <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_applicable_users</span>(<span class="ruby-identifier">current_user</span>, <span class="ruby-ivar">@booking</span>, <span class="ruby-string">&quot;customer&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-ivar">@message</span>, <span class="ruby-value">:interested_booking</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># Only send messages to presenters if booking is open</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">chosen_presenter</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_applicable_users</span>(<span class="ruby-identifier">current_user</span>, <span class="ruby-ivar">@booking</span>, <span class="ruby-string">&quot;presenter&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-ivar">@message</span>, <span class="ruby-value">:interested_booking</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-string">&quot;A new booking has been created&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:booking</span>)
 
+    <span class="ruby-comment"># Add booking to booked customers</span>
+    <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">created_bookings</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@booking</span>
 
-  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">save</span>
-
-  <span class="ruby-comment"># Send messages to customers if applicable &amp;&amp; @booking is open</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">chosen_presenter</span>.<span class="ruby-identifier">nil?</span>
-    <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_applicable_users</span>(<span class="ruby-identifier">current_user</span>, <span class="ruby-ivar">@booking</span>, <span class="ruby-string">&quot;customer&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>))
+    <span class="ruby-comment">#clear search session </span>
+    <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>] = <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@booking</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@date_part</span> = <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;date_part&#39;</span>]
+    <span class="ruby-ivar">@time_part</span> = <span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;time_part&#39;</span>]
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:new</span>
   <span class="ruby-keyword">end</span>
-  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_applicable_users</span>(<span class="ruby-identifier">current_user</span>, <span class="ruby-ivar">@booking</span>, <span class="ruby-string">&quot;presenter&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>))
-  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-string">&quot;A new booking has been created&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>))
 
-  <span class="ruby-comment"># Add booking to booked customers</span>
-  <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">bookings</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@booking</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-create_from_enquiry" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create_from_enquiry</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates a new booking from an accepted enquiry</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create_from_enquiry-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create_from_enquiry</span>
 
   <span class="ruby-comment">#clear search session </span>
   <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>] = <span class="ruby-keyword">nil</span>
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@booking</span>
 
+  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">booking_params</span>)
+  <span class="ruby-ivar">@enquiry</span> = <span class="ruby-constant">Enquiry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:enquiry</span>])
+  <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:subject_id</span>].<span class="ruby-identifier">empty?</span>
+    <span class="ruby-ivar">@subject</span> = <span class="ruby-constant">Subject</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:subject_id</span>].<span class="ruby-identifier">to_i</span>) 
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">accepted?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">customer</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span> = <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">customer</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">chosen_presenter</span> = <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">presenter</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">booking_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">date</span>.<span class="ruby-identifier">year</span>, <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">date</span>.<span class="ruby-identifier">month</span>, <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">date</span>.<span class="ruby-identifier">day</span>, <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">time</span>.<span class="ruby-identifier">hour</span>, <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">time</span>.<span class="ruby-identifier">min</span>)
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">rate</span> = <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">rate</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">customers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">booked_customers</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">number_students</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:booking</span>][<span class="ruby-value">:booked_customers</span>][<span class="ruby-value">:number_students</span>]
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">subject</span> = <span class="ruby-ivar">@subject</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">update</span>(<span class="ruby-value">:status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;booked&quot;</span>)
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@booking</span>
+      <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-identifier">action</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;new_from_enquiry&#39;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -278,10 +475,10 @@
       </div>
 
     
-      <div id="method-i-destroy" class="method-detail ">
+      <div id="method-i-get_help" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">destroy</span><span
+          <span class="method-name">get_help</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -291,46 +488,24 @@
 
         <div class="method-description">
           
-          
-          
-          
-
-          
-          <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 72</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-edit" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">edit</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
+          <p><a href="BookingsController.html#method-i-get_help">#get_help</a> allows a
+school to request help choosing a presenter for a booking This action
+notifies the admin that a school has requested help, and updates the
+help_required flag.</p>
           
           
 
           
-          <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 66</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+          <div class="method-source-code" id="get_help-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 233</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_help</span> 
+  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-identifier">owner</span> = <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span>
+  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-node">&quot;#{owner.first_name} #{owner.last_name} has asked for help choosing a presenter for their booking&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:get_help</span>)
+  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;An admin has been notified that you would like help choosing. They will be in contact with you shortly&quot;</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">help_required</span> = <span class="ruby-keyword">true</span>
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -355,19 +530,98 @@
 
         <div class="method-description">
           
-          
+          <p>Admin view for all bookings</p>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 7</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>  
-  <span class="ruby-ivar">@upcoming</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">upcoming</span>(<span class="ruby-identifier">current_user</span>) 
-  <span class="ruby-ivar">@completed</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">completed</span>(<span class="ruby-identifier">current_user</span>)
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">user_type</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;customer&quot;</span>
-    <span class="ruby-ivar">@upcoming</span> <span class="ruby-operator">+=</span> <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">creator</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>)
+  <span class="ruby-ivar">@bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">with_deleted</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-join" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">join</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Allow schools to join a booking</p>
+          
+          
+
+          
+          <div class="method-source-code" id="join-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 253</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">join</span>
+  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:num_students</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">remaining_slots</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:danger</span>] = <span class="ruby-string">&quot;Oops! There is not enough room for the number of students you&#39;ve specified.&quot;</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">customers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+    <span class="ruby-ivar">@booked_customer</span> = <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">booked_customers</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">customer</span><span class="ruby-operator">:</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>)
+    <span class="ruby-ivar">@booked_customer</span>.<span class="ruby-identifier">number_students</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:num_students</span>]
+    <span class="ruby-ivar">@booked_customer</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-node">&quot;#{current_user.customer.first_name} of #{current_user.customer.school_info.school_name} has joined a booking.&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:join</span>)
+    <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;A school has joined your booking.&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:join</span>)
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Success! You&#39;ve joined the booking!&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
   <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-leave_booking" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">leave_booking</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Schools who&#39;ve joined a shared booking may leave</p>
+          
+          
+
+          
+          <div class="method-source-code" id="leave_booking-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 311</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">leave_booking</span>
+  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>)
+  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Success! You&#39;ve left the booking.&quot;</span>
+  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;A school has left your booking.&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:leave_booking</span>)
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -392,13 +646,13 @@
 
         <div class="method-description">
           
-          
+          <p>View for booking form</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 16</span>
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 74</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
   <span class="ruby-comment"># Booking form is populated if visited via search form.</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">present?</span>
@@ -406,10 +660,81 @@
     <span class="ruby-ivar">@subject_id</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>][<span class="ruby-string">&quot;subject_id&quot;</span>]
     <span class="ruby-ivar">@date_part</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>][<span class="ruby-string">&quot;date_part&quot;</span>]
     <span class="ruby-ivar">@time_part</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>][<span class="ruby-string">&quot;time_part&quot;</span>]
+
     <span class="ruby-ivar">@presenter_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:presenter_id</span>]
+
+    <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@presenter_id</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">presenter</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@presenter_id</span>)
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">rate</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">rate</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+          <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;Presenter has not set a rate. Please click enquire to negotiate a rate.&quot;</span>
+          <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">presenter_profile_path</span> <span class="ruby-identifier">presenter</span>
+          <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
     <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">subject_id</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@subject_id</span>) 
   <span class="ruby-keyword">else</span>
     <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">new</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># if @date_part.nil?</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@date_part</span>.<span class="ruby-identifier">present?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:day</span>].<span class="ruby-identifier">present?</span>
+      <span class="ruby-keyword">begin</span>
+        <span class="ruby-ivar">@date_part</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:day</span>]).<span class="ruby-identifier">strftime</span>(<span class="ruby-string">&quot;%d/%m/%Y&quot;</span>)
+      <span class="ruby-keyword">rescue</span> <span class="ruby-constant">ArgumentError</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># end</span>
+  <span class="ruby-comment"># unless @time_part.nil?</span>
+    <span class="ruby-keyword">if</span> (<span class="ruby-ivar">@time_part</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@time_part</span>.<span class="ruby-identifier">empty?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value">:availability</span>].<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">hr</span> = (<span class="ruby-constant">Availability</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:availability</span>]).<span class="ruby-identifier">start_time</span><span class="ruby-operator">/</span><span class="ruby-value">60</span>).<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">rjust</span>(<span class="ruby-value">2</span>,<span class="ruby-string">&#39;0&#39;</span>)
+      <span class="ruby-identifier">min</span> = (<span class="ruby-constant">Availability</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:availability</span>]).<span class="ruby-identifier">start_time</span><span class="ruby-operator">%</span><span class="ruby-value">60</span>).<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">rjust</span>(<span class="ruby-value">2</span>,<span class="ruby-string">&#39;0&#39;</span>)
+      <span class="ruby-ivar">@time_part</span> = <span class="ruby-node">&quot;#{hr}:#{min}&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-comment"># end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new_from_enquiry" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new_from_enquiry</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p><a href="Booking.html">Booking</a> form from enquiry</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new_from_enquiry-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_from_enquiry</span>
+  <span class="ruby-ivar">@enquiry</span> = <span class="ruby-constant">Enquiry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">accepted?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@enquiry</span>.<span class="ruby-identifier">customer</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>
+    <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">new</span> 
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">enquiry_path</span>(<span class="ruby-ivar">@enquiry</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -441,9 +766,99 @@
 
           
           <div class="method-source-code" id="open-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 75</span>
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 182</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">open</span>
   <span class="ruby-ivar">@bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">chosen_presenter_id</span><span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-past" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">past</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Shows all previous bookings for a user</p>
+          
+          
+
+          
+          <div class="method-source-code" id="past-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">past</span>
+  <span class="ruby-ivar">@bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">completed</span>(<span class="ruby-identifier">current_user</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-set_bid" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">set_bid</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Creates bid on a booking objects</p>
+          
+          
+
+          
+          <div class="method-source-code" id="set_bid-source">
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 187</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_bid</span>
+  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">presenter_profile</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;You must create your profile before you can do this&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">edit_presenter_profile_path</span>(<span class="ruby-ivar">@presenter</span>) <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">presenter_profile</span>.<span class="ruby-identifier">bio</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;You must wait for your profile to be approved before you can do this&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">presenters</span>.<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@presenter</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:info</span>] = <span class="ruby-string">&quot;You have already expressed interest in this booking&quot;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">presenters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@presenter</span>
+    <span class="ruby-ivar">@bid</span> = <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">bids</span>.<span class="ruby-identifier">find_by</span>(<span class="ruby-identifier">presenter</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@presenter</span>)
+    <span class="ruby-ivar">@bid</span>.<span class="ruby-identifier">bid_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>
+    <span class="ruby-ivar">@bid</span>.<span class="ruby-identifier">rate</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:rate</span>]
+    <span class="ruby-ivar">@bid</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">user</span>, <span class="ruby-node">&quot;#{@presenter.first_name} has expressed an interest in this booking.&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:bid</span>)
+  <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;You have successfully placed a bid on this booking.&quot;</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -468,47 +883,16 @@
 
         <div class="method-description">
           
-          
+          <p>Display a particular booking</p>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 12</span>
+            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 17</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
-  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;id&quot;</span>])
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-update" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">update</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          
-          
-          
-
-          
-          <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/bookings_controller.rb, line 69</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-ivar">@booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">with_deleted</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;id&quot;</span>])
+  <span class="ruby-ivar">@creator</span> = <span class="ruby-ivar">@booking</span>.<span class="ruby-identifier">creator</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

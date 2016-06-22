@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>class ApplicationController - Rails Application Documentation</title>
+<title>class CreateInvoice - Rails Application Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -58,7 +58,7 @@
   <h3>Parent</h3>
 
   
-  <p class="link">ActionController::Base
+  <p class="link"><a href="Object.html">Object</a>
   
 </div>
 
@@ -70,7 +70,7 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-notif_read">#notif_read</a>
+    <li ><a href="#method-c-perform">::perform</a>
     
   </ul>
 </div>
@@ -78,9 +78,9 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-ApplicationController">
-  <h1 id="class-ApplicationController" class="class">
-    class ApplicationController
+<main role="main" aria-labelledby="class-CreateInvoice">
+  <h1 id="class-CreateInvoice" class="class">
+    class CreateInvoice
   </h1>
 
   <section class="description">
@@ -100,17 +100,17 @@
     
 
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
        <header>
-         <h3>Public Instance Methods</h3>
+         <h3>Public Class Methods</h3>
        </header>
 
     
-      <div id="method-i-notif_read" class="method-detail ">
+      <div id="method-c-perform" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">notif_read</span><span
-            class="method-args">()</span>
+          <span class="method-name">perform</span><span
+            class="method-args">(booking_id)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -119,19 +119,22 @@
 
         <div class="method-description">
           
-          <p>Set notification as read on click</p>
+          <p>Background job for invoicing a booking</p>
           
           
 
           
-          <div class="method-source-code" id="notif_read-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">notif_read</span>
-  <span class="ruby-identifier">notification</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-  <span class="ruby-identifier">notification</span>.<span class="ruby-identifier">is_read</span> = <span class="ruby-keyword">true</span>
-  <span class="ruby-identifier">notification</span>.<span class="ruby-identifier">save</span>
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">notification</span>.<span class="ruby-identifier">reference</span>
-<span class="ruby-keyword">end</span></pre>
+          <div class="method-source-code" id="perform-source">
+            <pre><span class="ruby-comment"># File app/worker/create_invoice.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">perform</span>(<span class="ruby-identifier">booking_id</span>)
+  <span class="ruby-identifier">booking</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">booking_id</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">chosen_presenter</span>.<span class="ruby-identifier">present?</span>
+          <span class="ruby-keyword">unless</span> <span class="ruby-identifier">booking</span>.<span class="ruby-identifier">invoice!</span>
+             <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">notify_admin</span>(<span class="ruby-node">&quot;Something went wrong with with the invoicing for booking ##{booking_id}&quot;</span>, <span class="ruby-identifier">booking_path</span>(<span class="ruby-ivar">@booking</span>), <span class="ruby-value">:invoice_fail</span>)
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+
+      <span class="ruby-keyword">end</span></pre>
           </div>
           
         </div>

@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>class SchoolInfoController - Rails Application Documentation</title>
+<title>class SettingsController - Rails Application Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -70,9 +70,9 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-find">#find</a>
+    <li ><a href="#method-i-edit">#edit</a>
     
-    <li ><a href="#method-i-show">#show</a>
+    <li ><a href="#method-i-update">#update</a>
     
   </ul>
 </div>
@@ -80,9 +80,9 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-SchoolInfoController">
-  <h1 id="class-SchoolInfoController" class="class">
-    class SchoolInfoController
+<main role="main" aria-labelledby="class-SettingsController">
+  <h1 id="class-SettingsController" class="class">
+    class SettingsController
   </h1>
 
   <section class="description">
@@ -108,10 +108,10 @@
        </header>
 
     
-      <div id="method-i-find" class="method-detail ">
+      <div id="method-i-edit" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">find</span><span
+          <span class="method-name">edit</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -121,15 +121,14 @@
 
         <div class="method-description">
           
-          <p>Find all School infos based on search term</p>
+          <p>Settings form</p>
           
           
 
           
-          <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File app/controllers/school_info_controller.rb, line 3</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">find</span>
-        <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;school_name LIKE ?&quot;</span>, <span class="ruby-node">&quot;%#{params[:term].titlecase}%&quot;</span>)
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/settings_controller.rb, line 5</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -141,10 +140,10 @@
       </div>
 
     
-      <div id="method-i-show" class="method-detail ">
+      <div id="method-i-update" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">show</span><span
+          <span class="method-name">update</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -154,16 +153,17 @@
 
         <div class="method-description">
           
-          <p>Display School info</p>
+          <p>Update settings</p>
           
           
 
           
-          <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/school_info_controller.rb, line 8</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
-        <span class="ruby-ivar">@school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-        <span class="ruby-ivar">@accounts</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">school_info</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/settings_controller.rb, line 9</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+        <span class="ruby-ivar">@setting</span>.<span class="ruby-identifier">update!</span>(<span class="ruby-identifier">setting_params</span>)
+        <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-string">&quot;Settings saved.&quot;</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

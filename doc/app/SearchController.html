@@ -96,6 +96,20 @@
     
 
     
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+      
+        <dt id="MAX_PROFILE_VIEWS">MAX_PROFILE_VIEWS
+        
+        <dd>
+        
+      
+      </dl>
+    </section>
+    
 
     
 
@@ -119,20 +133,22 @@
 
         <div class="method-description">
           
-          
+          <p>Search logic</p>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/search_controller.rb, line 4</span>
+            <pre><span class="ruby-comment"># File app/controllers/search_controller.rb, line 6</span>
        <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span> 
       <span class="ruby-ivar">@search_params</span> = <span class="ruby-identifier">params</span>
       <span class="ruby-comment"># for use in booking</span>
       <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>] = <span class="ruby-ivar">@search_params</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
-              <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">merge!</span>({<span class="ruby-value">:creator_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">id</span>})
-      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">nil?</span>
+             <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+                     <span class="ruby-identifier">session</span>[<span class="ruby-value">:search_params</span>].<span class="ruby-identifier">merge!</span>({<span class="ruby-value">:creator_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">id</span>})
+             <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
              <span class="ruby-ivar">@presenter</span>= []
                     
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">any_present?</span>
@@ -141,11 +157,27 @@
           <span class="ruby-comment"># Search:</span>
              <span class="ruby-identifier">results_added</span> = <span class="ruby-identifier">add_presenters</span>(<span class="ruby-identifier">by_name</span>, <span class="ruby-identifier">results_added</span>)
              <span class="ruby-identifier">results_added</span> = <span class="ruby-identifier">add_presenters</span>(<span class="ruby-identifier">by_subject</span>, <span class="ruby-identifier">results_added</span>)
-             <span class="ruby-identifier">results_added</span> = <span class="ruby-identifier">add_presenters</span>(<span class="ruby-identifier">by_availability</span>, <span class="ruby-identifier">results_added</span>)
-             <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">remove_non_profiles</span>(<span class="ruby-ivar">@presenter</span>)
+             <span class="ruby-identifier">results_added</span> = <span class="ruby-identifier">add_presenters</span>(<span class="ruby-identifier">by_availability</span>, <span class="ruby-identifier">results_added</span>)        
+              <span class="ruby-keyword">if</span> <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">empty?</span>
+                      <span class="ruby-ivar">@no_profiles</span> = <span class="ruby-value">0</span>
+              <span class="ruby-keyword">else</span>
+                      <span class="ruby-ivar">@no_profiles</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">count</span>
+              <span class="ruby-keyword">end</span>
              
-        <span class="ruby-keyword">end</span>  
-          
+             <span class="ruby-ivar">@presenter</span> <span class="ruby-operator">|=</span> <span class="ruby-identifier">by_subject</span>
+             
+             <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">nil?</span>
+                    <span class="ruby-keyword">if</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin?</span>)
+                            <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">remove_non_profiles</span>(<span class="ruby-ivar">@presenter</span>)
+                    <span class="ruby-keyword">end</span>
+             <span class="ruby-keyword">else</span>
+                     <span class="ruby-ivar">@presenter</span> = <span class="ruby-identifier">remove_non_profiles</span>(<span class="ruby-ivar">@presenter</span>)
+             <span class="ruby-keyword">end</span>
+             <span class="ruby-ivar">@presenter</span> = <span class="ruby-ivar">@presenter</span>.<span class="ruby-identifier">paginate</span>(<span class="ruby-value">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>], <span class="ruby-value">:per_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>)
+             
+      
+      <span class="ruby-keyword">end</span>  
+             
 <span class="ruby-keyword">end</span></pre>
           </div>
           

@@ -32,15 +32,17 @@
       <li><a href="README_rdoc.html#label-User">User</a>
       <li><a href="README_rdoc.html#label-Notification">Notification</a>
       <li><a href="README_rdoc.html#label-Customer+-28School-29">Customer (School)</a>
-      <li><a href="README_rdoc.html#label-Booked_Customers">Booked_Customers</a>
+      <li><a href="README_rdoc.html#label-BookedCustomer">BookedCustomer</a>
       <li><a href="README_rdoc.html#label-Booking">Booking</a>
+      <li><a href="README_rdoc.html#label-PageContent">PageContent</a>
       <li><a href="README_rdoc.html#label-Presenter_Bids">Presenter_Bids</a>
-      <li><a href="README_rdoc.html#label-Presenter_Profile">Presenter_Profile</a>
+      <li><a href="README_rdoc.html#label-PresenterProfile">PresenterProfile</a>
       <li><a href="README_rdoc.html#label-Presenter">Presenter</a>
-      <li><a href="README_rdoc.html#label-Presenter_Availability">Presenter_Availability</a>
-      <li><a href="README_rdoc.html#label-School_Info">School_Info</a>
+      <li><a href="README_rdoc.html#label-Availability">Availability</a>
+      <li><a href="README_rdoc.html#label-SchoolInfo">SchoolInfo</a>
       <li><a href="README_rdoc.html#label-Subject">Subject</a>
       <li><a href="README_rdoc.html#label-Subscription">Subscription</a>
+      <li><a href="README_rdoc.html#label-Enquiry">Enquiry</a>
     </ul>
   </li>
   
@@ -79,10 +81,22 @@
     <a href="Booking.html">Booking</a>
   </li>
   <li class="class">
+    <a href="BookingMailer.html">BookingMailer</a>
+  </li>
+  <li class="class">
+    <a href="BookingReminder.html">BookingReminder</a>
+  </li>
+  <li class="class">
     <a href="BookingsController.html">BookingsController</a>
   </li>
   <li class="module">
     <a href="BookingsHelper.html">BookingsHelper</a>
+  </li>
+  <li class="class">
+    <a href="Contact_Form.html">Contact_Form</a>
+  </li>
+  <li class="class">
+    <a href="CreateInvoice.html">CreateInvoice</a>
   </li>
   <li class="class">
     <a href="Customer.html">Customer</a>
@@ -94,16 +108,46 @@
     <a href="CustomersHelper.html">CustomersHelper</a>
   </li>
   <li class="class">
+    <a href="EnquiriesController.html">EnquiriesController</a>
+  </li>
+  <li class="module">
+    <a href="EnquiriesHelper.html">EnquiriesHelper</a>
+  </li>
+  <li class="class">
+    <a href="Enquiry.html">Enquiry</a>
+  </li>
+  <li class="class">
     <a href="HomeController.html">HomeController</a>
   </li>
   <li class="module">
     <a href="HomeHelper.html">HomeHelper</a>
   </li>
   <li class="class">
+    <a href="InvoicesController.html">InvoicesController</a>
+  </li>
+  <li class="module">
+    <a href="InvoicesHelper.html">InvoicesHelper</a>
+  </li>
+  <li class="class">
     <a href="Notification.html">Notification</a>
   </li>
   <li class="class">
+    <a href="NotificationsController.html">NotificationsController</a>
+  </li>
+  <li class="module">
+    <a href="NotificationsHelper.html">NotificationsHelper</a>
+  </li>
+  <li class="class">
     <a href="Object.html">Object</a>
+  </li>
+  <li class="class">
+    <a href="PageContent.html">PageContent</a>
+  </li>
+  <li class="class">
+    <a href="PageContentsController.html">PageContentsController</a>
+  </li>
+  <li class="module">
+    <a href="PageContentsHelper.html">PageContentsHelper</a>
   </li>
   <li class="class">
     <a href="Presenter.html">Presenter</a>
@@ -124,6 +168,9 @@
     <a href="PresentersHelper.html">PresentersHelper</a>
   </li>
   <li class="class">
+    <a href="QueryMailer.html">QueryMailer</a>
+  </li>
+  <li class="class">
     <a href="ReminderNotification.html">ReminderNotification</a>
   </li>
   <li class="class">
@@ -140,6 +187,15 @@
   </li>
   <li class="module">
     <a href="SearchHelper.html">SearchHelper</a>
+  </li>
+  <li class="class">
+    <a href="Setting.html">Setting</a>
+  </li>
+  <li class="class">
+    <a href="SettingsController.html">SettingsController</a>
+  </li>
+  <li class="module">
+    <a href="SettingsHelper.html">SettingsHelper</a>
   </li>
   <li class="class">
     <a href="Subject.html">Subject</a>
@@ -192,10 +248,23 @@
   <li class="class">
     <a href="VitValidation.html">VitValidation</a>
   </li>
+  <li class="class">
+    <a href="Xero.html">Xero</a>
+  </li>
 </ul>
 
 <h2 id="methods">Methods</h2>
 <ul>
+
+  <li class="method">
+    <a href="Xero.html#method-c-add_presenter_account">::add_presenter_account</a>
+    &mdash;
+    <span class="container">Xero</span>
+
+  <li class="method">
+    <a href="Xero.html#method-c-add_school_account">::add_school_account</a>
+    &mdash;
+    <span class="container">Xero</span>
 
   <li class="method">
     <a href="PresenterProfile.html#method-c-admin_drafts">::admin_drafts</a>
@@ -206,6 +275,16 @@
     <a href="Subject.html#method-c-by_presenter">::by_presenter</a>
     &mdash;
     <span class="container">Subject</span>
+
+  <li class="method">
+    <a href="Notification.html#method-c-cancelled_booking">::cancelled_booking</a>
+    &mdash;
+    <span class="container">Notification</span>
+
+  <li class="method">
+    <a href="Xero.html#method-c-charge_school">::charge_school</a>
+    &mdash;
+    <span class="container">Xero</span>
 
   <li class="method">
     <a href="Booking.html#method-c-check_creator">::check_creator</a>
@@ -228,14 +307,54 @@
     <span class="container">Booking</span>
 
   <li class="method">
+    <a href="Xero.html#method-c-connect">::connect</a>
+    &mdash;
+    <span class="container">Xero</span>
+
+  <li class="method">
+    <a href="Enquiry.html#method-c-conversation">::conversation</a>
+    &mdash;
+    <span class="container">Enquiry</span>
+
+  <li class="method">
+    <a href="PresenterProfile.html#method-c-drafts_and_unapproved">::drafts_and_unapproved</a>
+    &mdash;
+    <span class="container">PresenterProfile</span>
+
+  <li class="method">
     <a href="Availability.html#method-c-for_presenter">::for_presenter</a>
     &mdash;
     <span class="container">Availability</span>
 
   <li class="method">
+    <a href="Enquiry.html#method-c-from">::from</a>
+    &mdash;
+    <span class="container">Enquiry</span>
+
+  <li class="method">
     <a href="TimeTools.html#method-c-from_string">::from_string</a>
     &mdash;
     <span class="container">TimeTools</span>
+
+  <li class="method">
+    <a href="Xero.html#method-c-get_invoices">::get_invoices</a>
+    &mdash;
+    <span class="container">Xero</span>
+
+  <li class="method">
+    <a href="Booking.html#method-c-help_required">::help_required</a>
+    &mdash;
+    <span class="container">Booking</span>
+
+  <li class="method">
+    <a href="Xero.html#method-c-invoice_booking">::invoice_booking</a>
+    &mdash;
+    <span class="container">Xero</span>
+
+  <li class="method">
+    <a href="Booking.html#method-c-joined_bookings">::joined_bookings</a>
+    &mdash;
+    <span class="container">Booking</span>
 
   <li class="method">
     <a href="Notification.html#method-c-notify_admin">::notify_admin</a>
@@ -248,9 +367,24 @@
     <span class="container">Notification</span>
 
   <li class="method">
+    <a href="Xero.html#method-c-pay_presenter">::pay_presenter</a>
+    &mdash;
+    <span class="container">Xero</span>
+
+  <li class="method">
     <a href="BiannualUpdate.html#method-c-perform">::perform</a>
     &mdash;
     <span class="container">BiannualUpdate</span>
+
+  <li class="method">
+    <a href="BookingReminder.html#method-c-perform">::perform</a>
+    &mdash;
+    <span class="container">BookingReminder</span>
+
+  <li class="method">
+    <a href="CreateInvoice.html#method-c-perform">::perform</a>
+    &mdash;
+    <span class="container">CreateInvoice</span>
 
   <li class="method">
     <a href="ReminderNotification.html#method-c-perform">::perform</a>
@@ -258,9 +392,24 @@
     <span class="container">ReminderNotification</span>
 
   <li class="method">
+    <a href="Notification.html#method-c-send_email">::send_email</a>
+    &mdash;
+    <span class="container">Notification</span>
+
+  <li class="method">
     <a href="Notification.html#method-c-send_message">::send_message</a>
     &mdash;
     <span class="container">Notification</span>
+
+  <li class="method">
+    <a href="Xero.html#method-c-set_accounting_ref">::set_accounting_ref</a>
+    &mdash;
+    <span class="container">Xero</span>
+
+  <li class="method">
+    <a href="Booking.html#method-c-suggested">::suggested</a>
+    &mdash;
+    <span class="container">Booking</span>
 
   <li class="method">
     <a href="User.html#method-c-suspended_customers">::suspended_customers</a>
@@ -298,9 +447,39 @@
     <span class="container">Booking</span>
 
   <li class="method">
+    <a href="Xero.html#method-c-update_presenter_account">::update_presenter_account</a>
+    &mdash;
+    <span class="container">Xero</span>
+
+  <li class="method">
+    <a href="Xero.html#method-c-update_school_account">::update_school_account</a>
+    &mdash;
+    <span class="container">Xero</span>
+
+  <li class="method">
+    <a href="HomeController.html#method-i-about">#about</a>
+    &mdash;
+    <span class="container">HomeController</span>
+
+  <li class="method">
+    <a href="EnquiriesController.html#method-i-accept">#accept</a>
+    &mdash;
+    <span class="container">EnquiriesController</span>
+
+  <li class="method">
+    <a href="QueryMailer.html#method-i-accept_enquiry">#accept_enquiry</a>
+    &mdash;
+    <span class="container">QueryMailer</span>
+
+  <li class="method">
     <a href="PresentersController.html#method-i-add_subject">#add_subject</a>
     &mdash;
     <span class="container">PresentersController</span>
+
+  <li class="method">
+    <a href="Presenter.html#method-i-add_to_xero">#add_to_xero</a>
+    &mdash;
+    <span class="container">Presenter</span>
 
   <li class="method">
     <a href="Users/SessionsController.html#method-i-after_sign_in_path_for">#after_sign_in_path_for</a>
@@ -313,14 +492,14 @@
     <span class="container">Users::RegistrationsController</span>
 
   <li class="method">
-    <a href="PresenterProfile.html#method-i-approve">#approve</a>
-    &mdash;
-    <span class="container">PresenterProfile</span>
-
-  <li class="method">
     <a href="PresenterProfilesController.html#method-i-approve">#approve</a>
     &mdash;
     <span class="container">PresenterProfilesController</span>
+
+  <li class="method">
+    <a href="PresenterProfile.html#method-i-approve">#approve</a>
+    &mdash;
+    <span class="container">PresenterProfile</span>
 
   <li class="method">
     <a href="Users/RegistrationsController.html#method-i-approve_registration">#approve_registration</a>
@@ -333,9 +512,24 @@
     <span class="container">UsersController</span>
 
   <li class="method">
-    <a href="BookingsController.html#method-i-bid">#bid</a>
+    <a href="Presenter.html#method-i-available-3F">#available?</a>
     &mdash;
-    <span class="container">BookingsController</span>
+    <span class="container">Presenter</span>
+
+  <li class="method">
+    <a href="BookingMailer.html#method-i-bid">#bid</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
+    <a href="BookingsHelper.html#method-i-bid_label">#bid_label</a>
+    &mdash;
+    <span class="container">BookingsHelper</span>
+
+  <li class="method">
+    <a href="EnquiriesController.html#method-i-booked">#booked</a>
+    &mdash;
+    <span class="container">EnquiriesController</span>
 
   <li class="method">
     <a href="BookingsHelper.html#method-i-booked_label">#booked_label</a>
@@ -343,9 +537,54 @@
     <span class="container">BookingsHelper</span>
 
   <li class="method">
+    <a href="BookingMailer.html#method-i-booking">#booking</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
     <a href="CustomersHelper.html#method-i-c_dashboard_active-3F">#c_dashboard_active?</a>
     &mdash;
     <span class="container">CustomersHelper</span>
+
+  <li class="method">
+    <a href="BookingsController.html#method-i-cancel_bid">#cancel_bid</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
+    <a href="BookingMailer.html#method-i-cancel_bid">#cancel_bid</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
+    <a href="BookingsController.html#method-i-cancel_booking">#cancel_booking</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
+    <a href="BookingMailer.html#method-i-cancel_booking">#cancel_booking</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
+    <a href="BookingsController.html#method-i-cancel_help">#cancel_help</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
+    <a href="Customer.html#method-i-cancel_upcoming_bookings">#cancel_upcoming_bookings</a>
+    &mdash;
+    <span class="container">Customer</span>
+
+  <li class="method">
+    <a href="BookingsHelper.html#method-i-cancellation_message">#cancellation_message</a>
+    &mdash;
+    <span class="container">BookingsHelper</span>
+
+  <li class="method">
+    <a href="BookingsHelper.html#method-i-capacity_label">#capacity_label</a>
+    &mdash;
+    <span class="container">BookingsHelper</span>
 
   <li class="method">
     <a href="BookingsController.html#method-i-choose_presenter">#choose_presenter</a>
@@ -353,9 +592,54 @@
     <span class="container">BookingsController</span>
 
   <li class="method">
+    <a href="BookingMailer.html#method-i-choose_presenter">#choose_presenter</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
+    <a href="BookingsHelper.html#method-i-chosen_presenter">#chosen_presenter</a>
+    &mdash;
+    <span class="container">BookingsHelper</span>
+
+  <li class="method">
     <a href="Users/RegistrationsController.html#method-i-configure_sign_up_params">#configure_sign_up_params</a>
     &mdash;
     <span class="container">Users::RegistrationsController</span>
+
+  <li class="method">
+    <a href="HomeController.html#method-i-contact">#contact</a>
+    &mdash;
+    <span class="container">HomeController</span>
+
+  <li class="method">
+    <a href="Users/RegistrationsController.html#method-i-contact_form">#contact_form</a>
+    &mdash;
+    <span class="container">Users::RegistrationsController</span>
+
+  <li class="method">
+    <a href="Users/RegistrationsController.html#method-i-contact_form_create">#contact_form_create</a>
+    &mdash;
+    <span class="container">Users::RegistrationsController</span>
+
+  <li class="method">
+    <a href="QueryMailer.html#method-i-counter_enquiry">#counter_enquiry</a>
+    &mdash;
+    <span class="container">QueryMailer</span>
+
+  <li class="method">
+    <a href="AvailabilitiesController.html#method-i-create">#create</a>
+    &mdash;
+    <span class="container">AvailabilitiesController</span>
+
+  <li class="method">
+    <a href="BookingsController.html#method-i-create">#create</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
+    <a href="EnquiriesController.html#method-i-create">#create</a>
+    &mdash;
+    <span class="container">EnquiriesController</span>
 
   <li class="method">
     <a href="PresenterProfilesController.html#method-i-create">#create</a>
@@ -368,19 +652,14 @@
     <span class="container">PresentersController</span>
 
   <li class="method">
-    <a href="BookingsController.html#method-i-create">#create</a>
-    &mdash;
-    <span class="container">BookingsController</span>
-
-  <li class="method">
-    <a href="AvailabilitiesController.html#method-i-create">#create</a>
-    &mdash;
-    <span class="container">AvailabilitiesController</span>
-
-  <li class="method">
     <a href="SubjectsController.html#method-i-create">#create</a>
     &mdash;
     <span class="container">SubjectsController</span>
+
+  <li class="method">
+    <a href="Users/ConfirmationsController.html#method-i-create">#create</a>
+    &mdash;
+    <span class="container">Users::ConfirmationsController</span>
 
   <li class="method">
     <a href="Users/RegistrationsController.html#method-i-create_customer">#create_customer</a>
@@ -388,9 +667,19 @@
     <span class="container">Users::RegistrationsController</span>
 
   <li class="method">
+    <a href="BookingsController.html#method-i-create_from_enquiry">#create_from_enquiry</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
     <a href="Users/RegistrationsController.html#method-i-create_presenter">#create_presenter</a>
     &mdash;
     <span class="container">Users::RegistrationsController</span>
+
+  <li class="method">
+    <a href="EnquiriesHelper.html#method-i-current_enquiry">#current_enquiry</a>
+    &mdash;
+    <span class="container">EnquiriesHelper</span>
 
   <li class="method">
     <a href="UsersController.html#method-i-customers">#customers</a>
@@ -403,14 +692,19 @@
     <span class="container">UsersHelper</span>
 
   <li class="method">
+    <a href="EnquiriesController.html#method-i-decline">#decline</a>
+    &mdash;
+    <span class="container">EnquiriesController</span>
+
+  <li class="method">
+    <a href="QueryMailer.html#method-i-declined_enquiry">#declined_enquiry</a>
+    &mdash;
+    <span class="container">QueryMailer</span>
+
+  <li class="method">
     <a href="AvailabilitiesController.html#method-i-destroy">#destroy</a>
     &mdash;
     <span class="container">AvailabilitiesController</span>
-
-  <li class="method">
-    <a href="SubjectsController.html#method-i-destroy">#destroy</a>
-    &mdash;
-    <span class="container">SubjectsController</span>
 
   <li class="method">
     <a href="PresenterProfilesController.html#method-i-destroy">#destroy</a>
@@ -418,9 +712,9 @@
     <span class="container">PresenterProfilesController</span>
 
   <li class="method">
-    <a href="BookingsController.html#method-i-destroy">#destroy</a>
+    <a href="SubjectsController.html#method-i-destroy">#destroy</a>
     &mdash;
-    <span class="container">BookingsController</span>
+    <span class="container">SubjectsController</span>
 
   <li class="method">
     <a href="CustomersHelper.html#method-i-display_admin_or_customer_nav">#display_admin_or_customer_nav</a>
@@ -433,9 +727,19 @@
     <span class="container">PresentersHelper</span>
 
   <li class="method">
+    <a href="BookingsHelper.html#method-i-display_booking_slots">#display_booking_slots</a>
+    &mdash;
+    <span class="container">BookingsHelper</span>
+
+  <li class="method">
     <a href="User.html#method-i-display_notifications">#display_notifications</a>
     &mdash;
     <span class="container">User</span>
+
+  <li class="method">
+    <a href="HomeController.html#method-i-dmca">#dmca</a>
+    &mdash;
+    <span class="container">HomeController</span>
 
   <li class="method">
     <a href="BookingsHelper.html#method-i-duration">#duration</a>
@@ -443,9 +747,9 @@
     <span class="container">BookingsHelper</span>
 
   <li class="method">
-    <a href="SubjectsController.html#method-i-edit">#edit</a>
+    <a href="HomeController.html#method-i-earnings">#earnings</a>
     &mdash;
-    <span class="container">SubjectsController</span>
+    <span class="container">HomeController</span>
 
   <li class="method">
     <a href="AvailabilitiesController.html#method-i-edit">#edit</a>
@@ -453,14 +757,39 @@
     <span class="container">AvailabilitiesController</span>
 
   <li class="method">
-    <a href="BookingsController.html#method-i-edit">#edit</a>
+    <a href="CustomersController.html#method-i-edit">#edit</a>
     &mdash;
-    <span class="container">BookingsController</span>
+    <span class="container">CustomersController</span>
+
+  <li class="method">
+    <a href="PageContentsController.html#method-i-edit">#edit</a>
+    &mdash;
+    <span class="container">PageContentsController</span>
 
   <li class="method">
     <a href="PresenterProfilesController.html#method-i-edit">#edit</a>
     &mdash;
     <span class="container">PresenterProfilesController</span>
+
+  <li class="method">
+    <a href="SettingsController.html#method-i-edit">#edit</a>
+    &mdash;
+    <span class="container">SettingsController</span>
+
+  <li class="method">
+    <a href="SubjectsController.html#method-i-edit">#edit</a>
+    &mdash;
+    <span class="container">SubjectsController</span>
+
+  <li class="method">
+    <a href="PresentersController.html#method-i-edit_details">#edit_details</a>
+    &mdash;
+    <span class="container">PresentersController</span>
+
+  <li class="method">
+    <a href="UsersController.html#method-i-edit_login_details">#edit_login_details</a>
+    &mdash;
+    <span class="container">UsersController</span>
 
   <li class="method">
     <a href="ApplicationHelper.html#method-i-edit_presenter_profile_link">#edit_presenter_profile_link</a>
@@ -483,6 +812,36 @@
     <span class="container">Availability</span>
 
   <li class="method">
+    <a href="UsersController.html#method-i-enquiries">#enquiries</a>
+    &mdash;
+    <span class="container">UsersController</span>
+
+  <li class="method">
+    <a href="EnquiriesHelper.html#method-i-enquiry_actions">#enquiry_actions</a>
+    &mdash;
+    <span class="container">EnquiriesHelper</span>
+
+  <li class="method">
+    <a href="EnquiriesHelper.html#method-i-enquiry_panel_color">#enquiry_panel_color</a>
+    &mdash;
+    <span class="container">EnquiriesHelper</span>
+
+  <li class="method">
+    <a href="EnquiriesHelper.html#method-i-enquiry_status">#enquiry_status</a>
+    &mdash;
+    <span class="container">EnquiriesHelper</span>
+
+  <li class="method">
+    <a href="EnquiriesHelper.html#method-i-enquiry_submit">#enquiry_submit</a>
+    &mdash;
+    <span class="container">EnquiriesHelper</span>
+
+  <li class="method">
+    <a href="EnquiriesHelper.html#method-i-enquiry_user">#enquiry_user</a>
+    &mdash;
+    <span class="container">EnquiriesHelper</span>
+
+  <li class="method">
     <a href="SchoolInfoController.html#method-i-find">#find</a>
     &mdash;
     <span class="container">SchoolInfoController</span>
@@ -493,9 +852,19 @@
     <span class="container">SubjectsController</span>
 
   <li class="method">
-    <a href="PresenterProfilesHelper.html#method-i-fullname">#fullname</a>
+    <a href="EnquiriesHelper.html#method-i-form_title">#form_title</a>
     &mdash;
-    <span class="container">PresenterProfilesHelper</span>
+    <span class="container">EnquiriesHelper</span>
+
+  <li class="method">
+    <a href="EnquiriesHelper.html#method-i-form_variable">#form_variable</a>
+    &mdash;
+    <span class="container">EnquiriesHelper</span>
+
+  <li class="method">
+    <a href="EnquiriesHelper.html#method-i-from">#from</a>
+    &mdash;
+    <span class="container">EnquiriesHelper</span>
 
   <li class="method">
     <a href="CustomersHelper.html#method-i-fullname">#fullname</a>
@@ -503,14 +872,34 @@
     <span class="container">CustomersHelper</span>
 
   <li class="method">
+    <a href="PresenterProfilesHelper.html#method-i-fullname">#fullname</a>
+    &mdash;
+    <span class="container">PresenterProfilesHelper</span>
+
+  <li class="method">
     <a href="Availability.html#method-i-get_days">#get_days</a>
     &mdash;
     <span class="container">Availability</span>
 
   <li class="method">
+    <a href="BookingsController.html#method-i-get_help">#get_help</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
+    <a href="BookingMailer.html#method-i-get_help">#get_help</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
     <a href="Presenter.html#method-i-get_private_full_name">#get_private_full_name</a>
     &mdash;
     <span class="container">Presenter</span>
+
+  <li class="method">
+    <a href="Contact_Form.html#method-i-headers">#headers</a>
+    &mdash;
+    <span class="container">Contact_Form</span>
 
   <li class="method">
     <a href="UsersHelper.html#method-i-if_params_customer-3F">#if_params_customer?</a>
@@ -533,29 +922,9 @@
     <span class="container">AvailabilitiesController</span>
 
   <li class="method">
-    <a href="UsersController.html#method-i-index">#index</a>
+    <a href="BookingsController.html#method-i-index">#index</a>
     &mdash;
-    <span class="container">UsersController</span>
-
-  <li class="method">
-    <a href="SubjectsController.html#method-i-index">#index</a>
-    &mdash;
-    <span class="container">SubjectsController</span>
-
-  <li class="method">
-    <a href="SearchController.html#method-i-index">#index</a>
-    &mdash;
-    <span class="container">SearchController</span>
-
-  <li class="method">
-    <a href="PresentersController.html#method-i-index">#index</a>
-    &mdash;
-    <span class="container">PresentersController</span>
-
-  <li class="method">
-    <a href="HomeController.html#method-i-index">#index</a>
-    &mdash;
-    <span class="container">HomeController</span>
+    <span class="container">BookingsController</span>
 
   <li class="method">
     <a href="CustomersController.html#method-i-index">#index</a>
@@ -563,9 +932,69 @@
     <span class="container">CustomersController</span>
 
   <li class="method">
-    <a href="BookingsController.html#method-i-index">#index</a>
+    <a href="EnquiriesController.html#method-i-index">#index</a>
     &mdash;
-    <span class="container">BookingsController</span>
+    <span class="container">EnquiriesController</span>
+
+  <li class="method">
+    <a href="HomeController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">HomeController</span>
+
+  <li class="method">
+    <a href="InvoicesController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">InvoicesController</span>
+
+  <li class="method">
+    <a href="NotificationsController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">NotificationsController</span>
+
+  <li class="method">
+    <a href="PageContentsController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">PageContentsController</span>
+
+  <li class="method">
+    <a href="PresentersController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">PresentersController</span>
+
+  <li class="method">
+    <a href="SearchController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">SearchController</span>
+
+  <li class="method">
+    <a href="SubjectsController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">SubjectsController</span>
+
+  <li class="method">
+    <a href="UsersController.html#method-i-index">#index</a>
+    &mdash;
+    <span class="container">UsersController</span>
+
+  <li class="method">
+    <a href="BookingMailer.html#method-i-interested_booking">#interested_booking</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
+    <a href="Booking.html#method-i-invoice-21">#invoice!</a>
+    &mdash;
+    <span class="container">Booking</span>
+
+  <li class="method">
+    <a href="BookingMailer.html#method-i-invoice_fail">#invoice_fail</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
+    <a href="User.html#method-i-invoices">#invoices</a>
+    &mdash;
+    <span class="container">User</span>
 
   <li class="method">
     <a href="BookingsHelper.html#method-i-is_booked">#is_booked</a>
@@ -578,6 +1007,26 @@
     <span class="container">SearchHelper</span>
 
   <li class="method">
+    <a href="BookingsController.html#method-i-join">#join</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
+    <a href="BookingMailer.html#method-i-join">#join</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
+    <a href="BookingsController.html#method-i-leave_booking">#leave_booking</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
+    <a href="BookingMailer.html#method-i-leave_booking">#leave_booking</a>
+    &mdash;
+    <span class="container">BookingMailer</span>
+
+  <li class="method">
     <a href="Availability.html#method-i-list_days">#list_days</a>
     &mdash;
     <span class="container">Availability</span>
@@ -588,9 +1037,14 @@
     <span class="container">PresentersHelper</span>
 
   <li class="method">
-    <a href="PresentersController.html#method-i-new">#new</a>
+    <a href="EnquiriesHelper.html#method-i-name_or_school">#name_or_school</a>
     &mdash;
-    <span class="container">PresentersController</span>
+    <span class="container">EnquiriesHelper</span>
+
+  <li class="method">
+    <a href="AvailabilitiesController.html#method-i-new">#new</a>
+    &mdash;
+    <span class="container">AvailabilitiesController</span>
 
   <li class="method">
     <a href="BookingsController.html#method-i-new">#new</a>
@@ -598,19 +1052,24 @@
     <span class="container">BookingsController</span>
 
   <li class="method">
+    <a href="EnquiriesController.html#method-i-new">#new</a>
+    &mdash;
+    <span class="container">EnquiriesController</span>
+
+  <li class="method">
     <a href="PresenterProfilesController.html#method-i-new">#new</a>
     &mdash;
     <span class="container">PresenterProfilesController</span>
 
   <li class="method">
+    <a href="PresentersController.html#method-i-new">#new</a>
+    &mdash;
+    <span class="container">PresentersController</span>
+
+  <li class="method">
     <a href="SubjectsController.html#method-i-new">#new</a>
     &mdash;
     <span class="container">SubjectsController</span>
-
-  <li class="method">
-    <a href="AvailabilitiesController.html#method-i-new">#new</a>
-    &mdash;
-    <span class="container">AvailabilitiesController</span>
 
   <li class="method">
     <a href="CustomersHelper.html#method-i-new_booking_active-3F">#new_booking_active?</a>
@@ -621,6 +1080,16 @@
     <a href="Users/RegistrationsController.html#method-i-new_customer">#new_customer</a>
     &mdash;
     <span class="container">Users::RegistrationsController</span>
+
+  <li class="method">
+    <a href="QueryMailer.html#method-i-new_enquiry">#new_enquiry</a>
+    &mdash;
+    <span class="container">QueryMailer</span>
+
+  <li class="method">
+    <a href="BookingsController.html#method-i-new_from_enquiry">#new_from_enquiry</a>
+    &mdash;
+    <span class="container">BookingsController</span>
 
   <li class="method">
     <a href="Users/RegistrationsController.html#method-i-new_presenter">#new_presenter</a>
@@ -658,6 +1127,11 @@
     <span class="container">UsersHelper</span>
 
   <li class="method">
+    <a href="BookingsController.html#method-i-past">#past</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
     <a href="PresenterProfilesController.html#method-i-pending">#pending</a>
     &mdash;
     <span class="container">PresenterProfilesController</span>
@@ -683,9 +1157,29 @@
     <span class="container">UsersHelper</span>
 
   <li class="method">
+    <a href="HomeController.html#method-i-privacy">#privacy</a>
+    &mdash;
+    <span class="container">HomeController</span>
+
+  <li class="method">
     <a href="Presenter.html#method-i-profile_picture_path">#profile_picture_path</a>
     &mdash;
     <span class="container">Presenter</span>
+
+  <li class="method">
+    <a href="Presenter.html#method-i-profile_status_message">#profile_status_message</a>
+    &mdash;
+    <span class="container">Presenter</span>
+
+  <li class="method">
+    <a href="PresentersController.html#method-i-rate">#rate</a>
+    &mdash;
+    <span class="container">PresentersController</span>
+
+  <li class="method">
+    <a href="BookingsHelper.html#method-i-rate_label">#rate_label</a>
+    &mdash;
+    <span class="container">BookingsHelper</span>
 
   <li class="method">
     <a href="UserMailer.html#method-i-registration_mail">#registration_mail</a>
@@ -698,9 +1192,39 @@
     <span class="container">UsersController</span>
 
   <li class="method">
+    <a href="Booking.html#method-i-remaining_slots">#remaining_slots</a>
+    &mdash;
+    <span class="container">Booking</span>
+
+  <li class="method">
+    <a href="Booking.html#method-i-remove_all_bids">#remove_all_bids</a>
+    &mdash;
+    <span class="container">Booking</span>
+
+  <li class="method">
+    <a href="Presenter.html#method-i-remove_all_bids">#remove_all_bids</a>
+    &mdash;
+    <span class="container">Presenter</span>
+
+  <li class="method">
+    <a href="Booking.html#method-i-remove_chosen_presenter">#remove_chosen_presenter</a>
+    &mdash;
+    <span class="container">Booking</span>
+
+  <li class="method">
     <a href="PresentersController.html#method-i-remove_subject">#remove_subject</a>
     &mdash;
     <span class="container">PresentersController</span>
+
+  <li class="method">
+    <a href="Presenter.html#method-i-remove_upcoming_bookings">#remove_upcoming_bookings</a>
+    &mdash;
+    <span class="container">Presenter</span>
+
+  <li class="method">
+    <a href="Customer.html#method-i-save_to_xero">#save_to_xero</a>
+    &mdash;
+    <span class="container">Customer</span>
 
   <li class="method">
     <a href="UsersHelper.html#method-i-schools_active-3F">#schools_active?</a>
@@ -713,29 +1237,24 @@
     <span class="container">UsersHelper</span>
 
   <li class="method">
+    <a href="BookingsController.html#method-i-set_bid">#set_bid</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
     <a href="Availability.html#method-i-set_days">#set_days</a>
     &mdash;
     <span class="container">Availability</span>
 
   <li class="method">
-    <a href="UsersController.html#method-i-show">#show</a>
+    <a href="PresentersController.html#method-i-set_rate">#set_rate</a>
     &mdash;
-    <span class="container">UsersController</span>
+    <span class="container">PresentersController</span>
 
   <li class="method">
-    <a href="PresenterProfilesController.html#method-i-show">#show</a>
+    <a href="BookingsHelper.html#method-i-shared_message">#shared_message</a>
     &mdash;
-    <span class="container">PresenterProfilesController</span>
-
-  <li class="method">
-    <a href="CustomersController.html#method-i-show">#show</a>
-    &mdash;
-    <span class="container">CustomersController</span>
-
-  <li class="method">
-    <a href="BookingsController.html#method-i-show">#show</a>
-    &mdash;
-    <span class="container">BookingsController</span>
+    <span class="container">BookingsHelper</span>
 
   <li class="method">
     <a href="AvailabilitiesController.html#method-i-show">#show</a>
@@ -743,14 +1262,69 @@
     <span class="container">AvailabilitiesController</span>
 
   <li class="method">
+    <a href="BookingsController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">BookingsController</span>
+
+  <li class="method">
+    <a href="CustomersController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">CustomersController</span>
+
+  <li class="method">
+    <a href="EnquiriesController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">EnquiriesController</span>
+
+  <li class="method">
+    <a href="InvoicesController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">InvoicesController</span>
+
+  <li class="method">
+    <a href="PageContentsController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">PageContentsController</span>
+
+  <li class="method">
+    <a href="PresenterProfilesController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">PresenterProfilesController</span>
+
+  <li class="method">
+    <a href="SchoolInfoController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">SchoolInfoController</span>
+
+  <li class="method">
+    <a href="UsersController.html#method-i-show">#show</a>
+    &mdash;
+    <span class="container">UsersController</span>
+
+  <li class="method">
     <a href="Availability.html#method-i-start_time_string">#start_time_string</a>
     &mdash;
     <span class="container">Availability</span>
 
   <li class="method">
+    <a href="Booking.html#method-i-status_message">#status_message</a>
+    &mdash;
+    <span class="container">Booking</span>
+
+  <li class="method">
     <a href="UsersHelper.html#method-i-subject_active-3F">#subject_active?</a>
     &mdash;
     <span class="container">UsersHelper</span>
+
+  <li class="method">
+    <a href="SubjectsController.html#method-i-subscribe">#subscribe</a>
+    &mdash;
+    <span class="container">SubjectsController</span>
+
+  <li class="method">
+    <a href="SubjectsController.html#method-i-subscriptions">#subscriptions</a>
+    &mdash;
+    <span class="container">SubjectsController</span>
 
   <li class="method">
     <a href="UsersController.html#method-i-success">#success</a>
@@ -773,6 +1347,16 @@
     <span class="container">UsersHelper</span>
 
   <li class="method">
+    <a href="Presenter.html#method-i-teaches-3F">#teaches?</a>
+    &mdash;
+    <span class="container">Presenter</span>
+
+  <li class="method">
+    <a href="HomeController.html#method-i-terms">#terms</a>
+    &mdash;
+    <span class="container">HomeController</span>
+
+  <li class="method">
     <a href="Availability.html#method-i-times_string">#times_string</a>
     &mdash;
     <span class="container">Availability</span>
@@ -783,19 +1367,29 @@
     <span class="container">Availability</span>
 
   <li class="method">
+    <a href="Booking.html#method-i-total_students">#total_students</a>
+    &mdash;
+    <span class="container">Booking</span>
+
+  <li class="method">
+    <a href="SubjectsController.html#method-i-unsubscribe">#unsubscribe</a>
+    &mdash;
+    <span class="container">SubjectsController</span>
+
+  <li class="method">
     <a href="AvailabilitiesController.html#method-i-update">#update</a>
     &mdash;
     <span class="container">AvailabilitiesController</span>
 
   <li class="method">
-    <a href="SubjectsController.html#method-i-update">#update</a>
+    <a href="CustomersController.html#method-i-update">#update</a>
     &mdash;
-    <span class="container">SubjectsController</span>
+    <span class="container">CustomersController</span>
 
   <li class="method">
-    <a href="BookingsController.html#method-i-update">#update</a>
+    <a href="PageContentsController.html#method-i-update">#update</a>
     &mdash;
-    <span class="container">BookingsController</span>
+    <span class="container">PageContentsController</span>
 
   <li class="method">
     <a href="PresenterProfilesController.html#method-i-update">#update</a>
@@ -803,19 +1397,59 @@
     <span class="container">PresenterProfilesController</span>
 
   <li class="method">
+    <a href="SettingsController.html#method-i-update">#update</a>
+    &mdash;
+    <span class="container">SettingsController</span>
+
+  <li class="method">
+    <a href="SubjectsController.html#method-i-update">#update</a>
+    &mdash;
+    <span class="container">SubjectsController</span>
+
+  <li class="method">
+    <a href="PresentersController.html#method-i-update_details">#update_details</a>
+    &mdash;
+    <span class="container">PresentersController</span>
+
+  <li class="method">
+    <a href="UsersController.html#method-i-update_login_details">#update_login_details</a>
+    &mdash;
+    <span class="container">UsersController</span>
+
+  <li class="method">
+    <a href="Customer.html#method-i-update_xero">#update_xero</a>
+    &mdash;
+    <span class="container">Customer</span>
+
+  <li class="method">
+    <a href="Presenter.html#method-i-update_xero">#update_xero</a>
+    &mdash;
+    <span class="container">Presenter</span>
+
+  <li class="method">
+    <a href="SubjectsController.html#method-i-view_presenters">#view_presenters</a>
+    &mdash;
+    <span class="container">SubjectsController</span>
+
+  <li class="method">
     <a href="PresentersHelper.html#method-i-view_profile_active-3F">#view_profile_active?</a>
     &mdash;
     <span class="container">PresentersHelper</span>
 
   <li class="method">
-    <a href="Presenter.html#method-i-vit_number_must_be_valid">#vit_number_must_be_valid</a>
+    <a href="BookingsHelper.html#method-i-view_schools">#view_schools</a>
     &mdash;
-    <span class="container">Presenter</span>
+    <span class="container">BookingsHelper</span>
 
   <li class="method">
     <a href="Customer.html#method-i-vit_number_must_be_valid">#vit_number_must_be_valid</a>
     &mdash;
     <span class="container">Customer</span>
+
+  <li class="method">
+    <a href="Presenter.html#method-i-vit_number_must_be_valid">#vit_number_must_be_valid</a>
+    &mdash;
+    <span class="container">Presenter</span>
 
   <li class="method">
     <a href="Users/RegistrationsController.html#method-i-vit_validation">#vit_validation</a>

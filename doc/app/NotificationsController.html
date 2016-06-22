@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>class SchoolInfoController - Rails Application Documentation</title>
+<title>class NotificationsController - Rails Application Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -70,9 +70,7 @@
 
   <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-find">#find</a>
-    
-    <li ><a href="#method-i-show">#show</a>
+    <li ><a href="#method-i-index">#index</a>
     
   </ul>
 </div>
@@ -80,9 +78,9 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-SchoolInfoController">
-  <h1 id="class-SchoolInfoController" class="class">
-    class SchoolInfoController
+<main role="main" aria-labelledby="class-NotificationsController">
+  <h1 id="class-NotificationsController" class="class">
+    class NotificationsController
   </h1>
 
   <section class="description">
@@ -108,10 +106,10 @@
        </header>
 
     
-      <div id="method-i-find" class="method-detail ">
+      <div id="method-i-index" class="method-detail ">
         
         <div class="method-heading">
-          <span class="method-name">find</span><span
+          <span class="method-name">index</span><span
             class="method-args">()</span>
           
           <span class="method-click-advice">click to toggle source</span>
@@ -121,49 +119,17 @@
 
         <div class="method-description">
           
-          <p>Find all School infos based on search term</p>
+          <p>View all notifications</p>
           
           
 
           
-          <div class="method-source-code" id="find-source">
-            <pre><span class="ruby-comment"># File app/controllers/school_info_controller.rb, line 3</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">find</span>
-        <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">where</span>(<span class="ruby-string">&quot;school_name LIKE ?&quot;</span>, <span class="ruby-node">&quot;%#{params[:term].titlecase}%&quot;</span>)
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-      <div id="method-i-show" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">show</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Display School info</p>
-          
-          
-
-          
-          <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/school_info_controller.rb, line 8</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
-        <span class="ruby-ivar">@school_info</span> = <span class="ruby-constant">SchoolInfo</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-        <span class="ruby-ivar">@accounts</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">school_info</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/notifications_controller.rb, line 4</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>
+                <span class="ruby-ivar">@notifications</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">notifications</span>.<span class="ruby-identifier">order</span>(<span class="ruby-identifier">created_at</span><span class="ruby-operator">:</span> <span class="ruby-value">:desc</span>)
+        <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

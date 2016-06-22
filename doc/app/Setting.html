@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>class ApplicationController - Rails Application Documentation</title>
+<title>class Setting - Rails Application Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "./";
@@ -58,29 +58,19 @@
   <h3>Parent</h3>
 
   
-  <p class="link">ActionController::Base
+  <p class="link">ActiveRecord::Base
   
 </div>
 
     
     
-    <!-- Method Quickref -->
-<div id="method-list-section" class="nav-section">
-  <h3>Methods</h3>
-
-  <ul class="link-list" role="directory">
     
-    <li ><a href="#method-i-notif_read">#notif_read</a>
-    
-  </ul>
-</div>
-
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-ApplicationController">
-  <h1 id="class-ApplicationController" class="class">
-    class ApplicationController
+<main role="main" aria-labelledby="class-Setting">
+  <h1 id="class-Setting" class="class">
+    class Setting
   </h1>
 
   <section class="description">
@@ -100,50 +90,6 @@
     
 
     
-     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
-       <header>
-         <h3>Public Instance Methods</h3>
-       </header>
-
-    
-      <div id="method-i-notif_read" class="method-detail ">
-        
-        <div class="method-heading">
-          <span class="method-name">notif_read</span><span
-            class="method-args">()</span>
-          
-          <span class="method-click-advice">click to toggle source</span>
-          
-        </div>
-        
-
-        <div class="method-description">
-          
-          <p>Set notification as read on click</p>
-          
-          
-
-          
-          <div class="method-source-code" id="notif_read-source">
-            <pre><span class="ruby-comment"># File app/controllers/application_controller.rb, line 21</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">notif_read</span>
-  <span class="ruby-identifier">notification</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-  <span class="ruby-identifier">notification</span>.<span class="ruby-identifier">is_read</span> = <span class="ruby-keyword">true</span>
-  <span class="ruby-identifier">notification</span>.<span class="ruby-identifier">save</span>
-  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">notification</span>.<span class="ruby-identifier">reference</span>
-<span class="ruby-keyword">end</span></pre>
-          </div>
-          
-        </div>
-
-        
-
-        
-      </div>
-
-    
-    </section>
-  
   </section>
 </main>
 

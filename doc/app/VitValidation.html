@@ -128,6 +128,12 @@ Name, Last Name and VIT</p>
           <div class="method-source-code" id="check_vit-source">
             <pre><span class="ruby-comment"># File app/services/vit_validation.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">check_vit</span>(<span class="ruby-identifier">presenterFirstName</span>, <span class="ruby-identifier">presenterLastName</span>, <span class="ruby-identifier">presenterVIT</span>)
+
+        <span class="ruby-comment"># we know this works now so let&#39;s stop calling it</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">development?</span> <span class="ruby-operator">||</span> <span class="ruby-constant">Rails</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">test?</span>
+                <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>;
+        <span class="ruby-keyword">end</span>
+
         <span class="ruby-identifier">page_url</span> = <span class="ruby-string">&quot;http://www.vit.vic.edu.au/search-the-register/_nocache?first_name=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">presenterFirstName</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;&amp;last_name=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">presenterLastName</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;&amp;reg_number=&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">presenterVIT</span>
   <span class="ruby-identifier">page</span> = <span class="ruby-constant">Nokogiri</span><span class="ruby-operator">::</span><span class="ruby-constant">HTML</span>(<span class="ruby-identifier">open</span>(<span class="ruby-identifier">page_url</span>))   
 

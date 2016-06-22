@@ -131,13 +131,13 @@
 
         <div class="method-description">
           
-          <p>submit form</p>
+          <p>Create an availability</p>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 16</span>
+            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 20</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
         <span class="ruby-identifier">availability</span> = <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">availability_params</span>)
         <span class="ruby-identifier">availability</span>.<span class="ruby-identifier">start_time</span> = <span class="ruby-identifier">set_time</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&#39;start_time&#39;</span>])
@@ -175,13 +175,13 @@
 
         <div class="method-description">
           
-          
+          <p>Delete an availability</p>
           
           
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 46</span>
+            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 53</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
         <span class="ruby-comment"># if @availability.presenter == current_user.presenter || current_user == admin</span>
                 <span class="ruby-ivar">@availability</span> = <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
@@ -212,13 +212,13 @@
 
         <div class="method-description">
           
-          
+          <p>Edit availability form</p>
           
           
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 31</span>
+            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 36</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
         <span class="ruby-ivar">@availability</span> = <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -245,16 +245,15 @@
 
         <div class="method-description">
           
-          
+          <p><a href="Availability.html">Availability</a> index</p>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
         <span class="ruby-ivar">@availabilities</span> = <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">for_presenter</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter</span>)
-        <span class="ruby-comment"># .find_each</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -279,13 +278,13 @@
 
         <div class="method-description">
           
-          <p>form</p>
+          <p>New availability form</p>
           
           
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 7</span>
+            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 10</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span> 
         <span class="ruby-ivar">@availability</span> = <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">new</span> 
 <span class="ruby-keyword">end</span></pre>
@@ -312,13 +311,13 @@
 
         <div class="method-description">
           
-          
+          <p>Display an availability</p>
           
           
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 11</span>
+            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 15</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
         <span class="ruby-ivar">@availabilities</span> = <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span> [<span class="ruby-value">:id</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -345,13 +344,13 @@
 
         <div class="method-description">
           
-          
+          <p>Update an availability</p>
           
           
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 35</span>
+            <pre><span class="ruby-comment"># File app/controllers/availabilities_controller.rb, line 41</span>
     <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span> 
             <span class="ruby-ivar">@availability</span> = <span class="ruby-constant">Availability</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:availability</span>][<span class="ruby-value">:id</span>])
                     <span class="ruby-identifier">new_start_time</span> = <span class="ruby-identifier">set_time</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:start_time</span>])

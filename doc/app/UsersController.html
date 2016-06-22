@@ -74,6 +74,10 @@
     
     <li ><a href="#method-i-customers">#customers</a>
     
+    <li ><a href="#method-i-edit_login_details">#edit_login_details</a>
+    
+    <li ><a href="#method-i-enquiries">#enquiries</a>
+    
     <li ><a href="#method-i-index">#index</a>
     
     <li ><a href="#method-i-presenters">#presenters</a>
@@ -87,6 +91,8 @@
     <li ><a href="#method-i-suspend_user">#suspend_user</a>
     
     <li ><a href="#method-i-suspended_users">#suspended_users</a>
+    
+    <li ><a href="#method-i-update_login_details">#update_login_details</a>
     
   </ul>
 </div>
@@ -135,19 +141,19 @@
 
         <div class="method-description">
           
-          
+          <p>Action for admin to approve a user(both schools and presenters)</p>
           
           
 
           
           <div class="method-source-code" id="approve_user-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 36</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 53</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">approve_user</span>
   <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-string">&quot;id&quot;</span>])
   <span class="ruby-identifier">previous_status</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">status</span>
   <span class="ruby-identifier">user</span>.<span class="ruby-identifier">status</span> = <span class="ruby-string">&quot;approved&quot;</span>
   <span class="ruby-identifier">user</span>.<span class="ruby-identifier">save</span>
-  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;Your account has been approved!&quot;</span>, <span class="ruby-string">&quot;&quot;</span>)
+  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;Your account has been approved!&quot;</span>, <span class="ruby-string">&quot;&quot;</span>, <span class="ruby-value">:system</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">present?</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-node">&quot;#{user.presenter.first_name} #{user.presenter.last_name}&#39;s
                       account has been approved.&quot;</span>
@@ -184,15 +190,85 @@
 
         <div class="method-description">
           
-          
+          <p>Display all users</p>
           
           
 
           
           <div class="method-source-code" id="customers-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 76</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 99</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">customers</span>
   <span class="ruby-ivar">@customers</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">all</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit_login_details" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit_login_details</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Edit log in details form</p>
+          
+          
+
+          
+          <div class="method-source-code" id="edit_login_details-source">
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 119</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit_login_details</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-enquiries" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">enquiries</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Display all enqurieise for a customer or presenter</p>
+          
+          
+
+          
+          <div class="method-source-code" id="enquiries-source">
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 109</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">enquiries</span>
+  <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">customer?</span>
+    <span class="ruby-ivar">@enquiries</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">enquiries</span>.<span class="ruby-identifier">order</span>(<span class="ruby-identifier">created_at</span><span class="ruby-operator">:</span> <span class="ruby-value">:desc</span>).<span class="ruby-identifier">paginate</span>(<span class="ruby-value">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>], <span class="ruby-value">:per_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">presenter?</span>
+    <span class="ruby-ivar">@enquiries</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">enquiries</span>.<span class="ruby-identifier">order</span>(<span class="ruby-identifier">created_at</span><span class="ruby-operator">:</span> <span class="ruby-value">:desc</span>).<span class="ruby-identifier">paginate</span>(<span class="ruby-value">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>], <span class="ruby-value">:per_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>)
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -217,15 +293,30 @@
 
         <div class="method-description">
           
-          
+          <p>Admin Dashboard Action</p>
           
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 24</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 25</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-  <span class="ruby-ivar">@pending_user_count</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;pending&quot;</span>).<span class="ruby-identifier">count</span>
+  <span class="ruby-ivar">@pending_user_count</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">unapproved_customers</span>.<span class="ruby-identifier">count</span>
+  <span class="ruby-ivar">@pending_profile_count</span> = <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">drafts_and_unapproved</span>.<span class="ruby-identifier">count</span>
+  <span class="ruby-ivar">@help_count</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">help_required</span>.<span class="ruby-identifier">count</span>
+  <span class="ruby-ivar">@total</span> = <span class="ruby-ivar">@pending_user_count</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@pending_profile_count</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@help_count</span>
+   
+  <span class="ruby-ivar">@search_params</span> = <span class="ruby-identifier">params</span>
+
+  <span class="ruby-comment">#pending presenter accounts</span>
+  <span class="ruby-ivar">@customers</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">unapproved_customers</span>.<span class="ruby-identifier">first</span>(<span class="ruby-value">5</span>)
+
+  <span class="ruby-comment">#pending profile changes</span>
+  <span class="ruby-ivar">@profiles</span> = <span class="ruby-constant">PresenterProfile</span>.<span class="ruby-identifier">drafts_and_unapproved</span>.<span class="ruby-identifier">first</span>(<span class="ruby-value">5</span>)
+
+  <span class="ruby-ivar">@upcoming_bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">upcoming</span>(<span class="ruby-identifier">current_user</span>).<span class="ruby-identifier">first</span>(<span class="ruby-value">5</span>)
+  <span class="ruby-ivar">@help_bookings</span> = <span class="ruby-constant">Booking</span>.<span class="ruby-identifier">help_required</span>.<span class="ruby-identifier">first</span>(<span class="ruby-value">5</span>)
+
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -250,13 +341,13 @@
 
         <div class="method-description">
           
-          
+          <p>Display all presenters</p>
           
           
 
           
           <div class="method-source-code" id="presenters-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 80</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 104</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">presenters</span>
   <span class="ruby-ivar">@presenters</span> = <span class="ruby-constant">Presenter</span>.<span class="ruby-identifier">all</span>
 <span class="ruby-keyword">end</span></pre>
@@ -289,7 +380,7 @@
 
           
           <div class="method-source-code" id="registrations-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 31</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">registrations</span>
   <span class="ruby-ivar">@presenters</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">unapproved_presenters</span>
   <span class="ruby-ivar">@customers</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">unapproved_customers</span>
@@ -324,7 +415,7 @@ profile, or customer profile</p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 12</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 13</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">nil?</span>
@@ -364,7 +455,7 @@ profile, or customer profile</p>
 
           
           <div class="method-source-code" id="success-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">success</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -390,22 +481,25 @@ profile, or customer profile</p>
 
         <div class="method-description">
           
-          
+          <p>Action for admin to suspend a user(schools and presenters)</p>
           
           
 
           
           <div class="method-source-code" id="suspend_user-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 56</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 74</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">suspend_user</span>
   <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-identifier">user</span>.<span class="ruby-identifier">status</span> = <span class="ruby-string">&quot;suspended&quot;</span>
   <span class="ruby-identifier">user</span>.<span class="ruby-identifier">save</span>
-  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;Your account has been suspended&quot;</span>, <span class="ruby-string">&quot;&quot;</span>)
+  <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">send_message</span>(<span class="ruby-identifier">user</span>, <span class="ruby-string">&quot;Your account has been suspended&quot;</span>, <span class="ruby-string">&quot;&quot;</span>, <span class="ruby-value">:system</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">remove_upcoming_bookings</span>
+    <span class="ruby-identifier">user</span>.<span class="ruby-identifier">presenter</span>.<span class="ruby-identifier">remove_all_bids</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-node">&quot;#{user.presenter.first_name} #{user.presenter.last_name}&#39;s
                       account has been suspended.&quot;</span>
   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">present?</span>
+    <span class="ruby-identifier">user</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">cancel_upcoming_bookings</span>
     <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-node">&quot;#{user.customer.first_name} #{user.customer.last_name}&#39;s 
                       account has been suspended.&quot;</span>
   <span class="ruby-keyword">end</span>
@@ -434,16 +528,97 @@ profile, or customer profile</p>
 
         <div class="method-description">
           
-          
+          <p>Display all suspended users</p>
           
           
 
           
           <div class="method-source-code" id="suspended_users-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 71</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 93</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">suspended_users</span>
   <span class="ruby-ivar">@customers</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">suspended_customers</span>
   <span class="ruby-ivar">@presenters</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">suspended_presenters</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update_login_details" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update_login_details</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Update log in details</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update_login_details-source">
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 123</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update_login_details</span>
+  <span class="ruby-ivar">@errors</span> = [] 
+  <span class="ruby-identifier">success</span> = []
+  <span class="ruby-identifier">usr</span> = <span class="ruby-identifier">current_user</span>
+
+  <span class="ruby-comment"># verify current password</span>
+  <span class="ruby-identifier">valid_password</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">valid_password?</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:old_password</span>]
+
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">valid_password</span> 
+    <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;Current password is invalid&quot;</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;edit_login_details&#39;</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-comment"># update email</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:email</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:email</span>] <span class="ruby-operator">!=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">email</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">email</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:email</span>])
+      <span class="ruby-identifier">success</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;Your email has been updated.&quot;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;Your email address is not valid&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-comment"># update password</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:password</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:password_confirmation</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">valid_password</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:password</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:password_confirmation</span>]
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">password</span><span class="ruby-operator">:</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:password</span>])
+         <span class="ruby-identifier">success</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;Your password has been updated.&quot;</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;New password is not valid&quot;</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;Password and password confirmation do not match&quot;</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:password</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:password_confirmation</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-ivar">@errors</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;Password and password confirmation do not match&quot;</span>
+  <span class="ruby-keyword">end</span>
+  
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@errors</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;edit_login_details&#39;</span>
+    <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">success</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">sign_in</span> <span class="ruby-identifier">usr</span>, <span class="ruby-value">:bypass</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">flash</span>[<span class="ruby-value">:success</span>] = <span class="ruby-identifier">success</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">delete</span> <span class="ruby-string">&#39;[]&quot;&#39;</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_url</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-string">&#39;edit_login_details&#39;</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

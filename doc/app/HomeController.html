@@ -70,7 +70,19 @@
 
   <ul class="link-list" role="directory">
     
+    <li ><a href="#method-i-about">#about</a>
+    
+    <li ><a href="#method-i-contact">#contact</a>
+    
+    <li ><a href="#method-i-dmca">#dmca</a>
+    
+    <li ><a href="#method-i-earnings">#earnings</a>
+    
     <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-privacy">#privacy</a>
+    
+    <li ><a href="#method-i-terms">#terms</a>
     
   </ul>
 </div>
@@ -106,6 +118,138 @@
        </header>
 
     
+      <div id="method-i-about" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">about</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Static pages ##</p>
+          
+          
+
+          
+          <div class="method-source-code" id="about-source">
+            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">about</span>
+   <span class="ruby-ivar">@aboutPMC</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;aboutPMC&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-contact" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">contact</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="contact-source">
+            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">contact</span>
+  <span class="ruby-ivar">@contact</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;contact&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-dmca" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dmca</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="dmca-source">
+            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 27</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dmca</span>
+  <span class="ruby-ivar">@dmca</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;dmca&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-earnings" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">earnings</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="earnings-source">
+            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">earnings</span>
+  <span class="ruby-ivar">@earnings</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;earnings&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-index" class="method-detail ">
         
         <div class="method-heading">
@@ -125,8 +269,86 @@
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 3</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> 
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin?</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;users&#39;</span>, <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;index&#39;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">presenter?</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;presenters&#39;</span>, <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;index&#39;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">customer?</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-value">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;customers&#39;</span>, <span class="ruby-value">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;index&#39;</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-comment"># show homepage</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-privacy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">privacy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="privacy-source">
+            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">privacy</span>
+  <span class="ruby-ivar">@privacy</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;privacy&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-terms" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">terms</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="terms-source">
+            <pre><span class="ruby-comment"># File app/controllers/home_controller.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">terms</span>
+  <span class="ruby-ivar">@terms</span> = <span class="ruby-constant">PageContent</span>.<span class="ruby-identifier">find_by_name</span>(<span class="ruby-string">&quot;terms&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
