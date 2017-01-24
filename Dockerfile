@@ -1,4 +1,4 @@
-FROM rails:4.2
+FROM ruby:2.3
 
 # (Example) Environment variables for Rails
 ENV RAILS_ENV 'development'
