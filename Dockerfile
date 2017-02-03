@@ -35,6 +35,8 @@ COPY Gemfile.lock /usr/src/app/
 RUN bundle install
 
 COPY . /usr/src/app
+RUN bundle exec rake assets:clean
+RUN bundle exec rake assets:precompile
 
 RUN apt-get update && apt-get install -y postgresql-client --no-install-recommends && rm -rf /var/lib/apt/lists/*
 
