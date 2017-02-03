@@ -16,7 +16,6 @@
 //= require bootstrap-switch
 //= require jquery-ui
 //= require jquery_ujs
-//= require jquery-ui/autocomplete
 //= require best_in_place
 //= require best_in_place.jquery-ui
 //= require turbolinks

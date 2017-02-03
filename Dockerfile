@@ -23,11 +23,13 @@ ENV PMC_DB_NAME 'pmc'
 ENV PMC_DB_USER 'pmc'
 ENV PMC_DB_PASSWORD 'changeme123'
 
+# Base Image configuration
+RUN apt-get update && apt-get install -y postgresql-client --no-install-recommends && rm -rf /var/lib/apt/lists/*
+
 # Taken from the master Dockerfile: https://github.com/docker-library/rails/blob/master/onbuild/Dockerfile
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY Gemfile /usr/src/app/
@@ -36,9 +38,7 @@ RUN bundle install
 
 COPY . /usr/src/app
 RUN bundle exec rake assets:clean
-RUN bundle exec rake assets:precompile
-
-RUN apt-get update && apt-get install -y postgresql-client --no-install-recommends && rm -rf /var/lib/apt/lists/*
+# RUN bundle exec rake assets:precompile
 
 EXPOSE 3000
 CMD ["rails", "server", "-b", "0.0.0.0"]
