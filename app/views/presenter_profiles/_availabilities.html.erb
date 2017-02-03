@@ -1,13 +1,15 @@
-<table class="table table-hover" id="presenter-availability-table">
-  <tr>
-    <th class="col-md-1">Mon</th>
-    <th class="col-md-1">Tue</th>
-    <th class="col-md-1">Wed</th>
-    <th class="col-md-1">Thu</th>
-    <th class="col-md-1">Fri</th>
-    <th class="col-md-1">Sat</th>
-    <th class="col-md-1">Sun</th>
-    <th class="col-md-2"></th>
-  </tr>
-  <%= render partial: 'availabilities/availability', collection: @availability %>
-</table>
+<% unless params[:id].present? %>
+  <table class="table table-hover" id="presenter-availability-table">
+    <tr>
+      <th class="col-md-1">Mon</th>
+      <th class="col-md-1">Tue</th>
+      <th class="col-md-1">Wed</th>
+      <th class="col-md-1">Thu</th>
+      <th class="col-md-1">Fri</th>
+      <th class="col-md-1">Sat</th>
+      <th class="col-md-1">Sun</th>
+      <th class="col-md-2"></th>
+    </tr>
+    <%= render partial: 'availabilities/availability', collection: @availability %>
+  </table>
+<% end %>

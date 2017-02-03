@@ -32,7 +32,10 @@
     <% if current_user.customer? && params[:booking_id].present? %>
       <%= render 'partials/customer_actions' %>
     <%  end %>
-    <%= render 'enquiries/partials/form' %>
+    <% unless params[:id].present? %>
+      <%= render 'enquiries/partials/form' %>
+    <% end %>
+      <%= link_to "Back", :back, class: "btn btn-default" %>
   <% end %>
 
 </div>

@@ -54,6 +54,7 @@ class BookingsController < ApplicationController
       @booking.chosen_presenter = @enquiry.presenter
       @booking.booking_date = DateTime.new(@enquiry.date.year, @enquiry.date.month, @enquiry.date.day, @enquiry.time.hour, @enquiry.time.min)
       @booking.rate = @enquiry.rate
+      @booking.duration_minutes = @enquiry.duration
       @booking.customers << current_user.customer
       @booking.booked_customers.first.number_students = params[:booking][:booked_customers][:number_students]
       @booking.subject = @subject
@@ -142,7 +143,7 @@ class BookingsController < ApplicationController
     @booking.period = 2
     
     # Create closed booking if customer came from searching or enquiring.
-    if session[:search_params].present? || params[:presenter_id].present?
+    if params[:presenter_id].present?
       presenter = Presenter.find(params[:presenter_id])
       if presenter.available? @booking.booking_date, @booking.duration_minutes
         @booking.chosen_presenter = Presenter.find(params[:presenter_id])

@@ -107,7 +107,7 @@ module BookingsHelper
 	# Display remaining capacity of a booking
 	def display_booking_slots(booking)
 		if @remaining != 0
-			return content_tag(:p, "Capacity: #{booking.cap - booking.remaining_slots}/30 students booked.")
+			return "#{booking.cap - booking.remaining_slots}/30 students booked."
 		end
 	end
 end
