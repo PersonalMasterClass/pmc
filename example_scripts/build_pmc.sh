@@ -1,0 +1,24 @@
+docker build -t pmc -f /usr/src/app/Dockerfile /usr/src/app &&
+docker create \
+	--interactive \
+	--tty \
+	--link pmc_postgres:pmc_postgres \
+	--link pmc_redis:pmc_redis \
+	--publish 3000:3000 \
+	-e RAILS_ENV='production' \
+	-e PMC_DB_HOST='PMC_DB_HOST' \
+	-e PMC_DB_NAME='PMC_DB_NAME' \
+	-e PMC_DB_USER='PMC_DB_USER' \
+	-e PMC_DB_PASSWORD='PMC_DB_PASSWORD' \
+	-e S3_SECRET_KEY='S3_SECRET_KEY' \
+	-e S3_ACCESS_SECRET='S3_ACCESS_SECRET' \
+	-e S3_BUCKET='s3-bucket-name' \
+	-e S3_REGION='ap-southeast-1' \
+	-e SMTP_ADDRESS='smtp.hostname.tld' \
+	-e SMTP_PORT='25' \
+	-e SMTP_USERNAME='username' \
+	-e SMTP_PASSWORD='password' \
+	-e XERO_CONSUMER_KEY='consumer_key' \
+	-e XERO_SECRET_KEY='secret_key' \
+	-e MAILER_SENDER='noreply@domain.tld' \
+	--name pmc pmc
